@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchPayments } from '../../redux/slices/paymentSlice';
+// import { fetchPayments } from '../../redux/slices/paymentSlice'; payment slice needs to build
 
 const PaymentTracking = () => {
     const dispatch = useDispatch();

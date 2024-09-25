@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCustomers } from '../../redux/slices/customerSlice';
 import { fetchQuotations } from '../../redux/slices/quotationSlice';
-import { createInvoice } from '../../redux/slices/invoiceSlice';
-import { useHistory } from 'react-router-dom';
+// import { createInvoice } from '../../redux/slices/invoiceSlice';
+import { useNavigate } from 'react-router-dom'; // Change here ash
 
 const CreateInvoice = () => {
     const dispatch = useDispatch();
-    const history = useHistory();
+    const navigate = useNavigate(); // Change here
     const { customers } = useSelector((state) => state.customers);
     const { quotations } = useSelector((state) => state.quotations);
     const [formData, setFormData] = useState({
@@ -39,11 +39,11 @@ const CreateInvoice = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        dispatch(createInvoice(formData));
-        history.push('/invoices');
-    };
+    // const handleSubmit = (e) => {
+    //     e.preventDefault();
+    //     dispatch(createInvoice(formData)); // Dispatch the action to create invoice
+    //     navigate('/invoices'); // Change here
+    // };
 
     return (
         <div className="create-invoice-container">
@@ -87,7 +87,7 @@ const CreateInvoice = () => {
                         type="date"
                         name="invoiceDate"
                         value={formData.invoiceDate}
-                        onChange={(e) => setFormData({ ...formData, invoiceDate: e.target.value })}
+                        onChange={(e) => setFormData({ ...prevData, invoiceDate: e.target.value })}
                         required
                     />
                 </div>

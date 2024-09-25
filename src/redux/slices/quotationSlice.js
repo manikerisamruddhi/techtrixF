@@ -12,6 +12,12 @@ export const addQuotation = createAsyncThunk('quotations/addQuotation', async (n
     return response.data;
 });
 
+// New Async Thunk: Delete Quotation
+export const deleteQuotation = createAsyncThunk('quotations/deleteQuotation', async (quotationId) => {
+    await axios.delete(`/api/quotations/${quotationId}`);
+    return quotationId; // Return the ID for the reducer to use
+});
+
 // Quotation Slice
 const quotationSlice = createSlice({
     name: 'quotations',
@@ -36,6 +42,11 @@ const quotationSlice = createSlice({
             })
             .addCase(addQuotation.fulfilled, (state, action) => {
                 state.quotations.push(action.payload);
+            })
+            // Handle delete quotation action
+            .addCase(deleteQuotation.fulfilled, (state, action) => {
+                const quotationId = action.payload;
+                state.quotations = state.quotations.filter(quotation => quotation.id !== quotationId);
             });
     },
 });

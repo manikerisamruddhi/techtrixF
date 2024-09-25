@@ -1,16 +1,15 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import InvoiceList from './pages/Invoices/InvoiceList';
 import InvoiceDetails from './pages/Invoices/InvoiceDetails';
 import CreateInvoice from './pages/Invoices/CreateInvoice';
 import EditInvoice from './pages/Invoices/EditInvoice';
-import PaymentTracking from './pages/Payments/PaymentTracking';
-import Dashboard from './pages/Dashboard/Dashboard';
+import PaymentTracking from './pages/Payments/PaymentTracking'; 
+import Dashboard from './pages/dashboard/AdminDashboard';
 import Users from './pages/Users/Users';
 import Customers from './pages/Customers/Customers';
 import Header from './components/Header';
-import Login from './components/Auth/Login';
-import ProtectedRoute from './components/Auth/ProtectedRoute'; // Protect routes based on roles
+import Login from './pages/auth/LoginPage';
 import { ThemeProvider } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
 import theme from './theme'; // Custom theme
@@ -20,23 +19,23 @@ const App = () => {
         <ThemeProvider theme={theme}>
             <CssBaseline />
             <Router>
-                <Switch>
+                <Routes>
                     {/* Public Routes */}
-                    <Route path="/login" component={Login} />
+                    <Route path="/login" element={<Login />} />
                     
-                    {/* Protected Routes */}
-                    <ProtectedRoute path="/invoices" component={InvoiceList} />
-                    <ProtectedRoute path="/invoice/:invoiceId" component={InvoiceDetails} />
-                    <ProtectedRoute path="/create-invoice" component={CreateInvoice} />
-                    <ProtectedRoute path="/edit-invoice/:invoiceId" component={EditInvoice} />
-                    <ProtectedRoute path="/payments" component={PaymentTracking} />
-                    <ProtectedRoute path="/dashboard" component={Dashboard} />
+                    {/* Unprotected Routes */}
+                    <Route path="/invoices" element={<InvoiceList />} />
+                    <Route path="/invoice/:invoiceId" element={<InvoiceDetails />} />
+                    <Route path="/create-invoice" element={<CreateInvoice />} />
+                    <Route path="/edit-invoice/:invoiceId" element={<EditInvoice />} />
+                    <Route path="/payments" element={<PaymentTracking />} />
+                    <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/users" element={<Users />} />
                     <Route path="/customers" element={<Customers />} />
 
                     {/* Default Route */}
-                    <Route path="/" component={Dashboard} />
-                </Switch>
+                    <Route path="/" element={<Dashboard />} />
+                </Routes>
             </Router>
         </ThemeProvider>
     );

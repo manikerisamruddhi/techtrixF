@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 const QuotationList = () => {
     const dispatch = useDispatch();
-    const { quotations, loading, error } = useSelector((state) => state.quotations);
+    const { quotations = [], loading, error } = useSelector((state) => state.quotations); // Default to empty array
 
     useEffect(() => {
         dispatch(fetchQuotations());
@@ -23,15 +23,19 @@ const QuotationList = () => {
             <h1>Quotation List</h1>
             <Link to="/create-quotation" className="create-quotation-btn">Create Quotation</Link>
             <ul>
-                {quotations.map(quotation => (
-                    <li key={quotation.id}>
-                        <Link to={`/quotation/${quotation.id}`}>
-                            Quotation #{quotation.id} - {quotation.status}
-                        </Link>
-                        <button onClick={() => handleDelete(quotation.id)}>Delete</button>
-                        <Link to={`/edit-quotation/${quotation.id}`}>Edit</Link>
-                    </li>
-                ))}
+                {Array.isArray(quotations) && quotations.length > 0 ? (
+                    quotations.map(quotation => (
+                        <li key={quotation.id}>
+                            <Link to={`/quotation/${quotation.id}`}>
+                                Quotation #{quotation.id} - {quotation.status}
+                            </Link>
+                            <button onClick={() => handleDelete(quotation.id)}>Delete</button>
+                            <Link to={`/edit-quotation/${quotation.id}`}>Edit</Link>
+                        </li>
+                    ))
+                ) : (
+                    <li>No quotations available.</li> // Handle empty quotations
+                )}
             </ul>
         </div>
     );

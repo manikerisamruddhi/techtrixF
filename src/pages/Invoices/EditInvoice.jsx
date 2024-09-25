@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchInvoiceDetails, updateInvoice } from '../../redux/slices/invoiceSlice';
+// import { fetchInvoiceDetails, updateInvoice } from '../../redux/slices/invoiceSlice';
 import { fetchProducts } from '../../redux/slices/productSlice';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const EditInvoice = () => {
     const { invoiceId } = useParams();
     const dispatch = useDispatch();
-    const history = useHistory();
+    const history = useNavigate();
     const { invoice } = useSelector((state) => state.invoices);
     const { products } = useSelector((state) => state.products);
     const [formData, setFormData] = useState({

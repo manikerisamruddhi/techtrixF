@@ -4,7 +4,8 @@ import TicketList from '../../pages/Tickets/TicketList';
 import QuotationList from '../../pages/Quotations/QuotationList';
 import Users from '../Users/Users.jsx';
 import Customers from '../Customers/Customers.jsx';
-import NotificationList from '../../pages/Notifications/NotificationList';
+// import NotificationList from '../../pages/Notifications/NotificationList'; present in the component
+import NotificationList from '../../components/NotificationList.jsx';
 
 const AdminDashboard = () => {
     const tickets = useSelector((state) => state.tickets.allTickets);
