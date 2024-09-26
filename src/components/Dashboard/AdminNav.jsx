@@ -10,15 +10,18 @@ const Navbar = () => {
             <ul className="navbar-list">
                 <li className="navbar-item">
                     <Link to="/">Home</Link>
+                <li className="navbar-item">
+                    <Link to="/Notifications">Tickets</Link>
+                </li>
+                <li className="navbar-item">
+                    <Link to="/Notifications">Reports</Link>
+                </li>
                 </li>
                 <li className="navbar-item">
                     <Link to="/Quotations">Quotations</Link>
                 </li>
                 <li className="navbar-item">
                     <Link to="/User Management">User Management</Link>
-                </li>
-                <li className="navbar-item">
-                    <Link to="/Notifications">Notifications</Link>
                 </li>
             </ul>
         </nav>
