@@ -1,0 +1,95 @@
+.wrapper {
+  display: flex;
+  height: 100vh; /* Full height for the wrapper */
+}
+
+.navbar {
+  width: 200px; /* Set a fixed width for the navbar */
+  background-color: #f8f8f8; /* Optional: background color for visibility */
+  border-right: 1px solid #ddd; /* Optional: border for separation */
+  padding: 20px; /* Add some padding */
+  position: fixed; /* Keep the navbar fixed on the left */
+  top: 0;
+  left: 0;
+  height: 100vh; /* Full height of the viewport */
+  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1); /* Subtle shadow on the right */
+}
+
+.dashboard-container {
+  margin-left: 220px; /* Offset the content by the width of the navbar + some space */
+  flex: 1; /* Allow it to grow and take the remaining space */
+  max-width: calc(100% - 220px); /* Adjust max width considering the navbar width */
+  padding: 2rem; /* Add padding around the dashboard */
+  background-color: #f9f9f9; /* Light background for better contrast */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.content {
+  padding: 20px; /* Add padding to the content area */
+  background-color: #ffffff; /* Optional: background color */
+}
+
+h1 {
+  text-align: center; /* Center the main heading */
+  color: #333; /* Darker text for better readability */
+  margin-bottom: 1.5rem; /* Space below the heading */
+}
+
+section {
+  margin: 1.5rem 0; /* Space between sections */
+  padding: 1.5rem; /* Padding inside each section */
+  background-color: #fff; /* White background for sections */
+  border-radius: 5px; /* Rounded corners for sections */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Light shadow for sections */
+}
+
+h2 {
+  color: #555; /* Slightly lighter color for section headings */
+  margin-bottom: 1rem; /* Space below section headings */
+  font-size: 1.5rem; /* Adjust font size */
+}
+
+/* Media Queries */
+@media (max-width: 1024px) {
+  .dashboard-container {
+      padding: 1.5rem; /* Reduce padding on larger tablets */
+  }
+
+  section {
+      padding: 1rem; /* Adjust padding for sections */
+  }
+
+  h2 {
+      font-size: 1.4rem; /* Slightly smaller section headings */
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-container {
+      padding: 1rem; /* Further reduce padding for small tablets */
+  }
+
+  section {
+      margin: 1rem 0; /* Adjust margins */
+      padding: 0.75rem; /* Smaller padding for sections */
+  }
+
+  h2 {
+      font-size: 1.2rem; /* Smaller section headings */
+  }
+}
+
+@media (max-width: 480px) {
+  .dashboard-container {
+      padding: 0.5rem; /* Minimal padding for mobile */
+  }
+
+  section {
+      padding: 0.5rem; /* Minimal padding for sections */
+  }
+
+  h2 {
+      font-size: 1rem; /* Small section headings for mobile */
+  }
+}
