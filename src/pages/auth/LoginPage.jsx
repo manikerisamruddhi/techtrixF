@@ -20,6 +20,7 @@ const LoginPage = () => {
     };
 
     return (
+        <div class="auth-wrapper">
         <div className="auth-container">
             <h2>Login</h2>
             {error && <p className="auth-error">{error}</p>}
@@ -47,6 +48,7 @@ const LoginPage = () => {
             <div className="auth-links">
                 <a href="/register">Register</a> | <a href="/forgot-password">Forgot Password?</a>
             </div>
+        </div>
         </div>
     );
 };

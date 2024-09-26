@@ -19,6 +19,7 @@ const ForgotPasswordPage = () => {
     };
 
     return (
+        <div class="auth-wrapper">
         <div className="auth-container">
             <h2>Forgot Password</h2>
             {message && <p className="auth-message">{message}</p>}
@@ -38,6 +39,7 @@ const ForgotPasswordPage = () => {
             <div className="auth-links">
                 <a href="/login">Back to Login</a>
             </div>
+        </div>
         </div>
     );
 };

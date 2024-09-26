@@ -30,6 +30,7 @@ const RegisterPage = () => {
     };
 
     return (
+        <div class="auth-wrapper">
         <div className="auth-container">
             <h2>Register</h2>
             {error && <p className="auth-error">{error}</p>}
@@ -75,6 +76,7 @@ const RegisterPage = () => {
             <div className="auth-links">
                 <a href="/login">Already have an account? Login</a>
             </div>
+        </div>
         </div>
     );
 };
