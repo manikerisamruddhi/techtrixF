@@ -1,0 +1,19 @@
+/* src/components/Header.css */
+
+.header {
+    background-color: #4c6ef5; /* Header background color */
+    color: white; /* Text color */
+    padding: 10px 20px; /* Padding for the header */
+}
+
+.header-content {
+    display: flex; /* Use flexbox for layout */
+    justify-content: space-between; /* Space between title and notification */
+    align-items: center; /* Center items vertically */
+}
+
+.notification {
+    background-color: #3b5bdb; /* Notification background color */
+    padding: 10px; /* Padding for the notification */
+    border-radius: 5px; /* Rounded corners */
+}
