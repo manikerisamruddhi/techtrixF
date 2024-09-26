@@ -1,35 +1,19 @@
 // src/components/Header.jsx
 
-import React, { useState } from 'react';
-import { Dropdown, Button } from 'antd';
-import NotificationBell from './NotificationBell';
-import NotificationList from './NotificationList';
+import React from 'react';
+import '../styles/components/Header.css'; // Import CSS for the Header
 
 const Header = () => {
-  const [visible, setVisible] = useState(false);
-
-  const handleVisibleChange = (flag) => {
-    setVisible(flag);
-  };
-
-  const notificationMenu = (
-    <div style={{ width: 300 }}>
-      <NotificationList />
-    </div>
-  );
-
-  return (
-    <div className="header">
-      <Dropdown
-        overlay={notificationMenu}
-        visible={visible}
-        onVisibleChange={handleVisibleChange}
-        trigger={['click']}
-      >
-        <NotificationBell />
-      </Dropdown>
-    </div>
-  );
+    return (
+        <header className="header">
+            <div className="header-content">
+                <h1>Untitled UI</h1>
+                <div className="notification">
+                    <span>We've just launched a new feature! Check out the <a href="#new-dashboard">new dashboard</a>.</span>
+                </div>
+            </div>
+        </header>
+    );
 };
 
 export default Header;

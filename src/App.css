@@ -11,12 +11,15 @@
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
+
 
 @keyframes logo-spin {
   from {
@@ -35,6 +38,42 @@
 
 .card {
   padding: 2em;
+}
+
+/* Responsive Styles */
+@media (max-width: 1024px) {
+  #root {
+    padding: 1.5rem; /* Reduce padding on tablets */
+  }
+
+  .card {
+    padding: 1.5em; /* Adjust card padding */
+  }
+}
+
+@media (max-width: 768px) {
+  #root {
+    padding: 1rem; /* Further reduce padding on small tablets */
+  }
+
+  .card {
+    padding: 1em; /* Smaller padding for cards */
+  }
+}
+
+@media (max-width: 480px) {
+  #root {
+    padding: 0.5rem; /* Minimal padding for mobile */
+  }
+
+  .card {
+    padding: 0.5em; /* Minimal padding for cards */
+    flex: 1 1 100%; /* Stack cards on smaller screens */
+  }
+
+  .logo {
+    height: 4em; /* Smaller logo size for mobile */
+  }
 }
 
 .read-the-docs {
