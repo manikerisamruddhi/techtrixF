@@ -3,12 +3,12 @@ import axios from 'axios';
 
 // Async Thunks
 export const fetchTickets = createAsyncThunk('tickets/fetchTickets', async () => {
-    const response = await axios.get('/api/tickets');
+    const response = await axios.get('http://localhost:4000/tickets'); // Adjusted endpoint
     return response.data;
 });
 
-export const addTicket = createAsyncThunk('tickets/addTicket', async (newTicket) => {
-    const response = await axios.post('/api/tickets', newTicket);
+export const createTicket = createAsyncThunk('tickets/addTicket', async (newTicket) => {
+    const response = await axios.post('http://localhost:4000/tickets', newTicket); // Adjusted endpoint
     return response.data;
 });
 
@@ -17,24 +17,24 @@ const ticketSlice = createSlice({
     name: 'tickets',
     initialState: {
         tickets: [],
-        status: 'idle',
+        loading: false,
         error: null,
     },
     reducers: {},
     extraReducers: (builder) => {
         builder
             .addCase(fetchTickets.pending, (state) => {
-                state.status = 'loading';
+                state.loading = true;
             })
             .addCase(fetchTickets.fulfilled, (state, action) => {
-                state.status = 'succeeded';
+                state.loading = false;
                 state.tickets = action.payload;
             })
             .addCase(fetchTickets.rejected, (state, action) => {
-                state.status = 'failed';
+                state.loading = false;
                 state.error = action.error.message;
             })
-            .addCase(addTicket.fulfilled, (state, action) => {
+            .addCase(createTicket.fulfilled, (state, action) => {
                 state.tickets.push(action.payload);
             });
     },
