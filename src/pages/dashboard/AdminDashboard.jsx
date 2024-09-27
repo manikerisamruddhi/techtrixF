@@ -1,8 +1,8 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import Header from '../../components/Header.jsx';
-import Navbar from '../../components/Dashboard/AdminNav.jsx';
-import TicketList from '../../pages/Tickets/TicketList';
+import Header from '../../components/Header/Header.jsx';
+import Navbar from '../../components/Navbar/AdminNav.jsx';
+import TicketList from '../Tickets/Tickets.jsx';
 import QuotationList from '../../pages/Quotations/QuotationList';
 import Users from '../Users/Users.jsx';
 import Customers from '../Customers/Customers.jsx';
