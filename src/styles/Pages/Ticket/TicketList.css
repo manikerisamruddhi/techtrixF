@@ -1,0 +1,31 @@
+/* Assuming this is in Dashboard.css or a separate CSS file */
+
+/* Main container to hold navbar and content */
+.main-container {
+    display: flex;
+    height: 100vh; /* Full height of the viewport */
+}
+
+/* Content container that respects the navbar and header */
+.content-container {
+    flex-grow: 1; /* Allow it to grow and fill the remaining space */
+    padding: 20px; /* Add some padding for content */
+    margin-left: 200px; /* Adjust for the navbar width */
+    margin-top: 60px; /* Adjust for header height, assuming header is 60px */
+    overflow-y: auto; /* Allow scrolling if content overflows */
+}
+
+/* Adjust navbar styles if necessary */
+.create-ticket-btn {
+    display: inline-block;
+    margin: 10px 0;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.create-ticket-btn:hover {
+    background-color: #0056b3;
+}

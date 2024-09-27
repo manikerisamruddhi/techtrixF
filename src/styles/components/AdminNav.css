@@ -1,44 +1,47 @@
+/* Navbar-specific styles */
 .navbar {
-    background-color: #ffffff; /* Navbar background color */
-    padding: 20px; /* Padding for the navbar */
-    width: 200px; /* Set a fixed width for the navbar */
-    height: 100vh; /* Full viewport height */
-    display: flex; /* Use flexbox for layout */
-    flex-direction: column; /* Align items vertically */
-    justify-content: flex-start; /* Align items at the top */
-    align-items: flex-start; /* Align items to the left */
-    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1); /* Subtle shadow on the right */
-    position: fixed; /* Fix the navbar to the left side */
+    background-color: #ffffff;
+    padding: 20px;
+    width: 200px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+    position: fixed;
     top: 0;
     left: 0;
 }
 
+/* Navbar list (ul) styles */
 .navbar-list {
-    list-style: none; /* Remove default list styling */
-    padding: 0; /* Remove default padding */
-    margin: 0; /* Remove default margin */
-    width: 100%; /* Full width of the navbar */
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
 }
 
+/* Navbar list item (li) styles */
 .navbar-item {
-    margin-bottom: 20px; /* Space between items vertically */
-    width: 100%; /* Make each item take up full width */
+    margin-bottom: 20px;
+    width: 100%;
 }
 
 .navbar-item:last-child {
-    margin-bottom: 0; /* Remove margin for the last item */
+    margin-bottom: 0;
 }
 
 .navbar-item a {
-    color: #333; /* Text color */
-    text-decoration: none; /* Remove underline */
-    font-weight: bold; /* Bold text */
-    transition: color 0.3s; /* Transition for hover effect */
-    width: 100%; /* Full width for the anchor */
-    display: block; /* Make the link fill the entire width */
-    padding: 10px 0; /* Add padding for better click area */
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
+    width: 100%;
+    display: block;
+    padding: 10px 0;
 }
 
 .navbar-item a:hover {
-    color: #007bff; /* Change color on hover */
+    color: #007bff;
 }

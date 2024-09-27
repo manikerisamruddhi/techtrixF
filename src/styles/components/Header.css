@@ -4,6 +4,11 @@
     background-color: #4c6ef5; /* Header background color */
     color: white; /* Text color */
     padding: 10px 20px; /* Padding for the header */
+    position: fixed; /* Fix the header at the top of the viewport */
+    top: 0; /* Align at the very top */
+    left: 0; /* Stretch to the left edge */
+    right: 0; /* Stretch to the right edge */
+    z-index: 1000; /* Ensure it stays above other elements */
 }
 
 .header-content {
@@ -16,4 +21,8 @@
     background-color: #3b5bdb; /* Notification background color */
     padding: 10px; /* Padding for the notification */
     border-radius: 5px; /* Rounded corners */
+}
+
+.main-content {
+    margin-top: 60px; /* Add margin to prevent content from being hidden behind the fixed header */
 }
