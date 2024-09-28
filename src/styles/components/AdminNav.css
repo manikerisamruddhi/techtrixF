@@ -3,15 +3,100 @@
     background-color: #ffffff;
     padding: 20px;
     width: 200px;
-    height: 100vh;
+    height: calc(100vh - 64px); /* Adjust height to leave space for the header */
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
     box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
-    position: fixed;
-    top: 0;
+    position: fixed;/* Navbar-specific styles */
+    .navbar-container {
+        position: relative; /* Position relative for toggle button */
+    }
+    
+    /* Default navbar styles */
+    .navbar {
+        background-color: #ffffff;
+        padding: 20px;
+        width: 200px;
+        height: calc(100vh - 64px); /* Adjust height to leave space for the header */
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+        position: fixed;
+        top: 64px; /* Position it below the fixed header */
+        left: 0;
+        transition: left 0.3s; /* Smooth transition if needed */
+    }
+    
+    /* Collapse styles */
+    .navbar-container.collapsed .navbar {
+        left: -200px; /* Hide the navbar when collapsed */
+    }
+    
+    .toggle-btn {
+        display: none; /* Hidden by default */
+    }
+    
+    /* Navbar list (ul) styles */
+    .navbar-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+    }
+    
+    /* Navbar item (li) styles */
+    .navbar-item {
+        margin-bottom: 20px;
+        width: 100%;
+    }
+    
+    .navbar-item:last-child {
+        margin-bottom: 0;
+    }
+    
+    .navbar-item a {
+        color: #333;
+        text-decoration: none;
+        font-weight: bold;
+        transition: color 0.3s;
+        width: 100%;
+        display: block;
+        padding: 10px 0;
+    }
+    
+    .navbar-item a:hover {
+        color: #007bff;
+    }
+    
+    .ant-menu-item-selected a {
+        color: #007bff; /* Change to your desired color */
+        font-weight: bold; /* Make it bold for emphasis */
+    }
+    
+    /* Media Queries for Responsive Design */
+    @media (max-width: 768px) {
+        .navbar {
+            width: 100%; /* Full width on small screens */
+            position: relative; /* Change to relative for normal flow */
+            height: auto; /* Auto height to contain items */
+        }
+    
+        .toggle-btn {
+            display: block; /* Show toggle button on small screens */
+        }
+        
+        .navbar-container.collapsed .navbar {
+            display: none; /* Completely hide the navbar when collapsed */
+        }
+    }
+    
+    top: 64px; /* Position it below the fixed header */
     left: 0;
+    transition: top 0.3s; /* Smooth transition if needed */
 }
 
 /* Navbar list (ul) styles */
@@ -44,4 +129,9 @@
 
 .navbar-item a:hover {
     color: #007bff;
+}
+
+.ant-menu-item-selected a {
+    color: #007bff; /* Change to your desired color */
+    font-weight: bold; /* Make it bold for emphasis */
 }

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Table, Button, Empty, message, Form, Input, Select } from 'antd'; // Antd components for better UI
-import Navbar from '../../components/Navbar/AdminNav';
+import Navbar from '../../components/Navbar/Navbar';
 import '../../styles/Pages/Ticket/TicketList.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchTickets } from '../../redux/slices/ticketSlice'; // Adjust path if necessary
@@ -73,9 +73,9 @@ const TicketList = () => {
 
     return (
         <div className="main-container">
-            <Navbar />
+            {/* <Navbar /> */}
             <div className="content-container">
-                <h1>Tickets</h1>
+                <h2>tickets</h2>
                 <Button onClick={toggleForm} className="create-ticket-btn" type="primary">
                     {isFormVisible ? 'Cancel' : 'Create Ticket'}
                 </Button>

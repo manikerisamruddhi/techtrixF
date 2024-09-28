@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchQuotations } from '../../redux/slices/quotationSlice';
 import { Link } from 'react-router-dom';
 import { Table, Button, Empty, message, Spin } from 'antd'; // Import Ant Design components
-import Navbar from '../../components/Navbar/AdminNav'; // Adjust path if necessary
+import Navbar from '../../components/Navbar/Navbar'; // Adjust path if necessary
 
 const QuotationList = () => {
     const dispatch = useDispatch();
@@ -63,9 +63,9 @@ const QuotationList = () => {
 
     return (
         <div className="quotation-list-container">
-            <Navbar />
+            {/* <Navbar /> */}
             <div className="content-container">
-                <h1>Quotation List</h1>
+                <h2>Quotation List</h2>
 
                 {/* Create Quotation button */}
                 <Link to="/create-quotation">

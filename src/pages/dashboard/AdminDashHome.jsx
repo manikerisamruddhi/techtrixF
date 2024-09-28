@@ -1,11 +1,9 @@
 import React from 'react';
-import Navbar from '../../components/Navbar/AdminNav'; // Assuming Navbar component is in the same folder
 import '../../styles/Pages/Admin/Dashboard.css'; // Importing CSS for the Dashboard
 
 const Dashboard = () => {
     return (
         <div className="dashboard-container">
-            <Navbar />
             <div className="dashboard-content">
                 <h1>Dashboard</h1>
                 <div className="dashboard-cards">
