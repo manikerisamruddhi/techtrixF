@@ -23,7 +23,7 @@ const LayoutComponent = ({ children }) => {
                     </Sider>
                 )}
                 <Layout style={{ marginLeft: isSidebarHidden ? 0 : 200 }}>
-                    <Content style={{ padding: '24px', background: '#fff', marginTop: 0 }}> {/* Reset marginTop to 0 */}
+                    <Content style={{ padding: '10px', background: '#fff', marginTop: 0 }}> {/* Reset marginTop to 0 */}
                         {children}
                     </Content>
                 </Layout>

@@ -9,7 +9,7 @@ const { Text } = Typography;
 const CustomHeader = () => {
     return (
         <Header style={{ 
-            background: '#fff', 
+            background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)',
             padding: '0 16px', 
             display: 'flex', 
             justifyContent: 'space-between', 
