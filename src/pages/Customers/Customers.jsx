@@ -1,14 +1,11 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCustomers, addCustomer, updateCustomer, deleteCustomer } from '../../redux/slices/customerSlice';
-import { Button, Table, Modal, Form, Input } from 'antd';
+import { Button, Table, Modal, Form, Input, Layout, Typography, Empty, Spin, message } from 'antd';
 import { toast } from 'react-toastify';
 
-// Fallback Dummy Data
-const dummyCustomers = [
-    { id: 1, name: 'John Doe', email: 'john.doe@example.com', phone: '123-456-7890' },
-    { id: 2, name: 'Jane Smith', email: 'jane.smith@example.com', phone: '098-765-4321' },
-];
+const { Content } = Layout;
+const { Title } = Typography;
 
 const Customers = () => {
     const dispatch = useDispatch();
@@ -20,9 +17,16 @@ const Customers = () => {
         dispatch(fetchCustomers());
     }, [dispatch]);
 
+    // Handle backend error
+    useEffect(() => {
+        if (error) {
+            message.error(`Failed to load customers: ${error}. Please check backend connectivity.`);
+        }
+    }, [error]);
+
     const handleAddOrEditCustomer = (values) => {
         if (editCustomer) {
-            dispatch(updateCustomer({ customerId: editCustomer.id, updatedCustomer: values })).then(() => {
+            dispatch(updateCustomer({ customerId: editCustomer.CustomerID, updatedCustomer: values })).then(() => {
                 toast.success('Customer updated successfully!');
                 setEditCustomer(null);
             });
@@ -46,10 +50,10 @@ const Customers = () => {
     };
 
     const columns = [
-        { title: 'ID', dataIndex: 'id', key: 'id' },
-        { title: 'Name', dataIndex: 'name', key: 'name' },
-        { title: 'Email', dataIndex: 'email', key: 'email' },
-        { title: 'Phone', dataIndex: 'phone', key: 'phone' },
+        { title: 'ID', dataIndex: 'CustomerID', key: 'CustomerID' },
+        { title: 'First Name', dataIndex: 'FirstName', key: 'FirstName' },
+        { title: 'Email', dataIndex: 'Email', key: 'Email' },
+        { title: 'Phone', dataIndex: 'PhoneNumber', key: 'PhoneNumber' },
         {
             title: 'Actions',
             key: 'actions',
@@ -58,7 +62,7 @@ const Customers = () => {
                     <Button type="link" onClick={() => handleEdit(record)}>
                         Edit
                     </Button>
-                    <Button type="link" danger onClick={() => handleDelete(record.id)}>
+                    <Button type="link" danger onClick={() => handleDelete(record.CustomerID)}>
                         Delete
                     </Button>
                 </>
@@ -66,48 +70,57 @@ const Customers = () => {
         },
     ];
 
-    // Use dummy data if customers is empty or error occurs
-    const displayCustomers = (Array.isArray(customers) && customers.length > 0) ? customers : dummyCustomers;
-
     return (
-        <div>
-            <h1>Customer Management</h1>
-            <Button type="primary" onClick={() => setIsModalVisible(true)}>
-                Add Customer
-            </Button>
-            <Table 
-                dataSource={displayCustomers} 
-                columns={columns} 
-                rowKey="id" 
-                loading={loading} 
-                pagination={false}  // Disable pagination for testing
-            />
+        <Layout style={{ minHeight: '100vh', background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)' }}>
+            <Content style={{ padding: '20px' }}>
+                <div className="customers-container">
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                        <Title level={4} style={{ margin: 0 }}>Customer List</Title>
+                        <Button type="primary" onClick={() => setIsModalVisible(true)}>
+                            Add Customer
+                        </Button>
+                    </div>
 
-            <Modal
-                title={editCustomer ? 'Edit Customer' : 'Add Customer'}
-                visible={isModalVisible}
-                onCancel={() => setIsModalVisible(false)}
-                footer={null}
-            >
-                <Form
-                    initialValues={editCustomer}
-                    onFinish={handleAddOrEditCustomer}
-                >
-                    <Form.Item label="Name" name="name" rules={[{ required: true }]}>
-                        <Input />
-                    </Form.Item>
-                    <Form.Item label="Email" name="email" rules={[{ required: true, type: 'email' }]}>
-                        <Input />
-                    </Form.Item>
-                    <Form.Item label="Phone" name="phone" rules={[{ required: true }]}>
-                        <Input />
-                    </Form.Item>
-                    <Button type="primary" htmlType="submit">
-                        {editCustomer ? 'Update' : 'Add'}
-                    </Button>
-                </Form>
-            </Modal>
-        </div>
+                    {loading ? (
+                        <Spin tip="Loading..." />
+                    ) : customers.length === 0 ? (
+                        <Empty description="No Customers Available" />
+                    ) : (
+                        <Table
+                            dataSource={customers}
+                            columns={columns}
+                            rowKey="CustomerID"
+                            pagination={false}
+                        />
+                    )}
+
+                    <Modal
+                        title={editCustomer ? 'Edit Customer' : 'Add Customer'}
+                        visible={isModalVisible}
+                        onCancel={() => setIsModalVisible(false)}
+                        footer={null}
+                    >
+                        <Form
+                            initialValues={editCustomer}
+                            onFinish={handleAddOrEditCustomer}
+                        >
+                            <Form.Item label="First Name" name="FirstName" rules={[{ required: true }]}>
+                                <Input />
+                            </Form.Item>
+                            <Form.Item label="Email" name="Email" rules={[{ required: true, type: 'email' }]}>
+                                <Input />
+                            </Form.Item>
+                            <Form.Item label="Phone" name="PhoneNumber" rules={[{ required: true }]}>
+                                <Input />
+                            </Form.Item>
+                            <Button type="primary" htmlType="submit">
+                                {editCustomer ? 'Update' : 'Add'}
+                            </Button>
+                        </Form>
+                    </Modal>
+                </div>
+            </Content>
+        </Layout>
     );
 };
 
