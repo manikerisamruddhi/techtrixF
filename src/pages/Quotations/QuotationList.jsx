@@ -2,8 +2,10 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchQuotations } from '../../redux/slices/quotationSlice';
 import { Link } from 'react-router-dom';
-import { Table, Button, Empty, message, Spin } from 'antd'; // Import Ant Design components
-import Navbar from '../../components/Navbar/Navbar'; // Adjust path if necessary
+import { Layout, Table, Button, Empty, message, Spin, Typography } from 'antd'; // Import Ant Design components
+
+const { Header, Content } = Layout;
+const { Title } = Typography;
 
 const QuotationList = () => {
     const dispatch = useDispatch();
@@ -62,32 +64,40 @@ const QuotationList = () => {
     ];
 
     return (
-        <div className="quotation-list-container">
-            {/* <Navbar /> */}
-            <div className="content-container">
-                <h2>Quotation List</h2>
+        <Layout style={{ minHeight: '100vh', background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)' }}>
+            <Content style={{ padding: '20px' }}>
+                <div className="quotation-list-container">
+                    <div
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            marginBottom: '16px', // Space between title and table
+                        }}
+                    >
+                        <Title level={4} style={{ margin: 0 }}>Quotation List</Title>
+                        <Link to="/create-quotation">
+                            <Button type="primary" style={{ padding: '0 20px' }}>Create Quotation</Button>
+                        </Link>
+                    </div>
 
-                {/* Create Quotation button */}
-                <Link to="/create-quotation">
-                    <Button type="primary" className="create-quotation-btn">Create Quotation</Button>
-                </Link>
-
-                {/* Display loading spinner when fetching data */}
-                {loading === 'loading' ? (
-                    <Spin tip="Loading..." /> // Using Ant Design's Spin component for loading state
-                ) : quotations.length === 0 ? (
-                    // Show Empty component when no quotations are available
-                    <Empty description="No Quotations Available" />
-                ) : (
-                    <Table
-                        dataSource={quotations}
-                        columns={columns}
-                        rowKey="QuotationID" // Use QuotationID as the unique key
-                        pagination={false}
-                    />
-                )}
-            </div>
-        </div>
+                    {/* Display loading spinner when fetching data */}
+                    {loading === 'loading' ? (
+                        <Spin tip="Loading..." /> // Using Ant Design's Spin component for loading state
+                    ) : quotations.length === 0 ? (
+                        // Show Empty component when no quotations are available
+                        <Empty description="No Quotations Available" />
+                    ) : (
+                        <Table
+                            dataSource={quotations}
+                            columns={columns}
+                            rowKey="QuotationID" // Use QuotationID as the unique key
+                            pagination={false}
+                        />
+                    )}
+                </div>
+            </Content>
+        </Layout>
     );
 };
 
