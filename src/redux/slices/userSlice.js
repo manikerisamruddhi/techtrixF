@@ -10,6 +10,27 @@ export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
     return response.data;
 });
 
+// Updated fetchDepartments to return unique departments based on the users data
+export const fetchDepartments = createAsyncThunk('users/fetchDepartments', async () => {
+    const response = await axios.get(`${API_URL}/users`);
+    const users = response.data;
+
+    // Extract unique departments from users
+    const departments = [...new Set(users.map(user => user.department))].map(department => ({
+        id: department, // Using department name as id
+        name: department // Assuming department name is unique
+    }));
+
+    return departments;
+});
+
+
+// New Async Thunk: Fetch Users by Department
+export const fetchUsersByDepartment = createAsyncThunk('users/fetchUsersByDepartment', async (department) => {
+    const response = await axios.get(`${API_URL}/users?department=${department}`); // Adjust endpoint to filter by department
+    return response.data;
+});
+
 export const addUser = createAsyncThunk('users/addUser', async (newUser) => {
     const response = await axios.post(`${API_URL}/users`, newUser); // Update endpoint to use API_URL
     return response.data;
@@ -44,6 +65,8 @@ const userSlice = createSlice({
     name: 'users',
     initialState: {
         users: [],
+        departments: [],  // New state for departments
+        usersByDepartment: [], // New state for users by department
         status: 'idle',
         error: null,
         loggedIn: false, // Add a field to track login status
@@ -61,6 +84,28 @@ const userSlice = createSlice({
             })
             .addCase(fetchUsers.rejected, (state, action) => {
                 state.status = 'failed';
+                state.error = action.error.message;
+            })
+            .addCase(fetchDepartments.pending, (state) => {
+                state.status = 'loading'; // Optional: handle loading state for departments
+            })
+            .addCase(fetchDepartments.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.departments = action.payload; // Store fetched departments
+            })
+            .addCase(fetchDepartments.rejected, (state, action) => {
+                state.status = 'failed'; // Optional: handle error state for departments
+                state.error = action.error.message;
+            })
+            .addCase(fetchUsersByDepartment.pending, (state) => {
+                state.status = 'loading'; // Handle loading state for users by department
+            })
+            .addCase(fetchUsersByDepartment.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.usersByDepartment = action.payload; // Store fetched users by department
+            })
+            .addCase(fetchUsersByDepartment.rejected, (state, action) => {
+                state.status = 'failed'; // Handle error state for users by department
                 state.error = action.error.message;
             })
             .addCase(addUser.fulfilled, (state, action) => {
