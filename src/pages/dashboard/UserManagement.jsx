@@ -46,11 +46,6 @@ const UserManagement = () => {
             key: 'phone_number',
         },
         {
-            title: 'Department',
-            dataIndex: 'department',
-            key: 'department',
-        },
-        {
             title: 'Role',
             dataIndex: 'role',
             key: 'role',
