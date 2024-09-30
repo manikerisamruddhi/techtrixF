@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from '../../api/axiosInstance';
+import axios from '../../api/axiosInstance'; // Ensure this is configured to point to your JSON server
 import { toast } from 'react-toastify';
 
 // Async Thunks for handling API requests
 export const fetchProducts = createAsyncThunk('products/fetchProducts', async (_, { rejectWithValue }) => {
   try {
-    const response = await axios.get('/products');
+    const response = await axios.get('http://localhost:4000/products'); // Updated URL for fetching products
     return response.data;
   } catch (error) {
     return rejectWithValue(error.response.data);
@@ -14,7 +14,7 @@ export const fetchProducts = createAsyncThunk('products/fetchProducts', async (_
 
 export const addProduct = createAsyncThunk('products/addProduct', async (newProduct, { rejectWithValue }) => {
   try {
-    const response = await axios.post('/products', newProduct);
+    const response = await axios.post('http://localhost:4000/products', newProduct); // Updated URL for adding product
     toast.success('Product added successfully!');
     return response.data;
   } catch (error) {
@@ -25,7 +25,7 @@ export const addProduct = createAsyncThunk('products/addProduct', async (newProd
 
 export const updateProduct = createAsyncThunk('products/updateProduct', async ({ productId, updatedProduct }, { rejectWithValue }) => {
   try {
-    const response = await axios.put(`/products/${productId}`, updatedProduct);
+    const response = await axios.put(`http://localhost:4000/products/${productId}`, updatedProduct); // Updated URL for updating product
     toast.success('Product updated successfully!');
     return response.data;
   } catch (error) {
@@ -36,7 +36,7 @@ export const updateProduct = createAsyncThunk('products/updateProduct', async ({
 
 export const deleteProduct = createAsyncThunk('products/deleteProduct', async (productId, { rejectWithValue }) => {
   try {
-    await axios.delete(`/products/${productId}`);
+    await axios.delete(`http://localhost:4000/products/${productId}`); // Updated URL for deleting product
     toast.success('Product deleted successfully!');
     return productId;
   } catch (error) {
