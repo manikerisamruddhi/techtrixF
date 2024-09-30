@@ -3,11 +3,12 @@ import { loginUser, logoutUser } from '../redux/slices/userSlice';
 
 const useAuth = () => {
     const dispatch = useDispatch();
-    const { user, token, isAuthenticated } = useSelector((state) => state.users);
+    const { user, isAuthenticated } = useSelector((state) => state.users);
 
-    const login = async (credentials) => {
+    const login = async (role) => {
         try {
-            await dispatch(loginUser(credentials)).unwrap();
+            // Only pass the role to loginUser and ignore email/password
+            await dispatch(loginUser(role)).unwrap();
         } catch (err) {
             throw new Error('Failed to login');
         }
@@ -19,7 +20,6 @@ const useAuth = () => {
 
     return {
         user,
-        token,
         isAuthenticated,
         login,
         logout,
