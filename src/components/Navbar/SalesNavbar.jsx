@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu } from 'antd';
-import { AppstoreOutlined, MailOutlined, SettingOutlined, SnippetsOutlined, DollarOutlined, TeamOutlined} from '@ant-design/icons';
+import { AppstoreOutlined, MailOutlined, SettingOutlined, SnippetsOutlined, DollarOutlined, DropboxOutlined } from '@ant-design/icons';
 import '../../styles/components/Navbar.css';
 
-const Navbar = () => {
+const Navbar2 = () => {
     const location = useLocation();
     const [selectedKey, setSelectedKey] = useState(location.pathname);
 
@@ -33,9 +33,9 @@ const Navbar = () => {
                     <Link to="/">Home</Link>
                 </Menu.Item>
 
-                <Menu.Item key="/TicketList" icon={<MailOutlined />}>
+                {/* <Menu.Item key="/TicketList" icon={<MailOutlined />}>
                     <Link to="/Tickets">Tickets</Link>
-                </Menu.Item>
+                </Menu.Item> */}
 
                 <Menu.Item key="/Quotations" icon={<DollarOutlined />}>
                     <Link to="/Quotations">Quotations</Link>
@@ -45,16 +45,13 @@ const Navbar = () => {
                     <Link to="/Invoices">Invoices</Link>
                 </Menu.Item>
 
-                <Menu.Item key="/Customers" icon={<SettingOutlined />}>
-                    <Link to="/Customers">Customers</Link>
+                <Menu.Item key="/Products" icon={<DropboxOutlined />}>
+                    <Link to="/Sales-dashboard/Products">Products</Link>
                 </Menu.Item>
 
-                <Menu.Item key="/UserManagement" icon={<TeamOutlined />}>
-                    <Link to="/UserManagement">Manage User</Link>
-                </Menu.Item>
             </Menu>
         </div>
     );
 };
 
-export default Navbar;
+export default Navbar2;
