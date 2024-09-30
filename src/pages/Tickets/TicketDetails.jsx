@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchTicketDetails } from '../../redux/slices/ticketSlice';
-import TicketThread from './TicketThread';
-import TicketAttachment from './TicketAttachment';
+// import TicketThread from './TicketThread';
+// import TicketAttachment from './TicketAttachment';
 import { useParams } from 'react-router-dom';
 
 const TicketDetails = () => {
@@ -23,8 +23,8 @@ const TicketDetails = () => {
             <p>Status: {ticket.status}</p>
             <p>Created by: {ticket.createdBy}</p>
             <p>Description: {ticket.description}</p>
-            <TicketThread ticketId={ticketId} />
-            <TicketAttachment ticketId={ticketId} />
+            {/* <TicketThread ticketId={ticketId} /> */}
+            {/* <TicketAttachment ticketId={ticketId} /> */}
         </div>
     );
 };
