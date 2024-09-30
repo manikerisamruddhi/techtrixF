@@ -1,28 +1,48 @@
-import React, { useEffect } from 'react';
-import { Table, Button, Empty, message, Form, Input, Select, Layout, Typography, Spin } from 'antd'; // Antd components for better UI
+import React, { useEffect, useState } from 'react';
+import { Table, Button, Empty, message, Form, Input, Select, Layout, Typography, Spin } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchTickets } from '../../redux/slices/ticketSlice'; // Adjust path if necessary
+import { fetchTickets, createTicket } from '../../redux/slices/ticketSlice';
+import { fetchUsers, fetchDepartments } from '../../redux/slices/userSlice';
 import { Link } from 'react-router-dom';
-import useToggle from '../../hooks/useCreateTicket'; // Import the custom hook
+import useToggle from '../../hooks/useCreateTicket';
 
 const { Option } = Select;
 const { Content } = Layout;
 const { Title } = Typography;
 
-const TicketList = () => {
+const Tickets = () => {
     const dispatch = useDispatch();
-    const { tickets, loading, error } = useSelector((state) => state.tickets);
+    const { tickets, loading: ticketsLoading, error: ticketsError } = useSelector((state) => state.tickets);
+    const { users, loading: usersLoading, error: usersError, departments, loading: departmentsLoading, error: departmentsError } = useSelector((state) => state.users);
 
-    const [isFormVisible, toggleForm] = useToggle(false); // Use custom hook for toggle
+    const [isFormVisible, toggleForm] = useToggle(false);
+    const [form] = Form.useForm();
+    const [selectedDepartment, setSelectedDepartment] = useState(null);
+    const [filteredUsers, setFilteredUsers] = useState([]);
 
     useEffect(() => {
-        dispatch(fetchTickets());
+        const fetchData = async () => {
+            await dispatch(fetchTickets());
+            await dispatch(fetchDepartments());
+            await dispatch(fetchUsers());
+        };
+        fetchData();
     }, [dispatch]);
 
     // Handle backend error
-    if (error) {
-        message.error(`Failed to load tickets: ${error}. Please check backend connectivity.`);
+    if (ticketsError || usersError || departmentsError) {
+        message.error(`Failed to load data: ${ticketsError || usersError || departmentsError}. Please check backend connectivity.`);
     }
+
+    // Filter users based on selected department
+    useEffect(() => {
+        if (selectedDepartment) {
+            const usersInDepartment = users.filter(user => user.department === selectedDepartment);
+            setFilteredUsers(usersInDepartment);
+        } else {
+            setFilteredUsers(users); // Reset to all users if no department is selected
+        }
+    }, [selectedDepartment, users]);
 
     const columns = [
         {
@@ -57,25 +77,38 @@ const TicketList = () => {
             title: 'Actions',
             key: 'actions',
             render: (text, record) => (
-                <Link to={`/ticket/${record.TicketID}`}>
+                <Link to={`/tickets?TicketID=${record.TicketID}`}>
                     <Button type="primary">View</Button>
                 </Link>
             ),
         },
     ];
 
-    // Form submit handler
-    const onFinish = (values) => {
-        console.log('Form Values:', values);
-        // Handle ticket creation logic here
-        toggleForm(); // Hide form after submission
+    const onFinish = async (values) => {
+        // Step 1: Modify values before dispatch
+        const modifiedValues = {
+            ...values,
+            TicketId: 6,
+            createdBy: values.createdBy || 'Admin', // Add default createdBy if not present
+            // Add any other modifications here
+        };
+
+
+        try {
+            // Step 2: Dispatch with the modified values
+            await dispatch(createTicket(modifiedValues));
+            message.success('Ticket created successfully!');
+            form.resetFields();
+            toggleForm();
+        } catch (error) {
+            message.error(`Failed to create ticket: ${error.message}`);
+        }
     };
 
     return (
         <Layout style={{ minHeight: '100vh', background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)' }}>
             <Content style={{ padding: '20px' }}>
                 <div className="content-container">
-                    {/* Flex container for title and button */}
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
                         <Title level={4} style={{ margin: 0 }}>Ticket List</Title>
                         <Button onClick={toggleForm} className="create-ticket-btn" type="primary">
@@ -83,13 +116,13 @@ const TicketList = () => {
                         </Button>
                     </div>
 
-                    {/* Conditionally render the form below the button */}
                     {isFormVisible && (
                         <Form
                             layout="vertical"
                             onFinish={onFinish}
+                            form={form}
                             className="create-ticket-form"
-                            style={{ marginTop: '20px' }} // Add margin to separate the form from the button
+                            style={{ marginTop: '20px' }}
                         >
                             <Form.Item
                                 name="title"
@@ -116,19 +149,59 @@ const TicketList = () => {
                                     <Option value="High">High</Option>
                                 </Select>
                             </Form.Item>
+                            <Form.Item
+                                name="department"
+                                label="Department"
+                                rules={[{ required: true, message: 'Please select a department' }]}
+                            >
+                                <Select
+                                    placeholder="Select department"
+                                    onChange={(value) => setSelectedDepartment(value)}
+                                >
+                                    {departmentsLoading ? (
+                                        <Option disabled>Loading Departments...</Option>
+                                    ) : departments && departments.length > 0 ? (
+                                        departments.map(department => (
+                                            <Option key={department.id} value={department.id}>
+                                                {department.name}
+                                            </Option>
+                                        ))
+                                    ) : (
+                                        <Option disabled>No Departments Available</Option>
+                                    )}
+                                </Select>
+                            </Form.Item>
+                            <Form.Item
+                                name="assignedUser"
+                                label="Assign User"
+                                rules={[{ required: true, message: 'Please select a user' }]}
+                            >
+                                <Select placeholder="Select user">
+                                    {usersLoading ? (
+                                        <Option disabled>Loading Users...</Option>
+                                    ) : filteredUsers && filteredUsers.length > 0 ? (
+                                        filteredUsers.map(user => (
+                                            <Option key={user.userid} value={user.userid}>
+                                                {`${user.first_name} ${user.last_name}`} {/* Combine first and last name */}
+                                            </Option>
+                                        ))
+                                    ) : (
+                                        <Option disabled>No Users Available</Option>
+                                    )}
+                                </Select>
+                            </Form.Item>
+
                             <Form.Item>
-                                <Button type="primary" htmlType="submit">
+                                <Button type="primary" htmlType="submit" loading={ticketsLoading}>
                                     Submit Ticket
                                 </Button>
                             </Form.Item>
                         </Form>
                     )}
 
-                    {/* Display loading spinner when fetching data */}
-                    {loading ? (
+                    {ticketsLoading ? (
                         <Spin tip="Loading..." />
                     ) : tickets.length === 0 ? (
-                        // Show Empty component when no tickets are available
                         <Empty description="No Tickets Available" />
                     ) : (
                         <Table
@@ -144,4 +217,4 @@ const TicketList = () => {
     );
 };
 
-export default TicketList;
+export default Tickets;
