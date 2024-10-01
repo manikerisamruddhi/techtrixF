@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import {useNavigate, useParams } from 'react-router-dom'; // To extract user ID from URL
-import { Table, Spin, Empty, Button } from 'antd'; // Ant Design components
+import { useNavigate, useParams } from 'react-router-dom'; // To extract user ID from URL
+import { Table, Spin, Empty, Button, message } from 'antd'; // Ant Design components
 import axios from 'axios';
+import QuotationFormModal from '../../components/Sales/QuotationFormModal'; // Import the new modal component
 
 const SalesDashboard = () => {
     const navigate = useNavigate();
     const { userId } = useParams(); // Extracting userId from URL
     const [tickets, setTickets] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [selectedTicketId, setSelectedTicketId] = useState(null);
 
     useEffect(() => {
         const fetchTickets = async () => {
@@ -52,8 +55,8 @@ const SalesDashboard = () => {
             render: (text, record) => (
                 <Button
                     type="primary"
-                    onClick={() => handleProceed(record.TicketID)}
-                    disabled={record.Status == 'closed'}
+                    onClick={() => showModal(record.TicketID)}
+                    disabled={record.Status === 'closed'}
                 >
                     Proceed
                 </Button>
@@ -61,10 +64,27 @@ const SalesDashboard = () => {
         },
     ];
 
-    const handleProceed = (ticketId) => {
-        navigate(`/Quotations/create?TicketID=${ticketId}`);
+    const showModal = (ticketId) => {
+        setSelectedTicketId(ticketId);
+        setIsModalVisible(true);
     };
 
+    const handleModalClose = () => {
+        setIsModalVisible(false);
+        setSelectedTicketId(null);
+    };
+
+    const handleQuotationSubmit = async (quotationData) => {
+        try {
+            // Assuming you have a POST endpoint for creating quotations
+            await axios.post('http://localhost:4000/quotations', quotationData);
+            message.success('Quotation created successfully!');
+            handleModalClose(); // Close the modal after submission
+        } catch (error) {
+            console.error('Error creating quotation:', error);
+            message.error('Failed to create quotation. Please try again.');
+        }
+    };
 
     return (
         <div className="dashboard-container">
@@ -79,6 +99,14 @@ const SalesDashboard = () => {
             ) : (
                 <Empty description="No tickets available" />
             )}
+
+            {/* Quotation Form Modal */}
+            <QuotationFormModal
+                visible={isModalVisible}
+                onClose={handleModalClose}
+                ticketId={selectedTicketId}
+                onSubmit={handleQuotationSubmit}
+            />
         </div>
     );
 };
