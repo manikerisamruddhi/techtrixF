@@ -295,21 +295,6 @@
   ],
   "products": [
     {
-      "productid": 1,
-      "brand": "Samsung",
-      "created_date": "2024-09-23 11:51:11",
-      "description": "Galaxy S21 Ultra Smartphone",
-      "hsn_code": "HSN002",
-      "is_negotiable": true,
-      "model_no": "SM-G998B",
-      "part_code": "GALAXY21U",
-      "price": 384.95,
-      "quantity": 85,
-      "warranty_months": 6,
-      "warranty_start_date": "2024-09-01 11:51:11",
-      "id": "154e"
-    },
-    {
       "productid": 2,
       "brand": "Apple",
       "created_date": "2024-09-07 11:51:11",
@@ -368,21 +353,6 @@
       "warranty_months": 2,
       "warranty_start_date": "2024-09-07 11:51:11",
       "id": "1b63"
-    },
-    {
-      "productid": 6,
-      "brand": "Asus",
-      "created_date": "2024-09-10 11:51:11",
-      "description": "Asus ROG Zephyrus Gaming Laptop",
-      "hsn_code": "HSN003",
-      "is_negotiable": true,
-      "model_no": "GX550ZE",
-      "part_code": "ROGZE",
-      "price": 305.23,
-      "quantity": 86,
-      "warranty_months": 23,
-      "warranty_start_date": "2024-09-06 11:51:11",
-      "id": "d3ef"
     },
     {
       "productid": 7,
@@ -498,6 +468,17 @@
       "ResolvedDate": null,
       "IsResolved": false,
       "id": "f27a"
+    },
+    {
+      "id": "f7a9",
+      "Title": "make quotation ",
+      "Description": "afdsafsfs",
+      "Priority": "Medium",
+      "Department": "Sales",
+      "AssignedToID": 1001,
+      "TicketID": 6,
+      "Status": "in-progress",
+      "CreatedBy": "Admin"
     }
   ],
   "users": [

@@ -13,7 +13,7 @@ import Register from './pages/auth/RegisterPage';
 import Customers from './pages/Customers/Customers';
 import Invoices from './pages/Invoice';
 import SalesDashboard from './pages/dashboard/SalesDashboard';
-import ProductList from './pages/Products/ProductList';
+import ProductList from './pages/Products/Products';
 import { ThemeProvider } from '@mui/material/styles'; // You can choose to keep MUI or remove it if you're fully switching to Ant Design
 import { CssBaseline } from '@mui/material'; // Same as above
 import theme from './theme'; // Custom theme
@@ -39,9 +39,9 @@ const App = () => {
                         <Route path="/UserManagement" element={<UserManagement />} />
                         <Route path="/Customers" element={<Customers />} />
                         <Route path="/Invoices" element={<Invoices />} />
-                        <Route path="/Tickets/:TicketId" component={TicketDetails} />
                         <Route path="/Sales-dashboard/:userId" element={<SalesDashboard />} />
                         <Route path="/Sales-dashboard/Products" element={<ProductList />} />
+                        <Route path="/Tickets/:ticketId" element={<TicketDetails />} />
 
 
                         {/* Default Route */}
