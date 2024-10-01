@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchProductDetails, updateProduct } from '../../redux/slices/productSlice';
-import { useParams, useHistory } from 'react-router-dom';
+import { fetchProductById, updateProduct } from '../../redux/slices/productSlice';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const EditProduct = () => {
     const { productId } = useParams();
     const dispatch = useDispatch();
-    const history = useHistory();
+    const history = useNavigate();
     const { product, loading, error } = useSelector((state) => state.products);
     const [formData, setFormData] = useState({
         brand: '',
@@ -21,7 +21,7 @@ const EditProduct = () => {
 
     useEffect(() => {
         if (productId) {
-            dispatch(fetchProductDetails(productId));
+            dispatch(fetchProductById(productId));
         }
     }, [dispatch, productId]);
 
