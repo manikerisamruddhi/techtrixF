@@ -11,9 +11,10 @@ const Dashboard = () => {
                     <div className="dashboard-card">
                         <h2>All Tickets</h2>
                         <div className="sub-card">
-                            <p>Completed: 10</p> {/* Replace with dynamic data */}
-                            <p>Pending: 5</p> {/* Replace with dynamic data */}
-                            <p>Cancelled: 2</p> {/* Replace with dynamic data */}
+                            <p>total: 10</p> {/* Replace with dynamic data */}
+                            <p>in-progress: 5</p> {/* Replace with dynamic data */}
+                            <p>resolved: 3</p> {/* Replace with dynamic data */}
+                            <p>closed: 2</p> {/* Replace with dynamic data */}
                         </div>
                     </div>
 
