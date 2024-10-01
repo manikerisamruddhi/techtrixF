@@ -3,8 +3,8 @@ import { Table, Button, Empty, message, Form, Input, Select, Layout, Typography,
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchTickets, createTicket } from '../../redux/slices/ticketSlice';
 import { fetchUsers, fetchDepartments } from '../../redux/slices/userSlice';
-import { Link } from 'react-router-dom';
 import useToggle from '../../hooks/useCreateTicket';
+import TicketDetailsModal from './TicketDetails2'; // Import the new modal component
 
 const { Option } = Select;
 const { Content } = Layout;
@@ -19,6 +19,8 @@ const Tickets = () => {
     const [form] = Form.useForm();
     const [selectedDepartment, setSelectedDepartment] = useState(null);
     const [filteredUsers, setFilteredUsers] = useState([]);
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [selectedTicket, setSelectedTicket] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -55,7 +57,9 @@ const Tickets = () => {
             dataIndex: 'Title',
             key: 'Title',
             render: (text, record) => (
-                <Link to={`/ticket/${record.TicketID}`}>{text}</Link>
+                <Button type="link" onClick={() => showModal(record)}>
+                    {text}
+                </Button>
             ),
         },
         {
@@ -77,26 +81,33 @@ const Tickets = () => {
             title: 'Actions',
             key: 'actions',
             render: (text, record) => (
-                <Link to={`/Tickets/${record.TicketID}`}>
-                    <Button type="primary">View</Button>
-                </Link>
+                <Button type="primary" onClick={() => showModal(record)}>
+                    View
+                </Button>
             ),
         },
     ];
 
+    const showModal = (ticket) => {
+        setSelectedTicket(ticket);
+        setIsModalVisible(true);
+    };
+
+    const handleModalClose = () => {
+        setIsModalVisible(false);
+        setSelectedTicket(null); // Clear selected ticket
+    };
+
     const onFinish = async (values) => {
-        // Step 1: Modify values before dispatch
         const modifiedValues = {
             ...values,
             TicketID: values.id || 6,
-            Status:'in-progress',
-            CreatedBy: values.CreatedBy || 'Admin', // Add default createdBy if not present
-            // Add any other modifications here
+            Status: 'in-progress',
+            CreatedBy: values.CreatedBy || 'Admin',
         };
-        console.log(modifiedValues);  
+        console.log(modifiedValues);
 
         try {
-            // Step 2: Dispatch with the modified values
             await dispatch(createTicket(modifiedValues));
             message.success('Ticket created successfully!');
             form.resetFields();
@@ -183,7 +194,7 @@ const Tickets = () => {
                                     ) : filteredUsers && filteredUsers.length > 0 ? (
                                         filteredUsers.map(user => (
                                             <Option key={user.userid} value={user.userid}>
-                                                {`${user.first_name} ${user.last_name}`} {/* Combine first and last name */}
+                                                {`${user.first_name} ${user.last_name}`}
                                             </Option>
                                         ))
                                     ) : (
@@ -212,6 +223,13 @@ const Tickets = () => {
                             pagination={false}
                         />
                     )}
+
+                    {/* Ticket Details Modal */}
+                    <TicketDetailsModal
+                        visible={isModalVisible}
+                        ticket={selectedTicket}
+                        onClose={handleModalClose}
+                    />
                 </div>
             </Content>
         </Layout>
