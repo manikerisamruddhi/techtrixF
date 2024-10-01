@@ -77,7 +77,7 @@ const Tickets = () => {
             title: 'Actions',
             key: 'actions',
             render: (text, record) => (
-                <Link to={`/tickets?TicketID=${record.TicketID}`}>
+                <Link to={`/Tickets/${record.TicketID}`}>
                     <Button type="primary">View</Button>
                 </Link>
             ),
@@ -88,11 +88,12 @@ const Tickets = () => {
         // Step 1: Modify values before dispatch
         const modifiedValues = {
             ...values,
-            TicketId: 6,
-            createdBy: values.createdBy || 'Admin', // Add default createdBy if not present
+            TicketID: values.id || 6,
+            Status:'in-progress',
+            CreatedBy: values.CreatedBy || 'Admin', // Add default createdBy if not present
             // Add any other modifications here
         };
-
+        console.log(modifiedValues);  
 
         try {
             // Step 2: Dispatch with the modified values
@@ -125,21 +126,21 @@ const Tickets = () => {
                             style={{ marginTop: '20px' }}
                         >
                             <Form.Item
-                                name="title"
+                                name="Title"
                                 label="Title"
                                 rules={[{ required: true, message: 'Please enter the ticket title' }]}
                             >
                                 <Input placeholder="Enter ticket title" />
                             </Form.Item>
                             <Form.Item
-                                name="description"
+                                name="Description"
                                 label="Description"
                                 rules={[{ required: true, message: 'Please enter the description' }]}
                             >
                                 <Input.TextArea rows={4} placeholder="Enter ticket description" />
                             </Form.Item>
                             <Form.Item
-                                name="priority"
+                                name="Priority"
                                 label="Priority"
                                 rules={[{ required: true, message: 'Please select priority' }]}
                             >
@@ -150,7 +151,7 @@ const Tickets = () => {
                                 </Select>
                             </Form.Item>
                             <Form.Item
-                                name="department"
+                                name="Department"
                                 label="Department"
                                 rules={[{ required: true, message: 'Please select a department' }]}
                             >
@@ -172,7 +173,7 @@ const Tickets = () => {
                                 </Select>
                             </Form.Item>
                             <Form.Item
-                                name="assignedUser"
+                                name="AssignedToID"
                                 label="Assign User"
                                 rules={[{ required: true, message: 'Please select a user' }]}
                             >
