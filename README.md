@@ -7,7 +7,14 @@ Currently, two official plugins are available:
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
 - [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-<!-- please run the json on port 4000
+
+please run the json on port 4000
+cmd = json-server --watch db.json --port 4000
+
+and for frountend 
+cmd = npm run dev
+
+<!-- 
 
 
 import React from 'react';
