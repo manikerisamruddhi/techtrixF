@@ -1,8 +1,8 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import Customers from '../Customers/Customers.jsx';
-import QuotationList from '../../pages/Quotations/QuotationList';
-import InvoiceList from '../../pages/Invoices/InvoiceList';
+import Customers from '../../pages/Customers/Customers.jsx';
+import QuotationList from '../../pages/Quotations/Quotations.jsx';
+import InvoiceList from '../../pages/Invoices/InvoiceList.jsx';
 
 const SalesDashboard2 = () => {
     const customers = useSelector((state) => state.customers.allCustomers);

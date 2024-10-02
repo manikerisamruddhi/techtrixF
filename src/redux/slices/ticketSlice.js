@@ -42,9 +42,11 @@ export const createTicket = createAsyncThunk('tickets/addTicket', async (newTick
         TicketID: response.data.TicketID, // Assuming the backend returns an 'id'
         Title: response.data.Title,
         CreatedBy: newTicket.CreatedBy, // Assuming you're passing createdBy in newTicket
-        Status: 'in-progress', // Default status or adjust as needed
+        Status: newTicket.Status, // Default status or adjust as needed
         Priority: newTicket.Priority,
+        AssignedToID: newTicket.AssignedToID,
         Description: newTicket.Description,
+
         CreatedDate: new Date().toISOString(), // Use current date for CreatedDate
         // Add any other necessary fields here
     };

@@ -72,7 +72,7 @@ const Products = () => {
         },
         {
             title: 'Model No',
-            dataIndex: 'modelNo', // Ensure this matches your data
+            dataIndex: 'model_no', // Ensure this matches your data
             key: 'modelNo',
         },
         {
@@ -116,12 +116,14 @@ const Products = () => {
                 onCancel={() => setCreateModalVisible(false)}
                 onCreate={handleCreateProduct}
             />
-            <EditModal
-                visible={isEditModalVisible}
-                product={selectedProduct} // Pass selected product for editing
-                onCancel={() => setEditModalVisible(false)}
-                onSave={handleEditProduct}
-            />
+            {isEditModalVisible && (
+                <EditModal
+                    visible={isEditModalVisible}
+                    product={selectedProduct} // Pass selected product for editing
+                    onCancel={() => setEditModalVisible(false)}
+                    onSave={handleEditProduct}
+                />
+            )}
         </div>
     );
 };

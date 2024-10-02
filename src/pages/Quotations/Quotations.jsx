@@ -55,9 +55,9 @@ const QuotationList = () => {
             render: (status) => <span>{status}</span>,
         },
         {
-            title: 'Total Amount',
-            dataIndex: 'TotalAmount',
-            key: 'TotalAmount',
+            title: 'Final Amount',
+            dataIndex: 'FinalAmount',
+            key: 'FinalAmount',
             render: (amount) => <span>₹{amount.toFixed(2)}</span>,
         },
         {

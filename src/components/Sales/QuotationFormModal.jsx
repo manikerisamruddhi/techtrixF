@@ -64,8 +64,13 @@ const QuotationFormModal = ({ visible, onClose, ticketId, onSubmit }) => {
         const calculatedFinalAmount = discountType === 'percentage'
             ? totalAmount - (totalAmount * (discount / 100))
             : totalAmount - discount;
-        setFinalAmount(calculatedFinalAmount < 0 ? 0 : calculatedFinalAmount);
-    }, [totalAmount, discount, discountType]);
+        
+        const finalAmountValue = calculatedFinalAmount < 0 ? 0 : calculatedFinalAmount;
+        setFinalAmount(finalAmountValue);
+    
+        // Update the form field value for FinalAmount
+        form.setFieldsValue({ FinalAmount: finalAmountValue });
+    }, [totalAmount, discount, discountType, form]);
 
     const handleFinish = async (values) => {
         const quotationData = {
@@ -84,7 +89,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId, onSubmit }) => {
         setTotalAmount(0);
         setDiscount(0);
         setFinalAmount(0);
-        notification.success({ message: 'Quotation submitted successfully!' });
+        // notification.success({ message: 'Quotation submitted successfully!' });
     };
 
     const handleAddProduct = async () => {

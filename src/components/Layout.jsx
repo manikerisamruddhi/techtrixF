@@ -16,7 +16,7 @@ const LayoutComponent = ({ children }) => {
     const isSidebarHidden = hideSidebarRoutes.includes(location.pathname);
 
     // Check if it's the sales dashboard route to show a different sidebar
-    const isSalesDashboard = location.pathname.startsWith('/Sales-dashboard/');
+    const isSalesDashboard = location.pathname.startsWith('/Sales');
 
     return (
         <Layout style={{ minHeight: '100vh' }}>

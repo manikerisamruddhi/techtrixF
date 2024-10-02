@@ -30,23 +30,24 @@ const Navbar2 = () => {
                 style={{ border: 'none' }} // Remove default border for a cleaner look
             >
                 <Menu.Item key="/" icon={<AppstoreOutlined />}>
-                    <Link to="/">Home</Link>
+                    <Link to="/Sales">Home</Link>
                 </Menu.Item>
 
-                {/* <Menu.Item key="/TicketList" icon={<MailOutlined />}>
-                    <Link to="/Tickets">Tickets</Link>
-                </Menu.Item> */}
+                {/* userid for jone doe */}
+                <Menu.Item key="/TicketList" icon={<MailOutlined />}>
+                    <Link to="/Sales-Tickets/1001">Tickets</Link>  
+                </Menu.Item>
 
                 <Menu.Item key="/Quotations" icon={<DollarOutlined />}>
-                    <Link to="/Quotations">Quotations</Link>
+                    <Link to="/Sales-Quotations">Quotations</Link>
                 </Menu.Item>
 
                 <Menu.Item key="/Invoices" icon={<SnippetsOutlined />}>
-                    <Link to="/Invoices">Invoices</Link>
+                    <Link to="/Sales-Invoices">Invoices</Link>
                 </Menu.Item>
 
                 <Menu.Item key="/Products" icon={<DropboxOutlined />}>
-                    <Link to="/Sales-dashboard/Products">Products</Link>
+                    <Link to="/Sales-Products">Products</Link>
                 </Menu.Item>
 
             </Menu>

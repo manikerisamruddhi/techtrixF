@@ -135,5 +135,7 @@ const userSlice = createSlice({
     },
 });
 
+export const selectUserStatus = (state) => state.users.status;
+export const selectUsers = (state) => state.users.users; // In case you need users
 // Export the reducer as default
 export default userSlice.reducer;

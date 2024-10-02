@@ -291,6 +291,20 @@
       "Comments": "Sample comment 10",
       "CreatedDate": "2024-09-27 10:15:10",
       "id": "5ab2"
+    },
+    {
+      "id": "adf3",
+      "Product": [
+        "1ea9",
+        "1b63"
+      ],
+      "TotalAmount": 732.03,
+      "DiscountType": "percentage",
+      "Discount": 30,
+      "FinalAmount": 512.421,
+      "Comments": "23",
+      "TicketID": 6,
+      "QuotationDate": "2024-10-02T11:32:16.021Z"
     }
   ],
   "products": [
@@ -453,6 +467,18 @@
       "ResolvedDate": null,
       "IsResolved": false,
       "id": "f27a"
+    },
+    {
+      "id": "d6fa",
+      "Title": "make quotation",
+      "Description": "qer",
+      "Priority": "Medium",
+      "Department": "Sales",
+      "AssignedToID": 1001,
+      "TicketID": 21,
+      "Status": "in-progress",
+      "CreatedBy": "Sales",
+      "CreatedDate": "2024-10-02T11:28:10.688Z"
     }
   ],
   "users": [

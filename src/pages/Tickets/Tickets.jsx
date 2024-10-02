@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchTickets, createTicket } from '../../redux/slices/ticketSlice';
 import { fetchUsers, fetchDepartments } from '../../redux/slices/userSlice';
 import useToggle from '../../hooks/useCreateTicket';
-import TicketDetailsModal from './TicketDetails2'; // Import the new modal component
+import TicketDetailsModal from './TicketDetailsModal'; // Import the new modal component
 
 const { Option } = Select;
 const { Content } = Layout;
@@ -99,11 +99,13 @@ const Tickets = () => {
     };
 
     const onFinish = async (values) => {
+        const currentDate = new Date().toISOString();
         const modifiedValues = {
             ...values,
             TicketID: values.id || 6,
-            Status: 'in-progress',
+            Status: 'Open',
             CreatedBy: values.CreatedBy || 'Admin',
+            CreatedDate: currentDate, 
         };
         console.log(modifiedValues);
 

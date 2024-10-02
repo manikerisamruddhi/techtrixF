@@ -1,145 +1,67 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchProductById, updateProduct } from '../../redux/slices/productSlice';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Modal, Form, Input, Button, InputNumber } from 'antd';
 
-const EditProduct = () => {
-    const { productId } = useParams();
-    const dispatch = useDispatch();
-    const history = useNavigate();
-    const { product, loading, error } = useSelector((state) => state.products);
-    const [formData, setFormData] = useState({
-        brand: '',
-        modelNo: '',
-        partCode: '',
-        description: '',
-        price: 0,
-        quantity: 1,
-        warrantyMonths: 12,
-        isNegotiable: false,
-    });
+const EditModal = ({ visible, product, onCancel, onSave }) => {
+    const [form] = Form.useForm();
 
     useEffect(() => {
-        if (productId) {
-            dispatch(fetchProductById(productId));
-        }
-    }, [dispatch, productId]);
-
-    useEffect(() => {
+        // Set the form values when the modal opens
         if (product) {
-            setFormData({
-                brand: product.brand,
-                modelNo: product.modelNo,
-                partCode: product.partCode,
-                description: product.description,
-                price: product.price,
-                quantity: product.quantity,
-                warrantyMonths: product.warrantyMonths,
-                isNegotiable: product.isNegotiable,
-            });
+            form.setFieldsValue(product);
         }
-    }, [product]);
+    }, [product, form]);
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+    const handleSave = () => {
+        form.validateFields()
+            .then(values => {
+                onSave(values);  // Send updated values to parent component
+                form.resetFields();  // Reset form after saving
+            })
+            .catch(info => {
+                console.log('Validation Failed:', info);
+            });
     };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        dispatch(updateProduct({ id: productId, ...formData }));
-        history.push('/products');
-    };
-
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error loading product</div>;
 
     return (
-        <div className="edit-product-container">
-            <h1>Edit Product</h1>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Brand</label>
-                    <input
-                        type="text"
-                        name="brand"
-                        value={formData.brand}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Model Number</label>
-                    <input
-                        type="text"
-                        name="modelNo"
-                        value={formData.modelNo}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Part Code</label>
-                    <input
-                        type="text"
-                        name="partCode"
-                        value={formData.partCode}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div>
-                    <label>Description</label>
-                    <textarea
-                        name="description"
-                        value={formData.description}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Price</label>
-                    <input
-                        type="number"
-                        name="price"
-                        value={formData.price}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Quantity</label>
-                    <input
-                        type="number"
-                        name="quantity"
-                        value={formData.quantity}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Warranty (Months)</label>
-                    <input
-                        type="number"
-                        name="warrantyMonths"
-                        value={formData.warrantyMonths}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div>
-                    <label>
-                        Is Negotiable
-                        <input
-                            type="checkbox"
-                            name="isNegotiable"
-                            checked={formData.isNegotiable}
-                            onChange={(e) => setFormData({ ...formData, isNegotiable: e.target.checked })}
-                        />
-                    </label>
-                </div>
-                <button type="submit">Update Product</button>
-            </form>
-        </div>
+        <Modal
+            visible={visible}
+            title="Edit Product"
+            onCancel={onCancel}
+            footer={[
+                <Button key="cancel" onClick={onCancel}>
+                    Cancel
+                </Button>,
+                <Button key="save" type="primary" onClick={handleSave}>
+                    Save
+                </Button>
+            ]}
+        >
+            <Form form={form} layout="vertical" name="editProductForm">
+                <Form.Item name="brand" label="Brand" rules={[{ required: true, message: 'Please input the brand!' }]}>
+                    <Input />
+                </Form.Item>
+                <Form.Item name="model_no" label="Model No" rules={[{ required: true, message: 'Please input the model number!' }]}>
+                    <Input />
+                </Form.Item>
+                <Form.Item name="hsn_code" label="hsn_code" rules={[{ required: true, message: 'Please input the hsn_code!' }]}>
+                    <Input />
+                </Form.Item>
+                <Form.Item name="description" label="Description">
+                    <Input.TextArea rows={3} />
+                </Form.Item>
+                <Form.Item name="price" label="Price" rules={[{ required: true, message: 'Please input the price!' }]}>
+                    <InputNumber style={{ width: '100%' }} min={0} />
+                </Form.Item>
+                <Form.Item name="quantity" label="Quantity" rules={[{ required: true, message: 'Please input the quantity!' }]}>
+                    <InputNumber style={{ width: '100%' }} min={0} />
+                </Form.Item>
+                <Form.Item name="warranty_months" label="warranty_months" rules={[{ required: true, message: 'Please input the quantity!' }]}>
+                    <InputNumber style={{ width: '100%' }} min={0} />
+                </Form.Item>
+                
+            </Form>
+        </Modal>
     );
 };
 
-export default EditProduct;
+export default EditModal;
