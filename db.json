@@ -295,21 +295,6 @@
   ],
   "products": [
     {
-      "productid": 2,
-      "brand": "Apple",
-      "created_date": "2024-09-07 11:51:11",
-      "description": "MacBook Pro 16-inch",
-      "hsn_code": "HSN001",
-      "is_negotiable": true,
-      "model_no": "MVVJ2LL/A",
-      "part_code": "MBP16",
-      "price": 384.85,
-      "quantity": 53,
-      "warranty_months": 7,
-      "warranty_start_date": "2024-09-08 11:51:11",
-      "id": "2f5b"
-    },
-    {
       "productid": 3,
       "brand": "Sony",
       "created_date": "2024-09-26 11:51:11",
@@ -468,17 +453,6 @@
       "ResolvedDate": null,
       "IsResolved": false,
       "id": "f27a"
-    },
-    {
-      "id": "f7a9",
-      "Title": "make quotation ",
-      "Description": "afdsafsfs",
-      "Priority": "Medium",
-      "Department": "Sales",
-      "AssignedToID": 1001,
-      "TicketID": 6,
-      "Status": "in-progress",
-      "CreatedBy": "Admin"
     }
   ],
   "users": [
