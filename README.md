@@ -14,6 +14,8 @@ cmd = json-server --watch db.json --port 4000
 and for frountend 
 cmd = npm run dev
 
+url for sales = http://localhost:3000/Sales
+
 <!-- 
 
 
