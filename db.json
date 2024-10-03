@@ -1,7 +1,7 @@
 {
+  
   "customers": [
     {
-      "CustomerID": 1,
       "FirstName": "John",
       "LastName": "Doe",
       "Email": "john.doe@example.com",
@@ -14,10 +14,10 @@
       "CreatedDate": "2023-01-01T08:00:00Z",
       "LastUpdateDate": "2023-01-05T14:30:00Z",
       "IsActive": true,
-      "id": "4f90"
+      "id": "4f90",
+      "productIds": ["1c95", "1ea9"]
     },
     {
-      "CustomerID": 2,
       "FirstName": "Jane",
       "LastName": "Smith",
       "Email": "jane.smith@example.com",
@@ -30,10 +30,10 @@
       "CreatedDate": "2023-01-02T09:00:00Z",
       "LastUpdateDate": "2023-01-06T15:00:00Z",
       "IsActive": true,
-      "id": "e608"
+      "id": "e608",
+      "productIds": ["1b63"]
     },
     {
-      "CustomerID": 3,
       "FirstName": "Michael",
       "LastName": "Johnson",
       "Email": "michael.johnson@example.com",
@@ -46,10 +46,10 @@
       "CreatedDate": "2023-01-03T10:00:00Z",
       "LastUpdateDate": "2023-01-07T16:30:00Z",
       "IsActive": true,
-      "id": "350c"
+      "id": "350c",
+      "productIds": ["eb30"]
     },
     {
-      "CustomerID": 4,
       "FirstName": "Emily",
       "LastName": "Davis",
       "Email": "emily.davis@example.com",
@@ -62,10 +62,10 @@
       "CreatedDate": "2023-01-04T11:00:00Z",
       "LastUpdateDate": "2023-01-08T17:00:00Z",
       "IsActive": true,
-      "id": "4e50"
+      "id": "4e50",
+      "productIds": ["1c95", "1b63"]
     },
     {
-      "CustomerID": 5,
       "FirstName": "Chris",
       "LastName": "Brown",
       "Email": "chris.brown@example.com",
@@ -78,10 +78,10 @@
       "CreatedDate": "2023-01-05T12:00:00Z",
       "LastUpdateDate": "2023-01-09T18:00:00Z",
       "IsActive": true,
-      "id": "50c4"
+      "id": "50c4",
+      "productIds": ["1ea9", "eb30"]
     },
     {
-      "CustomerID": 6,
       "FirstName": "Sarah",
       "LastName": "Wilson",
       "Email": "sarah.wilson@example.com",
@@ -94,10 +94,10 @@
       "CreatedDate": "2023-01-06T13:00:00Z",
       "LastUpdateDate": "2023-01-10T19:00:00Z",
       "IsActive": true,
-      "id": "9d82"
+      "id": "9d82",
+      "productIds": ["1b63"]
     },
     {
-      "CustomerID": 7,
       "FirstName": "David",
       "LastName": "Martinez",
       "Email": "david.martinez@example.com",
@@ -110,10 +110,10 @@
       "CreatedDate": "2023-01-07T14:00:00Z",
       "LastUpdateDate": "2023-01-11T20:00:00Z",
       "IsActive": true,
-      "id": "0345"
+      "id": "0345",
+      "productIds": ["eb30"]
     },
     {
-      "CustomerID": 8,
       "FirstName": "Jessica",
       "LastName": "Garcia",
       "Email": "jessica.garcia@example.com",
@@ -126,10 +126,10 @@
       "CreatedDate": "2023-01-08T15:00:00Z",
       "LastUpdateDate": "2023-01-12T21:00:00Z",
       "IsActive": true,
-      "id": "84bf"
+      "id": "84bf",
+      "productIds": ["1c95"]
     },
     {
-      "CustomerID": 9,
       "FirstName": "Daniel",
       "LastName": "Lee",
       "Email": "daniel.lee@example.com",
@@ -142,10 +142,10 @@
       "CreatedDate": "2023-01-09T16:00:00Z",
       "LastUpdateDate": "2023-01-13T22:00:00Z",
       "IsActive": true,
-      "id": "991d"
+      "id": "991d",
+      "productIds": ["1ea9"]
     },
     {
-      "CustomerID": 10,
       "FirstName": "Laura",
       "LastName": "Hernandez",
       "Email": "laura.hernandez@example.com",
@@ -158,9 +158,12 @@
       "CreatedDate": "2023-01-10T17:00:00Z",
       "LastUpdateDate": "2023-01-14T23:00:00Z",
       "IsActive": true,
-      "id": "20a5"
+      "id": "20a5",
+      "productIds": ["1b63", "eb30"]
     }
-  ],
+]
+
+  ,
   "quotations": [
     {
       "QuotationID": 1,
@@ -308,66 +311,77 @@
     }
   ],
   "products": [
-    {
-      "productid": 3,
-      "brand": "Sony",
-      "created_date": "2024-09-26 11:51:11",
-      "description": "PlayStation 5 Console",
-      "hsn_code": "HSN001",
-      "is_negotiable": false,
-      "model_no": "CFI-1015A01",
-      "part_code": "PS5-CO",
-      "price": 596.42,
-      "quantity": 58,
-      "warranty_months": 7,
-      "warranty_start_date": "2024-08-31 11:51:11",
-      "id": "1c95"
-    },
-    {
-      "productid": 4,
-      "brand": "Dell",
-      "created_date": "2024-09-11 11:51:11",
-      "description": "XPS 13 Laptop",
-      "hsn_code": "HSN003",
-      "is_negotiable": false,
-      "model_no": "XPS9370-9823SLV",
-      "part_code": "XPS13",
-      "price": 12.39,
-      "quantity": 98,
-      "warranty_months": 14,
-      "warranty_start_date": "2024-09-09 11:51:11",
-      "id": "1ea9"
-    },
-    {
-      "productid": 5,
-      "brand": "LG",
-      "created_date": "2024-09-19 11:51:11",
-      "description": "LG 55-inch OLED TV",
-      "hsn_code": "HSN002",
-      "is_negotiable": true,
-      "model_no": "OLED55CXPUA",
-      "part_code": "OLED55",
-      "price": 719.64,
-      "quantity": 47,
-      "warranty_months": 2,
-      "warranty_start_date": "2024-09-07 11:51:11",
-      "id": "1b63"
-    },
-    {
-      "productid": 7,
-      "brand": "Microsoft",
-      "created_date": "2024-09-27 11:51:11",
-      "description": "Microsoft Surface Pro 7",
-      "hsn_code": "HSN002",
-      "is_negotiable": true,
-      "model_no": "QWT-00001",
-      "part_code": "SURFACE7",
-      "price": 869.37,
-      "quantity": 4,
-      "warranty_months": 1,
-      "warranty_start_date": "2024-09-13 11:51:11",
-      "id": "eb30"
-    }
+    [
+      {
+    
+        "brand": "Sony",
+        "created_date": "2024-09-26 11:51:11",
+        "description": "PlayStation 5 Console",
+        "hsn_code": "HSN001",
+        "is_negotiable": false,
+        "model_no": "CFI-1015A01",
+        "part_code": "PS5-CO",
+        "price": 596.42,
+        "quantity": 58,
+        "warranty_months": 7,
+        "warranty_start_date": "2024-08-31 11:51:11",
+        "warranty_end_date": "2025-03-31 11:51:11",
+        "customerID": "customer_1", 
+        "id": "1c95"
+      },
+      {
+    
+        "brand": "Dell",
+        "created_date": "2024-09-11 11:51:11",
+        "description": "XPS 13 Laptop",
+        "hsn_code": "HSN003",
+        "is_negotiable": false,
+        "model_no": "XPS9370-9823SLV",
+        "part_code": "XPS13",
+        "price": 12.39,
+        "quantity": 98,
+        "warranty_months": 14,
+        "warranty_start_date": "2024-09-09 11:51:11",
+        "warranty_end_date": "2026-09-09 11:51:11",
+        "customerID": "customer_2", 
+        "id": "1ea9"
+      },
+      {
+   
+        "brand": "LG",
+        "created_date": "2024-09-19 11:51:11",
+        "description": "LG 55-inch OLED TV",
+        "hsn_code": "HSN002",
+        "is_negotiable": true,
+        "model_no": "OLED55CXPUA",
+        "part_code": "OLED55",
+        "price": 719.64,
+        "quantity": 47,
+        "warranty_months": 2,
+        "warranty_start_date": "2024-09-07 11:51:11",
+        "warranty_end_date": "2024-11-07 11:51:11",
+        "customerID": "customer_3", 
+        "id": "1b63"
+      },
+      {
+    
+        "brand": "Microsoft",
+        "created_date": "2024-09-27 11:51:11",
+        "description": "Microsoft Surface Pro 7",
+        "hsn_code": "HSN002",
+        "is_negotiable": true,
+        "model_no": "QWT-00001",
+        "part_code": "SURFACE7",
+        "price": 869.37,
+        "quantity": 4,
+        "warranty_months": 1,
+        "warranty_start_date": "2024-09-13 11:51:11",
+        "warranty_end_date": "2024-10-13 11:51:11", 
+        "customerID": "customer_4", 
+        "id": "eb30"
+      }
+    ]
+    
   ],
   "invoices": [
     {
@@ -479,6 +493,18 @@
       "Status": "in-progress",
       "CreatedBy": "Sales",
       "CreatedDate": "2024-10-02T11:28:10.688Z"
+    },
+    {
+      "id": "36fe",
+      "Title": "make a new quotation",
+      "Description": "urgent",
+      "Priority": "High",
+      "Department": "Sales",
+      "AssignedToID": 1001,
+      "TicketID": 6,
+      "Status": "Open",
+      "CreatedBy": "Admin",
+      "CreatedDate": "2024-10-02T13:40:07.745Z"
     }
   ],
   "users": [

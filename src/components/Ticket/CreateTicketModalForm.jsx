@@ -2,27 +2,32 @@ import React, { useEffect } from 'react';
 import { Modal, Form, Input, Select, Button, message } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { createTicket } from '../../redux/slices/ticketSlice';
-import { fetchCustomers } from '../../redux/slices/customerSlice'; // Import customer slice
+import { fetchCustomers, fetchProductsByCustomerId } from '../../redux/slices/customerSlice';
 
 const { Option } = Select;
 
-const CreateTicketModalForm = ({ visible, onClose, departments, filteredUsers, usersLoading, departmentsLoading }) => {
+const CreateTicketModalForm = ({ visible, onClose }) => {
     const dispatch = useDispatch();
     const [form] = Form.useForm();
 
-    const { customers, loading: customersLoading } = useSelector((state) => state.customers);
+    const { customers, selectedCustomerProducts } = useSelector((state) => state.customers);
 
     useEffect(() => {
         if (visible) {
-            dispatch(fetchCustomers()); // Fetch customers when modal is visible
+            dispatch(fetchCustomers());
         }
     }, [dispatch, visible]);
+
+    const handleCustomerChange = (customerId) => {
+        // Fetch products for the selected customer
+        dispatch(fetchProductsByCustomerId(customerId));
+    };
 
     const onFinish = async (values) => {
         const currentDate = new Date().toISOString();
         const modifiedValues = {
             ...values,
-            TicketID: values.id || 6, // Assigning default ID for now
+            TicketID: values.id || 6, 
             Status: 'Open',
             CreatedBy: values.CreatedBy || 'Admin',
             CreatedDate: currentDate,
@@ -32,7 +37,7 @@ const CreateTicketModalForm = ({ visible, onClose, departments, filteredUsers, u
             await dispatch(createTicket(modifiedValues));
             message.success('Ticket created successfully!');
             form.resetFields();
-            onClose(); // Close modal on successful submission
+            onClose();
         } catch (error) {
             message.error(`Failed to create ticket: ${error.message}`);
         }
@@ -43,7 +48,7 @@ const CreateTicketModalForm = ({ visible, onClose, departments, filteredUsers, u
             visible={visible}
             title="Create Ticket"
             onCancel={onClose}
-            footer={null} // Hide default footer for custom form submission button
+            footer={null}
         >
             <Form
                 layout="vertical"
@@ -59,22 +64,17 @@ const CreateTicketModalForm = ({ visible, onClose, departments, filteredUsers, u
                     <Input placeholder="Enter ticket title" />
                 </Form.Item>
 
-                {/* New Customer Selection Field */}
                 <Form.Item
                     name="CustomerID"
                     label="Customer"
                     rules={[{ required: true, message: 'Please select a customer' }]}
                 >
                     <Select
-    showSearch
-    placeholder="Select a customer"
-    loading={customersLoading}
-    optionFilterProp="children"
-    filterOption={(input, option) =>
-        option?.value.toLowerCase().includes(input.toLowerCase())
-    }
->
-    {customers.map(customer => (
+                        showSearch
+                        placeholder="Select a customer"
+                        onChange={handleCustomerChange}
+                    >
+                        {customers.map(customer => (
         <Option key={customer.id} value={`${customer.FirstName} ${customer.LastName} ${customer.Email}`}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span>{`${customer.FirstName} ${customer.LastName}`}</span>
@@ -83,7 +83,24 @@ const CreateTicketModalForm = ({ visible, onClose, departments, filteredUsers, u
         </Option>
     ))}
 </Select>
+                </Form.Item>
 
+                {/* Product Selection Field */}
+                <Form.Item
+                    name="ProductID"
+                    label="Product"
+                    rules={[{ required: true, message: 'Please select a product' }]}
+                >
+                    <Select
+                        showSearch
+                        placeholder="Select a product"
+                    >
+                        {selectedCustomerProducts.map(product => (
+                            <Option key={product.id} value={product.id}>
+                                {product.name}
+                            </Option>
+                        ))}
+                    </Select>
                 </Form.Item>
 
                 <Form.Item
@@ -93,6 +110,7 @@ const CreateTicketModalForm = ({ visible, onClose, departments, filteredUsers, u
                 >
                     <Input.TextArea rows={4} placeholder="Enter ticket description" />
                 </Form.Item>
+
                 <Form.Item
                     name="Priority"
                     label="Priority"
@@ -104,8 +122,6 @@ const CreateTicketModalForm = ({ visible, onClose, departments, filteredUsers, u
                         <Option value="High">High</Option>
                     </Select>
                 </Form.Item>
-               
-               
 
                 <Form.Item>
                     <Button type="primary" htmlType="submit">

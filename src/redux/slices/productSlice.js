@@ -1,11 +1,15 @@
+// redux/slices/productSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from '../../api/axiosInstance'; // Make sure this is correctly configured
+import axios from 'axios';
 import { toast } from 'react-toastify';
 
-// Async Thunks for handling Product API requests
+// Define the base URL for your API
+const API_URL = 'http://localhost:4000'; // Adjust the base URL as needed
+
+// Async thunks for handling Product API requests
 export const fetchProducts = createAsyncThunk('products/fetchProducts', async (_, { rejectWithValue }) => {
   try {
-    const response = await axios.get('http://localhost:4000/products');
+    const response = await axios.get(`${API_URL}/products`);
     return response.data;
   } catch (error) {
     return rejectWithValue(error.response.data);
@@ -14,7 +18,7 @@ export const fetchProducts = createAsyncThunk('products/fetchProducts', async (_
 
 export const fetchProductById = createAsyncThunk('products/fetchProductById', async (productId, { rejectWithValue }) => {
   try {
-    const response = await axios.get(`http://localhost:4000/products/${productId}`);
+    const response = await axios.get(`${API_URL}/products/${productId}`);
     return response.data;
   } catch (error) {
     return rejectWithValue(error.response.data);
@@ -23,7 +27,7 @@ export const fetchProductById = createAsyncThunk('products/fetchProductById', as
 
 export const addProduct = createAsyncThunk('products/addProduct', async (newProduct, { rejectWithValue }) => {
   try {
-    const response = await axios.post('http://localhost:4000/products', newProduct);
+    const response = await axios.post(`${API_URL}/products`, newProduct);
     toast.success('Product added successfully!');
     return response.data;
   } catch (error) {
@@ -34,7 +38,7 @@ export const addProduct = createAsyncThunk('products/addProduct', async (newProd
 
 export const updateProduct = createAsyncThunk('products/updateProduct', async ({ productId, updatedProduct }, { rejectWithValue }) => {
   try {
-    const response = await axios.put(`http://localhost:4000/products/${productId}`, updatedProduct);
+    const response = await axios.put(`${API_URL}/products/${productId}`, updatedProduct);
     toast.success('Product updated successfully!');
     return response.data;
   } catch (error) {
@@ -45,7 +49,7 @@ export const updateProduct = createAsyncThunk('products/updateProduct', async ({
 
 export const deleteProduct = createAsyncThunk('products/deleteProduct', async (productId, { rejectWithValue }) => {
   try {
-    await axios.delete(`http://localhost:4000/products/${productId}`);
+    await axios.delete(`${API_URL}/products/${productId}`);
     toast.success('Product deleted successfully!');
     return productId;
   } catch (error) {
@@ -54,11 +58,23 @@ export const deleteProduct = createAsyncThunk('products/deleteProduct', async (p
   }
 });
 
+// Async thunk for fetching products by customer ID
+export const fetchProductsByCustomer = createAsyncThunk(
+  'products/fetchByCustomer',
+  async (customerId) => {
+    const response = await axios.get(`${API_URL}/products?customerId=${customerId}`); // Adjust API endpoint as needed
+    console.log('Fetched products:', JSON.stringify(response.data, null, 2)); // Log the fetched data in a readable format
+    return response.data;
+  }
+);
+
+
 // Product slice
 const productSlice = createSlice({
   name: 'products',
   initialState: {
     items: [],
+    products: [],
     loading: false,
     error: null,
   },
@@ -79,6 +95,20 @@ const productSlice = createSlice({
         state.error = action.payload || 'Failed to fetch products';
       })
 
+      // Fetch Products by Customer
+      .addCase(fetchProductsByCustomer.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchProductsByCustomer.fulfilled, (state, action) => {
+        state.loading = false;
+        state.products = action.payload; // Store fetched products in state
+      })
+      .addCase(fetchProductsByCustomer.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message; // Handle errors
+      })
+
       // Add Product
       .addCase(addProduct.pending, (state) => {
         state.loading = true;
@@ -93,19 +123,19 @@ const productSlice = createSlice({
         state.error = action.payload || 'Failed to add product';
       })
 
-        // Fetch Single Product by ID
-    .addCase(fetchProductById.pending, (state) => {
-      state.loading = true;
-      state.error = null;
-    })
-    .addCase(fetchProductById.fulfilled, (state, action) => {
-      state.product = action.payload;
-      state.loading = false;
-    })
-    .addCase(fetchProductById.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.payload || 'Failed to fetch product details';
-    })
+      // Fetch Single Product by ID
+      .addCase(fetchProductById.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchProductById.fulfilled, (state, action) => {
+        state.product = action.payload;
+        state.loading = false;
+      })
+      .addCase(fetchProductById.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || 'Failed to fetch product details';
+      })
 
       // Update Product
       .addCase(updateProduct.pending, (state) => {
@@ -139,5 +169,9 @@ const productSlice = createSlice({
       });
   },
 });
+
+export const selectProducts = (state) => state.products.items; // For all products
+export const selectProductsByCustomer = (state) => state.products.products; // For products by customer
+export const selectProductsLoading = (state) => state.products.loading;
 
 export default productSlice.reducer;

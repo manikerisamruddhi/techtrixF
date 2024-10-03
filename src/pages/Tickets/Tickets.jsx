@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Button, Empty, message, Form, Input, Select, Layout, Typography, Spin } from 'antd';
+import { Table, Button, Empty, message, Layout, Typography, Spin } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchTickets, createTicket } from '../../redux/slices/ticketSlice';
+import { fetchTickets } from '../../redux/slices/ticketSlice';
 import { fetchUsers, fetchDepartments } from '../../redux/slices/userSlice';
-import useToggle from '../../hooks/useCreateTicket';
-import TicketDetailsModal from './TicketDetailsModal'; // Import the new modal component
+import TicketDetailsModal from './TicketDetailsModal';
+import CreateTicketModal from '../../components/Ticket/CreateTicketModalForm'; // Import the CreateTicketModal
 
-const { Option } = Select;
 const { Content } = Layout;
 const { Title } = Typography;
 
@@ -15,8 +14,7 @@ const Tickets = () => {
     const { tickets, loading: ticketsLoading, error: ticketsError } = useSelector((state) => state.tickets);
     const { users, loading: usersLoading, error: usersError, departments, loading: departmentsLoading, error: departmentsError } = useSelector((state) => state.users);
 
-    const [isFormVisible, toggleForm] = useToggle(false);
-    const [form] = Form.useForm();
+    const [isFormVisible, toggleForm] = useState(false); // Using state directly for modal
     const [selectedDepartment, setSelectedDepartment] = useState(null);
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [isModalVisible, setIsModalVisible] = useState(false);
@@ -98,120 +96,16 @@ const Tickets = () => {
         setSelectedTicket(null); // Clear selected ticket
     };
 
-    const onFinish = async (values) => {
-        const currentDate = new Date().toISOString();
-        const modifiedValues = {
-            ...values,
-            TicketID: values.id || 6,
-            Status: 'Open',
-            CreatedBy: values.CreatedBy || 'Admin',
-            CreatedDate: currentDate, 
-        };
-        console.log(modifiedValues);
-
-        try {
-            await dispatch(createTicket(modifiedValues));
-            message.success('Ticket created successfully!');
-            form.resetFields();
-            toggleForm();
-        } catch (error) {
-            message.error(`Failed to create ticket: ${error.message}`);
-        }
-    };
-
     return (
         <Layout style={{ minHeight: '100vh', background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)' }}>
             <Content style={{ padding: '20px' }}>
                 <div className="content-container">
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
                         <Title level={4} style={{ margin: 0 }}>Ticket List</Title>
-                        <Button onClick={toggleForm} className="create-ticket-btn" type="primary">
+                        <Button onClick={() => toggleForm(!isFormVisible)} className="create-ticket-btn" type="primary">
                             {isFormVisible ? 'Cancel' : 'Create Ticket'}
                         </Button>
                     </div>
-
-                    {isFormVisible && (
-                        <Form
-                            layout="vertical"
-                            onFinish={onFinish}
-                            form={form}
-                            className="create-ticket-form"
-                            style={{ marginTop: '20px' }}
-                        >
-                            <Form.Item
-                                name="Title"
-                                label="Title"
-                                rules={[{ required: true, message: 'Please enter the ticket title' }]}
-                            >
-                                <Input placeholder="Enter ticket title" />
-                            </Form.Item>
-                            <Form.Item
-                                name="Description"
-                                label="Description"
-                                rules={[{ required: true, message: 'Please enter the description' }]}
-                            >
-                                <Input.TextArea rows={4} placeholder="Enter ticket description" />
-                            </Form.Item>
-                            <Form.Item
-                                name="Priority"
-                                label="Priority"
-                                rules={[{ required: true, message: 'Please select priority' }]}
-                            >
-                                <Select placeholder="Select priority">
-                                    <Option value="Low">Low</Option>
-                                    <Option value="Medium">Medium</Option>
-                                    <Option value="High">High</Option>
-                                </Select>
-                            </Form.Item>
-                            <Form.Item
-                                name="Department"
-                                label="Department"
-                                rules={[{ required: true, message: 'Please select a department' }]}
-                            >
-                                <Select
-                                    placeholder="Select department"
-                                    onChange={(value) => setSelectedDepartment(value)}
-                                >
-                                    {departmentsLoading ? (
-                                        <Option disabled>Loading Departments...</Option>
-                                    ) : departments && departments.length > 0 ? (
-                                        departments.map(department => (
-                                            <Option key={department.id} value={department.id}>
-                                                {department.name}
-                                            </Option>
-                                        ))
-                                    ) : (
-                                        <Option disabled>No Departments Available</Option>
-                                    )}
-                                </Select>
-                            </Form.Item>
-                            <Form.Item
-                                name="AssignedToID"
-                                label="Assign User"
-                                rules={[{ required: true, message: 'Please select a user' }]}
-                            >
-                                <Select placeholder="Select user">
-                                    {usersLoading ? (
-                                        <Option disabled>Loading Users...</Option>
-                                    ) : filteredUsers && filteredUsers.length > 0 ? (
-                                        filteredUsers.map(user => (
-                                            <Option key={user.userid} value={user.userid}>
-                                                {`${user.first_name} ${user.last_name}`}
-                                            </Option>
-                                        ))
-                                    ) : (
-                                        <Option disabled>No Users Available</Option>
-                                    )}
-                                </Select>
-                            </Form.Item>
-
-                            <Form.Item>
-                                <Button type="primary" htmlType="submit" loading={ticketsLoading}>
-                                    Submit Ticket
-                                </Button>
-                            </Form.Item>
-                        </Form>
-                    )}
 
                     {ticketsLoading ? (
                         <Spin tip="Loading..." />
@@ -231,6 +125,16 @@ const Tickets = () => {
                         visible={isModalVisible}
                         ticket={selectedTicket}
                         onClose={handleModalClose}
+                    />
+
+                    {/* Create Ticket Modal */}
+                    <CreateTicketModal
+                        visible={isFormVisible}
+                        onClose={() => toggleForm(false)}
+                        departments={departments}
+                        filteredUsers={filteredUsers}
+                        usersLoading={usersLoading}
+                        departmentsLoading={departmentsLoading}
                     />
                 </div>
             </Content>
