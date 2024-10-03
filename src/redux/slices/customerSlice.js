@@ -1,10 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+const BASE_URL = 'http://localhost:4000/customers';
+const PRODUCT_URL = 'http://localhost:4000/products';
+
 // Async Thunks
 export const fetchCustomers = createAsyncThunk('customers/fetchCustomers', async (_, { rejectWithValue }) => {
     try {
-        const response = await axios.get('http://localhost:4000/customers'); // Adjusted URL
+        const response = await axios.get(BASE_URL); // Use the base URL
         return response.data; // Assuming the mock API returns an array of customers
     } catch (error) {
         console.error("Error fetching customers:", error);
@@ -12,9 +15,30 @@ export const fetchCustomers = createAsyncThunk('customers/fetchCustomers', async
     }
 });
 
+// Fetch Products for Selected Customer
+export const fetchProductsByCustomerId = createAsyncThunk('customers/fetchProductsByCustomerId', async (customerId, { rejectWithValue }) => {
+    try {
+        console.log(`${BASE_URL}/${customerId}`)
+        const customerResponse = await axios.get(`${BASE_URL}/${customerId}`);
+        const productIds = customerResponse.data.products || []; // Default to an empty array if products is undefined
+
+        if (productIds.length > 0) {
+            const productsResponse = await axios.get(PRODUCT_URL);
+            // Filter products based on the IDs from the customer
+            return productsResponse.data.filter(product => productIds.includes(product.id));
+        } else {
+            return []; // Return empty if no products
+        }
+    } catch (error) {
+        console.error("Error fetching products for customer:", error);
+        return rejectWithValue([]); // Return empty array on error
+    }
+});
+
+
 export const addCustomer = createAsyncThunk('customers/addCustomer', async (newCustomer, { rejectWithValue }) => {
     try {
-        const response = await axios.post('http://localhost:4000/customers', newCustomer); // Adjusted URL
+        const response = await axios.post(BASE_URL, newCustomer); // Use the base URL
         return response.data;
     } catch (error) {
         console.error("Error adding customer:", error);
@@ -24,7 +48,7 @@ export const addCustomer = createAsyncThunk('customers/addCustomer', async (newC
 
 export const updateCustomer = createAsyncThunk('customers/updateCustomer', async ({ customerId, updatedCustomer }, { rejectWithValue }) => {
     try {
-        const response = await axios.put(`http://localhost:4000/customers/${customerId}`, updatedCustomer); // Adjusted URL
+        const response = await axios.put(`${BASE_URL}/${customerId}`, updatedCustomer); // Use the base URL
         return response.data;
     } catch (error) {
         console.error("Error updating customer:", error);
@@ -34,7 +58,7 @@ export const updateCustomer = createAsyncThunk('customers/updateCustomer', async
 
 export const deleteCustomer = createAsyncThunk('customers/deleteCustomer', async (customerId, { rejectWithValue }) => {
     try {
-        await axios.delete(`http://localhost:4000/customers/${customerId}`); // Adjusted URL
+        await axios.delete(`${BASE_URL}/${customerId}`); // Use the base URL
         return customerId;
     } catch (error) {
         console.error("Error deleting customer:", error);
@@ -47,6 +71,7 @@ const customerSlice = createSlice({
     name: 'customers',
     initialState: {
         customers: [],
+        selectedCustomerProducts: [],
         status: 'idle',
         error: null,
     },
@@ -84,6 +109,9 @@ const customerSlice = createSlice({
                     const customerId = action.payload;
                     state.customers = state.customers.filter(customer => customer.CustomerID !== customerId);
                 }
+            })
+            .addCase(fetchProductsByCustomerId.fulfilled, (state, action) => {
+                state.selectedCustomerProducts = action.payload; // Set products of the selected customer
             });
     },
 });

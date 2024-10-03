@@ -3,13 +3,10 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-// Define the base URL for your API
-const API_URL = 'http://localhost:4000'; // Adjust the base URL as needed
-
 // Async thunks for handling Product API requests
 export const fetchProducts = createAsyncThunk('products/fetchProducts', async (_, { rejectWithValue }) => {
   try {
-    const response = await axios.get(`${API_URL}/products`);
+    const response = await axios.get('http://localhost:4000/products');
     return response.data;
   } catch (error) {
     return rejectWithValue(error.response.data);
@@ -18,7 +15,7 @@ export const fetchProducts = createAsyncThunk('products/fetchProducts', async (_
 
 export const fetchProductById = createAsyncThunk('products/fetchProductById', async (productId, { rejectWithValue }) => {
   try {
-    const response = await axios.get(`${API_URL}/products/${productId}`);
+    const response = await axios.get(`http://localhost:4000/products/${productId}`);
     return response.data;
   } catch (error) {
     return rejectWithValue(error.response.data);
@@ -27,7 +24,7 @@ export const fetchProductById = createAsyncThunk('products/fetchProductById', as
 
 export const addProduct = createAsyncThunk('products/addProduct', async (newProduct, { rejectWithValue }) => {
   try {
-    const response = await axios.post(`${API_URL}/products`, newProduct);
+    const response = await axios.post('http://localhost:4000/products', newProduct);
     toast.success('Product added successfully!');
     return response.data;
   } catch (error) {
@@ -38,7 +35,7 @@ export const addProduct = createAsyncThunk('products/addProduct', async (newProd
 
 export const updateProduct = createAsyncThunk('products/updateProduct', async ({ productId, updatedProduct }, { rejectWithValue }) => {
   try {
-    const response = await axios.put(`${API_URL}/products/${productId}`, updatedProduct);
+    const response = await axios.put(`http://localhost:4000/products/${productId}`, updatedProduct);
     toast.success('Product updated successfully!');
     return response.data;
   } catch (error) {
@@ -49,7 +46,7 @@ export const updateProduct = createAsyncThunk('products/updateProduct', async ({
 
 export const deleteProduct = createAsyncThunk('products/deleteProduct', async (productId, { rejectWithValue }) => {
   try {
-    await axios.delete(`${API_URL}/products/${productId}`);
+    await axios.delete(`http://localhost:4000/products/${productId}`);
     toast.success('Product deleted successfully!');
     return productId;
   } catch (error) {
@@ -62,12 +59,11 @@ export const deleteProduct = createAsyncThunk('products/deleteProduct', async (p
 export const fetchProductsByCustomer = createAsyncThunk(
   'products/fetchByCustomer',
   async (customerId) => {
-    const response = await axios.get(`${API_URL}/products?customerId=${customerId}`); // Adjust API endpoint as needed
-    console.log('Fetched products:', JSON.stringify(response.data, null, 2)); // Log the fetched data in a readable format
+    console.log(`${customerId}`);
+    const response = await axios.get(`/api/products?customerId=${customerId}`); // Adjust API endpoint as needed
     return response.data;
   }
 );
-
 
 // Product slice
 const productSlice = createSlice({

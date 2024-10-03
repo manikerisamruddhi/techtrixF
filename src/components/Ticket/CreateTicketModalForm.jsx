@@ -1,27 +1,38 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal, Form, Input, Select, Button, message } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { createTicket } from '../../redux/slices/ticketSlice';
 import { fetchCustomers } from '../../redux/slices/customerSlice';
-import { fetchProducts } from '../../redux/slices/productSlice'; // Import fetchProducts
+import { fetchProducts } from '../../redux/slices/productSlice';
 
 const { Option } = Select;
 
 const CreateTicketModalForm = ({ visible, onClose }) => {
     const dispatch = useDispatch();
     const [form] = Form.useForm();
+    const [selectedProduct, setSelectedProduct] = useState(null);
 
     const { customers } = useSelector((state) => state.customers);
-    const { items } = useSelector((state) => state.products); // Select products from state
-
-    console.log(items);
+    const { items } = useSelector((state) => state.products);
 
     useEffect(() => {
         if (visible) {
             dispatch(fetchCustomers());
-            dispatch(fetchProducts()); // Fetch products when the modal is visible
+            dispatch(fetchProducts());
         }
     }, [dispatch, visible]);
+
+    const handleProductChange = (value) => {
+        const product = items.find((item) => item.id === value);
+        setSelectedProduct(product);
+        
+        // Set the description field to the selected product's description
+        if (product) {
+            form.setFieldsValue({ Description: product.description });
+        } else {
+            form.setFieldsValue({ Description: '' }); // Clear the description if no product is found
+        }
+    };
 
     const onFinish = async (values) => {
         const currentDate = new Date().toISOString();
@@ -85,28 +96,65 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
                 </Form.Item>
 
                 <Form.Item
-                    name="ProductID" // New field for Product selection
+                    name="ProductID"
                     label="Product"
-                    rules={[{ required: true, message: 'Please select a product' }]} // Validation rule
+                    rules={[{ required: true, message: 'Please select a product' }]}
                 >
                     <Select
                         showSearch
                         placeholder="Select a product"
+                        onChange={handleProductChange}
                     >
-                        {items.map(product => (
-                            <Option key={product.id} value={product.id}>
-                                {product.description} {/* Adjust based on your product object structure */}
-                            </Option>
-                        ))}
+                         {items.map(product => (
+            <Option key={product.id} value={product.id}>
+                <div>
+                    <span style={{ marginRight: '10px' }}>Brand: {product.brand}</span> \
+                    <span>Model No: {product.model_no}</span>
+                </div>
+            </Option>
+        ))}
                     </Select>
                 </Form.Item>
+
+                {/* Show warranty status and end date based on selected product */}
+                {selectedProduct && selectedProduct.warranty_end_date && (
+                    <>
+                        <Form.Item>
+                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                <span style={{ marginRight: '10px' }}>
+                                    {new Date(selectedProduct.warranty_end_date.replace(' ', 'T')) > new Date()
+                                        ? "In Warranty"
+                                        : "Out of Warranty"}
+                                </span>
+                                <span style={{ color: new Date(selectedProduct.warranty_end_date.replace(' ', 'T')) > new Date() ? 'green' : 'red' }}>
+                                    {new Date(selectedProduct.warranty_end_date.replace(' ', 'T')) > new Date()
+                                        ? "In Warranty"
+                                        : "Out of Warranty"}
+                                </span>
+                            </div>
+                        </Form.Item>
+                        <Form.Item >
+                            <div>
+                                <span>Warranty End Date: </span>
+                                <span>
+                                    {new Date(selectedProduct.warranty_end_date).toLocaleDateString()} {/* Format date as needed */}
+                                </span>
+                            </div>
+                        </Form.Item>
+                    </>
+                )}
 
                 <Form.Item
                     name="Description"
                     label="Description"
                     rules={[{ required: true, message: 'Please enter the description' }]}
                 >
-                    <Input.TextArea rows={4} placeholder="Enter ticket description" />
+                    <Input.TextArea
+                        rows={4}
+                        placeholder="Product description will appear here"
+                        value={selectedProduct ? selectedProduct.description : ''}
+                        readOnly // Make the description read-only
+                    />
                 </Form.Item>
 
                 <Form.Item
