@@ -3,6 +3,7 @@ import { Modal, Form, Input, Select, Button, message } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { createTicket } from '../../redux/slices/ticketSlice';
 import { fetchCustomers } from '../../redux/slices/customerSlice';
+import { fetchProducts } from '../../redux/slices/productSlice'; // Import fetchProducts
 
 const { Option } = Select;
 
@@ -11,10 +12,14 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
     const [form] = Form.useForm();
 
     const { customers } = useSelector((state) => state.customers);
+    const { items } = useSelector((state) => state.products); // Select products from state
+
+    console.log(items);
 
     useEffect(() => {
         if (visible) {
             dispatch(fetchCustomers());
+            dispatch(fetchProducts()); // Fetch products when the modal is visible
         }
     }, [dispatch, visible]);
 
@@ -74,6 +79,23 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
                                     <span>{`${customer.FirstName} ${customer.LastName}`}</span>
                                     <span style={{ marginLeft: '10px', color: 'gray' }}>{customer.Email}</span>
                                 </div>
+                            </Option>
+                        ))}
+                    </Select>
+                </Form.Item>
+
+                <Form.Item
+                    name="ProductID" // New field for Product selection
+                    label="Product"
+                    rules={[{ required: true, message: 'Please select a product' }]} // Validation rule
+                >
+                    <Select
+                        showSearch
+                        placeholder="Select a product"
+                    >
+                        {items.map(product => (
+                            <Option key={product.id} value={product.id}>
+                                {product.description} {/* Adjust based on your product object structure */}
                             </Option>
                         ))}
                     </Select>
