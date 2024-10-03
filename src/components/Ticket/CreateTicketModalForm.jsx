@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Modal, Form, Input, Select, Button, message } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { createTicket } from '../../redux/slices/ticketSlice';
-import { fetchCustomers, fetchProductsByCustomerId } from '../../redux/slices/customerSlice';
+import { fetchCustomers } from '../../redux/slices/customerSlice';
 
 const { Option } = Select;
 
@@ -10,7 +10,7 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
     const dispatch = useDispatch();
     const [form] = Form.useForm();
 
-    const { customers, selectedCustomerProducts } = useSelector((state) => state.customers);
+    const { customers } = useSelector((state) => state.customers);
 
     useEffect(() => {
         if (visible) {
@@ -18,16 +18,11 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
         }
     }, [dispatch, visible]);
 
-    const handleCustomerChange = (customerId) => {
-        // Fetch products for the selected customer
-        dispatch(fetchProductsByCustomerId(customerId));
-    };
-
     const onFinish = async (values) => {
         const currentDate = new Date().toISOString();
         const modifiedValues = {
             ...values,
-            TicketID: values.id || 6, 
+            TicketID: values.id || 6,
             Status: 'Open',
             CreatedBy: values.CreatedBy || 'Admin',
             CreatedDate: currentDate,
@@ -72,32 +67,13 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
                     <Select
                         showSearch
                         placeholder="Select a customer"
-                        onChange={handleCustomerChange}
                     >
                         {customers.map(customer => (
-        <Option key={customer.id} value={`${customer.FirstName} ${customer.LastName} ${customer.Email}`}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span>{`${customer.FirstName} ${customer.LastName}`}</span>
-                <span style={{ marginLeft: '10px', color: 'gray' }}>{customer.Email}</span>
-            </div>
-        </Option>
-    ))}
-</Select>
-                </Form.Item>
-
-                {/* Product Selection Field */}
-                <Form.Item
-                    name="ProductID"
-                    label="Product"
-                    rules={[{ required: true, message: 'Please select a product' }]}
-                >
-                    <Select
-                        showSearch
-                        placeholder="Select a product"
-                    >
-                        {selectedCustomerProducts.map(product => (
-                            <Option key={product.id} value={product.id}>
-                                {product.name}
+                            <Option key={customer.id} value={`${customer.FirstName} ${customer.LastName} ${customer.Email}`}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                    <span>{`${customer.FirstName} ${customer.LastName}`}</span>
+                                    <span style={{ marginLeft: '10px', color: 'gray' }}>{customer.Email}</span>
+                                </div>
                             </Option>
                         ))}
                     </Select>
