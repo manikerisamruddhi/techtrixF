@@ -1,7 +1,6 @@
 {
   "customers": [
     {
-      "CustomerID": 1,
       "FirstName": "John",
       "LastName": "Doe",
       "Email": "john.doe@example.com",
@@ -17,7 +16,6 @@
       "id": "4f90"
     },
     {
-      "CustomerID": 2,
       "FirstName": "Jane",
       "LastName": "Smith",
       "Email": "jane.smith@example.com",
@@ -33,7 +31,6 @@
       "id": "e608"
     },
     {
-      "CustomerID": 3,
       "FirstName": "Michael",
       "LastName": "Johnson",
       "Email": "michael.johnson@example.com",
@@ -49,7 +46,6 @@
       "id": "350c"
     },
     {
-      "CustomerID": 4,
       "FirstName": "Emily",
       "LastName": "Davis",
       "Email": "emily.davis@example.com",
@@ -65,7 +61,6 @@
       "id": "4e50"
     },
     {
-      "CustomerID": 5,
       "FirstName": "Chris",
       "LastName": "Brown",
       "Email": "chris.brown@example.com",
@@ -81,7 +76,6 @@
       "id": "50c4"
     },
     {
-      "CustomerID": 6,
       "FirstName": "Sarah",
       "LastName": "Wilson",
       "Email": "sarah.wilson@example.com",
@@ -97,7 +91,6 @@
       "id": "9d82"
     },
     {
-      "CustomerID": 7,
       "FirstName": "David",
       "LastName": "Martinez",
       "Email": "david.martinez@example.com",
@@ -113,7 +106,6 @@
       "id": "0345"
     },
     {
-      "CustomerID": 8,
       "FirstName": "Jessica",
       "LastName": "Garcia",
       "Email": "jessica.garcia@example.com",
@@ -129,7 +121,6 @@
       "id": "84bf"
     },
     {
-      "CustomerID": 9,
       "FirstName": "Daniel",
       "LastName": "Lee",
       "Email": "daniel.lee@example.com",
@@ -145,7 +136,6 @@
       "id": "991d"
     },
     {
-      "CustomerID": 10,
       "FirstName": "Laura",
       "LastName": "Hernandez",
       "Email": "laura.hernandez@example.com",
@@ -307,12 +297,12 @@
       "QuotationDate": "2024-10-02T11:32:16.021Z"
     }
   ],
-  "products": [
+ "products": [
     {
-      "productid": 3,
+      "customerID": "4f90", 
       "brand": "Sony",
       "created_date": "2024-09-26 11:51:11",
-      "description": "PlayStation 5 Console",
+      "description": "Sony PlayStation 5 Console - 825GB SSD, 4K Gaming, DualSense Wireless Controller, Ray Tracing Support, and Backward Compatibility with PlayStation 4 games. Experience ultra-fast load times and a new level of immersive gaming with next-gen graphics.",
       "hsn_code": "HSN001",
       "is_negotiable": false,
       "model_no": "CFI-1015A01",
@@ -322,13 +312,13 @@
       "warranty_months": 7,
       "warranty_start_date": "2024-01-31 11:51:11",
       "warranty_end_date": "2024-08-01 11:51:11",
-      "id": "1c95"
+      "id": "1c95" 
     },
     {
-      "productid": 4,
+      "customerID": "e608", 
       "brand": "Dell",
       "created_date": "2024-09-11 11:51:11",
-      "description": "XPS 13 Laptop",
+      "description": "Dell XPS 13 Laptop - 13.3-inch Full HD Display, Intel Core i7 8th Gen Processor, 16GB RAM, 512GB SSD, Windows 11 Home. Ultra-thin, lightweight, and designed for performance, ideal for professionals and creatives on the go.",
       "hsn_code": "HSN003",
       "is_negotiable": false,
       "model_no": "XPS9370-9823SLV",
@@ -341,10 +331,10 @@
       "id": "1ea9"
     },
     {
-      "productid": 5,
+      "customerID": "350c",
       "brand": "LG",
       "created_date": "2024-09-19 11:51:11",
-      "description": "LG 55-inch OLED TV",
+      "description": "LG 55-inch OLED TV - OLED55CXPUA, 4K Ultra HD Smart TV with AI ThinQ, Dolby Vision, and Dolby Atmos. Enjoy perfect black levels, stunning picture quality, and smooth, responsive gaming with NVIDIA G-Sync compatibility.",
       "hsn_code": "HSN002",
       "is_negotiable": true,
       "model_no": "OLED55CXPUA",
@@ -357,10 +347,10 @@
       "id": "1b63"
     },
     {
-      "productid": 7,
+      "customerID": "50c4",
       "brand": "Microsoft",
       "created_date": "2024-09-27 11:51:11",
-      "description": "Microsoft Surface Pro 7",
+      "description": "Microsoft Surface Pro 7 - 12.3-inch Touchscreen, Intel Core i5 10th Gen Processor, 8GB RAM, 256GB SSD, Windows 10 Home. A versatile 2-in-1 device that combines the power of a laptop with the portability of a tablet, perfect for work, play, and everything in between.",
       "hsn_code": "HSN002",
       "is_negotiable": true,
       "model_no": "QWT-00001",
@@ -399,7 +389,7 @@
       "CustomerID": 78,
       "Title": "Login Issue",
       "Priority": "High",
-      "Description": "Customer cannot log into their account.",
+      "Remark": "Customer cannot log into their account.",
       "Status": "in-progress",
       "Category": "Technical",
       "CreatedDate": "2024-09-20T15:03:00Z",
@@ -415,7 +405,7 @@
       "CustomerID": 102,
       "Title": "Payment Failure",
       "Priority": "Urgent",
-      "Description": "Payment not going through for the order.",
+      "Remark": "Payment not going through for the order.",
       "Status": "Closed",
       "Category": "Billing",
       "CreatedDate": "2024-09-21T10:15:00Z",
@@ -431,7 +421,7 @@
       "CustomerID": 89,
       "Title": "Account Locked",
       "Priority": "Medium",
-      "Description": "Customer's account is locked after multiple failed login attempts.",
+      "Remark": "Customer's account is locked after multiple failed login attempts.",
       "Status": "Resolved",
       "Category": "Technical",
       "CreatedDate": "2024-09-18T09:30:00Z",
@@ -447,7 +437,7 @@
       "CustomerID": 110,
       "Title": "Refund Request",
       "Priority": "Low",
-      "Description": "Customer requesting a refund for a recent purchase.",
+      "Remark": "Customer requesting a refund for a recent purchase.",
       "Status": "in-progress",
       "Category": "Billing",
       "CreatedDate": "2024-09-22T11:00:00Z",
@@ -463,7 +453,7 @@
       "CustomerID": 95,
       "Title": "Feature Request",
       "Priority": "Low",
-      "Description": "Customer requesting a new feature in the application.",
+      "Remark": "Customer requesting a new feature in the application.",
       "Status": "in-progress",
       "Category": "Enhancement",
       "CreatedDate": "2024-09-23T08:20:00Z",
@@ -475,7 +465,7 @@
     {
       "id": "d6fa",
       "Title": "make quotation",
-      "Description": "qer",
+      "Remark": "qer",
       "Priority": "Medium",
       "Department": "Sales",
       "AssignedToID": 1001,
@@ -487,7 +477,7 @@
     {
       "id": "36fe",
       "Title": "make a new quotation",
-      "Description": "urgent",
+      "Remark": "urgent",
       "Priority": "High",
       "Department": "Sales",
       "AssignedToID": 1001,
@@ -501,7 +491,7 @@
       "Title": "eee",
       "CustomerID": "Michael Johnson michael.johnson@example.com",
       "ProductID": "eb30",
-      "Description": "Microsoft Surface Pro 7",
+      "Remark": "Microsoft Surface Pro 7",
       "Priority": "Medium",
       "TicketID": 6,
       "Status": "Open",
