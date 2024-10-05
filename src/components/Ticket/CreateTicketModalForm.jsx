@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createTicket } from '../../redux/slices/ticketSlice';
 import { fetchCustomers } from '../../redux/slices/customerSlice';
 import { fetchProducts } from '../../redux/slices/productSlice';
+import {addQuotation} from '../../redux/slices/quotationSlice';
+import { addProduct } from '../../redux/slices/productSlice';
 
 const { Option } = Select;
 
@@ -53,24 +55,62 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
 
     const onFinish = async (values) => {
         const currentDate = new Date().toISOString();
-        const modifiedValues = {
-            ...values,
-            TicketID: values.id || 6,
-            Status: 'Open',
-            CreatedBy: values.CreatedBy || 'Admin',
-            CreatedDate: currentDate,
+        const ticketData = {
+        Title: values.Title,
+        CustomerID: values.CustomerID,
+        ProductID: values.ProductID,
+        Priority: values.Priority,
+        Chargeability: values.Chargeability,
+        Status: 'Open',
+        CreatedBy: 'Admin',
+        CreatedDate: currentDate,
+        Remark: values.Remark,
         };
-
+    
         try {
-            await dispatch(createTicket(modifiedValues));
-            message.success('Ticket created successfully!');
-            form.resetFields();
-            onClose();
+            // Step 1: Create the ticket and get the TicketID from the response
+            const resultAction = await dispatch(createTicket(ticketData));
+    
+            // Check if the ticket was created successfully
+            if (createTicket.fulfilled.match(resultAction)) {
+                const newTicketID = resultAction.payload.TicketID;  // Get TicketID from response
+    
+                message.success('Ticket created successfully!');
+    
+                // Step 2: If the ticket is chargeable, create the quotation and product using the TicketID
+                if (isChargeable) {
+                    const quotationValues = {
+                        TicketID: newTicketID,  // Use the newly created TicketID
+                        FinalAmount: values.FinalAmount,
+                        CreatedDate: currentDate,
+                    };
+                    await dispatch(addQuotation(quotationValues));  // Dispatch addQuotation action
+    
+                    message.success('Quotation created successfully!');
+    
+                    const productValues = {
+                        TicketID: newTicketID,  // Use the newly created TicketID
+                        customerID: values.CustomerID,
+                        description: values.NewProdDescription,
+                        brand: 'Service-',
+                        model_no: 'Service-',
+                        price: values.FinalAmount
+                    };
+                    await dispatch(addProduct(productValues));  // Dispatch addProduct action
+    
+                    message.success('Product updated successfully!');
+                }
+    
+                form.resetFields();
+                onClose();
+            } else {
+                message.error('Failed to create ticket.');
+            }
         } catch (error) {
             message.error(`Failed to create ticket: ${error.message}`);
         }
     };
-
+    
     const filteredProducts = items.filter((product) => product.customerID === selectedCustomer?.id);
 
     return (
@@ -157,7 +197,7 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
                     <Input.TextArea
                         rows={4}
                         placeholder="Product description will appear here"
-                        value={selectedProduct ? selectedProduct.description : ''}
+                        // value={selectedProduct ? selectedProduct.description : ''}
                         readOnly
                     />
                 </Form.Item>
@@ -210,14 +250,14 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
                     <>
                         <h3>Quotation Details</h3>
                         <Form.Item
-                            name="QuotationAmount"
+                            name="FinalAmount"
                             label="Quotation Amount"
                             rules={[{ required: true, message: 'Please enter quotation amount' }]}
                         >
                             <Input placeholder="Enter quotation amount" />
                         </Form.Item>
                         <Form.Item
-                            name="QuotationDescription"
+                            name="NewProdDescription"
                             label="Quotation Description (new product description)"
                             rules={[{ required: true, message: 'Please enter quotation description' }]}
                         >

@@ -47,8 +47,8 @@ const Tickets = () => {
     const columns = [
         {
             title: 'Ticket ID',
-            dataIndex: 'TicketID',
-            key: 'TicketID',
+            dataIndex: 'id',
+            key: 'id',
         },
         {
             title: 'Title',
