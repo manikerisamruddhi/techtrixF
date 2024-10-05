@@ -22,9 +22,9 @@ const CustomHeader = () => {
                 Techtrix
             </Text>
             <Space>
-                <Badge count={5} overflowCount={99}>
+                {/* <Badge count={5} overflowCount={99}>
                     <BellOutlined style={{ fontSize: '24px', cursor: 'pointer' }} />
-                </Badge>
+                </Badge> */}
             </Space>
         </Header>
     );
