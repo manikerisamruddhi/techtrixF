@@ -56,9 +56,8 @@ const SalesQuotations = () => {
         },
         {
             title: 'Total Amount',
-            dataIndex: 'TotalAmount',
+            dataIndex: 'FinalAmount',
             key: 'TotalAmount',
-            render: (amount) => <span>₹{amount.toFixed(2)}</span>,
         },
         {
             title: 'Actions',

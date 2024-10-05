@@ -38,7 +38,7 @@ const QuotationList = () => {
     const columns = [
         {
             title: 'Quotation ID',
-            dataIndex: 'QuotationID',
+            dataIndex: 'id',
             key: 'QuotationID',
             render: (text) => <Link to={`/quotation/${text}`}>Quotation #{text}</Link>,
         },
@@ -58,7 +58,6 @@ const QuotationList = () => {
             title: 'Final Amount',
             dataIndex: 'FinalAmount',
             key: 'FinalAmount',
-            render: (amount) => <span>₹{amount.toFixed(2)}</span>,
         },
         {
             title: 'Actions',
@@ -120,7 +119,7 @@ const QuotationList = () => {
                     >
                         {selectedQuotation ? (
                             <div>
-                                <p><strong>Quotation ID:</strong> {selectedQuotation.QuotationID}</p>
+                                <p><strong>Quotation ID:</strong> {selectedQuotation.id}</p>
                                 <p><strong>Ticket ID:</strong> {selectedQuotation.TicketID}</p>
                                 <p><strong>Status:</strong> {selectedQuotation.Status}</p>
                                 <p><strong>Total amount:</strong> ₹{selectedQuotation.TotalAmount}</p>

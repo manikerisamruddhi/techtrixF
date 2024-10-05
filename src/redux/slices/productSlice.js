@@ -26,6 +26,7 @@ export const addProduct = createAsyncThunk('products/addProduct', async (newProd
   try {
     const response = await axios.post('http://localhost:4000/products', newProduct);
     toast.success('Product added successfully!');
+    console.log(response.data);
     return response.data;
   } catch (error) {
     toast.error('Failed to add product');
