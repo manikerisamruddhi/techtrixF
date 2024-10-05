@@ -1,14 +1,14 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { loginUser, logoutUser } from '../redux/slices/userSlice';
+import { loginUser, logoutUser } from '.././redux/slices/loginSlice';
 
 const useAuth = () => {
     const dispatch = useDispatch();
     const { user, isAuthenticated } = useSelector((state) => state.users);
 
-    const login = async (role) => {
+    const login = async (credentials) => { // Change `role` to `credentials`
         try {
-            // Only pass the role to loginUser and ignore email/password
-            await dispatch(loginUser(role)).unwrap();
+            console.log(`logging ${credentials}`);
+            await dispatch(loginUser(credentials)).unwrap(); // Pass entire credentials object
         } catch (err) {
             throw new Error('Failed to login');
         }
