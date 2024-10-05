@@ -13,7 +13,7 @@ const TicketDetailsModal = ({ visible, ticket, onClose }) => {
         >
             {ticket && (
                 <div>
-                    <p><strong>Ticket ID:</strong> {ticket.id}</p>
+                    <p><strong>Ticket ID :</strong> {ticket.id}</p>
                     <p><strong>Title :</strong> {ticket.Title}</p>
                     <p><strong>Customer ID :</strong> {ticket.CustomerID}</p>
                     <p><strong>Created By :</strong> {ticket.CreatedBy}</p>
