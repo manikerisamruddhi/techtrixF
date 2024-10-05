@@ -11,6 +11,7 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
     const dispatch = useDispatch();
     const [form] = Form.useForm();
     const [selectedProduct, setSelectedProduct] = useState(null);
+    const [selectedCustomer, setSelectedCustomer] = useState(null); // State for selected customer
 
     const { customers } = useSelector((state) => state.customers);
     const { items } = useSelector((state) => state.products);
@@ -22,11 +23,18 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
         }
     }, [dispatch, visible]);
 
+    const handleCustomerChange = (value) => {
+        console.log(value);
+        setSelectedCustomer(value); // Update selected customer state
+        form.setFieldsValue({ ProductID: null }); // Reset product selection
+        setSelectedProduct(null); // Reset selected product
+    };
+
     const handleProductChange = (value) => {
         const product = items.find((item) => item.id === value);
         setSelectedProduct(product);
         
-        // Set the description field to the selected product's description
+        // Set the remark field to the selected product's description
         if (product) {
             form.setFieldsValue({ Description: product.description });
         } else {
@@ -54,6 +62,9 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
         }
     };
 
+    // Filter products based on the selected customer
+    const filteredProducts = items.filter((product) => product.customerID === selectedCustomer);
+
     return (
         <Modal
             visible={visible}
@@ -76,54 +87,55 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
                 </Form.Item>
 
                 <Form.Item
-    name="CustomerID"
-    label="Customer"
-    rules={[{ required: true, message: 'Please select a customer' }]}
->
-<Select
-  showSearch
-  placeholder="Select a customer"
-  optionFilterProp="label"
->
-{customers && customers.length > 0 ? (
-  customers.map(customer => (
-    <Option key={customer.id} value={customer.id} label={`${customer.FirstName} ${customer.LastName} ${customer.Email}`}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <span>{`${customer.FirstName} ${customer.LastName}`}</span>
-        <span style={{ marginLeft: '10px', color: 'gray' }}>{customer.Email}</span>
-      </div>
-    </Option>
-  ))
-) : (
-  <Option value="">No customers found</Option>
-)}
-</Select>
-</Form.Item>
+                    name="CustomerID"
+                    label="Customer"
+                    rules={[{ required: true, message: 'Please select a customer' }]}
+                >
+                    <Select
+                        showSearch
+                        placeholder="Select a customer"
+                        optionFilterProp="label"
+                        onChange={handleCustomerChange} // Handle customer selection
+                    >
+                        {customers && customers.length > 0 ? (
+                            customers.map(customer => (
+                                <Option key={customer.id} value={customer.id} label={`${customer.FirstName} ${customer.LastName} ${customer.Email}`}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                        <span>{`${customer.FirstName} ${customer.LastName}`}</span>
+                                        <span style={{ marginLeft: '10px', color: 'gray' }}>{customer.Email}</span>
+                                    </div>
+                                </Option>
+                            ))
+                        ) : (
+                            <Option value="">No customers found</Option>
+                        )}
+                    </Select>
+                </Form.Item>
 
                 <Form.Item
                     name="ProductID"
                     label="Product"
                     rules={[{ required: true, message: 'Please select a product' }]}
                 >
-                   <Select
-  showSearch
-  placeholder="Select a product"
-  optionFilterProp="label"
-  onChange={handleProductChange}
->
-{items && items.length > 0 ? (
-  items.map(product => (
-    <Option key={product.id} value={product.id} label={`${product.brand} ${product.model_no}`}>
-      <div>
-        <span style={{ marginRight: '10px' }}>Brand: {product.brand}</span>
-        <span>Model No: {product.model_no}</span>
-      </div>
-    </Option>
-  ))
-) : (
-  <Option value="">No products found</Option>
-)}
-</Select>
+                    <Select
+                        showSearch
+                        placeholder="Select a product"
+                        optionFilterProp="label"
+                        onChange={handleProductChange}
+                    >
+                        {filteredProducts && filteredProducts.length > 0 ? (
+                            filteredProducts.map(product => (
+                                <Option key={product.id} value={product.id} label={`${product.brand} ${product.model_no}`}>
+                                    <div>
+                                        <span style={{ marginRight: '10px' }}>Brand: {product.brand}</span>
+                                        <span>Model No: {product.model_no}</span>
+                                    </div>
+                                </Option>
+                            ))
+                        ) : (
+                            <Option value="">No products found for this customer</Option>
+                        )}
+                    </Select>
                 </Form.Item>
 
                 {/* Show warranty status and end date based on selected product */}
@@ -143,7 +155,7 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
                                 </span>
                             </div>
                         </Form.Item>
-                        <Form.Item >
+                        <Form.Item>
                             <div>
                                 <span>Warranty End Date: </span>
                                 <span>
@@ -156,7 +168,7 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
 
                 <Form.Item
                     name="Description"
-                    label="Description"
+                    label="Product Description"
                     rules={[{ required: true, message: 'Please enter the description' }]}
                 >
                     <Input.TextArea
@@ -177,6 +189,14 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
                         <Option value="Medium">Medium</Option>
                         <Option value="High">High</Option>
                     </Select>
+                </Form.Item>
+
+                <Form.Item
+                    name="Remark"
+                    label="Remark"
+                    rules={[{ required: true, message: 'Add a remark' }]}
+                >
+                    <Input placeholder="Enter a remark" />
                 </Form.Item>
 
                 <Form.Item>
