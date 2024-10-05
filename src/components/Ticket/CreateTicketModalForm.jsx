@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Form, Input, Select, Button, message } from 'antd';
+import { Modal, Form, Input, Select, Button, message, Radio } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { createTicket } from '../../redux/slices/ticketSlice';
 import { fetchCustomers } from '../../redux/slices/customerSlice';
@@ -11,7 +11,9 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
     const dispatch = useDispatch();
     const [form] = Form.useForm();
     const [selectedProduct, setSelectedProduct] = useState(null);
-    const [selectedCustomer, setSelectedCustomer] = useState(null); // State for selected customer
+    const [selectedCustomer, setSelectedCustomer] = useState(null);
+    const [isChargeable, setIsChargeable] = useState(false); // State to track chargeability selection
+    const [isPremiumCustomer, setIsPremiumCustomer] = useState(false); // State to track if customer is premium
 
     const { customers } = useSelector((state) => state.customers);
     const { items } = useSelector((state) => state.products);
@@ -24,22 +26,29 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
     }, [dispatch, visible]);
 
     const handleCustomerChange = (value) => {
-        console.log(value);
-        setSelectedCustomer(value); // Update selected customer state
-        form.setFieldsValue({ ProductID: null }); // Reset product selection
-        setSelectedProduct(null); // Reset selected product
+        const selectedCust = customers.find(customer => customer.id === value);
+        setSelectedCustomer(selectedCust);
+
+        // Check if the customer is premium and set state accordingly
+        setIsPremiumCustomer(selectedCust?.isPremium || false);
+
+        form.setFieldsValue({ ProductID: null });
+        setSelectedProduct(null);
     };
 
     const handleProductChange = (value) => {
         const product = items.find((item) => item.id === value);
         setSelectedProduct(product);
         
-        // Set the remark field to the selected product's description
         if (product) {
             form.setFieldsValue({ Description: product.description });
         } else {
-            form.setFieldsValue({ Description: '' }); // Clear the description if no product is found
+            form.setFieldsValue({ Description: '' });
         }
+    };
+
+    const handleChargeabilityChange = (e) => {
+        setIsChargeable(e.target.value === 'Chargeable'); // Set state based on selection
     };
 
     const onFinish = async (values) => {
@@ -62,8 +71,7 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
         }
     };
 
-    // Filter products based on the selected customer
-    const filteredProducts = items.filter((product) => product.customerID === selectedCustomer);
+    const filteredProducts = items.filter((product) => product.customerID === selectedCustomer?.id);
 
     return (
         <Modal
@@ -95,7 +103,7 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
                         showSearch
                         placeholder="Select a customer"
                         optionFilterProp="label"
-                        onChange={handleCustomerChange} // Handle customer selection
+                        onChange={handleCustomerChange}
                     >
                         {customers && customers.length > 0 ? (
                             customers.map(customer => (
@@ -111,6 +119,8 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
                         )}
                     </Select>
                 </Form.Item>
+
+             
 
                 <Form.Item
                     name="ProductID"
@@ -138,15 +148,26 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
                     </Select>
                 </Form.Item>
 
-                {/* Show warranty status and end date based on selected product */}
+                
+                <Form.Item
+                    name="Description"
+                    label="Product Description"
+                    rules={[{ required: true, message: 'Please enter the description' }]}
+                >
+                    <Input.TextArea
+                        rows={4}
+                        placeholder="Product description will appear here"
+                        value={selectedProduct ? selectedProduct.description : ''}
+                        readOnly
+                    />
+                </Form.Item>
+
                 {selectedProduct && selectedProduct.warranty_end_date && (
                     <>
                         <Form.Item>
                             <div style={{ display: 'flex', alignItems: 'center' }}>
                                 <span style={{ marginRight: '10px' }}>
-                                    {new Date(selectedProduct.warranty_end_date.replace(' ', 'T')) > new Date()
-                                        ? "In Warranty"
-                                        : "Out of Warranty"}
+                                  Warranty Status :
                                 </span>
                                 <span style={{ color: new Date(selectedProduct.warranty_end_date.replace(' ', 'T')) > new Date() ? 'green' : 'red' }}>
                                     {new Date(selectedProduct.warranty_end_date.replace(' ', 'T')) > new Date()
@@ -157,27 +178,53 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
                         </Form.Item>
                         <Form.Item>
                             <div>
-                                <span>Warranty End Date: </span>
+                                <span>Warranty End Date : </span>
                                 <span>
-                                    {new Date(selectedProduct.warranty_end_date).toLocaleDateString()} {/* Format date as needed */}
+                                    {new Date(selectedProduct.warranty_end_date).toLocaleDateString()}
                                 </span>
                             </div>
+                        </Form.Item>
+
+                           {/* Render the line if the customer is premium */}
+                {isPremiumCustomer && (
+                    <div style={{ marginBottom: '10px', color: 'green', fontWeight: 'bold' }}>
+                        This customer is a Premium customer.
+                    </div>
+                )}
+
+                        <Form.Item
+                            name="Chargeability"
+                            label="Chargeability"
+                            rules={[{ required: true, message: 'Please select chargeability' }]}
+                        >
+                            <Radio.Group onChange={handleChargeabilityChange}>
+                                <Radio value="Chargeable">Chargeable</Radio>
+                                <Radio value="NonChargeable">Non-chargeable</Radio>
+                            </Radio.Group>
                         </Form.Item>
                     </>
                 )}
 
-                <Form.Item
-                    name="Description"
-                    label="Product Description"
-                    rules={[{ required: true, message: 'Please enter the description' }]}
-                >
-                    <Input.TextArea
-                        rows={4}
-                        placeholder="Product description will appear here"
-                        value={selectedProduct ? selectedProduct.description : ''}
-                        readOnly // Make the description read-only
-                    />
-                </Form.Item>
+                {/* Conditionally render the quotation fields if chargeable is selected */}
+                {isChargeable && (
+                    <>
+                        <h3>Quotation Details</h3>
+                        <Form.Item
+                            name="QuotationAmount"
+                            label="Quotation Amount"
+                            rules={[{ required: true, message: 'Please enter quotation amount' }]}
+                        >
+                            <Input placeholder="Enter quotation amount" />
+                        </Form.Item>
+                        <Form.Item
+                            name="QuotationDescription"
+                            label="Quotation Description (new product description)"
+                            rules={[{ required: true, message: 'Please enter quotation description' }]}
+                        >
+                            <Input.TextArea rows={4} placeholder="Enter quotation description" />
+                        </Form.Item>
+                    </>
+                )}
 
                 <Form.Item
                     name="Priority"
@@ -196,7 +243,9 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
                     label="Remark"
                     rules={[{ required: true, message: 'Add a remark' }]}
                 >
-                    <Input placeholder="Enter a remark" />
+                    <Input.TextArea
+                     rows={2}
+                    placeholder="Enter a remark" />
                 </Form.Item>
 
                 <Form.Item>
