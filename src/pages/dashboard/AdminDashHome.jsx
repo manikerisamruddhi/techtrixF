@@ -1,7 +1,23 @@
-import React from 'react';
-import '../../styles/Pages/Admin/Dashboard.css'; // Importing CSS for the Dashboard
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchTickets, fetchQuotations, fetchInvoices } from '../../redux/slices/adminDash'; // Adjust according to your structure
+import useTicketCounts from '../../hooks/useTicketCount'; // Import the custom hook
+import '../../styles/Pages/Admin/Dashboard.css';
 
 const Dashboard = () => {
+    const dispatch = useDispatch();
+    const { tickets, quotations, invoices, loading, error } = useSelector(state => state.dashboard); // Adjust according to your structure
+
+    // Count the tickets using the custom hook
+    const { total, inProgress, resolved, closed, open } = useTicketCounts(tickets);
+
+    // Fetch data when component mounts
+    useEffect(() => {
+        dispatch(fetchTickets());
+        dispatch(fetchQuotations());
+        dispatch(fetchInvoices());
+    }, [dispatch]);
+
     return (
         <div className="dashboard-container">
             <div className="dashboard-content">
@@ -11,10 +27,11 @@ const Dashboard = () => {
                     <div className="dashboard-card">
                         <h2>All Tickets</h2>
                         <div className="sub-card">
-                            <p>total: 10</p> {/* Replace with dynamic data */}
-                            <p>in-progress: 5</p> {/* Replace with dynamic data */}
-                            <p>resolved: 3</p> {/* Replace with dynamic data */}
-                            <p>closed: 2</p> {/* Replace with dynamic data */}
+                            <p>Total: {total}</p>
+                            <p>Open: {open}</p>
+                            <p>In Progress: {inProgress}</p>
+                            <p>Resolved: {resolved}</p>
+                            <p>Closed: {closed}</p>
                         </div>
                     </div>
 
@@ -22,8 +39,8 @@ const Dashboard = () => {
                     <div className="dashboard-card">
                         <h2>Quotations</h2>
                         <div className="sub-card">
-                            <p>Delivered Quotations: 25</p> {/* Replace with dynamic data */}
-                            <p>Remaining Quotations: 15</p> {/* Replace with dynamic data */}
+                            <p>Delivered Quotations: {quotations.delivered}</p>
+                            <p>Remaining Quotations: {quotations.remaining}</p>
                         </div>
                     </div>
 
@@ -31,14 +48,17 @@ const Dashboard = () => {
                     <div className="dashboard-card">
                         <h2>All Invoices</h2>
                         <div className="sub-card">
-                            <p>In Warranty: 12</p> {/* Replace with dynamic data */}
-                            <p>Out of Warranty: 8</p> {/* Replace with dynamic data */}
+                            <p>In Warranty: {invoices.inWarranty}</p>
+                            <p>Out of Warranty: {invoices.outOfWarranty}</p>
                         </div>
                     </div>
                 </div>
+
+                {loading && <p>Loading data...</p>}
+                {error && <p>Error loading data: {error}</p>}
             </div>
         </div>
-      );
+    );
 };
 
 export default Dashboard;

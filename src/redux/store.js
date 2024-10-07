@@ -6,6 +6,7 @@ import productReducer from './slices/productSlice';
 import quotationReducer from './slices/quotationSlice';
 import invoiceReducer from './slices/invoiceSlice';
 import notificationReducer from './slices/notificationSlice';
+import dashboardReducer from './slices/adminDash'; // Import the dashboard slice
 
 export const store = configureStore({
     reducer: {
@@ -16,5 +17,6 @@ export const store = configureStore({
         quotations: quotationReducer,
         invoices: invoiceReducer,
         notifications: notificationReducer,
+        dashboard: dashboardReducer, // Add the dashboard slice here
     },
 });
