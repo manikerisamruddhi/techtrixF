@@ -1,0 +1,11 @@
+.quotation-modal {
+    display: flex;
+    flex-direction: column;
+    padding: 20px; /* Add some padding for better spacing */
+}
+
+.product-form-border {
+    border: 1px solid #d9d9d9;
+    padding: 15px;
+    margin-bottom: 20px;
+}

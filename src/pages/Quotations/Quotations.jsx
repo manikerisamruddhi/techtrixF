@@ -2,23 +2,23 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchQuotations } from '../../redux/slices/quotationSlice';
 import { Link } from 'react-router-dom';
-import { Layout, Table, Button, Empty, message, Spin, Typography, Modal } from 'antd'; // Import Ant Design components
+import { Layout, Table, Button, Empty, message, Spin, Typography, Modal } from 'antd';
+import CreateQuotationFormModal from '../../components/Quotation/CreateQuotation'; // Import the new modal component
 
 const { Header, Content } = Layout;
 const { Title } = Typography;
 
 const QuotationList = () => {
     const dispatch = useDispatch();
-    const { quotations = [], loading, error } = useSelector((state) => state.quotations); // Default to empty array
+    const { quotations = [], loading, error } = useSelector((state) => state.quotations);
 
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [selectedQuotation, setSelectedQuotation] = useState(null); // Store the selected quotation details
+    const [selectedQuotation, setSelectedQuotation] = useState(null);
 
     useEffect(() => {
         dispatch(fetchQuotations());
     }, [dispatch]);
 
-    // Handle backend error
     useEffect(() => {
         if (error) {
             message.error(`Failed to load quotations: ${error}. Please check backend connectivity.`);
@@ -35,6 +35,13 @@ const QuotationList = () => {
         setSelectedQuotation(null);
     };
 
+    const handleCreateQuotation = (quotationData) => {
+        // Dispatch action to create a quotation
+        // dispatch(createQuotation(quotationData)); // Uncomment this when the action is created
+        message.success('Quotation created successfully!');
+        setIsModalVisible(false); // Close the modal after creation
+    };
+
     const columns = [
         {
             title: 'Quotation ID',
@@ -42,12 +49,6 @@ const QuotationList = () => {
             key: 'QuotationID',
             render: (text) => <Link to={`/quotation/${text}`}>Quotation #{text}</Link>,
         },
-        // {
-        //     title: 'Ticket ID',
-        //     dataIndex: 'TicketID',
-        //     key: 'TicketID',
-        //     render: (ticketId) => <span>{ticketId}</span>,
-        // },
         {
             title: 'Status',
             dataIndex: 'Status',
@@ -67,9 +68,6 @@ const QuotationList = () => {
                     <Button type="primary" style={{ marginRight: 8 }} onClick={() => handleViewClick(record)}>
                         View
                     </Button>
-                    {/* <Link to={`/proceed-quotation/${record.QuotationID}`}>
-                        <Button type="default">Proceed</Button>
-                    </Link> */}
                 </>
             ),
         },
@@ -79,18 +77,11 @@ const QuotationList = () => {
         <Layout style={{ minHeight: '100vh', background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)' }}>
             <Content style={{ padding: '20px' }}>
                 <div className="quotation-list-container">
-                    <div
-                        style={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                            marginBottom: '16px',
-                        }}
-                    >
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
                         <Title level={4} style={{ margin: 0 }}>Quotation List</Title>
-                        <Link to="/create-quotation">
-                            <Button type="primary" style={{ padding: '0 20px' }}>Create Quotation</Button>
-                        </Link>
+                        <Button type="primary" style={{ padding: '0 20px' }} onClick={() => setIsModalVisible(true)}>
+                            Create Quotation
+                        </Button>
                     </div>
 
                     {loading === 'loading' ? (
@@ -124,15 +115,21 @@ const QuotationList = () => {
                                 <p><strong>Status:</strong> {selectedQuotation.Status}</p>
                                 <p><strong>Total amount:</strong> ₹{selectedQuotation.TotalAmount}</p>
                                 <p><strong>Final amount after discount:</strong> ₹{selectedQuotation.FinalAmount}</p>
-                                <p><strong>Status:</strong> {selectedQuotation.Status}</p>
                                 <p><strong>Comments:</strong> {selectedQuotation.Comments}</p>
                                 <p><strong>Created date:</strong> {selectedQuotation.CreatedDate}</p>
-                                {/* Add other fields as needed */}
                             </div>
                         ) : (
                             <Spin tip="Loading details..." />
                         )}
                     </Modal>
+
+                    {/* Create Quotation Form Modal */}
+                    <CreateQuotationFormModal
+                        visible={isModalVisible}
+                        onCreate={handleCreateQuotation}
+                        onClose={handleModalClose} //
+                        onCancel={() => setIsModalVisible(false)}
+                    />
                 </div>
             </Content>
         </Layout>
