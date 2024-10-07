@@ -12,13 +12,11 @@ const LoginPage = () => {
 
     const handleLogin = async (values) => {
         try {
-            // Dispatch the login action and await its resolution
-            const resultAction = await dispatch(loginUser(values));  // Pass entire credentials object
-                console.log(resultAction);
+            const resultAction = await dispatch(loginUser(values));
+            console.log(resultAction);
             if (loginUser.fulfilled.match(resultAction)) {
                 const userRole = resultAction.payload.role;
-                console.log(userRole);
-
+    
                 // Navigate based on the role
                 if (userRole === 'Admin') {
                     navigate('/');  // Redirect to Admin
@@ -36,6 +34,7 @@ const LoginPage = () => {
             setError('Invalid credentials');
         }
     };
+    
 
     return (
         <div className="auth-container" style={{ maxWidth: '400px', margin: '100px auto', padding: '20px' }}>

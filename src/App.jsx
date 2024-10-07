@@ -20,6 +20,7 @@ import { ThemeProvider } from '@mui/material/styles'; // You can choose to keep 
 import { CssBaseline } from '@mui/material'; // Same as above
 import theme from './theme'; // Custom theme
 import Layout from './components/Layout'; // Use the updated layout
+import ProtectedRoute from './components/Auth/ProtectedRoute';
 
 const App = () => {
     return (
@@ -35,23 +36,71 @@ const App = () => {
                         <Route path="/Tickets" element={<Tickets />} />
                         
                         {/* protected Routes */}
-                        <Route path="/CreateTicket" element={<CreateTicket />} />
-                        <Route path="/Quotations" element={<Quotations />} />
-                     
-                        <Route path="/UserManagement" element={<UserManagement />} />
-                        <Route path="/Customers" element={<Customers />} />
-                        <Route path="/Invoices" element={<Invoices />} />
+                        {/* Protected Routes */}
+                        <Route path="/" element={
+                            <ProtectedRoute allowedRoles={['Admin']}>
+                                <Dashboard />
+                            </ProtectedRoute>
+                        } />
+                        
+                        <Route path="/CreateTicket" element={
+                            <ProtectedRoute allowedRoles={['Admin', 'Sales']}>
+                                <CreateTicket />
+                            </ProtectedRoute>
+                        } />
+                        
+                        <Route path="/Quotations" element={
+                            <ProtectedRoute allowedRoles={['Admin', 'Sales']}>
+                                <Quotations />
+                            </ProtectedRoute>
+                        } />
 
+                        <Route path="/UserManagement" element={
+                            <ProtectedRoute allowedRoles={['Admin']}>
+                                <UserManagement />
+                            </ProtectedRoute>
+                        } />
 
-                        <Route path="/Sales" element={<SalesHome />} />
-                        <Route path="/Sales-Tickets/:userId" element={<SalesTickets />} />
-                        <Route path="/Sales-Products" element={<ProductList />} />
-                        <Route path="/Tickets/:ticketId" element={<TicketDetails />} />
-                        <Route path="/Sales-Quotations" element={<SalesQuotations />} />
+                        <Route path="/Customers" element={
+                            <ProtectedRoute allowedRoles={['Admin', 'Sales']}>
+                                <Customers />
+                            </ProtectedRoute>
+                        } />
 
+                        <Route path="/Invoices" element={
+                            <ProtectedRoute allowedRoles={['Admin', 'Sales']}>
+                                <Invoices />
+                            </ProtectedRoute>
+                        } />
 
-                        {/* Default Route */}
-                        <Route path="/" element={<Dashboard />} />
+                        {/* Sales Role Protected Routes */}
+                        <Route path="/Sales" element={
+                            <ProtectedRoute allowedRoles={['Sales']}>
+                                <SalesHome />
+                            </ProtectedRoute>
+                        } />
+                        <Route path="/Sales-Tickets/:userId" element={
+                            <ProtectedRoute allowedRoles={['Sales']}>
+                                <SalesTickets />
+                            </ProtectedRoute>
+                        } />
+                        <Route path="/Sales-Products" element={
+                            <ProtectedRoute allowedRoles={['Sales']}>
+                                <ProductList />
+                            </ProtectedRoute>
+                        } />
+                        <Route path="/Sales-Quotations" element={
+                            <ProtectedRoute allowedRoles={['Sales']}>
+                                <SalesQuotations />
+                            </ProtectedRoute>
+                        } />
+
+                        {/* Ticket Details Accessible for all authenticated users */}
+                        <Route path="/Tickets/:ticketId" element={
+                            <ProtectedRoute>
+                                <TicketDetails />
+                            </ProtectedRoute>
+                        } />
                     </Routes>
                 </Layout>
             </Router>
