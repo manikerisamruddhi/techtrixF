@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Form, Input, Button, Alert } from 'antd';
 import { useDispatch } from 'react-redux';  // Import useDispatch
-import { loginUser } from '../../redux/slices/loginSlice';  // Import loginUser thunk
+import { loginUser } from '../../redux/slices/userSlice';  // Import loginUser thunk
 
 const LoginPage = () => {
     const [credentials, setCredentials] = useState({ email: '', password: '' });

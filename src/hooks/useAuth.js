@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { loginUser, logoutUser } from '.././redux/slices/loginSlice';
+import { loginUser, logoutUser } from '.././redux/slices/userSlice';
 
 const useAuth = () => {
     const dispatch = useDispatch();
