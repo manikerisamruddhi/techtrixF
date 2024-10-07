@@ -1,43 +1,44 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import AxiosMockAdapter from 'axios-mock-adapter';
 
 // Create an instance of Axios
-const axiosInstance = axios.create();
-const mock = new AxiosMockAdapter(axiosInstance);
-
-// Mocking the login API
-mock.onPost('http://localhost:4000/auth/login').reply((config) => {
-    const { email, password } = JSON.parse(config.data);
-    
-    // Simulate successful login
-    if (email === 'user1@example.com' && password === 'password1') {
-        return [200, { role: 'user', token: 'fake-jwt-token' }];
-    } else if (email === 'admin@example.com' && password === 'adminpass') {
-        return [200, { role: 'admin', token: 'fake-jwt-token' }];
-    }
-    
-    // Simulate failed login
-    return [401, { message: 'Invalid credentials' }];
+const axiosInstance = axios.create({
+    baseURL: 'http://localhost:4000', // Assuming the JSON server is running on port 4000
+    headers: {
+        'Content-Type': 'application/json',
+    },
 });
 
 // Async Thunks
+
+// Fetch user login from db.json mock API
 export const loginUser = createAsyncThunk(
     'users/loginUser',
     async (credentials, { rejectWithValue }) => {
         try {
-            const response = await axiosInstance.post('http://localhost:4000/auth/login', credentials);
-            return {
-                role: response.data.role,
-                token: response.data.token,
-                isAuthenticated: true,
-            };
+            const response = await axiosInstance.get('/users', { 
+                params: { email: credentials.email, password: credentials.password } 
+            });
+
+            const user = response.data[0]; // Assuming a match returns an array of users
+            console.log(user);
+            
+            if (user) {
+                return {
+                    role: user.role,
+                    token: 'fake-jwt-token',  // You can mock a JWT here
+                    isAuthenticated: true,
+                };
+            } else {
+                return rejectWithValue('Invalid credentials');
+            }
         } catch (error) {
-            return rejectWithValue(error.response.data.message || 'Failed to login');
+            return rejectWithValue(error.message || 'Failed to login');
         }
     }
 );
 
+// Logout user
 export const logoutUser = createAsyncThunk('users/logoutUser', async () => {
     return {}; // Simulate logout logic
 });

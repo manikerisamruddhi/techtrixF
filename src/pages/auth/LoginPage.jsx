@@ -1,18 +1,37 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Form, Input, Button, Alert } from 'antd';
-import useAuth from '../../hooks/useAuth';
+import { useDispatch } from 'react-redux';  // Import useDispatch
+import { loginUser } from '../../redux/slices/loginSlice';  // Import loginUser thunk
 
 const LoginPage = () => {
-    const { login } = useAuth();
     const [credentials, setCredentials] = useState({ email: '', password: '' });
     const [error, setError] = useState(null);
+    const dispatch = useDispatch();  // Initialize dispatch
     const navigate = useNavigate();
 
     const handleLogin = async (values) => {
         try {
-            await login(values);  // Pass entire credentials object
-            navigate('/dashboard'); // Redirect to dashboard on success
+            // Dispatch the login action and await its resolution
+            const resultAction = await dispatch(loginUser(values));  // Pass entire credentials object
+                console.log(resultAction);
+            if (loginUser.fulfilled.match(resultAction)) {
+                const userRole = resultAction.payload.role;
+                console.log(userRole);
+
+                // Navigate based on the role
+                if (userRole === 'Admin') {
+                    navigate('/');  // Redirect to Admin
+                } else if (userRole === 'Sales') {
+                    navigate('/Sales');  // Redirect to Sales page
+                } else if (userRole === 'Logistics') {
+                    navigate('/Logistics');  // Redirect to Logistics page
+                } else {
+                    navigate('/');  // Default redirect to home page
+                }
+            } else {
+                setError('Invalid credentials');
+            }
         } catch (err) {
             setError('Invalid credentials');
         }

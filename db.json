@@ -717,6 +717,12 @@
         "email": "ava.hernandez@example.com",
         "userid": 1010,
         "id": "0j1k2l"
+      },
+      {
+        "id": "0j1k7l",
+        "role":"Admin",
+        "email": "admin@example.com",
+        "password":"Admin"
       }
     ],
     "auth": {
