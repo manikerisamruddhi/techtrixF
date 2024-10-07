@@ -740,10 +740,16 @@
       "password": "Admin"
     },
     {
-      "id": "0j1k7l",
+      "id": "0j1",
       "role": "Admin",
       "email": "test@example.com",
       "password": "test"
+    },
+    {
+      "id": "0j1447l",
+      "role": "Admin",
+      "email": "test1@example.com",
+      "password": "test1"
     }
   ],
   "auth": {
