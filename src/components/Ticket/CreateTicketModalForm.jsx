@@ -40,7 +40,7 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
     const handleProductChange = (value) => {
         const product = items.find((item) => item.id === value);
         setSelectedProduct(product);
-        
+
         if (product) {
             form.setFieldsValue({ Description: product.description });
         } else {
@@ -116,15 +116,15 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
             title="Create Ticket"
             onCancel={onClose}
             footer={null}
-            width={800} 
+            width={800}
         >
-            <div style={{ 
-                maxHeight: '500px', 
+            <div style={{
+                maxHeight: '500px',
                 overflowY: 'auto',
-                padding: '20px',  
-                boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',  
-                borderRadius: '8px',  
-                backgroundColor: '#fff', 
+                padding: '20px',
+                boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
+                borderRadius: '8px',
+                backgroundColor: '#fff',
             }}>
                 <Form
                     layout="vertical"
@@ -235,13 +235,13 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
                             )}
 
                             <Form.Item
-                                name="Chargeability"
-                                label="Chargeability : "
+                                name="IsChargeable"
+                                label="IsChargeable: "
                                 rules={[{ required: true, message: 'Please select chargeability' }]}
                             >
                                 <Radio.Group onChange={handleChargeabilityChange}>
-                                    <Radio value="Chargeable">Chargeable</Radio>
-                                    <Radio value="NonChargeable">Non-chargeable</Radio>
+                                    <Radio value={true}>Chargeable</Radio>
+                                    <Radio value={false}>Non-chargeable</Radio>
                                 </Radio.Group>
                             </Form.Item>
                         </>

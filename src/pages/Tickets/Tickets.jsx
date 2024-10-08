@@ -3,7 +3,7 @@ import { Table, Button, Empty, message, Layout, Typography, Spin } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchTickets } from '../../redux/slices/ticketSlice';
 import { fetchUsers, fetchDepartments } from '../../redux/slices/userSlice';
-import TicketDetailsModal from './TicketDetailsModal';
+import TicketDetailsModal from '../../components/Ticket/TicketDetailsModal';
 import CreateTicketModal from '../../components/Ticket/CreateTicketModalForm'; // Import the CreateTicketModal
 import moment from 'moment'; // Import moment.js for date formatting
 
@@ -59,6 +59,7 @@ const Tickets = () => {
             title: 'Ticket ID',
             dataIndex: 'id',
             key: 'id',
+            
         },
         {
             title: 'Title',

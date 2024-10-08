@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Table, Spin, Empty, Button, message } from 'antd';
 import axios from 'axios';
 import QuotationFormModal from './QuotationFormModal';
-import TicketDetailsModal from '../../pages/Tickets/TicketDetailsModal';
+import TicketDetailsModal from '../../components/Ticket/TicketDetailsModal';
 import AssignToModal from './AssignToModal'; // Import the new modal component
 
 const SalesTickets = () => {

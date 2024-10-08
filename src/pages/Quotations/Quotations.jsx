@@ -2,18 +2,23 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchQuotations } from '../../redux/slices/quotationSlice';
 import { Link } from 'react-router-dom';
-import { Layout, Table, Button, Empty, message, Spin, Typography, Modal } from 'antd';
-import CreateQuotationFormModal from '../../components/Quotation/CreateQuotation'; // Import the new modal component
+import { Layout, Table, Button, Empty, message, Spin, Typography, Input, Space } from 'antd';
+import CreateQuotationFormModal from '../../components/Quotation/CreateQuotation';
+import QuotationDetailsModal from '../../components/Quotation/QuotationDetails';
+import { SearchOutlined } from '@ant-design/icons';
 
-const { Header, Content } = Layout;
+const { Content } = Layout;
 const { Title } = Typography;
 
-const QuotationList = () => {
+const Quotations = () => {
     const dispatch = useDispatch();
     const { quotations = [], loading, error } = useSelector((state) => state.quotations);
 
-    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
+    const [isDetailsModalVisible, setIsDetailsModalVisible] = useState(false);
     const [selectedQuotation, setSelectedQuotation] = useState(null);
+    const [searchText, setSearchText] = useState('');
+    const [searchedColumn, setSearchedColumn] = useState('');
 
     useEffect(() => {
         dispatch(fetchQuotations());
@@ -26,20 +31,81 @@ const QuotationList = () => {
     }, [error]);
 
     const handleViewClick = (record) => {
-        setSelectedQuotation(record);
-        setIsModalVisible(true);
+        setSelectedQuotation(record); // Set selected quotation data
+        setIsDetailsModalVisible(true); // Show the details modal
     };
 
-    const handleModalClose = () => {
-        setIsModalVisible(false);
-        setSelectedQuotation(null);
+    const handleCreateModalClose = () => {
+        setIsCreateModalVisible(false);
+    };
+
+    const handleDetailsModalClose = () => {
+        setIsDetailsModalVisible(false);
+        setSelectedQuotation(null); // Clear the selected quotation
     };
 
     const handleCreateQuotation = (quotationData) => {
-        // Dispatch action to create a quotation
-        // dispatch(createQuotation(quotationData)); // Uncomment this when the action is created
         message.success('Quotation created successfully!');
-        setIsModalVisible(false); // Close the modal after creation
+        setIsCreateModalVisible(false); // Close the modal after creation
+    };
+
+    // Search filter functions for columns
+    const getColumnSearchProps = (dataIndex) => ({
+        filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+            <div style={{ padding: 8 }}>
+                <Input
+                    placeholder={`Search ${dataIndex}`}
+                    value={selectedKeys[0]}
+                    onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+                    onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+                    style={{ marginBottom: 8, display: 'block' }}
+                />
+                <Space>
+                    <Button
+                        type="primary"
+                        onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+                        icon={<SearchOutlined />}
+                        size="small"
+                        style={{ width: 90 }}
+                    >
+                        Search
+                    </Button>
+                    <Button onClick={() => handleReset(clearFilters)} size="small" style={{ width: 90 }}>
+                        Reset
+                    </Button>
+                </Space>
+            </div>
+        ),
+        filterIcon: (filtered) => (
+            <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />
+        ),
+        onFilter: (value, record) => {
+            return record[dataIndex]
+                ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
+                : '';
+        },
+        onFilterDropdownVisibleChange: (visible) => {
+            if (visible) {
+                // setTimeout to wait for Input to be focused
+            }
+        },
+        render: (text) =>
+            searchedColumn === dataIndex ? (
+                <span style={{ backgroundColor: '#ffc069', padding: 0 }}>{text}</span>
+            ) : (
+                text
+            ),
+    });
+
+    const handleSearch = (selectedKeys, confirm, dataIndex) => {
+        confirm();
+        setSearchText(selectedKeys[0]);
+        setSearchedColumn(dataIndex);
+    };
+
+    const handleReset = (clearFilters) => {
+        clearFilters();
+        setSearchText('');
     };
 
     const columns = [
@@ -48,27 +114,32 @@ const QuotationList = () => {
             dataIndex: 'id',
             key: 'QuotationID',
             render: (text) => <Link to={`/quotation/${text}`}>Quotation #{text}</Link>,
+            ...getColumnSearchProps('id'), // Search filter for Quotation ID
         },
         {
             title: 'Status',
             dataIndex: 'Status',
             key: 'Status',
-            render: (status) => <span>{status}</span>,
+            filters: [
+                { text: 'Pending', value: 'Pending' },
+                { text: 'Approved', value: 'Approved' },
+                { text: 'Rejected', value: 'Rejected' },
+            ],
+            onFilter: (value, record) => record.Status.includes(value),
         },
         {
             title: 'Final Amount',
             dataIndex: 'FinalAmount',
             key: 'FinalAmount',
+            ...getColumnSearchProps('FinalAmount'), // Search filter for Final Amount
         },
         {
             title: 'Actions',
             key: 'actions',
             render: (_, record) => (
-                <>
-                    <Button type="primary" style={{ marginRight: 8 }} onClick={() => handleViewClick(record)}>
-                        View
-                    </Button>
-                </>
+                <Button type="primary" onClick={() => handleViewClick(record)}>
+                    View Details
+                </Button>
             ),
         },
     ];
@@ -79,7 +150,7 @@ const QuotationList = () => {
                 <div className="quotation-list-container">
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
                         <Title level={4} style={{ margin: 0 }}>Quotation List</Title>
-                        <Button type="primary" style={{ padding: '0 20px' }} onClick={() => setIsModalVisible(true)}>
+                        <Button type="primary" style={{ padding: '0 20px' }} onClick={() => setIsCreateModalVisible(true)}>
                             Create Quotation
                         </Button>
                     </div>
@@ -98,37 +169,17 @@ const QuotationList = () => {
                     )}
 
                     {/* Quotation Details Modal */}
-                    <Modal
-                        title="Quotation Details"
-                        visible={isModalVisible}
-                        onCancel={handleModalClose}
-                        footer={[
-                            <Button key="close" onClick={handleModalClose}>
-                                Close
-                            </Button>,
-                        ]}
-                    >
-                        {selectedQuotation ? (
-                            <div>
-                                <p><strong>Quotation ID:</strong> {selectedQuotation.id}</p>
-                                <p><strong>Ticket ID:</strong> {selectedQuotation.TicketID}</p>
-                                <p><strong>Status:</strong> {selectedQuotation.Status}</p>
-                                <p><strong>Total amount:</strong> ₹{selectedQuotation.TotalAmount}</p>
-                                <p><strong>Final amount after discount:</strong> ₹{selectedQuotation.FinalAmount}</p>
-                                <p><strong>Comments:</strong> {selectedQuotation.Comments}</p>
-                                <p><strong>Created date:</strong> {selectedQuotation.CreatedDate}</p>
-                            </div>
-                        ) : (
-                            <Spin tip="Loading details..." />
-                        )}
-                    </Modal>
+                    <QuotationDetailsModal
+                        visible={isDetailsModalVisible}
+                        onClose={handleDetailsModalClose}
+                        quotation={selectedQuotation}
+                    />
 
                     {/* Create Quotation Form Modal */}
                     <CreateQuotationFormModal
-                        visible={isModalVisible}
+                        visible={isCreateModalVisible}
                         onCreate={handleCreateQuotation}
-                        onClose={handleModalClose} //
-                        onCancel={() => setIsModalVisible(false)}
+                        onClose={handleCreateModalClose}
                     />
                 </div>
             </Content>
@@ -136,4 +187,4 @@ const QuotationList = () => {
     );
 };
 
-export default QuotationList;
+export default Quotations;
