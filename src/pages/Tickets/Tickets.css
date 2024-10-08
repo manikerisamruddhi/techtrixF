@@ -1,0 +1,10 @@
+/* Tickets.css */
+.custom-table .ant-table-header {
+    background-color: #007bff; /* Change this color to your desired header background */
+    color: #ffffff; /* Change this color to your desired header text color */
+}
+
+.custom-table .ant-table-header th {
+    background-color: #007bff; /* Change this color to your desired header background */
+    color: #ffffff; /* Change this color to your desired header text color */
+}

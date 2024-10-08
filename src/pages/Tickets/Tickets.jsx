@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Button, Empty, message, Layout, Typography, Spin } from 'antd';
+import { Table, Button, Empty, message, Layout, Typography, Spin, Card, Row, Col } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchTickets } from '../../redux/slices/ticketSlice';
 import { fetchUsers, fetchDepartments } from '../../redux/slices/userSlice';
 import TicketDetailsModal from '../../components/Ticket/TicketDetailsModal';
 import CreateTicketModal from '../../components/Ticket/CreateTicketModalForm'; // Import the CreateTicketModal
 import moment from 'moment'; // Import moment.js for date formatting
+import './Tickets.css'; // Import your CSS file
 
 const { Content } = Layout;
 const { Title } = Typography;
@@ -20,6 +21,7 @@ const Tickets = () => {
     const [filtered_users, set_filtered_users] = useState([]);
     const [is_modal_visible, set_is_modal_visible] = useState(false);
     const [selected_ticket, set_selected_ticket] = useState(null);
+    const [filtered_tickets, set_filtered_tickets] = useState([]); // State for filtered tickets
 
     useEffect(() => {
         const fetch_data = async () => {
@@ -29,6 +31,10 @@ const Tickets = () => {
         };
         fetch_data();
     }, [dispatch]);
+
+    useEffect(() => {
+        set_filtered_tickets(tickets); // Initially, show all tickets
+    }, [tickets]);
 
     // Handle backend error
     if (tickets_error || users_error || departments_error) {
@@ -54,12 +60,27 @@ const Tickets = () => {
         }));
     };
 
+    // Calculate card data
+    const total_tickets = tickets.length;
+    const open_tickets = tickets.filter(ticket => ticket.Status === 'Open').length;
+    const in_progress = tickets.filter(ticket => ticket.Status === 'in-progress').length;
+    const resolved_tickets = tickets.filter(ticket => ticket.Status === 'Resolved').length;
+
+    // Filter tickets based on card click
+    const handle_card_click = (status) => {
+        if (status === 'Total') {
+            set_filtered_tickets(tickets); // Show all tickets
+        } else {
+            const filtered = tickets.filter(ticket => ticket.Status === status);
+            set_filtered_tickets(filtered);
+        }
+    };
+
     const columns = [
         {
             title: 'Ticket ID',
             dataIndex: 'id',
             key: 'id',
-            
         },
         {
             title: 'Title',
@@ -96,10 +117,9 @@ const Tickets = () => {
             title: 'Date Created',
             dataIndex: 'CreatedDate',
             key: 'CreatedDate',
-            // Sort tickets by date created
             sorter: (a, b) => moment(b.CreatedDate).unix() - moment(a.CreatedDate).unix(),
-            defaultSortOrder: 'descend', // Default to descending order
-            render: (date) => moment(date).format('YYYY-MM-DD'), // Format date for display
+            defaultSortOrder: 'descend',
+            render: (date) => moment(date).format('YYYY-MM-DD'),
         },
         {
             title: 'Actions',
@@ -133,37 +153,87 @@ const Tickets = () => {
                         </Button>
                     </div>
 
+                    {/* Cards Row */}
+                    <Row gutter={16} style={{ marginBottom: '16px' }}>
+                        <Col span={6}>
+                            <Card 
+                                hoverable 
+                                bordered={false} 
+                                onClick={() => handle_card_click('Total')} 
+                                style={{ cursor: 'pointer', backgroundColor: '#e9f5f7' }} // Add your desired background color
+                            >
+                               Total Tickets  : {total_tickets}
+                            </Card>
+                        </Col>
+                        <Col span={6}>
+                            <Card 
+                                hoverable 
+                                bordered={false} 
+                                onClick={() => handle_card_click('Open')} 
+                                style={{ cursor: 'pointer', backgroundColor: '#e9f5f7' }} // Add your desired background color
+                            >
+                               Open Tickets : {open_tickets}
+                            </Card>
+                        </Col>
+                        <Col span={6}>
+                            <Card 
+                                hoverable 
+                                bordered={false} 
+                                onClick={() => handle_card_click('in-progress')} 
+                                style={{ cursor: 'pointer', backgroundColor: '#e9f5f7' }} // Add your desired background color
+                            >
+                               In-progress Tickets : {in_progress}
+                            </Card>
+                        </Col>
+                        <Col span={6}>
+                            <Card 
+                                hoverable 
+                                bordered={false} 
+                                onClick={() => handle_card_click('Resolved')} 
+                                style={{ cursor: 'pointer', backgroundColor:'#e9f5f7' }} // Add your desired background color
+                            >
+                                Resolved Tickets : {resolved_tickets}
+                            </Card>
+                        </Col>
+                    </Row>
+
                     {tickets_loading ? (
                         <Spin tip="Loading..." />
-                    ) : tickets.length === 0 ? (
+                    ) : filtered_tickets.length === 0 ? (
                         <Empty description="No Tickets Available" />
                     ) : (
                         <Table
-                            dataSource={tickets}
+                            dataSource={filtered_tickets}
                             columns={columns}
                             rowKey="TicketID"
                             pagination={false}
+                            className="custom-table" // Add custom class for styling
+                            header={{
+                                style: {
+                                    backgroundColor: '#007bff', // Header background color
+                                    color: '#ffffff', // Header text color
+                                    fontWeight: 'bold', // Make header text bold
+                                    borderColor: '#dddddd', // Add border color to separate header from body
+                                },
+                                cellStyle: {
+                                    backgroundColor: '#007bff', // Header cell background color
+                                    color: '#ffffff', // Header cell text color
+                                },
+                            }}
                         />
                     )}
-
-                    {/* Ticket Details Modal */}
-                    <TicketDetailsModal
-                        visible={is_modal_visible}
-                        ticket={selected_ticket}
-                        onClose={handle_modal_close}
-                    />
-
-                    {/* Create Ticket Modal */}
-                    <CreateTicketModal
-                        visible={is_form_visible}
-                        onClose={() => toggle_form(false)}
-                        departments={departments}
-                        filteredUsers={filtered_users}
-                        usersLoading={users_loading}
-                        departmentsLoading={departments_loading}
-                    />
                 </div>
             </Content>
+
+            {/* Ticket Details Modal */}
+            <TicketDetailsModal
+                ticket={selected_ticket}
+                visible={is_modal_visible}
+                onClose={handle_modal_close}
+            />
+
+            {/* Create Ticket Modal */}
+            {is_form_visible && <CreateTicketModal toggleForm={toggle_form} />}
         </Layout>
     );
 };

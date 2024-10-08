@@ -1,11 +1,21 @@
-.quotation-modal {
-    display: flex;
-    flex-direction: column;
-    padding: 20px; /* Add some padding for better spacing */
+/* customTable.css */
+.custom-table .ant-table-header {
+    background-color: #007bff !important; /* Header background color */
 }
 
-.product-form-border {
-    border: 1px solid #d9d9d9;
-    padding: 15px;
-    margin-bottom: 20px;
+.custom-table .ant-table-header th {
+    color: #ffffff !important; /* Header text color */
+    font-weight: bold; /* Make the header text bold (optional) */
+}
+
+.custom-table .ant-table-header th:hover {
+    background-color: #0056b3 !important; /* Hover effect on header cells (optional) */
+}
+
+.custom-table .ant-table-body {
+    background-color: #f9f9f9; /* Change this to your desired body background color */
+}
+
+.custom-table .ant-table-tbody > tr > td {
+    color: #333; /* Change this to your desired body text color */
 }

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom'; // Import Link for navigation
 import { fetchTickets, fetchQuotations, fetchInvoices } from '../../redux/slices/adminDash'; // Adjust according to your structure
 import useTicketCounts from '../../hooks/useTicketCount'; // Import the custom hook
 import {
@@ -18,7 +19,6 @@ const cardStyle = {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between', // Space out content
-    alignItems: 'flex-start', // Align content to the left
     borderRadius: '15px', // Rounded corners
     padding: '20px',
     transition: 'transform 0.3s, box-shadow 0.3s', // Smooth transition for hover effect
@@ -52,105 +52,115 @@ const Dashboard = () => {
             <Grid container spacing={2} style={{ marginTop: '20px' }}>
                 {/* Parent Card for All Tickets */}
                 <Grid item xs={12} sm={6} md={4}>
-                    <Card
-                        sx={{
-                            ...cardStyle,
-                            background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)',
-                            '&:hover': {
-                                transform: 'scale(1.03)',
-                                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.25)',
-                            },
-                        }}
-                    >
-                        <CardContent>
+                    <Link to="/tickets" style={{ textDecoration: 'none' }}>
+                        <Card
+                            sx={{
+                                ...cardStyle,
+                                background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)',
+                                '&:hover': {
+                                    transform: 'scale(1.03)',
+                                    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.25)',
+                                },
+                            }}
+                        >
                             <Typography variant="h5" sx={{ color: '#000' }}>All Tickets</Typography>
-                            <Typography variant="h6" sx={{ color: '#000' }}>Total: {total}</Typography>
-                            <Typography sx={{ color: '#000' }}>Open: {open}</Typography>
-                            <Typography sx={{ color: '#000' }}>In Progress: {inProgress}</Typography>
-                            <Typography sx={{ color: '#000' }}>Resolved: {resolved}</Typography>
-                            <Typography sx={{ color: '#000' }}>Closed: {closed}</Typography>
-                        </CardContent>
-                    </Card>
+                            <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                                <Typography variant="h6" sx={{ color: '#000' }}>Total: {total}</Typography>
+                                <Typography sx={{ color: '#000' }}>Open: {open}</Typography>
+                                <Typography sx={{ color: '#000' }}>In Progress: {inProgress}</Typography>
+                                <Typography sx={{ color: '#000' }}>Resolved: {resolved}</Typography>
+                                <Typography sx={{ color: '#000' }}>Closed: {closed}</Typography>
+                            </CardContent>
+                        </Card>
+                    </Link>
                 </Grid>
 
                 {/* Parent Card for Quotations */}
                 <Grid item xs={12} sm={6} md={4}>
-                    <Card
-                        sx={{
-                            ...cardStyle,
-                            background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)',
-                            '&:hover': {
-                                transform: 'scale(1.03)',
-                                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.25)',
-                            },
-                        }}
-                    >
-                        <CardContent>
+                    <Link to="/quotations" style={{ textDecoration: 'none' }}>
+                        <Card
+                            sx={{
+                                ...cardStyle,
+                                background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)',
+                                '&:hover': {
+                                    transform: 'scale(1.03)',
+                                    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.25)',
+                                },
+                            }}
+                        >
                             <Typography variant="h5" sx={{ color: '#000' }}>Quotations</Typography>
-                            <Typography variant="h6" sx={{ color: '#000' }}>Delivered: {quotations.delivered}</Typography>
-                            <Typography sx={{ color: '#000' }}>Remaining: {quotations.remaining}</Typography>
-                        </CardContent>
-                    </Card>
+                            <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                                <Typography variant="h6" sx={{ color: '#000' }}>Delivered: {quotations.delivered}</Typography>
+                                <Typography sx={{ color: '#000' }}>Remaining: {quotations.remaining}</Typography>
+                            </CardContent>
+                        </Card>
+                    </Link>
                 </Grid>
 
                 {/* Parent Card for All Invoices */}
                 <Grid item xs={12} sm={6} md={4}>
-                    <Card
-                        sx={{
-                            ...cardStyle,
-                            background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)',
-                            '&:hover': {
-                                transform: 'scale(1.03)',
-                                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.25)',
-                            },
-                        }}
-                    >
-                        <CardContent>
+                    <Link to="/invoices" style={{ textDecoration: 'none' }}>
+                        <Card
+                            sx={{
+                                ...cardStyle,
+                                background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)',
+                                '&:hover': {
+                                    transform: 'scale(1.03)',
+                                    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.25)',
+                                },
+                            }}
+                        >
                             <Typography variant="h5" sx={{ color: '#000' }}>All Invoices</Typography>
-                            <Typography variant="h6" sx={{ color: '#000' }}>In Warranty: {invoices.inWarranty}</Typography>
-                            <Typography sx={{ color: '#000' }}>Out of Warranty: {invoices.outOfWarranty}</Typography>
-                        </CardContent>
-                    </Card>
+                            <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                                <Typography variant="h6" sx={{ color: '#000' }}>In Warranty: {invoices.inWarranty}</Typography>
+                                <Typography sx={{ color: '#000' }}>Out of Warranty: {invoices.outOfWarranty}</Typography>
+                            </CardContent>
+                        </Card>
+                    </Link>
                 </Grid>
 
                 {/* New Card 1 - Customers */}
                 <Grid item xs={12} sm={6} md={4}>
-                    <Card
-                        sx={{
-                            ...cardStyle,
-                            background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)',
-                            '&:hover': {
-                                transform: 'scale(1.03)',
-                                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.25)',
-                            },
-                        }}
-                    >
-                        <CardContent>
+                    <Link to="/customers" style={{ textDecoration: 'none' }}>
+                        <Card
+                            sx={{
+                                ...cardStyle,
+                                background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)',
+                                '&:hover': {
+                                    transform: 'scale(1.03)',
+                                    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.25)',
+                                },
+                            }}
+                        >
                             <Typography variant="h5" sx={{ color: '#000' }}>Customers</Typography>
-                            <Typography variant="h6" sx={{ color: '#000' }}>Total: 150</Typography>
-                            <Typography sx={{ color: '#000' }}>Total Products: 788</Typography>
-                        </CardContent>
-                    </Card>
+                            <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                                <Typography variant="h6" sx={{ color: '#000' }}>Total: 150</Typography>
+                                <Typography sx={{ color: '#000' }}>Total Products: 788</Typography>
+                            </CardContent>
+                        </Card>
+                    </Link>
                 </Grid>
 
                 {/* New Card 2 - Users */}
                 <Grid item xs={12} sm={6} md={4}>
-                    <Card
-                        sx={{
-                            ...cardStyle,
-                            background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)',
-                            '&:hover': {
-                                transform: 'scale(1.03)',
-                                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.25)',
-                            },
-                        }}
-                    >
-                        <CardContent>
+                    <Link to="/users" style={{ textDecoration: 'none' }}>
+                        <Card
+                            sx={{
+                                ...cardStyle,
+                                background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)',
+                                '&:hover': {
+                                    transform: 'scale(1.03)',
+                                    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.25)',
+                                },
+                            }}
+                        >
                             <Typography variant="h5" sx={{ color: '#000' }}>Users</Typography>
-                            <Typography variant="h6" sx={{ color: '#000' }}>Sales: 9</Typography>
-                            <Typography sx={{ color: '#000' }}>Logistics: 7</Typography>
-                        </CardContent>
-                    </Card>
+                            <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                                <Typography variant="h6" sx={{ color: '#000' }}>Sales: 9</Typography>
+                                <Typography sx={{ color: '#000' }}>Logistics: 7</Typography>
+                            </CardContent>
+                        </Card>
+                    </Link>
                 </Grid>
             </Grid>
         </div>
