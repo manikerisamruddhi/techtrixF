@@ -6,7 +6,6 @@ import { fetchUsers, fetchDepartments } from '../../redux/slices/userSlice';
 import TicketDetailsModal from '../../components/Ticket/TicketDetailsModal';
 import CreateTicketModal from '../../components/Ticket/CreateTicketModalForm'; // Import the CreateTicketModal
 import moment from 'moment'; // Import moment.js for date formatting
-import './Tickets.css'; // Import your CSS file
 
 const { Content } = Layout;
 const { Title } = Typography;
@@ -147,7 +146,7 @@ const Tickets = () => {
             <Content style={{ padding: '20px' }}>
                 <div className="content-container">
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                        <Title level={4} style={{ margin: 0 }}>Tickets :</Title>
+                        <Title level={4} style={{ margin: 0 }}>Ticket List</Title>
                         <Button onClick={() => toggle_form(!is_form_visible)} className="create-ticket-btn" type="primary">
                             {is_form_visible ? 'Cancel' : 'Create Ticket'}
                         </Button>
@@ -207,33 +206,28 @@ const Tickets = () => {
                             columns={columns}
                             rowKey="TicketID"
                             pagination={false}
-                            className="custom-table" // Add custom class for styling
-                            header={{
-                                style: {
-                                    backgroundColor: '#007bff', // Header background color
-                                    color: '#ffffff', // Header text color
-                                    fontWeight: 'bold', // Make header text bold
-                                    borderColor: '#dddddd', // Add border color to separate header from body
-                                },
-                                cellStyle: {
-                                    backgroundColor: '#007bff', // Header cell background color
-                                    color: '#ffffff', // Header cell text color
-                                },
-                            }}
+                            headerCellStyle={{ backgroundColor: '#007bff', color: '#ffffff' }} // Set the background color and text color here
                         />
                     )}
+
+                    {/* Ticket Details Modal */}
+                    <TicketDetailsModal
+                        visible={is_modal_visible}
+                        ticket={selected_ticket}
+                        onClose={handle_modal_close}
+                    />
+
+                    {/* Create Ticket Modal */}
+                    <CreateTicketModal
+                        visible={is_form_visible}
+                        onClose={() => toggle_form(false)}
+                        departments={departments}
+                        filteredUsers={filtered_users}
+                        usersLoading={users_loading}
+                        departmentsLoading={departments_loading}
+                    />
                 </div>
             </Content>
-
-            {/* Ticket Details Modal */}
-            <TicketDetailsModal
-                ticket={selected_ticket}
-                visible={is_modal_visible}
-                onClose={handle_modal_close}
-            />
-
-            {/* Create Ticket Modal */}
-            {is_form_visible && <CreateTicketModal toggleForm={toggle_form} />}
         </Layout>
     );
 };

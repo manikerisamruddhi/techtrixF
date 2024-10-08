@@ -2,6 +2,8 @@ import React from 'react';
 import { Modal, Descriptions, Badge } from 'antd';
 
 const TicketDetailsModal = ({ visible, ticket, onClose }) => {
+
+    console.log(ticket);
     return (
         <Modal
             title="Ticket Details"
@@ -22,7 +24,9 @@ const TicketDetailsModal = ({ visible, ticket, onClose }) => {
                 >
                     <Descriptions.Item label="Ticket ID" span={1}>{ticket.id}</Descriptions.Item>
                     <Descriptions.Item label="Title" span={1}>{ticket.Title}</Descriptions.Item>
-                    <Descriptions.Item label="Customer ID" span={1}>{ticket.CustomerID}</Descriptions.Item>
+                    {ticket.CustomerID && (
+                        <Descriptions.Item label="Customer ID" span={1}>{ticket.CustomerID}</Descriptions.Item>
+                    )}
                     <Descriptions.Item label="Created By" span={1}>{ticket.CreatedBy}</Descriptions.Item>
                     <Descriptions.Item label="Priority" span={1}>
                         <Badge status={ticket.Priority === 'High' ? 'error' : 'warning'} text={ticket.Priority} />
@@ -32,9 +36,8 @@ const TicketDetailsModal = ({ visible, ticket, onClose }) => {
                         <Badge status={ticket.Status === 'Resolved' ? 'success' : 'processing'} text={ticket.Status} />
                     </Descriptions.Item>
                     <Descriptions.Item label="Created Date" span={1}>{new Date(ticket.CreatedDate).toLocaleString()}</Descriptions.Item>
-                   <Descriptions.Item label="Resolved" span={1}>{ticket.IsResolved ? 'Yes' : 'No'}</Descriptions.Item>  
+                    <Descriptions.Item label="Resolved" span={1}>{ticket.IsResolved ? 'Yes' : 'No'}</Descriptions.Item>  
                     <Descriptions.Item label="IsChargeable" span={1}>{ticket.IsChargeable ? 'Yes' : 'No'}</Descriptions.Item>
-                  
                     <Descriptions.Item label="Assigned To" span={1}>{ticket.AssignedToID ? ticket.AssignedToID : 'Not Assigned'}</Descriptions.Item>
                 </Descriptions>
             ) : (
