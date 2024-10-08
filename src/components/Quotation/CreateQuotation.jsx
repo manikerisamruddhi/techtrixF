@@ -103,7 +103,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
             width={900}
             style={{ top: 20 }}
         >
-            <div className="quotation-modal" style={{ maxHeight: '500px', overflowY: 'auto' }}>
+            <div className="quotation-modal" style={{ maxHeight: '600px', overflowY: 'auto' }}>
                 <Table
                     columns={[
                         { title: 'Brand', dataIndex: 'brand', key: 'brand' },
