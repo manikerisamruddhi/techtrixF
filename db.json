@@ -446,7 +446,7 @@
       "AssignedToID": 2,
       "CustomerID": 102,
       "Title": "Payment Failure",
-      "Priority": "Urgent",
+      "Priority": "High",
       "Remark": "Payment not going through for the order.",
       "Status": "Closed",
       "Category": "Billing",
@@ -509,79 +509,16 @@
       "id": "f27a"
     },
     {
-      "id": "d6fa",
-      "Title": "make quotation",
-      "Remark": "qer",
-      "Priority": "Medium",
-      "Department": "Sales",
-      "AssignedToID": 1001,
-      "TicketID": 21,
-      "Status": "in-progress",
-      "CreatedBy": "Sales",
-      "CreatedDate": "2024-10-02T11:28:10.688Z",
-      "IsChargeable": true
-    },
-    {
-      "id": "36fe",
-      "Title": "make a new quotation",
-      "Remark": "urgent",
-      "Priority": "High",
-      "Department": "Sales",
-      "AssignedToID": 1001,
-      "TicketID": 6,
-      "Status": "Open",
-      "CreatedBy": "Admin",
-      "CreatedDate": "2024-10-02T13:40:07.745Z",
-      "IsChargeable": true
-    },
-    {
-      "id": "b188",
-      "Title": "eee",
-      "CustomerID": "Michael Johnson michael.johnson@example.com",
-      "ProductID": "eb30",
-      "Remark": "Microsoft Surface Pro 7",
-      "Priority": "Medium",
-      "TicketID": 6,
-      "Status": "Open",
-      "CreatedBy": "Admin",
-      "CreatedDate": "2024-10-03T12:57:42.751Z",
-      "IsChargeable": false
-    },
-    {
-      "id": "e141",
-      "Title": "final test 1",
-      "CustomerID": "e608",
-      "ProductID": "1ea9",
-      "Priority": "Low",
-      "Chargeability": "Chargeable",
-      "Status": "Open",
-      "CreatedBy": "Admin",
-      "CreatedDate": "2024-10-05T11:50:16.050Z",
-      "Remark": "ticket reamark"
-    },
-    {
-      "id": "9642",
-      "Title": "final test second ",
-      "CustomerID": "4f90",
-      "ProductID": "1c95",
-      "Priority": "Medium",
-      "Chargeability": "Chargeable",
-      "Status": "Open",
-      "CreatedBy": "Admin",
-      "CreatedDate": "2024-10-05T11:57:18.579Z",
-      "Remark": "jjhkj"
-    },
-    {
-      "id": "91c4",
-      "Title": "adf",
+      "id": "9536",
+      "Title": "Testing",
       "CustomerID": "4f90",
       "ProductID": "1c95",
       "Priority": "Medium",
       "Chargeability": "NonChargeable",
       "Status": "Open",
       "CreatedBy": "Admin",
-      "CreatedDate": "2024-10-07T12:28:56.877Z",
-      "Remark": "zfszf"
+      "CreatedDate": "2024-10-08T05:13:36.792Z",
+      "Remark": "complete it by today\n"
     }
   ],
   "users": [
