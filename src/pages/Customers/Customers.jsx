@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCustomers, addCustomer, updateCustomer, deleteCustomer } from '../../redux/slices/customerSlice';
-import { Button, Table, Modal, Form, Input, Layout, Typography, Empty, Spin, message } from 'antd';
+import { Button, Table, Layout, Typography, Empty, Spin, message } from 'antd';
 import { toast } from 'react-toastify';
+import CustomerFormModal from '../../components/Customer/CustomerFormModel'; // Import the new form component
 
 const { Content } = Layout;
 const { Title } = Typography;
@@ -12,6 +13,7 @@ const Customers = () => {
     const { customers, loading, error } = useSelector((state) => state.customers);
     const [isModalVisible, setIsModalVisible] = React.useState(false);
     const [editCustomer, setEditCustomer] = React.useState(null);
+    const [mode, setMode] = React.useState('add'); // New state to track add/edit mode
 
     useEffect(() => {
         dispatch(fetchCustomers());
@@ -25,21 +27,26 @@ const Customers = () => {
     }, [error]);
 
     const handleAddOrEditCustomer = (values) => {
-        if (editCustomer) {
-            dispatch(updateCustomer({ customerId: editCustomer.CustomerID, updatedCustomer: values })).then(() => {
-                toast.success('Customer updated successfully!');
-                setEditCustomer(null);
-            });
+        if (mode === 'edit') {
+            dispatch(updateCustomer({ customerId: values.customerId, updatedCustomer: values }))
+                .then(() => {
+                    toast.success('Customer updated successfully!');
+                    setEditCustomer(null);
+                    dispatch(fetchCustomers());  // Fetch the updated customer list
+                });
         } else {
-            dispatch(addCustomer(values)).then(() => {
-                toast.success('Customer added successfully!');
-            });
+            dispatch(addCustomer(values))
+                .then(() => {
+                    toast.success('Customer added successfully!');
+                    dispatch(fetchCustomers());  // Fetch the updated customer list
+                });
         }
         setIsModalVisible(false);
     };
 
     const handleEdit = (customer) => {
         setEditCustomer(customer);
+        setMode('edit'); // Set the mode to edit
         setIsModalVisible(true);
     };
 
@@ -50,8 +57,9 @@ const Customers = () => {
     };
 
     const columns = [
-        { title: 'ID', dataIndex: 'CustomerID', key: 'CustomerID' },
+        { title: 'ID', dataIndex: 'id', key: 'CustomerID' },
         { title: 'First Name', dataIndex: 'FirstName', key: 'FirstName' },
+        { title: 'Last Name', dataIndex: 'LastName', key: 'LastName' },
         { title: 'Email', dataIndex: 'Email', key: 'Email' },
         { title: 'Phone', dataIndex: 'PhoneNumber', key: 'PhoneNumber' },
         {
@@ -76,7 +84,14 @@ const Customers = () => {
                 <div className="customers-container">
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
                         <Title level={4} style={{ margin: 0 }}>Customer List</Title>
-                        <Button type="primary" onClick={() => setIsModalVisible(true)}>
+                        <Button
+                            type="primary"
+                            onClick={() => {
+                                setIsModalVisible(true);
+                                setEditCustomer(null);
+                                setMode('add'); // Set the mode to add
+                            }}
+                        >
                             Add Customer
                         </Button>
                     </div>
@@ -94,30 +109,16 @@ const Customers = () => {
                         />
                     )}
 
-                    <Modal
-                        title={editCustomer ? 'Edit Customer' : 'Add Customer'}
+                    {/* Customer Form Modal */}
+                    <CustomerFormModal
+                        key={mode} // Add a key prop to the modal
                         visible={isModalVisible}
                         onCancel={() => setIsModalVisible(false)}
-                        footer={null}
-                    >
-                        <Form
-                            initialValues={editCustomer}
-                            onFinish={handleAddOrEditCustomer}
-                        >
-                            <Form.Item label="First Name" name="FirstName" rules={[{ required: true }]}>
-                                <Input />
-                            </Form.Item>
-                            <Form.Item label="Email" name="Email" rules={[{ required: true, type: 'email' }]}>
-                                <Input />
-                            </Form.Item>
-                            <Form.Item label="Phone" name="PhoneNumber" rules={[{ required: true }]}>
-                                <Input />
-                            </Form.Item>
-                            <Button type="primary" htmlType="submit">
-                                {editCustomer ? 'Update' : 'Add'}
-                            </Button>
-                        </Form>
-                    </Modal>
+                        onFinish={handleAddOrEditCustomer}
+                        initialValues={editCustomer}
+                        mode={mode} // Pass the mode (edit/add)
+                        customerId={editCustomer?.id} // Pass customer ID when editing
+                    />
                 </div>
             </Content>
         </Layout>

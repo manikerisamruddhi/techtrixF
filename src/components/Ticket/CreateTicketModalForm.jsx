@@ -117,6 +117,7 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
             onCancel={onClose}
             footer={null}
             width={800} 
+            centered // Center the modal vertically
         >
             <div style={{ 
                 maxHeight: '500px', 

@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Form, Row, Col, Input, Button, Table, notification, Radio } from 'antd';
-import { CloseCircleOutlined } from '@ant-design/icons'; 
-import { useDispatch, useSelector } from 'react-redux'; 
+import { Modal, Form, Row, Col, Input, Button, Table, notification, Radio, Select, Switch } from 'antd';
+import { CloseCircleOutlined } from '@ant-design/icons';
+import { useDispatch, useSelector } from 'react-redux';
 import { fetchQuotations, addQuotation, resetError } from '../../redux/slices/quotationSlice';
-import './QuotationForm.css'; 
+import { fetchCustomers, addCustomer } from '../../redux/slices/customerSlice'; // Assuming a customer slice exists to fetch customers
+import { addProduct } from '../../redux/slices/productSlice';
 
-const QuotationFormModal = ({ visible, onClose, ticketId }) => { 
+const QuotationFormModal = ({ visible, onClose, ticketId }) => {
     const dispatch = useDispatch();
     const { quotations, loading, error } = useSelector(state => state.quotations);
-    
+    const { customers } = useSelector(state => state.customers); // Assuming customer data is fetched through Redux
+
     const [form] = Form.useForm();
     const [newProduct, setNewProduct] = useState({
         brand: '',
@@ -16,15 +18,25 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
         price: 0,
         quantity: 1,
         description: '',
-        hasSerialNumber: 'no', 
+        hasSerialNumber: 'no',
     });
     const [showNewProductForm, setShowNewProductForm] = useState(false);
     const [addedProducts, setAddedProducts] = useState([]);
     const [editIndex, setEditIndex] = useState(null); // To track which product is being edited
+    const [customerType, setCustomerType] = useState('new'); // Track customer type
+    const [existingCustomer, setExistingCustomer] = useState(undefined); // Track selected existing customer
+    const [newCustomer, setNewCustomer] = useState({
+        name: '',
+        email: '',
+        phone: '',
+    });
+    const [finalAmount, setFinalAmount] = useState(0); // Track final amount
+    const [comment, setComment] = useState(''); // Track comment
 
     useEffect(() => {
         if (visible) {
             dispatch(fetchQuotations());
+            dispatch(fetchCustomers()); // Fetch customers when the modal is visible
         }
     }, [dispatch, visible]);
 
@@ -44,7 +56,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
 
         if (editIndex !== null) {
             // Edit existing product
-            const updatedProducts = addedProducts.map((product, index) => 
+            const updatedProducts = addedProducts.map((product, index) =>
                 index === editIndex ? { ...newProduct, key: product.key } : product
             );
             setAddedProducts(updatedProducts);
@@ -81,114 +93,330 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
     };
 
     const handleFinish = async () => {
-        const quotationData = {
+        try {
+          // Create a new customer
+          if (customerType === 'new') {
+            const newCustomerData = {
+              firstName: newCustomer.firstName,
+              lastName: newCustomer.lastName,
+              email: newCustomer.email,
+              phone: newCustomer.phoneNumber,
+              address: newCustomer.address,
+              zipCode: newCustomer.zipCode,
+              isPremium: newCustomer.isPremium,
+            };
+            await addCustomer(newCustomerData);
+          }
+      
+          // Create new products
+          const productPromises = addedProducts.map(async (product) => {
+            const newProductData = {
+              brand: product.brand,
+              modelNo: product.model_no,
+              price: product.price,
+              quantity: product.quantity,
+              description: product.description,
+              hasSerialNumber: product.hasSerialNumber,
+            };
+            await addProduct(newProductData);
+          });
+          await Promise.all(productPromises);
+      
+          // Create a new quotation
+          const quotationData = {
             ticketId,
+            customer: customerType === 'existing' ? existingCustomer : newCustomer,
             products: addedProducts,
             totalAmount: addedProducts.reduce((total, prod) => total + prod.price * prod.quantity, 0),
-        };
+            finalAmount,
+            comment,
+          };
+          await addQuotation(quotationData);
+      
+          notification.success({ message: 'Quotation added successfully!' });
+          form.resetFields();
+          setAddedProducts([]);
+          setCustomerType('new'); // Reset customer type
+          setNewCustomer({ name: '', email: '', phone: '' }); // Reset new customer data
+          setFinalAmount(0); // Reset final amount
+          setComment(''); // Reset comment
+          onClose(); // Close modal after submission
+        } catch (err) {
+          console.error(err);
+        }
+      };
 
-        await dispatch(addQuotation(quotationData));
-        notification.success({ message: 'Quotation added successfully!' });
-        form.resetFields();
-        setAddedProducts([]);
-        onClose(); // Close modal after submission
+    const handleExistingCustomerChange = value => {
+        setExistingCustomer(customers.find(cust => cust.id === value));
+    };
+
+    const calculateTotalAmount = () => {
+        return addedProducts.reduce((total, prod) => total + prod.price * prod.quantity, 0);
     };
 
     return (
         <Modal
             title="Create Quotation"
-            open={visible} // Use open instead of visible
+            open={visible}
             onCancel={onClose}
             footer={null}
             width={900}
-            style={{ top: 20 }}
+            centered
         >
             <div className="quotation-modal" style={{ maxHeight: '600px', overflowY: 'auto' }}>
-                <Table
-                    columns={[
-                        { title: 'Brand', dataIndex: 'brand', key: 'brand' },
-                        { title: 'Model No', dataIndex: 'model_no', key: 'model_no' },
-                        { title: 'Price', dataIndex: 'price', key: 'price' },
-                        { title: 'Quantity', dataIndex: 'quantity', key: 'quantity' },
-                        { title: 'Serial Number?', dataIndex: 'hasSerialNumber', key: 'hasSerialNumber', render: text => (text === 'yes' ? 'Yes' : 'No') },
-                        {
-                            title: 'Actions',
-                            key: 'actions',
-                            render: (_, record, index) => (
-                                <>
-                                    <Button type="link" onClick={() => handleEditProduct(index)}>Edit</Button>
-                                    <Button type="link" danger onClick={() => handleDeleteProduct(index)}>Delete</Button>
-                                </>
-                            ),
-                        },
-                    ]}
-                    dataSource={addedProducts}
-                    pagination={false}
-                    bordered
-                />
-                <div style={{ textAlign: 'right', marginBottom: '15px' }}>
-                    <Button type="primary" onClick={() => setShowNewProductForm(true)}>+ New Product</Button>
+
+                {/* Customer Selection */}
+                <div style={{ marginBottom: '20px' }}>
+                    <h3>Select Customer</h3>
+                    <Radio.Group value={customerType} onChange={e => setCustomerType(e.target.value)}>
+                        <Radio value="new">New Customer</Radio>
+                        <Radio value="existing">Existing Customer</Radio>
+                    </Radio.Group>
                 </div>
 
-                {showNewProductForm && (
-                    <div className="product-form-border">
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-                            <h3>{editIndex !== null ? 'Edit Product' : 'Add Product'}</h3>
-                            <Button type="text" icon={<CloseCircleOutlined />} onClick={() => setShowNewProductForm(false)} style={{ fontSize: '20px', color: 'red' }} />
-                        </div>
-                        <Form layout="vertical">
-                            <Form.Item label="Description">
-                                <Input.TextArea rows={2} value={newProduct.description} onChange={e => setNewProduct({ ...newProduct, description: e.target.value })} />
-                            </Form.Item>
-                            <Form.Item label="Does this product have a serial number?">
-                                <Radio.Group value={newProduct.hasSerialNumber} onChange={e => setNewProduct({ ...newProduct, hasSerialNumber: e.target.value })}>
-                                    <Radio value="yes">Yes</Radio>
-                                    <Radio value="no">No</Radio>
-                                </Radio.Group>
-                            </Form.Item>
-                            <Row gutter={16}>
-                                <Col span={12}>
-                                    <Form.Item label="Brand">
-                                        <Input value={newProduct.brand} onChange={e => setNewProduct({ ...newProduct, brand: e.target.value })} />
-                                    </Form.Item>
-                                </Col>
-                                <Col span={12}>
-                                    <Form.Item label="Model No">
-                                        <Input value={newProduct.model_no} onChange={e => setNewProduct({ ...newProduct, model_no: e.target.value })} />
-                                    </Form.Item>
-                                </Col>
-                            </Row>
-                            <Row gutter={16}>
-                                <Col span={12}>
-                                    <Form.Item label="Quantity">
-                                        <Input type="number" value={newProduct.quantity} onChange={e => setNewProduct({ ...newProduct, quantity: Number(e.target.value) })} />
-                                    </Form.Item>
-                                </Col>
-                                <Col span={12}>
-                                    <Form.Item label="Price">
-                                        <Input type="number" value={newProduct.price} onChange={e => setNewProduct({ ...newProduct, price: Number(e.target.value) })} />
-                                    </Form.Item>
-                                </Col>
-                            </Row>
-                            <Form.Item>
-                                <Button type="primary" onClick={handleAddOrEditProduct}>{editIndex !== null ? 'Update Product' : 'Add Product'}</Button>
-                                <Button onClick={() => setShowNewProductForm(false)} style={{ marginLeft: 10 }}>Cancel</Button>
-                            </Form.Item>
-                        </Form>
+                {customerType === 'existing' && (
+                    <Form.Item
+                        label="Select Existing Customer"
+                        rules={[{ required: true, message: 'Please select an existing customer' }]}
+                    >
+                        <Select
+                            placeholder="Select an existing customer"
+                            style={{ width: '100%', marginBottom: '20px' }}
+                            onChange={handleExistingCustomerChange}
+                        >
+                            {customers && customers.length > 0 ? (
+                                customers.map(customer => (
+                                    <Select.Option key={customer.id} value={customer.id}>
+                                        {`${customer.FirstName} ${customer.LastName} (${customer.Email})`}
+                                    </Select.Option>
+                                ))
+                            ) : (
+                                <Select.Option value="">No customers available</Select.Option>
+                            )}
+                        </Select>
+                    </Form.Item>
+                )}
+
+                {customerType === 'new' && (
+                    <div style={{ border: '1px solid #d9d9d9', padding: '10px', borderRadius: '8px', backgroundColor: '#f9f9f9', marginBottom: '10px' }}>
+                        <h4>New Customer Details</h4>
+                        <Row gutter={20}>
+                            <Col span={7}>
+                                <Form.Item label="First Name" rules={[{ required: true, message: 'Please enter customer first name' }]}>
+                                    <Input value={newCustomer.firstName} onChange={e => setNewCustomer({ ...newCustomer, firstName: e.target.value })} />
+                                </Form.Item>
+                            </Col>
+                            <Col span={7}>
+                                <Form.Item label="Last Name" rules={[{ required: true, message: 'Please enter customer last name' }]}>
+                                    <Input value={newCustomer.lastName} onChange={e => setNewCustomer({ ...newCustomer, lastName: e.target.value })} />
+                                </Form.Item>
+                            </Col>
+                            <Col span={7}>
+                                <Form.Item label="Email" rules={[{ required: true, message: 'Please enter customer email' }]}>
+                                    <Input type="email" value={newCustomer.email} onChange={e => setNewCustomer({ ...newCustomer, email: e.target.value })} />
+                                </Form.Item>
+                            </Col>
+                            <Col span={8}>
+                                <Form.Item label="Phone" rules={[{ required: true, message: 'Please enter customer phone number' }]}>
+                                    <Input value={newCustomer.phoneNumber} onChange={e => setNewCustomer({ ...newCustomer, phoneNumber: e.target.value })} />
+                                </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                                <Form.Item label="Address">
+                                    <Input value={newCustomer.address} onChange={e => setNewCustomer({ ...newCustomer, address: e.target.value })} />
+                                </Form.Item>
+                            </Col>
+                          
+                            <Col span={8}>
+                                <Form.Item label="Pin Code">
+                                    <Input value={newCustomer.zipCode} onChange={e => setNewCustomer({ ...newCustomer, zipCode: e.target.value })} />
+                                </Form.Item>
+                            </Col>
+                           
+                            <Col span={8}>
+                                <Form.Item label="Is Premium">
+                                    <Switch checked={newCustomer.isPremium} onChange={e => setNewCustomer({ ...newCustomer, isPremium: e })} />
+                                </Form.Item>
+                            </Col>
+                        </Row>
                     </div>
                 )}
 
-                <Form form={form} layout="vertical" onFinish={handleFinish}>
-                    <Form.Item name="Comments" label="Comments">
-                        <Input.TextArea placeholder="Add any comments" onChange={e => dispatch(setComments(e.target.value))} />
-                    </Form.Item>
-                    <div style={{ fontWeight: 'bold', marginBottom: '15px' }}>
-                        Final Amount: ₹ {addedProducts.reduce((total, prod) => total + prod.price * prod.quantity, 0).toFixed(2)}
+                {/* Products Table */}
+
+                {addedProducts.length > 0 ? (
+                    <Table
+                        columns={[
+                            { title: 'Brand', dataIndex: 'brand', key: 'brand' },
+                            { title: 'Model No', dataIndex: 'model_no', key: 'model_no' },
+                            { title: 'Price', dataIndex: 'price', key: 'price' },
+                            { title: 'Quantity', dataIndex: 'quantity', key: 'quantity' },
+                            { title: 'Serial Number?', dataIndex: 'hasSerialNumber', key: 'hasSerialNumber', render: text => (text === 'yes' ? 'Yes' : 'No') },
+                            {
+                                title: 'Actions',
+                                key: 'actions',
+                                render: (_, record, index) => (
+                                    <>
+                                        <Button type="link" onClick={() => handleEditProduct(index)}>Edit</Button>
+                                        <Button type="link" danger onClick={() => handleDeleteProduct(index)}>Delete</Button>
+                                    </>
+                                ),
+                            },
+                        ]}
+                        dataSource={addedProducts}
+                        pagination={false}
+                        summary={() => (
+                            <Table.Summary.Row>
+                                <Table.Summary.Cell colSpan={4} style={{ textAlign: 'right' }}>
+                                    <strong>Total Amount:</strong>
+                                </Table.Summary.Cell>
+                                <Table.Summary.Cell>
+                                    <strong>${calculateTotalAmount()}</strong>
+                                </Table.Summary.Cell>
+                            </Table.Summary.Row>
+                        )}
+                        style={{ marginBottom: '20px' }}
+                    />
+                ) : (
+                    <div style={{ textAlign: 'center', margin: '20px 0' }}>
+                        <p>No products added yet. Please add a product to continue.</p>
                     </div>
-                    <Button type="primary" htmlType="submit" style={{ float: 'right' }}>
+                )}
+
+                {/* Add New Product Button */}
+                <Button type="dashed" block style={{ marginBottom: '20px' }} onClick={() => setShowNewProductForm(true)}>
+                    Add New Product
+                </Button>
+
+                {showNewProductForm && (
+                    <div
+                        style={{
+                            border: '1px solid #d9d9d9',
+                            padding: '20px',
+                            borderRadius: '8px',
+                            backgroundColor: '#f9f9f9',
+                            marginBottom: '20px',
+                        }}
+                    >
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
+                            <h3>{editIndex !== null ? 'Edit Product' : 'Add Product'}</h3>
+                            <Button
+                                type="link"
+                                icon={<CloseCircleOutlined />}
+                                onClick={() => {
+                                    setShowNewProductForm(false);
+                                    setNewProduct({ brand: '', model_no: '', price: 0, quantity: 1, description: '', hasSerialNumber: 'no' });
+                                    setEditIndex(null);
+                                }}
+                            />
+                        </div>
+
+                        <Row gutter={16}>
+                            <Col span={7}>
+                                <Form.Item label="Brand" rules={[{ required: true }]}>
+                                    <Input value={newProduct.brand} onChange={e => setNewProduct({ ...newProduct, brand: e.target.value })} />
+                                </Form.Item>
+                            </Col>
+                            <Col span={8}>
+                                <Form.Item label="Model No" rules={[{ required: true }]}>
+                                    <Input value={newProduct.model_no} onChange={e => setNewProduct({ ...newProduct, model_no: e.target.value })} />
+                                </Form.Item>
+                            </Col>
+                            <Col span={6}>
+                                <Form.Item label="Price" rules={[{ required: true }]}>
+                                    <Input
+                                        type="number"
+                                        value={newProduct.price}
+                                        onChange={e => setNewProduct({ ...newProduct, price: parseFloat(e.target.value) })}
+                                    />
+                                </Form.Item>
+                            </Col>
+                        </Row>
+
+                        <Row gutter={22}>
+                            <Col span={8}>
+                                <Form.Item
+                                    label="is Serial No."
+                                    labelCol={{ span: 12 }}
+                                    wrapperCol={{ span: 12 }}
+                                >
+                                    <Radio.Group
+                                        value={newProduct.hasSerialNumber}
+                                        onChange={e => setNewProduct({ ...newProduct, hasSerialNumber: e.target.value })}
+                                        style={{ display: 'inline-block' }}
+                                    >
+                                        <Radio value="yes">Yes</Radio>
+                                        <Radio value="no">No</Radio>
+                                    </Radio.Group>
+                                </Form.Item>
+                            </Col>
+
+                            <Col span={5}>
+
+                            </Col>
+
+                            <Col span={8}>
+                                <Form.Item label="Quantity" rules={[{ required: true }]}>
+                                    <Input
+                                        type="number"
+                                        value={newProduct.quantity}
+                                        onChange={e => setNewProduct({ ...newProduct, quantity: parseInt(e.target.value) })}
+                                    />
+                                </Form.Item>
+                            </Col>
+
+                        </Row>
+
+                        <Row>
+                            <Col span={24}>
+                                <Form.Item label="Description">
+                                    <Input.TextArea
+                                        rows={3}
+                                        value={newProduct.description}
+                                        onChange={e => setNewProduct({ ...newProduct, description: e.target.value })}
+                                    />
+                                </Form.Item>
+                            </Col>
+                        </Row>
+
+                        <div style={{ textAlign: 'right' }}>
+                            <Button type="primary" onClick={handleAddOrEditProduct}>
+                                {editIndex !== null ? 'Update Product' : 'Add Product'}
+                            </Button>
+                        </div>
+                    </div>
+                )}
+
+                {/* Final Amount & Comment */}
+                {/* <Row gutter={16}> */}
+                {/* <Col span={12}>
+                        <Form.Item label="Final Amount" rules={[{ required: true }]}>
+                            <Input
+                                type="number"
+                                value={finalAmount}
+                                onChange={e => setFinalAmount(parseFloat(e.target.value))}
+                            />
+                        </Form.Item>
+                    </Col> */}
+                {/* <Col span={12}> */}
+                <Form.Item label="Comment">
+                    <Input.TextArea
+                        rows={2}
+                        value={comment}
+                        onChange={e => setComment(e.target.value)}
+                    />
+                </Form.Item>
+                {/* </Col> */}
+                {/* </Row> */}
+
+                <div style={{ marginTop: '20px', textAlign: 'right' }}>
+                    <Button onClick={onClose} style={{ marginRight: '10px' }}>
+                        Cancel
+                    </Button>
+                    <Button type="primary" onClick={handleFinish} disabled={addedProducts.length === 0}>
                         Submit Quotation
                     </Button>
-                </Form>
+                </div>
             </div>
         </Modal>
     );
