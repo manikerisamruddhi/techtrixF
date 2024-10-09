@@ -5,6 +5,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchQuotations, addQuotation, resetError } from '../../redux/slices/quotationSlice';
 import { fetchCustomers, addCustomer } from '../../redux/slices/customerSlice'; // Assuming a customer slice exists to fetch customers
 import { addProduct } from '../../redux/slices/productSlice';
+import moment from 'moment';
+
+const currentDate = moment();
 
 const QuotationFormModal = ({ visible, onClose, ticketId }) => {
     const dispatch = useDispatch();
@@ -97,15 +100,18 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
           // Create a new customer
           if (customerType === 'new') {
             const newCustomerData = {
-              firstName: newCustomer.firstName,
-              lastName: newCustomer.lastName,
-              email: newCustomer.email,
-              phone: newCustomer.phoneNumber,
-              address: newCustomer.address,
-              zipCode: newCustomer.zipCode,
-              isPremium: newCustomer.isPremium,
+              FirstName: newCustomer.FirstName,
+              LastName: newCustomer.LastName,
+              Email: newCustomer.email,
+              PhoneNumber: newCustomer.phoneNumber,
+              Address: newCustomer.address,
+              PinCode: newCustomer.pinCode,
+              IsPremium: newCustomer.isPremium,
+              createdAt: currentDate.format('YYYY-MM-DD HH:mm:ss'),
             };
-            await addCustomer(newCustomerData);
+            console.log('Adding new customer:', newCustomerData);
+            const customerResponse = await dispatch(addCustomer(newCustomerData));
+            console.log('Customer added:', customerResponse);
           }
       
           // Create new products
@@ -118,20 +124,26 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
               description: product.description,
               hasSerialNumber: product.hasSerialNumber,
             };
-            await addProduct(newProductData);
+            console.log('Adding new product:', newProductData);
+            const productResponse = await dispatch(addProduct(newProductData));
+            console.log('Product added:', productResponse);
           });
           await Promise.all(productPromises);
       
           // Create a new quotation
           const quotationData = {
-            ticketId,
-            customer: customerType === 'existing' ? existingCustomer : newCustomer,
-            products: addedProducts,
-            totalAmount: addedProducts.reduce((total, prod) => total + prod.price * prod.quantity, 0),
-            finalAmount,
-            comment,
+            TicketID: ticketId,
+            CustomerId: customerType === 'existing' ? existingCustomer.id : newCustomer.id,
+            ProductId: addedProducts.map(product => product.id),
+            FinalAmount: addedProducts.reduce((total, prod) => total + prod.price * prod.quantity, 0),
+            Status:'Pending',
+            // finalAmount,
+            Comments: comment,
           };
-          await addQuotation(quotationData);
+
+          console.log('Adding new quotation:', quotationData);
+          const quotationResponse = await dispatch(addQuotation(quotationData));
+          console.log('Quotation added:', quotationResponse);
       
           notification.success({ message: 'Quotation added successfully!' });
           form.resetFields();
@@ -143,6 +155,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
           onClose(); // Close modal after submission
         } catch (err) {
           console.error(err);
+          notification.error({ message: 'Error adding quotation' });
         }
       };
 
@@ -203,12 +216,12 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
                         <Row gutter={20}>
                             <Col span={7}>
                                 <Form.Item label="First Name" rules={[{ required: true, message: 'Please enter customer first name' }]}>
-                                    <Input value={newCustomer.firstName} onChange={e => setNewCustomer({ ...newCustomer, firstName: e.target.value })} />
+                                    <Input value={newCustomer.FirstName} onChange={e => setNewCustomer({ ...newCustomer, FirstName: e.target.value })} />
                                 </Form.Item>
                             </Col>
                             <Col span={7}>
                                 <Form.Item label="Last Name" rules={[{ required: true, message: 'Please enter customer last name' }]}>
-                                    <Input value={newCustomer.lastName} onChange={e => setNewCustomer({ ...newCustomer, lastName: e.target.value })} />
+                                    <Input value={newCustomer.LastName} onChange={e => setNewCustomer({ ...newCustomer, LastName: e.target.value })} />
                                 </Form.Item>
                             </Col>
                             <Col span={7}>
@@ -229,7 +242,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
                           
                             <Col span={8}>
                                 <Form.Item label="Pin Code">
-                                    <Input value={newCustomer.zipCode} onChange={e => setNewCustomer({ ...newCustomer, zipCode: e.target.value })} />
+                                    <Input value={newCustomer.pinCode} onChange={e => setNewCustomer({ ...newCustomer, pinCode: e.target.value })} />
                                 </Form.Item>
                             </Col>
                            
@@ -333,7 +346,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
                             </Col>
                         </Row>
 
-                        <Row gutter={22}>
+                        <Row gutter={20}>
                             <Col span={8}>
                                 <Form.Item
                                     label="is Serial No."
@@ -351,8 +364,16 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
                                 </Form.Item>
                             </Col>
 
-                            <Col span={5}>
-
+                            <Col span={6}>
+                            <Form.Item label="Warrenty months:" rules={[{ required: true }]}
+                            labelCol={{ span: 16}}
+                            wrapperCol={{ span: 8}}>
+                                    <Input
+                                        type="number"
+                                        value={newProduct.warrenty}
+                                        onChange={e => setNewProduct({ ...newProduct, warrenty: parseFloat(e.target.value) })}
+                                    />
+                                                                    </Form.Item>
                             </Col>
 
                             <Col span={8}>
