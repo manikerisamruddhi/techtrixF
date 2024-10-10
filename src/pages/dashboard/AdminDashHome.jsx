@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom'; // Import Link for navigation
-import { fetchTickets, fetchQuotations, fetchInvoices } from '../../redux/slices/adminDash'; // Adjust according to your structure
-import useTicketCounts from '../../hooks/useTicketCount'; // Import the custom hook
+import { Link } from 'react-router-dom';
+import { fetchTickets, fetchQuotations, fetchInvoices } from '../../redux/slices/adminDash';
+import useTicketCounts from '../../hooks/useTicketCount';
 import {
     Grid,
     Card,
@@ -15,24 +15,37 @@ import '../../styles/Pages/Admin/Dashboard.css';
 
 // Card Styles
 const cardStyle = {
-    height: '200px', // Set a uniform height for all cards
+    height: '200px',
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'space-between', // Space out content
-    borderRadius: '15px', // Rounded corners
+    justifyContent: 'space-between',
+    borderRadius: '15px',
     padding: '20px',
-    transition: 'transform 0.3s, box-shadow 0.3s', // Smooth transition for hover effect
+    transition: 'transform 0.3s, box-shadow 0.3s',
     boxShadow: '0 2px 10px rgba(0, 0, 0, 0.15)',
 };
 
-const Dashboard = () => {
-    const dispatch = useDispatch();
-    const { tickets, quotations, invoices, loading, error } = useSelector(state => state.dashboard); // Adjust according to your structure
+const subCardStyle = {
+    padding: '10px',
+    border: '1px solid #ddd',
+    background: 'linear-gradient(to right, #abe4ff, #c2fbe7)',
+    transition: 'transform 0.3s, box-shadow 0.3s',
+    '&:hover': {
+        transform: 'scale(1.05)',
+        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.25)',
+    },
+};
 
-    // Count the tickets using the custom hook
+const Dashboard = () => {
+    const handleTicketCardClick = (status) => {
+        dispatch(updateFilterStatus(status));
+      };
+
+    const dispatch = useDispatch();
+    const { tickets, quotations, invoices, loading, error } = useSelector(state => state.dashboard);
+
     const { total, inProgress, resolved, closed, open } = useTicketCounts(tickets);
 
-    // Fetch data when component mounts
     useEffect(() => {
         dispatch(fetchTickets());
         dispatch(fetchQuotations());
@@ -40,13 +53,12 @@ const Dashboard = () => {
     }, [dispatch]);
 
     return (
-        <div className="dashboard-container" style={{ padding: '20px' }}>
+        <div className="dashboard-container" style={{ padding: '20px' , backgroundColor: '#40d1ff2b', }}>
             <Typography variant="h4" gutterBottom>
                 Dashboard
             </Typography>
 
             {loading && <CircularProgress />}
-
             {error && <Alert severity="error">Error loading data: {error}</Alert>}
 
             <Grid container spacing={2} style={{ marginTop: '20px' }}>
@@ -57,19 +69,34 @@ const Dashboard = () => {
                             sx={{
                                 ...cardStyle,
                                 background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)',
-                                '&:hover': {
-                                    transform: 'scale(1.03)',
-                                    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.25)',
-                                },
                             }}
                         >
                             <Typography variant="h5" sx={{ color: '#000' }}>All Tickets</Typography>
-                            <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-                                <Typography variant="h6" sx={{ color: '#000' }}>Total: {total}</Typography>
-                                <Typography sx={{ color: '#000' }}>Open: {open}</Typography>
-                                <Typography sx={{ color: '#000' }}>In Progress: {inProgress}</Typography>
-                                <Typography sx={{ color: '#000' }}>Resolved: {resolved}</Typography>
-                                <Typography sx={{ color: '#000' }}>Closed: {closed}</Typography>
+                            <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'left' }}>
+                                <Grid container spacing={2}>
+                                    <Grid item xs={6}>
+                                        <Card sx={subCardStyle} onClick={() => handleTicketCardClick('Total')}>
+                                            <Typography sx={{ color: '#333' }}>Total: {total}</Typography>
+                                        </Card>
+                                    </Grid>
+                                    
+                                    <Grid item xs={6}>
+                                        <Card sx={subCardStyle} onClick={() => handleTicketCardClick('Open')}>
+                                            <Typography sx={{ color: '#333' }}>Open: {closed}</Typography>
+                                        </Card>
+                                    </Grid>
+
+                                    <Grid item xs={6}>
+                                        <Card sx={subCardStyle} onClick={() => handleTicketCardClick('in-progress')}>
+                                            <Typography sx={{ color: '#333' }}>Progress: {inProgress}</Typography>
+                                        </Card>
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        <Card sx={subCardStyle} onClick={() => handleTicketCardClick('in-progress')}>
+                                            <Typography sx={{ color: '#333' }}>Resolved: {resolved}</Typography>
+                                        </Card>
+                                    </Grid>
+                                </Grid>
                             </CardContent>
                         </Card>
                     </Link>
@@ -82,16 +109,17 @@ const Dashboard = () => {
                             sx={{
                                 ...cardStyle,
                                 background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)',
-                                '&:hover': {
-                                    transform: 'scale(1.03)',
-                                    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.25)',
-                                },
                             }}
                         >
                             <Typography variant="h5" sx={{ color: '#000' }}>Quotations</Typography>
-                            <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-                                <Typography variant="h6" sx={{ color: '#000' }}>Delivered: {quotations.delivered}</Typography>
-                                <Typography sx={{ color: '#000' }}>Remaining: {quotations.remaining}</Typography>
+                            <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'left', gap: 1.5  }}>
+                                
+                                <Card sx={subCardStyle}>
+                                    <Typography sx={{ color: '#000' }}>Delivered: {quotations.delivered}</Typography>
+                                </Card>
+                                <Card sx={subCardStyle}>
+                                    <Typography sx={{ color: '#000' }}>Remaining: {quotations.remaining}</Typography>
+                                </Card>
                             </CardContent>
                         </Card>
                     </Link>
@@ -104,16 +132,16 @@ const Dashboard = () => {
                             sx={{
                                 ...cardStyle,
                                 background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)',
-                                '&:hover': {
-                                    transform: 'scale(1.03)',
-                                    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.25)',
-                                },
                             }}
                         >
                             <Typography variant="h5" sx={{ color: '#000' }}>All Invoices</Typography>
-                            <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-                                <Typography variant="h6" sx={{ color: '#000' }}>In Warranty: {invoices.inWarranty}</Typography>
-                                <Typography sx={{ color: '#000' }}>Out of Warranty: {invoices.outOfWarranty}</Typography>
+                            <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'left', gap: 1.5 }}>
+                                <Card sx={subCardStyle}>
+                                    <Typography  sx={{ color: '#000' }}>In Warranty: {invoices.inWarranty}</Typography>
+                                </Card>
+                                <Card sx={subCardStyle}>
+                                    <Typography sx={{ color: '#000' }}>Out of Warranty: {invoices.outOfWarranty}</Typography>
+                                </Card>
                             </CardContent>
                         </Card>
                     </Link>
@@ -126,16 +154,16 @@ const Dashboard = () => {
                             sx={{
                                 ...cardStyle,
                                 background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)',
-                                '&:hover': {
-                                    transform: 'scale(1.03)',
-                                    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.25)',
-                                },
                             }}
                         >
                             <Typography variant="h5" sx={{ color: '#000' }}>Customers</Typography>
-                            <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-                                <Typography variant="h6" sx={{ color: '#000' }}>Total: 150</Typography>
-                                <Typography sx={{ color: '#000' }}>Total Products: 788</Typography>
+                            <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'left',gap: 1.5 }}>
+                                <Card sx={subCardStyle}>
+                                    <Typography sx={{ color: '#000' }}>Total: 150</Typography>
+                                </Card>
+                                <Card sx={subCardStyle}>
+                                    <Typography sx={{ color: '#000' }}>Total Products: 788</Typography>
+                                </Card>
                             </CardContent>
                         </Card>
                     </Link>
@@ -148,16 +176,16 @@ const Dashboard = () => {
                             sx={{
                                 ...cardStyle,
                                 background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)',
-                                '&:hover': {
-                                    transform: 'scale(1.03)',
-                                    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.25)',
-                                },
                             }}
                         >
-                            <Typography variant="h5" sx={{ color: '#000' }}>Users</Typography>
-                            <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
-                                <Typography variant="h6" sx={{ color: '#000' }}>Sales: 9</Typography>
-                                <Typography sx={{ color: '#000' }}>Logistics: 7</Typography>
+                            <Typography sx={{ color: '#000' }}>Users</Typography>
+                            <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'left' , gap: 1.5}}>
+                                <Card sx={subCardStyle}>
+                                    <Typography  sx={{ color: '#000' }}>Sales: 9</Typography>
+                                </Card>
+                                <Card sx={subCardStyle}>
+                                    <Typography sx={{ color: '#000' }}>Logistics: 7</Typography>
+                                </Card>
                             </CardContent>
                         </Card>
                     </Link>
