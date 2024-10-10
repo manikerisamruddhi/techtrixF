@@ -10,7 +10,6 @@ import moment from 'moment'; // Import moment.js for date formatting
 const { Content } = Layout;
 const { Title } = Typography;
 
-
 const Tickets = () => {
     const dispatch = useDispatch();
     const { tickets, loading: tickets_loading, error: tickets_error } = useSelector((state) => state.tickets);
@@ -22,27 +21,6 @@ const Tickets = () => {
     const [is_modal_visible, set_is_modal_visible] = useState(false);
     const [selected_ticket, set_selected_ticket] = useState(null);
     const [filtered_tickets, set_filtered_tickets] = useState([]); // State for filtered tickets
-
-    const statuss = useSelector((state) => state.status);
-    const [currentStatus, setCurrentStatus] = useState(statuss);
-
-    useEffect(() => {
-        setCurrentStatus(statuss);
-        console.log(statuss)
-      }, [statuss]);
-    
-
-    // useEffect(() => {
-    //     if (!statuss) {
-    //       // If status is undefined, try to get it again after a short delay
-    //       setTimeout(() => {
-    //         const newStatus = useSelector((state) => state.status);
-    //         if (newStatus) {
-    //           console.log(`jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj${newStatus}`);
-    //         }
-    //       }, 100);
-    //     }
-    //   }, []);
 
     useEffect(() => {
         const fetch_data = async () => {

@@ -48,12 +48,14 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
         }
     };
 
-    const handleChargeabilityChange = (e) => {
-        setIsChargeable(e.target.value === 'Chargeable');
-    };
+    // const handleChargeabilityChange = (e) => {
+    //     setIsChargeable(e.target.value === 'Chargeable');
+    // };
 
     const onFinish = async (values) => {
         const currentDate = new Date().toISOString();
+
+        console.log(values);
         const ticketData = {
             Title: values.Title,
             CustomerID: values.CustomerID,
@@ -65,6 +67,7 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
             CreatedDate: currentDate,
             Remark: values.Remark,
         };
+        
 
         try {
             const resultAction = await dispatch(createTicket(ticketData));
@@ -133,13 +136,7 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
                     form={form}
                     className="create-ticket-form"
                 >
-                    <Form.Item
-                        name="Title"
-                        label="Title"
-                        rules={[{ required: true, message: 'Please enter the ticket title' }]}
-                    >
-                        <Input placeholder="Enter ticket title" />
-                    </Form.Item>
+                    
 
                     <Form.Item
                         name="CustomerID"
@@ -193,6 +190,14 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
                         </Select>
                     </Form.Item>
 
+                    <Form.Item
+                        name="Title"
+                        label="Title"
+                        rules={[{ required: true, message: 'Please enter the ticket title' }]}
+                    >
+                        <Input placeholder="Enter ticket title" />
+                    </Form.Item>
+
                     {selectedProduct && ( // Only show if a product is selected
                         <>
                             <Form.Item
@@ -240,9 +245,10 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
                                 label="Chargeability : "
                                 rules={[{ required: true, message: 'Please select chargeability' }]}
                             >
-                                <Radio.Group onChange={handleChargeabilityChange}>
-                                    <Radio value="Chargeable">Chargeable</Radio>
-                                    <Radio value="NonChargeable">Non-chargeable</Radio>
+                                {/* <Radio.Group onChange={handleChargeabilityChange}> */}
+                                <Radio.Group >
+                                    <Radio value={true}>Chargeable</Radio>
+                                    <Radio value={false}>Non-chargeable</Radio>
                                 </Radio.Group>
                             </Form.Item>
                         </>
@@ -268,7 +274,7 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
                         </>
                     )}
 
-                    <Form.Item
+                    {/* <Form.Item
                         name="Priority"
                         label="Priority"
                         rules={[{ required: true, message: 'Please select priority' }]}
@@ -278,7 +284,8 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
                             <Option value="Medium">Medium</Option>
                             <Option value="High">High</Option>
                         </Select>
-                    </Form.Item>
+                    </Form.Item> */}
+                    
 
                     <Form.Item
                         name="Remark"

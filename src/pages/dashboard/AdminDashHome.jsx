@@ -43,14 +43,7 @@ const Dashboard = () => {
 
     // const status = useSelector((state) => state.status);
 
-    const Navigate = useNavigate();
-    const handleTicketCardClick = (statuss) => {
-        console.log(`logging from dashhhhhhhhhhhhhhhhhhhhhhhkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkhhhhhhhhhhhh ${statuss}`);
-        dispatch(setStatus(statuss));
-  setTimeout(() => {
-    Navigate('/tickets');
-  }, 0);
-};
+
 
     const dispatch = useDispatch();
     const { tickets, quotations, invoices, loading, error } = useSelector(state => state.dashboard);

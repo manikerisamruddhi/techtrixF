@@ -4,6 +4,7 @@ import axios from 'axios';
 // Async Thunks
 export const fetchTickets = createAsyncThunk('tickets/fetchTickets', async () => {
     const response = await axios.get('http://localhost:4000/tickets'); // Adjusted endpoint
+    // console.log(response.data);
     return response.data;
 });
 
@@ -48,6 +49,7 @@ export const createTicket = createAsyncThunk('tickets/addTicket', async (newTick
         Description: newTicket.Description,
         Remark: response.data.Remark,
         CreatedDate: new Date().toISOString(), // Use current date for CreatedDate
+        Chargeability:response.data.Chargeability,
         // Add any other necessary fields here
     };
 });
