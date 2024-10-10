@@ -1,8 +1,11 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { useNavigate} from 'react-router-dom';
 import { fetchTickets, fetchQuotations, fetchInvoices } from '../../redux/slices/adminDash';
 import useTicketCounts from '../../hooks/useTicketCount';
+import { setStatus } from '../../redux/slices/statusSlice';
+
 import {
     Grid,
     Card,
@@ -37,9 +40,17 @@ const subCardStyle = {
 };
 
 const Dashboard = () => {
-    const handleTicketCardClick = (status) => {
-        dispatch(updateFilterStatus(status));
-      };
+
+    // const status = useSelector((state) => state.status);
+
+    const Navigate = useNavigate();
+    const handleTicketCardClick = (statuss) => {
+        console.log(`logging from dashhhhhhhhhhhhhhhhhhhhhhhkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkhhhhhhhhhhhh ${statuss}`);
+        dispatch(setStatus(statuss));
+  setTimeout(() => {
+    Navigate('/tickets');
+  }, 0);
+};
 
     const dispatch = useDispatch();
     const { tickets, quotations, invoices, loading, error } = useSelector(state => state.dashboard);
@@ -64,7 +75,7 @@ const Dashboard = () => {
             <Grid container spacing={2} style={{ marginTop: '20px' }}>
                 {/* Parent Card for All Tickets */}
                 <Grid item xs={12} sm={6} md={4}>
-                    <Link to="/tickets" style={{ textDecoration: 'none' }}>
+                    <div style={{ textDecoration: 'none' }}>
                         <Card
                             sx={{
                                 ...cardStyle,
@@ -82,7 +93,7 @@ const Dashboard = () => {
                                     
                                     <Grid item xs={6}>
                                         <Card sx={subCardStyle} onClick={() => handleTicketCardClick('Open')}>
-                                            <Typography sx={{ color: '#333' }}>Open: {closed}</Typography>
+                                            <Typography sx={{ color: '#333' }}>Open: {open}</Typography>
                                         </Card>
                                     </Grid>
 
@@ -92,14 +103,14 @@ const Dashboard = () => {
                                         </Card>
                                     </Grid>
                                     <Grid item xs={6}>
-                                        <Card sx={subCardStyle} onClick={() => handleTicketCardClick('in-progress')}>
+                                        <Card sx={subCardStyle} onClick={() => handleTicketCardClick('Resolved')}>
                                             <Typography sx={{ color: '#333' }}>Resolved: {resolved}</Typography>
                                         </Card>
                                     </Grid>
                                 </Grid>
                             </CardContent>
                         </Card>
-                    </Link>
+                    </div>
                 </Grid>
 
                 {/* Parent Card for Quotations */}

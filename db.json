@@ -159,6 +159,59 @@
       "IsActive": true,
       "id": "20a5",
       "isPremium": false
+    },
+    {
+      "id": "8ca5",
+      "FirstName": "Test",
+      "LastName": "test",
+      "Email": "test",
+      "PhoneNumber": "9809",
+      "Address": "ajfkl",
+      "PinCode": "80989",
+      "IsPremium": true,
+      "createdAt": "2024-10-09 12:41:13"
+    },
+    {
+      "id": "dbd6",
+      "FirstName": "Ashish",
+      "LastName": "Test",
+      "Email": "test@gmail.com",
+      "PhoneNumber": "9099090990",
+      "Address": "Pune, Maharashtra, India, 411011",
+      "PinCode": "411014",
+      "IsPremium": false,
+      "createdAt": "2024-10-09 14:56:32"
+    },
+    {
+      "id": "8625",
+      "FirstName": "adjflkj",
+      "LastName": "adflkj",
+      "Email": "adfjk@kjkl",
+      "PhoneNumber": "9090909090",
+      "Address": "pune",
+      "PinCode": "413718",
+      "CreatedDate": "2024-10-09 15:53:36"
+    },
+    {
+      "id": "8f73",
+      "FirstName": "adsad",
+      "LastName": "sdfa",
+      "Email": "asdf",
+      "PhoneNumber": "8787",
+      "Address": "kjkjhjk",
+      "PinCode": "898989",
+      "IsPremium": true,
+      "CreatedDate": "2024-10-09 16:10:28"
+    },
+    {
+      "id": "05a5",
+      "FirstName": "test",
+      "LastName": "test",
+      "Email": "test@tst",
+      "PhoneNumber": "8989898989",
+      "Address": "pune",
+      "PinCode": "411412",
+      "CreatedDate": "2024-10-09 16:10:28"
     }
   ],
   "quotations": [
@@ -304,6 +357,74 @@
       "FinalAmount": "88009",
       "CreatedDate": "2024-10-05T11:57:18.579Z",
       "Status": "Pending"
+    },
+    {
+      "id": "eea0",
+      "TicketID": "f575",
+      "FinalAmount": "2000",
+      "CreatedDate": "2024-10-09T09:24:47.960Z",
+      "Status": "Pending"
+    },
+    {
+      "id": "4441",
+      "ProductId": [
+        null
+      ],
+      "FinalAmount": 144,
+      "Status": "Pending",
+      "Comments": ""
+    },
+    {
+      "id": "5dc7",
+      "CustomerId": "4f90",
+      "ProductId": [
+        null
+      ],
+      "FinalAmount": 1080,
+      "Status": "Pending",
+      "CreatedDate": "2024-10-09 15:46:04",
+      "Comments": "delever fast"
+    },
+    {
+      "id": "e47d",
+      "ProductId": [
+        null,
+        null
+      ],
+      "FinalAmount": 16408,
+      "Status": "Pending",
+      "CreatedBy": "Admin",
+      "CreatedDate": "2024-10-09 15:53:36",
+      "Comments": "urgetnt "
+    },
+    {
+      "id": "662f",
+      "TicketID": "5fe0",
+      "FinalAmount": "2000",
+      "CreatedDate": "2024-10-09T10:48:26.583Z",
+      "Status": "Pending"
+    },
+    {
+      "id": "b097",
+      "ProductId": [
+        null
+      ],
+      "FinalAmount": 900,
+      "Status": "Pending",
+      "CreatedBy": "Admin",
+      "CreatedDate": "2024-10-09 16:10:28",
+      "Comments": "asdf"
+    },
+    {
+      "id": "09dd",
+      "ProductId": [
+        null
+      ],
+      "FinalAmount": 90000,
+      "Status": "Pending",
+      "CreatedBy": "Admin",
+      "CreatedDate": "2024-10-09 16:10:28",
+      "Comments": "delvary"
     }
   ],
   "products": [
@@ -387,6 +508,92 @@
       "brand": "Service-",
       "model_no": "Service-",
       "price": "88009"
+    },
+    {
+      "id": "5d72",
+      "brand": "afd",
+      "modelNo": "asf",
+      "price": 233,
+      "quantity": 10,
+      "description": "sadf",
+      "hasSerialNumber": "no"
+    },
+    {
+      "id": "5b82",
+      "TicketID": "f575",
+      "customerID": "4f90",
+      "description": "mmmm",
+      "brand": "Service-",
+      "model_no": "Service-",
+      "price": "2000"
+    },
+    {
+      "id": "9e14",
+      "brand": "sony y",
+      "modelNo": "sony m201",
+      "price": 12,
+      "quantity": 12,
+      "description": "laptaop ram rom ",
+      "hasSerialNumber": "no"
+    },
+    {
+      "id": "fbd2",
+      "brand": "ww",
+      "modelNo": "ww",
+      "price": 90,
+      "quantity": 12,
+      "description": "testing",
+      "hasSerialNumber": "no",
+      "warrenty": 7
+    },
+    {
+      "id": "ee06",
+      "brand": "adfjklj",
+      "modelNo": "adff",
+      "price": 2000,
+      "quantity": 8,
+      "description": "ram rom",
+      "hasSerialNumber": "no",
+      "warrenty": 8
+    },
+    {
+      "id": "d97e",
+      "brand": "ahha",
+      "modelNo": "adf",
+      "price": 34,
+      "quantity": 12,
+      "description": "adfgg",
+      "hasSerialNumber": "no",
+      "warrenty": 12
+    },
+    {
+      "id": "ed6f",
+      "TicketID": "5fe0",
+      "customerID": "4f90",
+      "description": "test",
+      "brand": "Service-",
+      "model_no": "Service-",
+      "price": "2000"
+    },
+    {
+      "id": "87de",
+      "brand": "afdf",
+      "modelNo": "kjlkj",
+      "price": 900,
+      "quantity": 1,
+      "description": "asdf",
+      "hasSerialNumber": "no",
+      "warrenty": 8
+    },
+    {
+      "id": "5ada",
+      "brand": "test",
+      "modelNo": "test",
+      "price": 9000,
+      "quantity": 10,
+      "description": "ram rom",
+      "hasSerialNumber": "yes",
+      "warrenty": 8
     }
   ],
   "invoices": [
@@ -538,6 +745,66 @@
       "CreatedBy": "Admin",
       "CreatedDate": "2024-10-08T12:22:31.639Z",
       "Remark": "adf"
+    },
+    {
+      "id": "f575",
+      "Title": "title",
+      "CustomerID": "4f90",
+      "ProductID": "1c95",
+      "Priority": "Medium",
+      "Chargeability": true,
+      "Status": "Open",
+      "CreatedBy": "Admin",
+      "CreatedDate": "2024-10-09T09:24:47.960Z",
+      "Remark": "make it by today"
+    },
+    {
+      "id": "fbf1",
+      "Title": "titel 2",
+      "CustomerID": "e608",
+      "ProductID": "1ea9",
+      "Priority": "Medium",
+      "Chargeability": false,
+      "Status": "Open",
+      "CreatedBy": "Admin",
+      "CreatedDate": "2024-10-09T09:30:46.707Z",
+      "Remark": "test"
+    },
+    {
+      "id": "a7d0",
+      "Title": "tttt",
+      "CustomerID": "4f90",
+      "ProductID": "1c95",
+      "Priority": "High",
+      "Chargeability": false,
+      "Status": "Open",
+      "CreatedBy": "Admin",
+      "CreatedDate": "2024-10-09T09:31:42.377Z",
+      "Remark": "high"
+    },
+    {
+      "id": "5fe0",
+      "Title": "issue laptop",
+      "CustomerID": "4f90",
+      "ProductID": "1c95",
+      "Priority": "High",
+      "Chargeability": "Chargeable",
+      "Status": "Open",
+      "CreatedBy": "Admin",
+      "CreatedDate": "2024-10-09T10:48:26.583Z",
+      "Remark": "adf"
+    },
+    {
+      "id": "58ec",
+      "Title": "test",
+      "CustomerID": "4f90",
+      "ProductID": "1c95",
+      "Priority": "Medium",
+      "Chargeability": "NonChargeable",
+      "Status": "Open",
+      "CreatedBy": "Admin",
+      "CreatedDate": "2024-10-09T11:11:53.776Z",
+      "Remark": "test"
     }
   ],
   "users": [
