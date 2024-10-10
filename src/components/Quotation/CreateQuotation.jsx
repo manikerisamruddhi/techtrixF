@@ -107,7 +107,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
               Address: newCustomer.address,
               PinCode: newCustomer.pinCode,
               IsPremium: newCustomer.isPremium,
-              createdAt: currentDate.format('YYYY-MM-DD HH:mm:ss'),
+              CreatedDate: currentDate.format('YYYY-MM-DD HH:mm:ss'),
             };
             console.log('Adding new customer:', newCustomerData);
             const customerResponse = await dispatch(addCustomer(newCustomerData));
@@ -123,6 +123,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
               quantity: product.quantity,
               description: product.description,
               hasSerialNumber: product.hasSerialNumber,
+              warrenty:product.warrenty,
             };
             console.log('Adding new product:', newProductData);
             const productResponse = await dispatch(addProduct(newProductData));
@@ -137,7 +138,9 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
             ProductId: addedProducts.map(product => product.id),
             FinalAmount: addedProducts.reduce((total, prod) => total + prod.price * prod.quantity, 0),
             Status:'Pending',
+            CreatedBy:'Admin',
             // finalAmount,
+            CreatedDate: currentDate.format('YYYY-MM-DD HH:mm:ss'),
             Comments: comment,
           };
 
@@ -284,7 +287,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
                                     <strong>Total Amount:</strong>
                                 </Table.Summary.Cell>
                                 <Table.Summary.Cell>
-                                    <strong>${calculateTotalAmount()}</strong>
+                                    <strong>₹ {calculateTotalAmount()}</strong>
                                 </Table.Summary.Cell>
                             </Table.Summary.Row>
                         )}
@@ -364,7 +367,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
                                 </Form.Item>
                             </Col>
 
-                            <Col span={6}>
+                            <Col span={7}>
                             <Form.Item label="Warrenty months:" rules={[{ required: true }]}
                             labelCol={{ span: 16}}
                             wrapperCol={{ span: 8}}>
@@ -377,7 +380,9 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
                             </Col>
 
                             <Col span={8}>
-                                <Form.Item label="Quantity" rules={[{ required: true }]}>
+                                <Form.Item label="Quantity" rules={[{ required: true }]}
+                                  labelCol={{ span: 7}}
+                                  wrapperCol={{ span: 8}}>
                                     <Input
                                         type="number"
                                         value={newProduct.quantity}
