@@ -109,9 +109,9 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
               IsPremium: newCustomer.isPremium,
               CreatedDate: currentDate.format('YYYY-MM-DD HH:mm:ss'),
             };
-            console.log('Adding new customer:', newCustomerData);
+            //console.log('Adding new customer:', newCustomerData);
             const customerResponse = await dispatch(addCustomer(newCustomerData));
-            console.log('Customer added:', customerResponse);
+            //console.log('Customer added:', customerResponse);
           }
       
           // Create new products
@@ -125,9 +125,9 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
               hasSerialNumber: product.hasSerialNumber,
               warrenty:product.warrenty,
             };
-            console.log('Adding new product:', newProductData);
+            //console.log('Adding new product:', newProductData);
             const productResponse = await dispatch(addProduct(newProductData));
-            console.log('Product added:', productResponse);
+            //console.log('Product added:', productResponse);
           });
           await Promise.all(productPromises);
       
@@ -144,9 +144,9 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
             Comments: comment,
           };
 
-          console.log('Adding new quotation:', quotationData);
+          //console.log('Adding new quotation:', quotationData);
           const quotationResponse = await dispatch(addQuotation(quotationData));
-          console.log('Quotation added:', quotationResponse);
+          //console.log('Quotation added:', quotationResponse);
       
           notification.success({ message: 'Quotation added successfully!' });
           form.resetFields();

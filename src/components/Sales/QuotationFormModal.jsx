@@ -57,7 +57,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId, onSubmit }) => {
             return acc + (product ? product.price : 0);
         }, 0);
         setTotalAmount(calculatedTotalAmount);
-        console.log('Total Amount:', calculatedTotalAmount);
+        //console.log('Total Amount:', calculatedTotalAmount);
     };
 
     useEffect(() => {

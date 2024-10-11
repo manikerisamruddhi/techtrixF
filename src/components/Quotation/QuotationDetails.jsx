@@ -76,7 +76,7 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
     };
 
     const handleProceed = () => {
-        console.log('Proceed with Quotation');
+        //console.log('Proceed with Quotation');
     };
 
     const handleViewDetails = () => {
