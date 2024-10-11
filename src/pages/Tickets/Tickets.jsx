@@ -6,6 +6,7 @@ import { fetchUsers, fetchDepartments } from '../../redux/slices/userSlice';
 import TicketDetailsModal from '../../components/Ticket/TicketDetailsModal';
 import CreateTicketModal from '../../components/Ticket/CreateTicketModalForm'; // Import the CreateTicketModal
 import moment from 'moment'; // Import moment.js for date formatting
+import { useSearchParams } from 'react-router-dom';
 
 const { Content } = Layout;
 const { Title } = Typography;
@@ -22,6 +23,10 @@ const Tickets = () => {
     const [selected_ticket, set_selected_ticket] = useState(null);
     const [filtered_tickets, set_filtered_tickets] = useState([]); // State for filtered tickets
 
+    const [searchParams] = useSearchParams();
+  const status = searchParams.get('status');
+  console.log(status);
+
     useEffect(() => {
         const fetch_data = async () => {
             await dispatch(fetchTickets());
@@ -32,8 +37,13 @@ const Tickets = () => {
     }, [dispatch]);
 
     useEffect(() => {
-        set_filtered_tickets(tickets); // Initially, show all tickets
-    }, [tickets]);
+        if (status) {
+            const filtered = tickets.filter(ticket => ticket.Status === status);
+            set_filtered_tickets(filtered);
+        } else {
+            set_filtered_tickets(tickets); // Initially, show all tickets
+        }
+    }, [tickets, status]);
 
     // Handle backend error
     if (tickets_error || users_error || departments_error) {
