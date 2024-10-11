@@ -13,7 +13,7 @@ const LoginPage = () => {
     const handleLogin = async (values) => {
         try {
             const resultAction = await dispatch(loginUser(values));
-            console.log(resultAction);
+            //console.log(resultAction);
             if (loginUser.fulfilled.match(resultAction)) {
                 const userRole = resultAction.payload.role;
     

@@ -157,11 +157,11 @@ const SalesTickets = () => {
     const handleAssignTo = async (ticketId, userId) => {
         await axios.patch(`http://localhost:4000/tickets/${ticket.id}`);
         const idd = response.id;
-        console.log('Assigning to Ticket ID:', idd, 'User ID:', userId);
+        //console.log('Assigning to Ticket ID:', idd, 'User ID:', userId);
         try {
             const response = await axios.patch(`http://localhost:4000/tickets/${idd}`, { AssignedToID: userId });
            
-            console.log('API Response:', response.data); // Log the response
+            //console.log('API Response:', response.data); // Log the response
 
             // Update tickets state to reflect the assigned user
             setTickets(prevTickets => prevTickets.map(t =>

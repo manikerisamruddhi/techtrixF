@@ -18,7 +18,7 @@ export const fetchCustomers = createAsyncThunk('customers/fetchCustomers', async
 // Fetch Products for Selected Customer
 export const fetchProductsByCustomerId = createAsyncThunk('customers/fetchProductsByCustomerId', async (customerId, { rejectWithValue }) => {
     try {
-        console.log(`${BASE_URL}/${customerId}`)
+        //console.log(`${BASE_URL}/${customerId}`)
         const customerResponse = await axios.get(`${BASE_URL}/${customerId}`);
         const productIds = customerResponse.data.products || []; // Default to an empty array if products is undefined
 

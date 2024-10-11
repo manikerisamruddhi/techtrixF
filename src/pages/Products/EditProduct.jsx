@@ -18,7 +18,7 @@ const EditModal = ({ visible, product, onCancel, onSave }) => {
                 form.resetFields();  // Reset form after saving
             })
             .catch(info => {
-                console.log('Validation Failed:', info);
+                //console.log('Validation Failed:', info);
             });
     };
 

@@ -7,7 +7,7 @@ const useAuth = () => {
 
     const login = async (credentials) => { // Change `role` to `credentials`
         try {
-            console.log(`logging ${credentials}`);
+            //console.log(`logging ${credentials}`);
             await dispatch(loginUser(credentials)).unwrap(); // Pass entire credentials object
         } catch (err) {
             throw new Error('Failed to login');
