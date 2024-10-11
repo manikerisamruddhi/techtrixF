@@ -26,7 +26,7 @@ export const addProduct = createAsyncThunk('products/addProduct', async (newProd
   try {
     const response = await axios.post('http://localhost:4000/products', newProduct);
     toast.success('Product added successfully!');
-    console.log(response.data);
+    //console.log(response.data);
     return response.data;
   } catch (error) {
     toast.error('Failed to add product');
@@ -60,7 +60,7 @@ export const deleteProduct = createAsyncThunk('products/deleteProduct', async (p
 export const fetchProductsByCustomer = createAsyncThunk(
   'products/fetchByCustomer',
   async (customerId) => {
-    console.log(`${customerId}`);
+    //console.log(`${customerId}`);
     const response = await axios.get(`/api/products?customerId=${customerId}`); // Adjust API endpoint as needed
     return response.data;
   }

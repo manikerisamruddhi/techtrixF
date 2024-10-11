@@ -7,8 +7,8 @@ import { message } from 'antd';
 const ProtectedRoute = ({ children, allowedRoles }) => {
     const { isAuthenticated, user } = useSelector((state) => state.users);
 
-   console.log("User:", user);
-console.log("Is Authenticated:", isAuthenticated);
+   //console.log("User:", user);
+//console.log("Is Authenticated:", isAuthenticated);
 
 
     // Check if the user is authenticated

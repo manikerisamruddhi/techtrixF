@@ -4,7 +4,7 @@ import axios from 'axios';
 // Async Thunks
 export const fetchTickets = createAsyncThunk('tickets/fetchTickets', async () => {
     const response = await axios.get('http://localhost:4000/tickets'); // Adjusted endpoint
-    // console.log(response.data);
+    // //console.log(response.data);
     return response.data;
 });
 
@@ -17,8 +17,8 @@ export const fetchTicketDetails = createAsyncThunk('tickets/fetchTicketDetails',
         }
 
         const ticket = response.data;
-        // console.log(response.data);
-        // console.log(ticket);
+        // //console.log(response.data);
+        // //console.log(ticket);
 
         if (!ticket) {
             throw new Error('Ticket not found');
@@ -36,7 +36,7 @@ export const createTicket = createAsyncThunk('tickets/addTicket', async (newTick
     const response = await axios.post('http://localhost:4000/tickets', newTicket);
     
     // Log the response to check the structure
-    console.log('Response from createTicket:', response.data);
+    //console.log('Response from createTicket:', response.data);
     
     // Adjust the response to map the id to TicketID
     return {

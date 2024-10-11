@@ -24,7 +24,7 @@ export const loginUser = createAsyncThunk(
             });
 
             const user = response.data[0]; // Assuming a match returns an array of users
-            console.log(user);
+            //console.log(user);
 
             if (user) {
                 return {
