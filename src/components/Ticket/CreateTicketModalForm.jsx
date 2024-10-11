@@ -55,7 +55,7 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
     const onFinish = async (values) => {
         const currentDate = new Date().toISOString();
 
-        console.log(values);
+        //console.log(values);
         const ticketData = {
             Title: values.Title,
             CustomerID: values.CustomerID,
