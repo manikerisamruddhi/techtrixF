@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Modal, Form, Input, Switch, Button, Row, Col } from 'antd';
 
-const CustomerFormModal = ({ visible, onCancel, onFinish, initialValues, mode, customerID }) => {
+const CustomerFormModal = ({ visible, onCancel, onFinish, initialValues, mode, customerId }) => {
     const [form] = Form.useForm(); // Create form instance
 
     // Reset the form when the modal opens in "add" mode
@@ -26,7 +26,7 @@ const CustomerFormModal = ({ visible, onCancel, onFinish, initialValues, mode, c
                 form={form} // Assign form instance
                 onFinish={(values) => {
                     // Pass the customer ID if it's an edit operation
-                    const finalValues = mode === 'edit' ? { ...values, customerID } : values;
+                    const finalValues = mode === 'edit' ? { ...values, customerId } : values;
                     onFinish(finalValues);
                     form.resetFields(); // Reset form after submit
                 }}
@@ -34,53 +34,38 @@ const CustomerFormModal = ({ visible, onCancel, onFinish, initialValues, mode, c
             >
                 <Row gutter={24}> {/* Set gutter for spacing between columns */}
                     <Col span={12}> {/* First column */}
-                        <Form.Item label="First Name" name="FirstName" rules={[{ required: true }]}>
+                        <Form.Item label="First Name" name="firstName" rules={[{ required: true }]}>
                             <Input />
                         </Form.Item>
                     </Col>
                     <Col span={12}> {/* Second column */}
-                        <Form.Item label="Last Name" name="LastName" rules={[{ required: true }]}>
+                        <Form.Item label="Last Name" name="lastName" rules={[{ required: true }]}>
                             <Input />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
-                        <Form.Item label="Email" name="Email" rules={[{ required: true, type: 'email' }]}>
+                        <Form.Item label="Email" name="email" rules={[{ required: true, type: 'email' }]}>
                             <Input />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
-                        <Form.Item label="Phone" name="PhoneNumber" rules={[{ required: true }]}>
+                        <Form.Item label="Phone" name="phoneNumber" rules={[{ required: true }]}>
                             <Input />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
-                        <Form.Item label="Address" name="Address">
+                        <Form.Item label="Aadhar" name="aadharNumber" rules={[{ required: true }]}>
                             <Input />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
-                        <Form.Item label="City" name="City">
+                        <Form.Item label="Address" name="address">
                             <Input />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
-                        <Form.Item label="State" name="StateCode">
+                        <Form.Item label="Zip Code" name="zipCode">
                             <Input />
-                        </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                        <Form.Item label="Zip Code" name="ZipCode">
-                            <Input />
-                        </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                        <Form.Item label="Country Code" name="CountryCode">
-                            <Input />
-                        </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                        <Form.Item label="Active" name="IsActive" valuePropName="checked">
-                            <Switch />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
