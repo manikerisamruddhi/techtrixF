@@ -19,8 +19,8 @@ const notificationApi = {
     deleteNotification: (id) => {
         return axiosInstance.delete(`/notifications/${id}`);
     },
-    // Email notifications
-    sendEmailNotification: (emailData) => {
+    // email notifications
+    sendemailNotification: (emailData) => {
         return axiosInstance.post('/notifications/email', emailData);
     },
 };

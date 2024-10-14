@@ -101,10 +101,10 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
           if (customerType === 'new') {
             const newCustomerData = {
               firstName: newCustomer.firstName,
-              LastName: newCustomer.LastName,
-              Email: newCustomer.email,
-              PhoneNumber: newCustomer.phoneNumber,
-              Address: newCustomer.address,
+              lastName: newCustomer.lastName,
+              email: newCustomer.email,
+              phoneNumber: newCustomer.phoneNumber,
+              address: newCustomer.address,
               PinCode: newCustomer.pinCode,
               IsPremium: newCustomer.isPremium,
               CreatedDate: currentDate.format('YYYY-MM-DD HH:mm:ss'),
@@ -203,7 +203,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
                             {customers && customers.length > 0 ? (
                                 customers.map(customer => (
                                     <Select.Option key={customer.id} value={customer.id}>
-                                        {`${customer.firstName} ${customer.LastName} (${customer.Email})`}
+                                        {`${customer.firstName} ${customer.lastName} (${customer.email})`}
                                     </Select.Option>
                                 ))
                             ) : (
@@ -224,11 +224,11 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
                             </Col>
                             <Col span={7}>
                                 <Form.Item label="Last Name" rules={[{ required: true, message: 'Please enter customer last name' }]}>
-                                    <Input value={newCustomer.LastName} onChange={e => setNewCustomer({ ...newCustomer, LastName: e.target.value })} />
+                                    <Input value={newCustomer.lastName} onChange={e => setNewCustomer({ ...newCustomer, lastName: e.target.value })} />
                                 </Form.Item>
                             </Col>
                             <Col span={7}>
-                                <Form.Item label="Email" rules={[{ required: true, message: 'Please enter customer email' }]}>
+                                <Form.Item label="email" rules={[{ required: true, message: 'Please enter customer email' }]}>
                                     <Input type="email" value={newCustomer.email} onChange={e => setNewCustomer({ ...newCustomer, email: e.target.value })} />
                                 </Form.Item>
                             </Col>
@@ -238,7 +238,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
                                 </Form.Item>
                             </Col>
                             <Col span={12}>
-                                <Form.Item label="Address">
+                                <Form.Item label="address">
                                     <Input value={newCustomer.address} onChange={e => setNewCustomer({ ...newCustomer, address: e.target.value })} />
                                 </Form.Item>
                             </Col>

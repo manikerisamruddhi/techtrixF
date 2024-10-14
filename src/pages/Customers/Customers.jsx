@@ -60,7 +60,7 @@ const Customers = () => {
         { title: 'ID', dataIndex: 'customerId', key: 'customerId' },
         { title: 'First Name', dataIndex: 'firstName', key: 'firstName' },
         { title: 'Last Name', dataIndex: 'lastName', key: 'lastName' },
-        { title: 'Address', dataIndex: 'address', key: 'address' },
+        { title: 'address', dataIndex: 'address', key: 'address' },
         { title: 'Phone', dataIndex: 'phoneNumber', key: 'phoneNumber' },
         {
             title: 'Actions',

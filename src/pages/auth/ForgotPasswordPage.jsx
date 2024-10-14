@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './Auth.css';
 
 const ForgotPasswordPage = () => {
-    const [email, setEmail] = useState('');
+    const [email, setemail] = useState('');
     const [message, setMessage] = useState(null);
     const [error, setError] = useState(null);
 
@@ -26,11 +26,11 @@ const ForgotPasswordPage = () => {
             {error && <p className="auth-error">{error}</p>}
             <form onSubmit={handleForgotPassword}>
                 <div className="auth-field">
-                    <label>Email</label>
+                    <label>email</label>
                     <input
                         type="email"
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={(e) => setemail(e.target.value)}
                         required
                     />
                 </div>

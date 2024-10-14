@@ -21,7 +21,7 @@ const CustomerForm = ({ newCustomer, setNewCustomer }) => {
                 </Col>
                 <Col span={8}>
                     <Form.Item
-                        label="Email"
+                        label="email"
                         rules={[{ required: true, message: 'Please enter customer email' }]}
                     >
                         <Input
@@ -47,7 +47,7 @@ const CustomerForm = ({ newCustomer, setNewCustomer }) => {
             <Row gutter={16}>
                 <Col span={12}>
                     <Form.Item
-                        label="Address"
+                        label="address"
                         rules={[{ required: true, message: 'Please enter customer address' }]}
                     >
                         <Input

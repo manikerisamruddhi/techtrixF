@@ -36,7 +36,7 @@ const UserManagement = () => {
             key: 'last_name',
         },
         {
-            title: 'Email',
+            title: 'email',
             dataIndex: 'email',
             key: 'email',
         },

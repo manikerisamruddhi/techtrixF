@@ -44,7 +44,7 @@ const CustomerFormModal = ({ visible, onCancel, onFinish, initialValues, mode, c
                         </Form.Item>
                     </Col>
                     <Col span={12}>
-                        <Form.Item label="Email" name="email" rules={[{ required: true, type: 'email' }]}>
+                        <Form.Item label="email" name="email" rules={[{ required: true, type: 'email' }]}>
                             <Input />
                         </Form.Item>
                     </Col>
@@ -59,7 +59,7 @@ const CustomerFormModal = ({ visible, onCancel, onFinish, initialValues, mode, c
                         </Form.Item>
                     </Col>
                     <Col span={12}>
-                        <Form.Item label="Address" name="address">
+                        <Form.Item label="address" name="address">
                             <Input />
                         </Form.Item>
                     </Col>

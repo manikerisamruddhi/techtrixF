@@ -44,7 +44,7 @@ const Users = () => {
   const columns = [
     { title: 'ID', dataIndex: 'id', key: 'id' },
     { title: 'Name', dataIndex: 'name', key: 'name' },
-    { title: 'Email', dataIndex: 'email', key: 'email' },
+    { title: 'email', dataIndex: 'email', key: 'email' },
     { title: 'Role', dataIndex: 'role', key: 'role' },
     {
       title: 'Actions',
@@ -83,7 +83,7 @@ const Users = () => {
           <Form.Item label="Name" name="name" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
-          <Form.Item label="Email" name="email" rules={[{ required: true, type: 'email' }]}>
+          <Form.Item label="email" name="email" rules={[{ required: true, type: 'email' }]}>
             <Input />
           </Form.Item>
           <Form.Item label="Role" name="role" rules={[{ required: true }]}>

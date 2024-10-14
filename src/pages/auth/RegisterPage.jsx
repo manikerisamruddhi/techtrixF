@@ -45,7 +45,7 @@ const RegisterPage = () => {
                     />
                 </div>
                 <div className="auth-field">
-                    <label>Email</label>
+                    <label>email</label>
                     <input
                         type="email"
                         value={user.email}
