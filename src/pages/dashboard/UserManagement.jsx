@@ -4,7 +4,7 @@ import { Layout, Card, Typography, Button, Table } from 'antd';
 import { fetchUsers } from '../../redux/slices/userSlice';
 
 const { Content } = Layout;
-const { Title } = Typography;
+const { title } = Typography;
 
 const UserManagement = () => {
     const dispatch = useDispatch();
@@ -51,7 +51,7 @@ const UserManagement = () => {
             key: 'role',
         },
         {
-            title: 'Status',
+            title: 'status',
             dataIndex: 'is_active',
             key: 'is_active',
             render: (isActive) => (isActive ? 'Active' : 'Inactive'),
@@ -70,10 +70,10 @@ const UserManagement = () => {
                         marginBottom: '20px'
                     }}
                 >
-                    {/* User Management Title */}
-                    <Title level={4} style={{ margin: 0 }}>
+                    {/* User Management title */}
+                    <title level={4} style={{ margin: 0 }}>
                         User Management
-                    </Title>
+                    </title>
 
                     {/* Create User Button */}
                     <Button type="primary">Create User</Button>

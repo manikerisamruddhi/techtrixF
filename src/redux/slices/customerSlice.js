@@ -16,10 +16,10 @@ export const fetchCustomers = createAsyncThunk('customers/fetchCustomers', async
 });
 
 // Fetch Products for Selected Customer
-export const fetchProductsByCustomerId = createAsyncThunk('customers/fetchProductsByCustomerId', async (customerId, { rejectWithValue }) => {
+export const fetchProductsBycustomerID = createAsyncThunk('customers/fetchProductsBycustomerID', async (customerID, { rejectWithValue }) => {
     try {
-        //console.log(`${BASE_URL}/${customerId}`)
-        const customerResponse = await axios.get(`${BASE_URL}/${customerId}`);
+        //console.log(`${BASE_URL}/${customerID}`)
+        const customerResponse = await axios.get(`${BASE_URL}/${customerID}`);
         const productIds = customerResponse.data.products || []; // Default to an empty array if products is undefined
 
         if (productIds.length > 0) {
@@ -46,9 +46,9 @@ export const addCustomer = createAsyncThunk('customers/addCustomer', async (newC
     }
 });
 
-export const updateCustomer = createAsyncThunk('customers/updateCustomer', async ({ customerId, updatedCustomer }, { rejectWithValue }) => {
+export const updateCustomer = createAsyncThunk('customers/updateCustomer', async ({ customerID, updatedCustomer }, { rejectWithValue }) => {
     try {
-        const response = await axios.put(`${BASE_URL}/${customerId}`, updatedCustomer); // Use the base URL
+        const response = await axios.put(`${BASE_URL}/${customerID}`, updatedCustomer); // Use the base URL
         return response.data;
     } catch (error) {
         console.error("Error updating customer:", error);
@@ -56,10 +56,10 @@ export const updateCustomer = createAsyncThunk('customers/updateCustomer', async
     }
 });
 
-export const deleteCustomer = createAsyncThunk('customers/deleteCustomer', async (customerId, { rejectWithValue }) => {
+export const deleteCustomer = createAsyncThunk('customers/deleteCustomer', async (customerID, { rejectWithValue }) => {
     try {
-        await axios.delete(`${BASE_URL}/${customerId}`); // Use the base URL
-        return customerId;
+        await axios.delete(`${BASE_URL}/${customerID}`); // Use the base URL
+        return customerID;
     } catch (error) {
         console.error("Error deleting customer:", error);
         return rejectWithValue(null);
@@ -98,7 +98,7 @@ const customerSlice = createSlice({
             .addCase(updateCustomer.fulfilled, (state, action) => {
                 if (action.payload) {
                     const updatedCustomer = action.payload;
-                    const index = state.customers.findIndex(customer => customer.CustomerID === updatedCustomer.CustomerID);
+                    const index = state.customers.findIndex(customer => customer.customerID === updatedCustomer.customerID);
                     if (index !== -1) {
                         state.customers[index] = updatedCustomer; // Update the customer in the state
                     }
@@ -106,11 +106,11 @@ const customerSlice = createSlice({
             })
             .addCase(deleteCustomer.fulfilled, (state, action) => {
                 if (action.payload) {
-                    const customerId = action.payload;
-                    state.customers = state.customers.filter(customer => customer.CustomerID !== customerId);
+                    const customerID = action.payload;
+                    state.customers = state.customers.filter(customer => customer.customerID !== customerID);
                 }
             })
-            .addCase(fetchProductsByCustomerId.fulfilled, (state, action) => {
+            .addCase(fetchProductsBycustomerID.fulfilled, (state, action) => {
                 state.selectedCustomerProducts = action.payload; // Set products of the selected customer
             });
     },

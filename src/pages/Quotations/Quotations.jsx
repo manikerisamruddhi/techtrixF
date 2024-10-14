@@ -8,7 +8,7 @@ import QuotationDetailsModal from '../../components/Quotation/QuotationDetails';
 import { SearchOutlined } from '@ant-design/icons';
 
 const { Content } = Layout;
-const { Title } = Typography;
+const { title } = Typography;
 
 const Quotations = () => {
     const dispatch = useDispatch();
@@ -117,15 +117,15 @@ const Quotations = () => {
             ...getColumnSearchProps('id'), // Search filter for Quotation ID
         },
         {
-            title: 'Status',
-            dataIndex: 'Status',
-            key: 'Status',
+            title: 'status',
+            dataIndex: 'status',
+            key: 'status',
             filters: [
                 { text: 'Pending', value: 'Pending' },
                 { text: 'Approved', value: 'Approved' },
                 { text: 'Rejected', value: 'Rejected' },
             ],
-            onFilter: (value, record) => record.Status.includes(value),
+            onFilter: (value, record) => record.status.includes(value),
         },
         {
             title: 'Final Amount',
@@ -149,7 +149,7 @@ const Quotations = () => {
             <Content style={{ padding: '20px' }}>
                 <div className="quotation-list-container">
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                        <Title level={4} style={{ margin: 0 }}>Quotation List</Title>
+                        <title level={4} style={{ margin: 0 }}>Quotation List</title>
                         <Button type="primary" style={{ padding: '0 20px' }} onClick={() => setIsCreateModalVisible(true)}>
                             Create Quotation
                         </Button>

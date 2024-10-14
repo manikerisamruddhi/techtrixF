@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, Typography } from 'antd';
 
-const { Title, Paragraph } = Typography;
+const { title, Paragraph } = Typography;
 
 const ProductDetailModal = ({ visible, product, onClose }) => {
     return (
@@ -11,7 +11,7 @@ const ProductDetailModal = ({ visible, product, onClose }) => {
             onCancel={onClose}
             footer={null}
         >
-            <Title level={2}>{product.brand} - {product.modelNo}</Title>
+            <title level={2}>{product.brand} - {product.modelNo}</title>
             <Paragraph><strong>Product ID:</strong> {product.id}</Paragraph>
             {/* Add more product details here */}
             <Paragraph><strong>Brand:</strong> {product.brand}</Paragraph>

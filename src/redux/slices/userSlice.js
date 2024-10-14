@@ -189,7 +189,7 @@ const userSlice = createSlice({
 export const { clearError } = userSlice.actions;
 
 // Selectors
-export const selectUserStatus = (state) => state.users.status;
+export const selectUserstatus = (state) => state.users.status;
 export const selectUsers = (state) => state.users.users;
 
 // Export the reducer as default

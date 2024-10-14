@@ -39,8 +39,8 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
          
             </tr>
             <tr>
-                <td style="border: 1px solid #000; padding: 8px;"><strong>Created By:</strong> ${quotation.CreatedBy}</td>
-                <td style="border: 1px solid #000; padding: 8px;"><strong>Status:</strong> <span style="color:${quotation.Status === 'Approved' ? 'green' : quotation.Status === 'Rejected' ? 'red' : 'orange'};">${quotation.Status}</span></td>
+                <td style="border: 1px solid #000; padding: 8px;"><strong>Created By:</strong> ${quotation.createdBy}</td>
+                <td style="border: 1px solid #000; padding: 8px;"><strong>status:</strong> <span style="color:${quotation.status === 'Approved' ? 'green' : quotation.status === 'Rejected' ? 'red' : 'orange'};">${quotation.status}</span></td>
           
                </tr>
             <tr>
@@ -118,11 +118,11 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
                         >
                             <Descriptions.Item label="Quotation ID" span={1}>{quotation.id}</Descriptions.Item>
                             {/* <Descriptions.Item label="Ticket ID" span={1}>{quotation.TicketID}</Descriptions.Item> */}
-                            <Descriptions.Item label="Created By" span={1}>{quotation.CreatedBy}</Descriptions.Item>
+                            <Descriptions.Item label="Created By" span={1}>{quotation.createdBy}</Descriptions.Item>
                             {/* <Descriptions.Item label="Quotation Date" span={1}>{new Date(quotation.QuotationDate).toLocaleString()}</Descriptions.Item> */}
                             <Descriptions.Item label="Final Amount" span={1}>{quotation.FinalAmount}</Descriptions.Item>
-                            <Descriptions.Item label="Status" span={1}>
-                                <Badge status={quotation.Status === 'Approved' ? 'success' : quotation.Status === 'Rejected' ? 'error' : 'processing'} text={quotation.Status} />
+                            <Descriptions.Item label="status" span={1}>
+                                <Badge status={quotation.status === 'Approved' ? 'success' : quotation.status === 'Rejected' ? 'error' : 'processing'} text={quotation.status} />
                             </Descriptions.Item>
                             <Descriptions.Item label="Created Date" span={1}>{quotation.CreatedDate}</Descriptions.Item>
                             <Descriptions.Item label="Comments" span={2}>{quotation.Comments}</Descriptions.Item>

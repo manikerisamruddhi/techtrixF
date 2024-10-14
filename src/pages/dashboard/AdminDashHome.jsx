@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { fetchTickets, fetchQuotations, fetchInvoices } from '../../redux/slices/adminDash';
 import useTicketCounts from '../../hooks/useTicketCount';
-import { setStatus } from '../../redux/slices/statusSlice';
+import { setstatus } from '../../redux/slices/statusSlice';
 
 import {
     Grid,

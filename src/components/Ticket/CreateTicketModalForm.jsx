@@ -48,7 +48,7 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
         }
     };
 
-    // const handleChargeabilityChange = (e) => {
+    // const handleisChargebleChange = (e) => {
     //     setIsChargeable(e.target.value === 'Chargeable');
     // };
 
@@ -57,15 +57,15 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
 
         //console.log(values);
         const ticketData = {
-            Title: values.Title,
-            CustomerID: values.CustomerID,
+            title: values.title,
+            customerID: values.customerID,
             ProductID: values.ProductID,
             Priority: values.Priority,
-            Chargeability: values.Chargeability,
-            Status: 'Open',
-            CreatedBy: 'Admin',
+            isChargeble: values.isChargeble,
+            status: 'Open',
+            createdBy: 'Admin',
             CreatedDate: currentDate,
-            Remark: values.Remark,
+            remark: values.remark,
         };
         
 
@@ -82,7 +82,7 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
                         TicketID: newTicketID,
                         FinalAmount: values.FinalAmount,
                         CreatedDate: currentDate,
-                        Status: "Pending",
+                        status: "Pending",
                     };
                     await dispatch(addQuotation(quotationValues));
 
@@ -90,7 +90,7 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
 
                     const productValues = {
                         TicketID: newTicketID,
-                        customerID: values.CustomerID,
+                        customerID: values.customerID,
                         description: values.NewProdDescription,
                         brand: 'Service-',
                         model_no: 'Service-',
@@ -139,7 +139,7 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
                     
 
                     <Form.Item
-                        name="CustomerID"
+                        name="customerID"
                         label="Customer"
                         rules={[{ required: true, message: 'Please select a customer' }]}
                     >
@@ -191,8 +191,8 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
                     </Form.Item>
 
                     <Form.Item
-                        name="Title"
-                        label="Title"
+                        name="title"
+                        label="title"
                         rules={[{ required: true, message: 'Please enter the ticket title' }]}
                     >
                         <Input placeholder="Enter ticket title" />
@@ -215,7 +215,7 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
                             <Form.Item>
                                 <div style={{ display: 'flex', alignItems: 'center' }}>
                                     <span style={{ marginRight: '10px' }}>
-                                        Warranty Status :
+                                        Warranty status :
                                     </span>
                                     <span style={{ color: new Date(selectedProduct.warranty_end_date.replace(' ', 'T')) > new Date() ? 'green' : 'red' }}>
                                         {new Date(selectedProduct.warranty_end_date.replace(' ', 'T')) > new Date()
@@ -241,11 +241,11 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
                             )}
 
                             <Form.Item
-                                name="Chargeability"
-                                label="Chargeability : "
-                                rules={[{ required: true, message: 'Please select chargeability' }]}
+                                name="isChargeble"
+                                label="isChargeble : "
+                                rules={[{ required: true, message: 'Please select isChargeble' }]}
                             >
-                                {/* <Radio.Group onChange={handleChargeabilityChange}> */}
+                                {/* <Radio.Group onChange={handleisChargebleChange}> */}
                                 <Radio.Group >
                                     <Radio value={true}>Chargeable</Radio>
                                     <Radio value={false}>Non-chargeable</Radio>
@@ -288,8 +288,8 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
                     
 
                     <Form.Item
-                        name="Remark"
-                        label="Remark"
+                        name="remark"
+                        label="remark"
                         rules={[{ required: true, message: 'Add a remark' }]}
                     >
                         <Input.TextArea

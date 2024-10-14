@@ -59,9 +59,9 @@ export const deleteProduct = createAsyncThunk('products/deleteProduct', async (p
 // Async thunk for fetching products by customer ID
 export const fetchProductsByCustomer = createAsyncThunk(
   'products/fetchByCustomer',
-  async (customerId) => {
-    //console.log(`${customerId}`);
-    const response = await axios.get(`/api/products?customerId=${customerId}`); // Adjust API endpoint as needed
+  async (customerID) => {
+    //console.log(`${customerID}`);
+    const response = await axios.get(`/api/products?customerID=${customerID}`); // Adjust API endpoint as needed
     return response.data;
   }
 );

@@ -19,7 +19,7 @@ const PaymentTracking = () => {
             <ul>
                 {payments.map(payment => (
                     <li key={payment.id}>
-                        Invoice #{payment.invoiceNumber} - {payment.paymentStatus}
+                        Invoice #{payment.invoiceNumber} - {payment.paymentstatus}
                     </li>
                 ))}
             </ul>

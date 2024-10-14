@@ -24,7 +24,7 @@ const InvoiceDetails = () => {
         <div className="invoice-details-container">
             <h1>Invoice Details</h1>
             <p>Invoice Number: {invoice.invoiceNumber}</p>
-            <p>Status: {invoice.paymentStatus}</p>
+            <p>status: {invoice.paymentstatus}</p>
             <p>Customer: {invoice.customerName}</p>
             <p>Invoice Date: {invoice.invoiceDate}</p>
             <p>Total Amount: {invoice.totalAmount}</p>

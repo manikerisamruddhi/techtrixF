@@ -105,7 +105,7 @@ const CustomerForm = ({ newCustomer, setNewCustomer }) => {
                 </Col>
                 <Col span={8}>
                     <Form.Item
-                        label="Premium Status"
+                        label="Premium status"
                     >
                         <Input
                             type="checkbox"

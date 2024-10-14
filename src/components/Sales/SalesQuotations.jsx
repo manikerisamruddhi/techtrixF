@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { Layout, Table, Button, Empty, message, Spin, Typography, Modal } from 'antd'; // Import Ant Design components
 
 const { Header, Content } = Layout;
-const { Title } = Typography;
+const { title } = Typography;
 
 const SalesQuotations = () => {
     const dispatch = useDispatch();
@@ -49,9 +49,9 @@ const SalesQuotations = () => {
         //     render: (ticketId) => <span>{ticketId}</span>,
         // },
         {
-            title: 'Status',
-            dataIndex: 'Status',
-            key: 'Status',
+            title: 'status',
+            dataIndex: 'status',
+            key: 'status',
             render: (status) => <span>{status}</span>,
         },
         {
@@ -87,7 +87,7 @@ const SalesQuotations = () => {
                             marginBottom: '16px',
                         }}
                     >
-                        <Title level={4} style={{ margin: 0 }}>Quotation List</Title>
+                        <title level={4} style={{ margin: 0 }}>Quotation List</title>
                         <Link to="/create-quotation">
                             <Button type="primary" style={{ padding: '0 20px' }}>Create Quotation</Button>
                         </Link>
@@ -121,10 +121,10 @@ const SalesQuotations = () => {
                             <div>
                                 <p><strong>Quotation ID:</strong> {selectedQuotation.QuotationID}</p>
                                 <p><strong>Ticket ID:</strong> {selectedQuotation.TicketID}</p>
-                                <p><strong>Status:</strong> {selectedQuotation.Status}</p>
+                                <p><strong>status:</strong> {selectedQuotation.status}</p>
                                 <p><strong>Total amount:</strong> ₹{selectedQuotation.TotalAmount}</p>
                                 <p><strong>Final amount after discount:</strong> ₹{selectedQuotation.FinalAmount}</p>
-                                <p><strong>Status:</strong> {selectedQuotation.Status}</p>
+                                <p><strong>status:</strong> {selectedQuotation.status}</p>
                                 <p><strong>Comments:</strong> {selectedQuotation.Comments}</p>
                                 <p><strong>Created date:</strong> {selectedQuotation.CreatedDate}</p>
                                 {/* Add other fields as needed */}

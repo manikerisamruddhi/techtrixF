@@ -27,7 +27,7 @@ const invoiceApi = {
     trackPayment: (invoiceId) => {
         return axiosInstance.get(`/invoices/${invoiceId}/payment`);
     },
-    updatePaymentStatus: (invoiceId, paymentData) => {
+    updatePaymentstatus: (invoiceId, paymentData) => {
         return axiosInstance.put(`/invoices/${invoiceId}/payment`, paymentData);
     },
 };

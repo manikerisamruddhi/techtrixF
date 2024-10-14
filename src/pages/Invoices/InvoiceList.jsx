@@ -22,7 +22,7 @@ const InvoiceList = () => {
                 {invoices.map(invoice => (
                     <li key={invoice.id}>
                         <Link to={`/invoice/${invoice.id}`}>
-                            Invoice #{invoice.invoiceNumber} - {invoice.paymentStatus}
+                            Invoice #{invoice.invoiceNumber} - {invoice.paymentstatus}
                         </Link>
                         <Link to={`/edit-invoice/${invoice.id}`}>Edit</Link>
                     </li>

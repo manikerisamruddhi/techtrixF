@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import CustomerFormModal from '../../components/Customer/CustomerFormModel'; // Import the new form component
 
 const { Content } = Layout;
-const { Title } = Typography;
+const { title } = Typography;
 
 const Customers = () => {
     const dispatch = useDispatch();
@@ -28,7 +28,7 @@ const Customers = () => {
 
     const handleAddOrEditCustomer = (values) => {
         if (mode === 'edit') {
-            dispatch(updateCustomer({ customerId: values.customerId, updatedCustomer: values }))
+            dispatch(updateCustomer({ customerID: values.customerID, updatedCustomer: values }))
                 .then(() => {
                     toast.success('Customer updated successfully!');
                     setEditCustomer(null);
@@ -50,14 +50,14 @@ const Customers = () => {
         setIsModalVisible(true);
     };
 
-    const handleDelete = (customerId) => {
-        dispatch(deleteCustomer(customerId)).then(() => {
+    const handleDelete = (customerID) => {
+        dispatch(deleteCustomer(customerID)).then(() => {
             toast.success('Customer deleted successfully!');
         });
     };
 
     const columns = [
-        { title: 'ID', dataIndex: 'id', key: 'CustomerID' },
+        { title: 'ID', dataIndex: 'id', key: 'customerID' },
         { title: 'First Name', dataIndex: 'FirstName', key: 'FirstName' },
         { title: 'Last Name', dataIndex: 'LastName', key: 'LastName' },
         { title: 'Email', dataIndex: 'Email', key: 'Email' },
@@ -70,7 +70,7 @@ const Customers = () => {
                     <Button type="link" onClick={() => handleEdit(record)}>
                         Edit
                     </Button>
-                    <Button type="link" danger onClick={() => handleDelete(record.CustomerID)}>
+                    <Button type="link" danger onClick={() => handleDelete(record.customerID)}>
                         Delete
                     </Button>
                 </>
@@ -83,7 +83,7 @@ const Customers = () => {
             <Content style={{ padding: '20px' }}>
                 <div className="customers-container">
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                        <Title level={4} style={{ margin: 0 }}>Customer List</Title>
+                        <title level={4} style={{ margin: 0 }}>Customer List</title>
                         <Button
                             type="primary"
                             onClick={() => {
@@ -104,7 +104,7 @@ const Customers = () => {
                         <Table
                             dataSource={customers}
                             columns={columns}
-                            rowKey="CustomerID"
+                            rowKey="customerID"
                             pagination={false}
                         />
                     )}
@@ -117,7 +117,7 @@ const Customers = () => {
                         onFinish={handleAddOrEditCustomer}
                         initialValues={editCustomer}
                         mode={mode} // Pass the mode (edit/add)
-                        customerId={editCustomer?.id} // Pass customer ID when editing
+                        customerID={editCustomer?.id} // Pass customer ID when editing
                     />
                 </div>
             </Content>

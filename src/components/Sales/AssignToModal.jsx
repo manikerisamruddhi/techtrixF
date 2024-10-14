@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Modal, Select, Button, message, Spin } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUsers } from '../../redux/slices/userSlice'; // Use fetchUsers instead of fetchUsersByDepartment
-import { selectUserStatus } from '../../redux/slices/userSlice'; // Select the correct status
+import { selectUserstatus } from '../../redux/slices/userSlice'; // Select the correct status
 import axios from 'axios'; // Axios for making the API call
 
 const AssignToModal = ({ visible, onClose, ticketId, onAssign }) => {
     const dispatch = useDispatch();
     const allUsers = useSelector((state) => state.users.users); // Select all users
-    const status = useSelector(selectUserStatus); // Use the correct status selector
+    const status = useSelector(selectUserstatus); // Use the correct status selector
     const [selectedUserId, setSelectedUserId] = useState(null);
     const [logisticsUsers, setLogisticsUsers] = useState([]); // State to store filtered logistics users
 

@@ -1,24 +1,22 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { notification } from 'antd'; // Import notification
 
 // Async Thunks
 export const fetchTickets = createAsyncThunk('tickets/fetchTickets', async () => {
     const response = await axios.get('http://localhost:4000/tickets'); // Adjusted endpoint
-    // //console.log(response.data);
     return response.data;
 });
 
 export const fetchTicketDetails = createAsyncThunk('tickets/fetchTicketDetails', async (ticketId) => {
     try {
-        const response = await axios.get(`http://localhost:4000/tickets/${ticketId}`); // Use backticks correctly
+        const response = await axios.get(`http://localhost:4000/tickets/${ticketId}`);
 
         if (response.status !== 200) {
             throw new Error('Ticket not found');
         }
 
         const ticket = response.data;
-        // //console.log(response.data);
-        // //console.log(ticket);
 
         if (!ticket) {
             throw new Error('Ticket not found');
@@ -31,27 +29,28 @@ export const fetchTicketDetails = createAsyncThunk('tickets/fetchTicketDetails',
     }
 });
 
-
 export const createTicket = createAsyncThunk('tickets/addTicket', async (newTicket) => {
     const response = await axios.post('http://localhost:4000/tickets', newTicket);
     
-    // Log the response to check the structure
-    //console.log('Response from createTicket:', response.data);
-    
-    // Adjust the response to map the id to TicketID
     return {
-        id: response.data.id, // Assuming the backend returns an 'id'
-        Title: response.data.Title,
-        CreatedBy: newTicket.CreatedBy, // Assuming you're passing createdBy in newTicket
-        Status: newTicket.Status, // Default status or adjust as needed
+        id: response.data.id,
+        title: response.data.title,
+        createdBy: newTicket.createdBy,
+        status: newTicket.status,
         Priority: newTicket.Priority,
-        AssignedToID: newTicket.AssignedToID,
+        assignedToID: newTicket.assignedToID,
         Description: newTicket.Description,
-        Remark: response.data.Remark,
-        CreatedDate: new Date().toISOString(), // Use current date for CreatedDate
-        Chargeability:response.data.Chargeability,
-        // Add any other necessary fields here
+        remark: response.data.remark,
+        CreatedDate: new Date().toISOString(),
+        isChargeble: response.data.isChargeble,
     };
+});
+
+// Add the updateTicket async thunk
+export const updateTicket = createAsyncThunk('tickets/updateTicket', async ({ id, data }) => {
+    console.log(data);
+    const response = await axios.put(`http://localhost:4000/tickets/${id}`, data);
+    return response.data;
 });
 
 // Ticket Slice
@@ -61,6 +60,7 @@ const ticketSlice = createSlice({
         tickets: [],
         loading: false,
         error: null,
+        ticket: null,
     },
     reducers: {},
     extraReducers: (builder) => {
@@ -78,6 +78,12 @@ const ticketSlice = createSlice({
             })
             .addCase(createTicket.fulfilled, (state, action) => {
                 state.tickets.push(action.payload);
+                
+                // Show success notification for ticket creation
+                notification.success({
+                    message: 'Ticket Created',
+                    description: 'The ticket was created successfully!',
+                });
             })
             .addCase(fetchTicketDetails.pending, (state) => {
                 state.loading = true;
@@ -89,7 +95,21 @@ const ticketSlice = createSlice({
             })
             .addCase(fetchTicketDetails.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.error.message; // Handle error
+                state.error = action.error.message;
+            })
+            .addCase(updateTicket.fulfilled, (state, action) => {
+                const updatedTicket = action.payload;
+                const index = state.tickets.findIndex(ticket => ticket.id === updatedTicket.id);
+                if (index !== -1) {
+                    // Update the ticket in the state
+                    state.tickets[index] = updatedTicket;
+                    
+                    // Show success notification for ticket update
+                    notification.success({
+                        message: 'Ticket Updated',
+                        description: 'The ticket was updated successfully!',
+                    });
+                }
             });
     },
 });

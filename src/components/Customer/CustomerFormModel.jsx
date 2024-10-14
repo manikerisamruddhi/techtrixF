@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Modal, Form, Input, Switch, Button, Row, Col } from 'antd';
 
-const CustomerFormModal = ({ visible, onCancel, onFinish, initialValues, mode, customerId }) => {
+const CustomerFormModal = ({ visible, onCancel, onFinish, initialValues, mode, customerID }) => {
     const [form] = Form.useForm(); // Create form instance
 
     // Reset the form when the modal opens in "add" mode
@@ -26,7 +26,7 @@ const CustomerFormModal = ({ visible, onCancel, onFinish, initialValues, mode, c
                 form={form} // Assign form instance
                 onFinish={(values) => {
                     // Pass the customer ID if it's an edit operation
-                    const finalValues = mode === 'edit' ? { ...values, customerId } : values;
+                    const finalValues = mode === 'edit' ? { ...values, customerID } : values;
                     onFinish(finalValues);
                     form.resetFields(); // Reset form after submit
                 }}

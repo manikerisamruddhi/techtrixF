@@ -9,7 +9,7 @@ import moment from 'moment'; // Import moment.js for date formatting
 import { useSearchParams } from 'react-router-dom';
 
 const { Content } = Layout;
-const { Title } = Typography;
+const { title } = Typography;
 
 const Tickets = () => {
     const dispatch = useDispatch();
@@ -38,7 +38,7 @@ const Tickets = () => {
 
     useEffect(() => {
         if (status) {
-            const filtered = tickets.filter(ticket => ticket.Status === status);
+            const filtered = tickets.filter(ticket => ticket.status === status);
             set_filtered_tickets(filtered);
         } else {
             set_filtered_tickets(tickets); // Initially, show all tickets
@@ -71,16 +71,16 @@ const Tickets = () => {
 
     // Calculate card data
     const total_tickets = tickets.length;
-    const open_tickets = tickets.filter(ticket => ticket.Status === 'Open').length;
-    const in_progress = tickets.filter(ticket => ticket.Status === 'in-progress').length;
-    const resolved_tickets = tickets.filter(ticket => ticket.Status === 'Resolved').length;
+    const open_tickets = tickets.filter(ticket => ticket.status === 'Open').length;
+    const in_progress = tickets.filter(ticket => ticket.status === 'in-progress').length;
+    const resolved_tickets = tickets.filter(ticket => ticket.status === 'Resolved').length;
 
     // Filter tickets based on card click
     const handle_card_click = (status) => {
         if (status === 'Total') {
             set_filtered_tickets(tickets); // Show all tickets
         } else {
-            const filtered = tickets.filter(ticket => ticket.Status === status);
+            const filtered = tickets.filter(ticket => ticket.status === status);
             set_filtered_tickets(filtered);
         }
     };
@@ -92,9 +92,9 @@ const Tickets = () => {
             key: 'id',
         },
         {
-            title: 'Title',
-            dataIndex: 'Title',
-            key: 'Title',
+            title: 'title',
+            dataIndex: 'title',
+            key: 'title',
             render: (text, record) => (
                 <Button type="link" onClick={() => show_modal(record)}>
                     {text}
@@ -103,22 +103,23 @@ const Tickets = () => {
         },
         {
             title: 'Created By',
-            dataIndex: 'CreatedBy',
-            key: 'CreatedBy',
-            filters: get_unique_filters(tickets, 'CreatedBy'),
-            onFilter: (value, record) => record.CreatedBy === value,
+            dataIndex: 'createdBy',
+            key: 'createdBy',
+            filters: get_unique_filters(tickets, 'createdBy'),
+            onFilter: (value, record) => record.createdBy === value,
         },
         {
-            title: 'Status',
-            dataIndex: 'Status',
-            key: 'Status',
-            filters: get_unique_filters(tickets, 'Status'),
-            onFilter: (value, record) => record.Status === value,
+            title: 'status',
+            dataIndex: 'status',
+            key: 'status',
+            filters: get_unique_filters(tickets, 'status'),
+            onFilter: (value, record) => record.status === value,
         },
         {
             title: 'Assighned to',
-            // filters: get_unique_filters(tickets, 'Status'),
-            // onFilter: (value, record) => record.Status === value,
+            dataIndex: 'assignedTo',
+            // filters: get_unique_filters(tickets, 'status'),
+            // onFilter: (value, record) => record.status === value,
         },
         // hide priority
         // {
@@ -162,7 +163,7 @@ const Tickets = () => {
             <Content style={{ padding: '20px' }}>
                 <div className="content-container">
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                        <Title level={4} style={{ margin: 0 }}>Ticket List</Title>
+                        <title level={4} style={{ margin: 0 }}>Ticket List</title>
                         <Button onClick={() => toggle_form(!is_form_visible)} className="create-ticket-btn" type="primary">
                             {is_form_visible ? 'Cancel' : 'Create Ticket'}
                         </Button>

@@ -22,7 +22,7 @@ const SalesTickets = () => {
         const fetchTickets = async () => {
             try {
                 const response = await axios.get('http://localhost:4000/tickets');
-                const assignedTickets = response.data.filter(ticket => ticket.AssignedToID === parseInt(userId));
+                const assignedTickets = response.data.filter(ticket => ticket.assignedToID === parseInt(userId));
                 setTickets(assignedTickets);
             } catch (error) {
                 console.error('Error fetching tickets:', error);
@@ -41,9 +41,9 @@ const SalesTickets = () => {
             key: 'TicketID',
         },
         {
-            title: 'Title',
-            dataIndex: 'Title',
-            key: 'Title',
+            title: 'title',
+            dataIndex: 'title',
+            key: 'title',
         },
         {
             title: 'Priority',
@@ -51,16 +51,16 @@ const SalesTickets = () => {
             key: 'Priority',
         },
         {
-            title: 'Status',
-            dataIndex: 'Status',
-            key: 'Status',
+            title: 'status',
+            dataIndex: 'status',
+            key: 'status',
         },
         {
             title: 'Action',
             key: 'action',
             render: (text, record) => (
                 <>
-                    {record.Status === 'Open' && (
+                    {record.status === 'Open' && (
                         <Button
                             type="primary"
                             onClick={() => showModal(record.TicketID)}
@@ -70,7 +70,7 @@ const SalesTickets = () => {
                         </Button>
                     )}
                     
-                    {record.Status === 'in-progress' && (
+                    {record.status === 'in-progress' && (
                         <Button
                             type="default"
                             onClick={() => showAssignToModal(record.TicketID)} // Open the AssignTo modal
@@ -135,11 +135,11 @@ const SalesTickets = () => {
 
             if (ticket) {
                 await axios.post('http://localhost:4000/quotations', quotationData);
-                await axios.patch(`http://localhost:4000/tickets/${ticket.id}`, { Status: 'in-progress', CreatedBy: 'Sales' });
+                await axios.patch(`http://localhost:4000/tickets/${ticket.id}`, { status: 'in-progress', createdBy: 'Sales' });
               
                 // Update tickets state to reflect new status
                 setTickets(prevTickets => prevTickets.map(t =>
-                    t.TicketID === selectedTicketId ? { ...t, Status: 'in-progress' } : t
+                    t.TicketID === selectedTicketId ? { ...t, status: 'in-progress' } : t
                 ));
 
                 message.success('Quotation created successfully and ticket status updated to in-progress!');
@@ -159,13 +159,13 @@ const SalesTickets = () => {
         const idd = response.id;
         //console.log('Assigning to Ticket ID:', idd, 'User ID:', userId);
         try {
-            const response = await axios.patch(`http://localhost:4000/tickets/${idd}`, { AssignedToID: userId });
+            const response = await axios.patch(`http://localhost:4000/tickets/${idd}`, { assignedToID: userId });
            
             //console.log('API Response:', response.data); // Log the response
 
             // Update tickets state to reflect the assigned user
             setTickets(prevTickets => prevTickets.map(t =>
-                t.TicketID === ticketId ? { ...t, AssignedToID: userId, Status: 'in-progress' } : t
+                t.TicketID === ticketId ? { ...t, assignedToID: userId, status: 'in-progress' } : t
             ));
 
             message.success('Ticket assigned successfully!');

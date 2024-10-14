@@ -134,11 +134,11 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
           // Create a new quotation
           const quotationData = {
             TicketID: ticketId,
-            CustomerId: customerType === 'existing' ? existingCustomer.id : newCustomer.id,
+            customerID: customerType === 'existing' ? existingCustomer.id : newCustomer.id,
             ProductId: addedProducts.map(product => product.id),
             FinalAmount: addedProducts.reduce((total, prod) => total + prod.price * prod.quantity, 0),
-            Status:'Pending',
-            CreatedBy:'Admin',
+            status:'Pending',
+            createdBy:'Admin',
             // finalAmount,
             CreatedDate: currentDate.format('YYYY-MM-DD HH:mm:ss'),
             Comments: comment,
