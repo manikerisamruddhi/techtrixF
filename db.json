@@ -1,7 +1,7 @@
 {
   "customers": [
     {
-      "FirstName": "John",
+      "firstName": "John",
       "LastName": "Doe",
       "Email": "john.doe@example.com",
       "PhoneNumber": "(555) 123-4567",
@@ -17,7 +17,7 @@
       "isPremium": true
     },
     {
-      "FirstName": "Jane",
+      "firstName": "Jane",
       "LastName": "Smith",
       "Email": "jane.smith@example.com",
       "PhoneNumber": "(555) 234-5678",
@@ -33,7 +33,7 @@
       "isPremium": false
     },
     {
-      "FirstName": "Michael",
+      "firstName": "Michael",
       "LastName": "Johnson",
       "Email": "michael.johnson@example.com",
       "PhoneNumber": "(555) 345-6789",
@@ -49,7 +49,7 @@
       "isPremium": true
     },
     {
-      "FirstName": "Emily",
+      "firstName": "Emily",
       "LastName": "Davis",
       "Email": "emily.davis@example.com",
       "PhoneNumber": "(555) 456-7890",
@@ -65,7 +65,7 @@
       "isPremium": false
     },
     {
-      "FirstName": "Chris",
+      "firstName": "Chris",
       "LastName": "Brown",
       "Email": "chris.brown@example.com",
       "PhoneNumber": "(555) 567-8901",
@@ -81,7 +81,7 @@
       "isPremium": true
     },
     {
-      "FirstName": "Sarah",
+      "firstName": "Sarah",
       "LastName": "Wilson",
       "Email": "sarah.wilson@example.com",
       "PhoneNumber": "(555) 678-9012",
@@ -97,7 +97,7 @@
       "isPremium": false
     },
     {
-      "FirstName": "David",
+      "firstName": "David",
       "LastName": "Martinez",
       "Email": "david.martinez@example.com",
       "PhoneNumber": "(555) 789-0123",
@@ -113,7 +113,7 @@
       "isPremium": true
     },
     {
-      "FirstName": "Jessica",
+      "firstName": "Jessica",
       "LastName": "Garcia",
       "Email": "jessica.garcia@example.com",
       "PhoneNumber": "(555) 890-1234",
@@ -129,7 +129,7 @@
       "isPremium": false
     },
     {
-      "FirstName": "Daniel",
+      "firstName": "Daniel",
       "LastName": "Lee",
       "Email": "daniel.lee@example.com",
       "PhoneNumber": "(555) 901-2345",
@@ -145,7 +145,7 @@
       "isPremium": true
     },
     {
-      "FirstName": "Laura",
+      "firstName": "Laura",
       "LastName": "Hernandez",
       "Email": "laura.hernandez@example.com",
       "PhoneNumber": "(555) 012-3456",
@@ -162,7 +162,7 @@
     },
     {
       "id": "8ca5",
-      "FirstName": "Test",
+      "firstName": "Test",
       "LastName": "test",
       "Email": "test",
       "PhoneNumber": "9809",
@@ -173,7 +173,7 @@
     },
     {
       "id": "dbd6",
-      "FirstName": "Ashish",
+      "firstName": "Ashish",
       "LastName": "Test",
       "Email": "test@gmail.com",
       "PhoneNumber": "9099090990",
@@ -184,7 +184,7 @@
     },
     {
       "id": "8625",
-      "FirstName": "adjflkj",
+      "firstName": "adjflkj",
       "LastName": "adflkj",
       "Email": "adfjk@kjkl",
       "PhoneNumber": "9090909090",
@@ -194,7 +194,7 @@
     },
     {
       "id": "8f73",
-      "FirstName": "adsad",
+      "firstName": "adsad",
       "LastName": "sdfa",
       "Email": "asdf",
       "PhoneNumber": "8787",
@@ -205,7 +205,7 @@
     },
     {
       "id": "05a5",
-      "FirstName": "test",
+      "firstName": "test",
       "LastName": "test",
       "Email": "test@tst",
       "PhoneNumber": "8989898989",

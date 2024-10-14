@@ -1,13 +1,14 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:8080/api/customers';
+const BASE_URL = 'http://localhost:4000/customers';
 const PRODUCT_URL = 'http://localhost:4000/products';
 
 // Async Thunks
 export const fetchCustomers = createAsyncThunk('customers/fetchCustomers', async (_, { rejectWithValue }) => {
     try {
-        const response = await axios.get(`${BASE_URL}/all`); // Use the base URL
+        // all
+        const response = await axios.get(`${BASE_URL}`); // Use the base URL
         return response.data; // Assuming the mock API returns an array of customers
     } catch (error) {
         console.error("Error fetching customers:", error);

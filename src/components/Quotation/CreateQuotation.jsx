@@ -100,7 +100,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
           // Create a new customer
           if (customerType === 'new') {
             const newCustomerData = {
-              FirstName: newCustomer.FirstName,
+              firstName: newCustomer.firstName,
               LastName: newCustomer.LastName,
               Email: newCustomer.email,
               PhoneNumber: newCustomer.phoneNumber,
@@ -203,7 +203,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
                             {customers && customers.length > 0 ? (
                                 customers.map(customer => (
                                     <Select.Option key={customer.id} value={customer.id}>
-                                        {`${customer.FirstName} ${customer.LastName} (${customer.Email})`}
+                                        {`${customer.firstName} ${customer.LastName} (${customer.Email})`}
                                     </Select.Option>
                                 ))
                             ) : (
@@ -219,7 +219,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
                         <Row gutter={20}>
                             <Col span={7}>
                                 <Form.Item label="First Name" rules={[{ required: true, message: 'Please enter customer first name' }]}>
-                                    <Input value={newCustomer.FirstName} onChange={e => setNewCustomer({ ...newCustomer, FirstName: e.target.value })} />
+                                    <Input value={newCustomer.firstName} onChange={e => setNewCustomer({ ...newCustomer, firstName: e.target.value })} />
                                 </Form.Item>
                             </Col>
                             <Col span={7}>
