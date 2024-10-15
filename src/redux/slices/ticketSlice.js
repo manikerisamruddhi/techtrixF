@@ -80,10 +80,10 @@ const ticketSlice = createSlice({
                 state.tickets.push(action.payload);
                 
                 // Show success notification for ticket creation
-                notification.success({
-                    message: 'Ticket Created',
-                    description: 'The ticket was created successfully!',
-                });
+                // notification.success({
+                //     message: 'Ticket Created',
+                //     description: 'The ticket was created successfully!',
+                // });
             })
             .addCase(fetchTicketDetails.pending, (state) => {
                 state.loading = true;
