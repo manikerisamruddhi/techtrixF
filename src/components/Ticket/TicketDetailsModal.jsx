@@ -109,7 +109,7 @@ const TicketDetailsModal = ({ visible, ticket, onClose, onCreateQuotation, onUpd
                 onUpdate={(updatedTicket) => {
                     onUpdateTicket(updatedTicket);
                     handleUpdateModalClose();
-                    // onClose();
+                    onClose(); // Close the TicketDetailsModal 
                 }}
                 onCancel={handleUpdateModalClose}
                 onClose={onClose}

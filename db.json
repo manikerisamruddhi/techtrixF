@@ -612,11 +612,12 @@
       "title": "titel 2",
       "customerID": 89,
       "createdBy": "admin",
-      "assignedTo": 27,
+      "assignedTo": "1a2b3c",
       "remark": "Customer's account is locked after multiple failed login attempts.ss",
       "status": "in-progress",
-      "assignedDate": "2024-10-14T06:34:39.815Z",
-      "id": "59b1"
+      "assignedDate": "2024-10-15T11:08:27.760Z",
+      "id": "59b1",
+      "isChargeble": true
     },
     {
       "title": "titel 2",
@@ -682,11 +683,12 @@
       "title": "titel 2",
       "customerID": "4f90",
       "createdBy": "admin",
-      "assignedTo": "5e6f7g",
+      "assignedTo": "2b3c4d",
       "remark": "make it by todayyyyylll",
       "status": "in-progress",
-      "assignedDate": "2024-10-14T08:55:12.967Z",
-      "id": "f575"
+      "assignedDate": "2024-10-15T11:08:51.138Z",
+      "id": "f575",
+      "isChargeble": true
     },
     {
       "id": "fbf1",
@@ -694,13 +696,13 @@
       "customerID": "e608",
       "ProductID": "1ea9",
       "Priority": "Medium",
-      "isChargeble": false,
+      "isChargeble": true,
       "status": "in-progress",
       "createdBy": "admin",
       "CreatedDate": "2024-10-09T09:30:46.707Z",
       "remark": "test",
-      "assignedTo": "1a2b3c",
-      "assignedDate": "2024-10-14T12:43:26.819Z"
+      "assignedTo": "3c4d5e",
+      "assignedDate": "2024-10-15T11:55:54.138Z"
     },
     {
       "id": "a7d0",
@@ -726,9 +728,9 @@
       "status": "in-progress",
       "createdBy": "admin",
       "CreatedDate": "2024-10-09T10:48:26.583Z",
-      "remark": "adf",
+      "remark": "adfkk",
       "assignedTo": "2b3c4d",
-      "assignedDate": "2024-10-15T05:27:23.431Z"
+      "assignedDate": "2024-10-15T11:56:05.769Z"
     },
     {
       "id": "58ec",
@@ -796,8 +798,8 @@
       "createdBy": "admin",
       "CreatedDate": "2024-10-10T12:20:07.500Z",
       "assignedTo": "3c4d5e",
-      "remark": "hjhhkjkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk",
-      "assignedDate": "2024-10-14T07:15:54.058Z"
+      "remark": "hjhhkjk",
+      "assignedDate": "2024-10-15T11:23:14.122Z"
     },
     {
       "id": "d5c3",
@@ -875,6 +877,104 @@
       "createdBy": "Admin",
       "CreatedDate": "2024-10-14T12:43:57.686Z",
       "remark": "adffd"
+    },
+    {
+      "id": "3fe0",
+      "title": "dfasd",
+      "customerID": "e608",
+      "ProductID": "1ea9",
+      "isChargeble": false,
+      "status": "Open",
+      "createdBy": "Admin",
+      "CreatedDate": "2024-10-15T10:41:05.004Z",
+      "remark": "dff"
+    },
+    {
+      "id": "f828",
+      "title": "asdf",
+      "customerID": "e608",
+      "ProductID": "1ea9",
+      "isChargeble": true,
+      "status": "Open",
+      "createdBy": "Admin",
+      "CreatedDate": "2024-10-15T10:45:44.500Z",
+      "remark": "df"
+    },
+    {
+      "id": "1eac",
+      "title": "jjk",
+      "customerID": "e608",
+      "ProductID": "1ea9",
+      "isChargeble": false,
+      "status": "Open",
+      "createdBy": "Admin",
+      "CreatedDate": "2024-10-15T10:46:55.084Z",
+      "remark": "jk"
+    },
+    {
+      "id": "2fa3",
+      "title": "uuu",
+      "customerID": "e608",
+      "ProductID": "1ea9",
+      "isChargeble": true,
+      "status": "Open",
+      "createdBy": "Admin",
+      "CreatedDate": "2024-10-15T11:57:50.005Z",
+      "remark": ""
+    },
+    {
+      "id": "397c",
+      "title": "titlte ashish",
+      "customerID": "e608",
+      "ProductID": "1ea9",
+      "isChargeble": true,
+      "status": "Open",
+      "createdBy": "Admin",
+      "CreatedDate": "2024-10-15T12:04:56.409Z",
+      "remark": "a"
+    },
+    {
+      "id": "08f6",
+      "title": "ii",
+      "customerID": "e608",
+      "ProductID": "1ea9",
+      "isChargeble": true,
+      "status": "Open",
+      "createdBy": "Admin",
+      "CreatedDate": "2024-10-15T12:11:23.233Z"
+    },
+    {
+      "id": "5ffe",
+      "title": "asd",
+      "customerID": "e608",
+      "ProductID": "1ea9",
+      "isChargeble": false,
+      "status": "Open",
+      "createdBy": "Admin",
+      "CreatedDate": "2024-10-15T12:18:27.003Z",
+      "remark": "fd"
+    },
+    {
+      "id": "ddb1",
+      "title": "hjh",
+      "customerID": "e608",
+      "ProductID": "1ea9",
+      "isChargeble": true,
+      "status": "Open",
+      "createdBy": "Admin",
+      "CreatedDate": "2024-10-15T12:25:36.287Z",
+      "remark": "jk"
+    },
+    {
+      "id": "2ca5",
+      "title": "ttttttttt",
+      "customerID": "e608",
+      "ProductID": "1ea9",
+      "isChargeble": true,
+      "status": "Open",
+      "createdBy": "Admin",
+      "CreatedDate": "2024-10-15T12:34:29.170Z",
+      "remark": "as"
     }
   ],
   "users": [
