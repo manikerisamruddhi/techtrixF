@@ -99,6 +99,12 @@ const Dashboard = () => {
 
     return (
         <div className="dashboard-container" style={{ padding: '20px', backgroundColor: '#40d1ff2b' }}>
+            {showModal && (
+    <CreateTicketModal
+        visible={showModal}
+        onClose={() => setShowModal(false)}
+    />
+)}
             <Typography variant="h4" gutterBottom>
 
                 {showMainCards && 'Dashboard'}
@@ -134,7 +140,11 @@ const Dashboard = () => {
                                     style={{
                                         ...ButtonStyle
                                     }}
-                                    onClick={() => setShowModal(true)}
+                                    
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setShowModal(true);
+                                    }}
                                 >
                                     Create Ticket
                                 </Button>
@@ -381,12 +391,7 @@ const Dashboard = () => {
                     </>
                 )}
             </Grid>
-            {showModal && (
-        <CreateTicketModal
-          open={showModal}
-          onClose={() => setShowModal(false)}
-        />
-      )}
+           
                     
         </div>
     );

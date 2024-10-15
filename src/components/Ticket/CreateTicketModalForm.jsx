@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Modal, Form, Input, Select, Button, message, Radio } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { createTicket } from '../../redux/slices/ticketSlice';
@@ -10,6 +11,7 @@ import { addProduct } from '../../redux/slices/productSlice';
 const { Option } = Select;
 
 const CreateTicketModalForm = ({ visible, onClose }) => {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const [form] = Form.useForm();
     const [selectedProduct, setSelectedProduct] = useState(null);
@@ -103,12 +105,15 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
 
                 form.resetFields();
                 onClose();
+                navigate('/tickets');
             } else {
                 message.error('Failed to create ticket.');
             }
         } catch (error) {
             message.error(`Failed to create ticket: ${error.message}`);
         }
+
+
     };
 
     const filteredProducts = items.filter((product) => product.customerID === selectedCustomer?.id);
