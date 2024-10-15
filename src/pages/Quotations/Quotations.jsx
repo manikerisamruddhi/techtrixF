@@ -8,7 +8,7 @@ import QuotationDetailsModal from '../../components/Quotation/QuotationDetails';
 import { SearchOutlined } from '@ant-design/icons';
 
 const { Content } = Layout;
-const { title } = Typography;
+const { Title } = Typography;
 
 const Quotations = () => {
     const dispatch = useDispatch();
@@ -113,8 +113,8 @@ const Quotations = () => {
             title: 'Quotation ID',
             dataIndex: 'id',
             key: 'QuotationID',
-            render: (text) => <Link to={`/quotation/${text}`}>Quotation #{text}</Link>,
-            ...getColumnSearchProps('id'), // Search filter for Quotation ID
+            // render: (text) => <Link to={`/quotation/${text}`}>Quotation #{text}</Link>,
+            // ...getColumnSearchProps('id'), // Search filter for Quotation ID
         },
         {
             title: 'status',
@@ -128,11 +128,18 @@ const Quotations = () => {
             onFilter: (value, record) => record.status.includes(value),
         },
         {
+            title: 'Comments',
+            dataIndex: 'Comments',
+            key: 'Comments',
+            ...getColumnSearchProps('Comments'), // Search filter for Final Amount
+        },
+        {
             title: 'Final Amount',
             dataIndex: 'FinalAmount',
             key: 'FinalAmount',
             ...getColumnSearchProps('FinalAmount'), // Search filter for Final Amount
         },
+       
         {
             title: 'Actions',
             key: 'actions',
@@ -149,7 +156,7 @@ const Quotations = () => {
             <Content style={{ padding: '20px' }}>
                 <div className="quotation-list-container">
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                        <title level={4} style={{ margin: 0 }}>Quotation List</title>
+                        <Title level={4} style={{ margin: 0 }}>Quotation List</Title>
                         <Button type="primary" style={{ padding: '0 20px' }} onClick={() => setIsCreateModalVisible(true)}>
                             Create Quotation
                         </Button>
