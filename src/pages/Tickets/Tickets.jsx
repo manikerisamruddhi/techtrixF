@@ -13,6 +13,7 @@ const { Title } = Typography;
 
 const Tickets = () => {
     const dispatch = useDispatch();
+    const { customers } = useSelector((state) => state.customers);
     const { tickets, loading: tickets_loading, error: tickets_error } = useSelector((state) => state.tickets);
     const { users, loading: users_loading, error: users_error, departments, loading: departments_loading, error: departments_error } = useSelector((state) => state.users);
 
@@ -90,6 +91,16 @@ const Tickets = () => {
             title: 'Ticket ID',
             dataIndex: 'id',
             key: 'id',
+        },
+
+        {
+            title: 'Customer',
+            dataIndex: 'customerID',
+            key: 'customerID',
+            render: (customerID, record) => {
+                const customer = customers.find(customer => customer.id === customerID);
+                return customer ? `${customer.firstName} ${customer.lastName}` : 'Unknown Customer';
+            },
         },
         {
             title: 'title',
