@@ -40,7 +40,7 @@ const ButtonStyle = {
     right: '20px',
     bottom: '20px',
     // fontSize: '15px',
-    padding: '2px 4px',
+    padding: '4px 8px',
     // backgroundColor: '#4CAF50', // Change the background color
     // borderColor: '#4CAF50', // Change the border color
     // color: '#fff', // Change the text color
