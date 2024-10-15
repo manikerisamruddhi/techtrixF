@@ -49,7 +49,7 @@ const ButtonStyle = {
 }
 
 const Dashboard = () => {
-    const [showModal, setShowModal] = useState(false);
+    const [showCreateTicketModal, setShowCreateTicketModal] = useState(false);
 
     const [showTicketDetails, setShowTicketDetails] = useState(false);
     const [showQuotationDetails, setShowQuotationDetails] = useState(false);
@@ -99,10 +99,10 @@ const Dashboard = () => {
 
     return (
         <div className="dashboard-container" style={{ padding: '20px', backgroundColor: '#40d1ff2b' }}>
-            {showModal && (
+            {showCreateTicketModal && (
     <CreateTicketModal
-        visible={showModal}
-        onClose={() => setShowModal(false)}
+        visible={showCreateTicketModal}
+        onClose={() => setShowCreateTicketModal(false)}
     />
 )}
             <Typography variant="h4" gutterBottom>
@@ -143,7 +143,7 @@ const Dashboard = () => {
                                     
                                     onClick={(e) => {
                                         e.stopPropagation();
-                                        setShowModal(true);
+                                        setShowCreateTicketModal(true);
                                     }}
                                 >
                                     Create Ticket
