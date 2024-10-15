@@ -1,11 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { fetchTickets, fetchQuotations, fetchInvoices } from '../../redux/slices/adminDash';
 import useTicketCounts from '../../hooks/useTicketCount';
-import { setstatus } from '../../redux/slices/statusSlice';
-
+import { Box } from '@mui/material';
 import {
     Grid,
     Card,
@@ -13,10 +11,12 @@ import {
     Typography,
     CircularProgress,
     Alert,
+    IconButton,
 } from '@mui/material';
+import { ArrowCircleLeft } from '@mui/icons-material';
 import '../../styles/Pages/Admin/Dashboard.css';
 
-// Card Styles
+// Shared card styles
 const cardStyle = {
     height: '200px',
     display: 'flex',
@@ -26,34 +26,23 @@ const cardStyle = {
     padding: '20px',
     transition: 'transform 0.3s, box-shadow 0.3s',
     boxShadow: '0 2px 10px rgba(0, 0, 0, 0.15)',
-};
-
-const subCardStyle = {
-    padding: '10px',
-    border: '1px solid #ddd',
-    background: 'linear-gradient(to right, #abe4ff, #c2fbe7)',
-    transition: 'transform 0.3s, box-shadow 0.3s',
+    cursor: 'pointer',
     '&:hover': {
-        transform: 'scale(1.05)',
+        transform: 'scale(1.01)',
         boxShadow: '0 4px 20px rgba(0, 0, 0, 0.25)',
     },
-    cursor: 'pointer',
 };
 
 const Dashboard = () => {
+    const [showTicketDetails, setShowTicketDetails] = useState(false);
+    const [showQuotationDetails, setShowQuotationDetails] = useState(false);
+    const [showInvoiceDetails, setShowInvoiceDetails] = useState(false);
+    const [showCustomerDetails, setShowCustomerDetails] = useState(false);
+    const [showUserDetails, setShowUserDetails] = useState(false);
 
-    // const status = useSelector((state) => state.status);
     const navigate = useNavigate();
-    const handleTicketCardClick = (status) => {
-        // Pass the status parameter here
-        navigate(`/tickets?status=${status}`);
-    };
-
-
-
     const dispatch = useDispatch();
     const { tickets, quotations, invoices, loading, error } = useSelector(state => state.dashboard);
-
     const { total, inProgress, resolved, closed, open } = useTicketCounts(tickets);
 
     useEffect(() => {
@@ -62,145 +51,226 @@ const Dashboard = () => {
         dispatch(fetchInvoices());
     }, [dispatch]);
 
+    const handleMainCardClick = (setShowDetails) => {
+        setShowTicketDetails(false);
+        setShowQuotationDetails(false);
+        setShowInvoiceDetails(false);
+        setShowCustomerDetails(false);
+        setShowUserDetails(false);
+        setShowDetails(true);
+    };
+
+    const handleSubCardClick = (status) => {
+        navigate(`/tickets?status=${status}`);
+    };
+
+    const handleBackButtonClick = () => {
+        setShowTicketDetails(false);
+        setShowQuotationDetails(false);
+        setShowInvoiceDetails(false);
+        setShowCustomerDetails(false);
+        setShowUserDetails(false);
+    };
+
+    const showMainCards = !(
+        showTicketDetails || 
+        showQuotationDetails || 
+        showInvoiceDetails || 
+        showCustomerDetails || 
+        showUserDetails
+    );
+
     return (
-        <div className="dashboard-container" style={{ padding: '20px', backgroundColor: '#40d1ff2b', }}>
+        <div className="dashboard-container" style={{ padding: '20px', backgroundColor: '#40d1ff2b' }}>
             <Typography variant="h4" gutterBottom>
-                Dashboard
-            </Typography>
+   
+    {showMainCards && 'Dashboard'}
+</Typography>
 
             {loading && <CircularProgress />}
             {error && <Alert severity="error">Error loading data: {error}</Alert>}
 
-            <Grid container spacing={2} style={{ marginTop: '20px' }}>
-                {/* Parent Card for All Tickets */}
-                <Grid item xs={12} sm={6} md={4}>
-                    <div style={{ textDecoration: 'none' }}>
-                        <Card
-                            sx={{
-                                ...cardStyle,
-                                background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)',
-                            }}
-                        >
-                            <Typography variant="h5" sx={{ color: '#000' }}>All Tickets</Typography>
-                            <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'left' }}>
-                                <Grid container spacing={2}>
-                                    <Grid item xs={6}>
-                                        
-                                    <Card sx={subCardStyle} onClick={() => handleTicketCardClick('Resolved')}>
-                                            <Typography sx={{ color: 'blue' }}>Resolved: {resolved}</Typography>
-                                        </Card>
-                                    </Grid>
+            <Grid container spacing={2} >
+                {/* Render Main Cards only when subcards are not visible */}
+                {showMainCards && (
+                    <>
+                        {/* Tickets Main Card */}
+                        <Grid item xs={12} sm={6} md={4}>
+                            <Card
+                                sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)' }}
+                                onClick={() => handleMainCardClick(setShowTicketDetails)}
+                            >
+                                <Typography variant="h5" sx={{ color: '#000' }}>All Tickets</Typography>
+                            </Card>
+                        </Grid>
 
-                                    <Grid item xs={6}>
-                                        <Card sx={subCardStyle} onClick={() => handleTicketCardClick('Open')}>
-                                            <Typography sx={{ color: 'orangered' }}>Open: {open}</Typography>
-                                        </Card>
-                                    </Grid>
+                        {/* Quotations Main Card */}
+                        <Grid item xs={12} sm={6} md={4}>
+                            <Card
+                                sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)' }}
+                                onClick={() => handleMainCardClick(setShowQuotationDetails)}
+                            >
+                                <Typography variant="h5" sx={{ color: '#000' }}>All Quotations</Typography>
+                            </Card>
+                        </Grid>
 
-                                    <Grid item xs={6}>
-                                        <Card sx={subCardStyle} onClick={() => handleTicketCardClick('in-progress')}>
-                                            <Typography sx={{ color: 'green' }}>Progress: {inProgress}</Typography>
-                                        </Card>
-                                    </Grid>
-                                    <Grid item xs={6}>
-                                    <Card sx={subCardStyle} onClick={() => handleTicketCardClick('Closed')}>
-                                            <Typography sx={{ color: '#333' }}>closed: {closed}</Typography>
-                                        </Card>
-                                    </Grid>
-                                </Grid>
-                            </CardContent>
-                        </Card>
-                    </div>
-                </Grid>
+                        {/* Invoices Main Card */}
+                        <Grid item xs={12} sm={6} md={4}>
+                            <Card
+                                sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)' }}
+                                onClick={() => handleMainCardClick(setShowInvoiceDetails)}
+                            >
+                                <Typography variant="h5" sx={{ color: '#000' }}>All Invoices</Typography>
+                            </Card>
+                        </Grid>
 
-                {/* Parent Card for Quotations */}
-                <Grid item xs={12} sm={6} md={4}>
-                    <Link to="/quotations" style={{ textDecoration: 'none' }}>
-                        <Card
-                            sx={{
-                                ...cardStyle,
-                                background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)',
-                            }}
-                        >
-                            <Typography variant="h5" sx={{ color: '#000' }}>Quotations</Typography>
-                            <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'left', gap: 1.5 }}>
+                        {/* Customers Main Card */}
+                        <Grid item xs={12} sm={6} md={4}>
+                            <Card
+                                sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)' }}
+                                onClick={() => handleMainCardClick(setShowCustomerDetails)}
+                            >
+                                <Typography variant="h5" sx={{ color: '#000' }}>All Customers</Typography>
+                            </Card>
+                        </Grid>
 
-                                <Card sx={subCardStyle}>
-                                    <Typography sx={{ color: 'blue' }}>Delivered: {quotations.delivered}</Typography>
-                                </Card>
-                                <Card sx={subCardStyle}>
-                                    <Typography sx={{ color: 'green' }}>Remaining: {quotations.remaining}</Typography>
-                                </Card>
-                            </CardContent>
-                        </Card>
-                    </Link>
-                </Grid>
+                        {/* Users Main Card */}
+                        <Grid item xs={12} sm={6} md={4}>
+                            <Card
+                                sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)' }}
+                                onClick={() => handleMainCardClick(setShowUserDetails)}
+                            >
+                                <Typography variant="h5" sx={{ color: '#000' }}>All Users</Typography>
+                            </Card>
+                        </Grid>
+                    </>
+                )}
 
-                {/* Parent Card for All Invoices */}
-                <Grid item xs={12} sm={6} md={4}>
-                    <Link to="/invoices" style={{ textDecoration: 'none' }}>
-                        <Card
-                            sx={{
-                                ...cardStyle,
-                                background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)',
-                            }}
-                        >
-                            <Typography variant="h5" sx={{ color: '#000' }}>All Invoices</Typography>
-                            <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'left', gap: 1.5 }}>
-                                <Card sx={subCardStyle}>
-                                    <Typography sx={{ color: 'green' }}>In Warranty: {invoices.inWarranty}</Typography>
+                {/* Show Ticket Subcards */}
+                {showTicketDetails && (
+                    <>
+                        <div className='typo' style={{ display: 'flex', justifyContent: 'flex-start', color: 'black', width: '100%' }}>
+                        <IconButton onClick={handleBackButtonClick}>
+            <ArrowCircleLeft fontSize="large" />
+        </IconButton>
+                            <Typography variant="h4" gutterBottom style={{marginTop:'12px'}}>Dashboard/Tickets:</Typography>
+                        </div>
+                        <Grid container spacing={2} style={{ marginLeft: '3px' }}>
+                            <Grid item xs={6} sm={3} md={4}>
+                                <Card
+                                    sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2fbe7)' }}
+                                    onClick={() => handleSubCardClick('Resolved')}
+                                >
+                                    <Typography sx={{ color: 'blue', textAlign: 'center' }}>Resolved: {resolved}</Typography>
                                 </Card>
-                                <Card sx={subCardStyle}>
-                                    <Typography sx={{ color: 'orangered' }}>Out of Warranty: {invoices.outOfWarranty}</Typography>
+                            </Grid>
+                            <Grid item xs={6} sm={3} md={4}>
+                                <Card
+                                    sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2fbe7)' }}
+                                    onClick={() => handleSubCardClick('Open')}
+                                >
+                                    <Typography sx={{ color: 'orangered', textAlign: 'center' }}>Open: {open}</Typography>
                                 </Card>
-                            </CardContent>
-                        </Card>
-                    </Link>
-                </Grid>
+                            </Grid>
+                            <Grid item xs={6} sm={3} md={4}>
+                                <Card
+                                    sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2fbe7)' }}
+                                    onClick={() => handleSubCardClick('In Progress')}
+                                >
+                                    <Typography sx={{ color: 'green', textAlign: 'center' }}>In Progress: {inProgress}</Typography>
+                                </Card>
+                            </Grid>
+                            <Grid item xs={6} sm={3} md={4}>
+                                <Card
+                                    sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2fbe7)' }}
+                                    onClick={() => handleSubCardClick('Closed')}
+                                >
+                                    <Typography sx={{ color: '#333', textAlign: 'center' }}>Closed: {closed}</Typography>
+                                </Card>
+                            </Grid>
+                        </Grid>
+                    </>
+                )}
 
-                {/* New Card 1 - Customers */}
-                <Grid item xs={12} sm={6} md={4}>
-                    <Link to="/customers" style={{ textDecoration: 'none' }}>
-                        <Card
-                            sx={{
-                                ...cardStyle,
-                                background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)',
-                            }}
-                        >
-                            <Typography variant="h5" sx={{ color: '#000' }}>Customers</Typography>
-                            <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'left', gap: 1.5 }}>
-                                <Card sx={subCardStyle}>
-                                    <Typography sx={{ color: '#000' }}>Total: 150</Typography>
-                                </Card>
-                                <Card sx={subCardStyle}>
-                                    <Typography sx={{ color: '#000' }}>Total Products: 788</Typography>
-                                </Card>
-                            </CardContent>
-                        </Card>
-                    </Link>
-                </Grid>
+                {/* Show Quotation Subcards */}
+                {showQuotationDetails && (
+                    <>
+                       <div className='typo' style={{ display: 'flex', justifyContent: 'flex-start', color: 'black', width: '100%' }}>
+                        <IconButton onClick={handleBackButtonClick}>
+            <ArrowCircleLeft fontSize="large" />
+        </IconButton>
+                            <Typography variant="h4" gutterBottom style={{marginTop:'12px'}}>Dashboard/Quotations:</Typography>
+                        </div>
+                        <Grid container spacing={2} style={{ marginLeft: '10px' }}>
+                            <Grid item xs={6} sm={3} md={4}>
+                                <Link to="/quotations" style={{ textDecoration: 'none' }}>
+                                    <Card sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2fbe7)' }}>
+                                        <Typography sx={{ color: 'blue' }}>Delivered: {quotations.delivered}</Typography>
+                                    </Card>
+                                </Link>
+                            </Grid>
+                            <Grid item xs={6} sm={3} md={4}>
+                                <Link to="/quotations" style={{ textDecoration: 'none' }}>
+                                    <Card sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2fbe7)' }}>
+                                        <Typography sx={{ color: 'orangered' }}>Pending: {quotations.pending}</Typography>
+                                    </Card>
+                                </Link>
+                            </Grid>
+                        </Grid>
+                    </>
+                )}
 
-                {/* New Card 2 - Users */}
-                <Grid item xs={12} sm={6} md={4}>
-                    <Link to="/users" style={{ textDecoration: 'none' }}>
-                        <Card
-                            sx={{
-                                ...cardStyle,
-                                background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)',
-                            }}
-                        >
-                            <Typography sx={{ color: '#000' }}>Users</Typography>
-                            <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'left', gap: 1.5 }}>
-                                <Card sx={subCardStyle}>
-                                    <Typography sx={{ color: '#000' }}>Sales: 9</Typography>
+                {/* Show Invoice Subcards */}
+                {showInvoiceDetails && (
+                    <>
+                        <div className='typo' style={{ display: 'flex', justifyContent: 'flex-start', color: 'black', width: '100%' }}>
+                        <IconButton onClick={handleBackButtonClick}>
+            <ArrowCircleLeft fontSize="large" />
+        </IconButton>
+                            <Typography variant="h4" gutterBottom style={{marginTop:'12px'}}>Dashboard / Invoices:</Typography>
+                        </div>
+                        <Grid container spacing={2} style={{ marginTop: '20px', marginLeft: '10px' }}>
+                            <Grid item xs={6} sm={3} md={4}>
+                                <Card
+                                    sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2fbe7)' }}
+                                    onClick={() => navigate("/invoices")}
+                                >
+                                    <Typography sx={{ color: 'blue' }}>Total: {invoices.total}</Typography>
                                 </Card>
-                                <Card sx={subCardStyle}>
-                                    <Typography sx={{ color: '#000' }}>Logistics: 7</Typography>
-                                </Card>
-                            </CardContent>
-                        </Card>
-                    </Link>
-                </Grid>
+                            </Grid>
+                        </Grid>
+                    </>
+                )}
+
+                {/* Show Customer Subcards */}
+                {showCustomerDetails && (
+                    <>
+                       <div className='typo' style={{ display: 'flex', justifyContent: 'flex-start', color: 'black', width: '100%' }}>
+                        <IconButton onClick={handleBackButtonClick}>
+            <ArrowCircleLeft fontSize="large" />
+        </IconButton>
+                            <Typography variant="h4" gutterBottom style={{marginTop:'12px'}}>Dashboard / Tickets:</Typography>
+                        </div>
+                        <Grid container spacing={2} style={{ marginTop: '20px', marginLeft: '10px' }}>
+                            {/* Add customer details here */}
+                        </Grid>
+                    </>
+                )}
+
+                {/* Show User Subcards */}
+                {showUserDetails && (
+                    <>
+                        <div className='typo' style={{ display: 'flex', justifyContent: 'flex-start', color: 'black', width: '100%' }}>
+                        <IconButton onClick={handleBackButtonClick}>
+            <ArrowCircleLeft fontSize="large" />
+        </IconButton>
+                            <Typography variant="h4" gutterBottom style={{marginTop:'12px'}}>Dashboard / Users:</Typography>
+                        </div>
+                        <Grid container spacing={2} style={{ marginTop: '20px', marginLeft: '10px' }}>
+                            {/* Add user details here */}
+                        </Grid>
+                    </>
+                )}
             </Grid>
         </div>
     );
