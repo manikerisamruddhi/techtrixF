@@ -26,6 +26,10 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
         if (visible) {
             dispatch(fetchCustomers());
             dispatch(fetchProducts());
+        } else {
+            setSelectedProduct(null);
+            setIsChargeable(false);
+            setisPremiumCustomer(false);
         }
     }, [dispatch, visible]);
 
@@ -105,7 +109,7 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
 
                 form.resetFields();
                 onClose();
-                navigate('/tickets');
+               
             } else {
                 message.error('Failed to create ticket.');
             }
@@ -295,7 +299,7 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
                     <Form.Item
                         name="remark"
                         label="remark"
-                        rules={[{ required: true, message: 'Add a remark' }]}
+                        // rules={[{ required: true, message: 'Add a remark' }]}  //removed the compulsion
                     >
                         <Input.TextArea
                             rows={2}
