@@ -31,24 +31,29 @@ export const fetchTicketDetails = createAsyncThunk('tickets/fetchTicketDetails',
 
 export const createTicket = createAsyncThunk('tickets/addTicket', async (newTicket) => {
     const response = await axios.post('http://localhost:4000/tickets', newTicket);
-    
-    return {
-        id: response.data.id,
-        title: response.data.title,
-        createdBy: newTicket.createdBy,
-        status: newTicket.status,
-        Priority: newTicket.Priority,
-        assignedToID: newTicket.assignedToID,
-        Description: newTicket.Description,
-        remark: response.data.remark,
-        CreatedDate: new Date().toISOString(),
-        isChargeble: response.data.isChargeble,
-    };
+
+    return response.data;
 });
+    // console.log(response);
+    
+//     return {
+//         id: response.data.id,
+//         customerId: response.data.customerId,
+//         title: response.data.title,
+//         createdBy: newTicket.createdBy,
+//         status: newTicket.status,
+//         Priority: newTicket.Priority,
+//         assignedToID: newTicket.assignedToID,
+//         Description: newTicket.Description,
+//         remark: response.data.remark,
+//         CreatedDate: new Date().toISOString(),
+//         isChargeble: response.data.isChargeble,
+//     };
+// });
 
 // Add the updateTicket async thunk
 export const updateTicket = createAsyncThunk('tickets/updateTicket', async ({ id, data }) => {
-    console.log(data);
+    // console.log(data);
     const response = await axios.put(`http://localhost:4000/tickets/${id}`, data);
     return response.data;
 });
@@ -105,10 +110,10 @@ const ticketSlice = createSlice({
                     state.tickets[index] = updatedTicket;
                     
                     // Show success notification for ticket update
-                    notification.success({
-                        message: 'Ticket Updated',
-                        description: 'The ticket was updated successfully!',
-                    });
+                    // notification.success({
+                    //     message: 'Ticket Updated',
+                    //     description: 'The ticket was updated successfully!',
+                    // });
                 }
             });
     },
