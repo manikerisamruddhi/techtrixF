@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { Layout, Table, Button, Empty, message, Spin, Typography, Modal } from 'antd'; // Import Ant Design components
 
 const { Header, Content } = Layout;
-const { title } = Typography;
+const { Title } = Typography;
 
 const SalesQuotations = () => {
     const dispatch = useDispatch();
@@ -87,7 +87,7 @@ const SalesQuotations = () => {
                             marginBottom: '16px',
                         }}
                     >
-                        <title level={4} style={{ margin: 0 }}>Quotation List</title>
+                        <Title level={4} style={{ margin: 0 }}>Quotation List</Title>
                         <Link to="/create-quotation">
                             <Button type="primary" style={{ padding: '0 20px' }}>Create Quotation</Button>
                         </Link>

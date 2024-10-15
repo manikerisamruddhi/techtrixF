@@ -1,22 +1,6 @@
 {
   "customers": [
     {
-      "firstName": "John",
-      "lastName": "Doe",
-      "email": "john.doe@example.com",
-      "phoneNumber": "(555) 123-4567",
-      "address": "1234 Elm Street",
-      "City": "Anytown",
-      "StateCode": "CA",
-      "zipCode": "90210",
-      "CountryCode": "+1",
-      "CreatedDate": "2023-01-01T08:00:00Z",
-      "LastUpdateDate": "2023-01-05T14:30:00Z",
-      "IsActive": true,
-      "id": "4f90",
-      "isPremium": true
-    },
-    {
       "firstName": "Jane",
       "lastName": "Smith",
       "email": "jane.smith@example.com",
@@ -28,7 +12,7 @@
       "CountryCode": "+1",
       "CreatedDate": "2023-01-02T09:00:00Z",
       "LastUpdateDate": "2023-01-06T15:00:00Z",
-      "IsActive": true,
+      "isActive": true,
       "id": "e608",
       "isPremium": false
     },
@@ -44,7 +28,7 @@
       "CountryCode": "+1",
       "CreatedDate": "2023-01-03T10:00:00Z",
       "LastUpdateDate": "2023-01-07T16:30:00Z",
-      "IsActive": true,
+      "isActive": true,
       "id": "350c",
       "isPremium": true
     },
@@ -60,7 +44,7 @@
       "CountryCode": "+1",
       "CreatedDate": "2023-01-04T11:00:00Z",
       "LastUpdateDate": "2023-01-08T17:00:00Z",
-      "IsActive": true,
+      "isActive": true,
       "id": "4e50",
       "isPremium": false
     },
@@ -76,7 +60,7 @@
       "CountryCode": "+1",
       "CreatedDate": "2023-01-05T12:00:00Z",
       "LastUpdateDate": "2023-01-09T18:00:00Z",
-      "IsActive": true,
+      "isActive": true,
       "id": "50c4",
       "isPremium": true
     },
@@ -92,7 +76,7 @@
       "CountryCode": "+1",
       "CreatedDate": "2023-01-06T13:00:00Z",
       "LastUpdateDate": "2023-01-10T19:00:00Z",
-      "IsActive": true,
+      "isActive": true,
       "id": "9d82",
       "isPremium": false
     },
@@ -108,7 +92,7 @@
       "CountryCode": "+1",
       "CreatedDate": "2023-01-07T14:00:00Z",
       "LastUpdateDate": "2023-01-11T20:00:00Z",
-      "IsActive": true,
+      "isActive": true,
       "id": "0345",
       "isPremium": true
     },
@@ -124,7 +108,7 @@
       "CountryCode": "+1",
       "CreatedDate": "2023-01-08T15:00:00Z",
       "LastUpdateDate": "2023-01-12T21:00:00Z",
-      "IsActive": true,
+      "isActive": true,
       "id": "84bf",
       "isPremium": false
     },
@@ -140,7 +124,7 @@
       "CountryCode": "+1",
       "CreatedDate": "2023-01-09T16:00:00Z",
       "LastUpdateDate": "2023-01-13T22:00:00Z",
-      "IsActive": true,
+      "isActive": true,
       "id": "991d",
       "isPremium": true
     },
@@ -156,7 +140,7 @@
       "CountryCode": "+1",
       "CreatedDate": "2023-01-10T17:00:00Z",
       "LastUpdateDate": "2023-01-14T23:00:00Z",
-      "IsActive": true,
+      "isActive": true,
       "id": "20a5",
       "isPremium": false
     },
@@ -168,7 +152,7 @@
       "phoneNumber": "9809",
       "address": "ajfkl",
       "PinCode": "80989",
-      "IsPremium": true,
+      "isPremium": true,
       "createdAt": "2024-10-09 12:41:13"
     },
     {
@@ -179,7 +163,7 @@
       "phoneNumber": "9099090990",
       "address": "Pune, Maharashtra, India, 411011",
       "PinCode": "411014",
-      "IsPremium": false,
+      "isPremium": false,
       "createdAt": "2024-10-09 14:56:32"
     },
     {
@@ -200,17 +184,7 @@
       "phoneNumber": "8787",
       "address": "kjkjhjk",
       "PinCode": "898989",
-      "IsPremium": true,
-      "CreatedDate": "2024-10-09 16:10:28"
-    },
-    {
-      "id": "05a5",
-      "firstName": "test",
-      "lastName": "test",
-      "email": "test@tst",
-      "phoneNumber": "8989898989",
-      "address": "pune",
-      "PinCode": "411412",
+      "isPremium": true,
       "CreatedDate": "2024-10-09 16:10:28"
     }
   ],
@@ -725,8 +699,8 @@
       "createdBy": "admin",
       "CreatedDate": "2024-10-09T09:30:46.707Z",
       "remark": "test",
-      "assignedTo": "8h9i0j",
-      "assignedDate": "2024-10-14T07:21:59.830Z"
+      "assignedTo": "1a2b3c",
+      "assignedDate": "2024-10-14T12:43:26.819Z"
     },
     {
       "id": "a7d0",
@@ -735,10 +709,12 @@
       "ProductID": "1c95",
       "Priority": "High",
       "isChargeble": false,
-      "status": "Open",
-      "createdBy": "Admin",
+      "status": "in-progress",
+      "createdBy": "admin",
       "CreatedDate": "2024-10-09T09:31:42.377Z",
-      "remark": "high"
+      "remark": "high",
+      "assignedTo": "1a2b3c",
+      "assignedDate": "2024-10-15T05:27:08.758Z"
     },
     {
       "id": "5fe0",
@@ -747,10 +723,12 @@
       "ProductID": "1c95",
       "Priority": "High",
       "isChargeble": true,
-      "status": "Open",
-      "createdBy": "Admin",
+      "status": "in-progress",
+      "createdBy": "admin",
       "CreatedDate": "2024-10-09T10:48:26.583Z",
-      "remark": "adf"
+      "remark": "adf",
+      "assignedTo": "2b3c4d",
+      "assignedDate": "2024-10-15T05:27:23.431Z"
     },
     {
       "id": "58ec",
@@ -875,6 +853,28 @@
       "remark": "assighned to jane smith take details from john doe",
       "assignedTo": "2b3c4d",
       "assignedDate": "2024-10-14T08:03:20.532Z"
+    },
+    {
+      "id": "0c77",
+      "title": "tet",
+      "customerID": "e608",
+      "ProductID": "1ea9",
+      "isChargeble": true,
+      "status": "Open",
+      "createdBy": "Admin",
+      "CreatedDate": "2024-10-14T12:42:52.869Z",
+      "remark": "teset"
+    },
+    {
+      "id": "dab8",
+      "title": "ad",
+      "customerID": "e608",
+      "ProductID": "1ea9",
+      "isChargeble": true,
+      "status": "Open",
+      "createdBy": "Admin",
+      "CreatedDate": "2024-10-14T12:43:57.686Z",
+      "remark": "adffd"
     }
   ],
   "users": [

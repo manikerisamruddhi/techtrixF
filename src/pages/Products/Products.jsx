@@ -6,7 +6,7 @@ import ProductDetailModal from './ProductDetails2';
 import ProductFormModal from './AddProduct';
 import EditModal from './EditProduct'; // Import EditModal
 
-const { title } = Typography;
+const { Title } = Typography;
 
 const Products = () => {
     const dispatch = useDispatch();
@@ -93,7 +93,7 @@ const Products = () => {
 
     return (
         <div className="product-list-container">
-            <title level={1}>Product List</title>
+            <Title level={1}>Product List</Title>
             {/* <Button type="primary" className="create-product-btn" onClick={() => setCreateModalVisible(true)}>
                 Create Product
             </Button> */}

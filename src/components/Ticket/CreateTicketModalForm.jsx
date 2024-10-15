@@ -15,7 +15,7 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [selectedCustomer, setSelectedCustomer] = useState(null);
     const [isChargeable, setIsChargeable] = useState(false);
-    const [isPremiumCustomer, setIsPremiumCustomer] = useState(false);
+    const [isPremiumCustomer, setisPremiumCustomer] = useState(false);
 
     const { customers } = useSelector((state) => state.customers);
     const { items } = useSelector((state) => state.products);
@@ -31,7 +31,7 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
         const selectedCust = customers.find(customer => customer.id === value);
         setSelectedCustomer(selectedCust);
 
-        setIsPremiumCustomer(selectedCust?.isPremium || false);
+        setisPremiumCustomer(selectedCust?.isPremium || false);
 
         form.setFieldsValue({ ProductID: null });
         setSelectedProduct(null);

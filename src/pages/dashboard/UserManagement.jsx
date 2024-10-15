@@ -4,7 +4,7 @@ import { Layout, Card, Typography, Button, Table } from 'antd';
 import { fetchUsers } from '../../redux/slices/userSlice';
 
 const { Content } = Layout;
-const { title } = Typography;
+const { Title } = Typography;
 
 const UserManagement = () => {
     const dispatch = useDispatch();
@@ -71,9 +71,9 @@ const UserManagement = () => {
                     }}
                 >
                     {/* User Management title */}
-                    <title level={4} style={{ margin: 0 }}>
+                    <Title level={4} style={{ margin: 0 }}>
                         User Management
-                    </title>
+                    </Title>
 
                     {/* Create User Button */}
                     <Button type="primary">Create User</Button>

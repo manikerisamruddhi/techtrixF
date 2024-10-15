@@ -9,7 +9,7 @@ import moment from 'moment'; // Import moment.js for date formatting
 import { useSearchParams } from 'react-router-dom';
 
 const { Content } = Layout;
-const { title } = Typography;
+const { Title } = Typography;
 
 const Tickets = () => {
     const dispatch = useDispatch();
@@ -163,7 +163,7 @@ const Tickets = () => {
             <Content style={{ padding: '20px' }}>
                 <div className="content-container">
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                        <title level={4} style={{ margin: 0 }}>Ticket List</title>
+                        <Title level={4} style={{ margin: 0 }}>Ticket List</Title>
                         <Button onClick={() => toggle_form(!is_form_visible)} className="create-ticket-btn" type="primary">
                             {is_form_visible ? 'Cancel' : 'Create Ticket'}
                         </Button>

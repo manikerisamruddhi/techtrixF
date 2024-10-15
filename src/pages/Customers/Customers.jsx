@@ -57,10 +57,10 @@ const Customers = () => {
     };
 
     const columns = [
-        { title: 'ID', dataIndex: 'customerId', key: 'customerId' },
+        { title: 'ID', dataIndex: 'id', key: 'CustomerID' },
         { title: 'First Name', dataIndex: 'firstName', key: 'firstName' },
         { title: 'Last Name', dataIndex: 'lastName', key: 'lastName' },
-        { title: 'address', dataIndex: 'address', key: 'address' },
+        { title: 'email', dataIndex: 'email', key: 'email' },
         { title: 'Phone', dataIndex: 'phoneNumber', key: 'phoneNumber' },
         {
             title: 'Actions',
@@ -70,7 +70,7 @@ const Customers = () => {
                     <Button type="link" onClick={() => handleEdit(record)}>
                         Edit
                     </Button>
-                    <Button type="link" danger onClick={() => handleDelete(record.CustomerID)}>
+                    <Button type="link" danger onClick={() => handleDelete(record.id)}>
                         Delete
                     </Button>
                 </>
@@ -104,7 +104,7 @@ const Customers = () => {
                         <Table
                             dataSource={customers}
                             columns={columns}
-                            rowKey="customerId"
+                            rowKey="CustomerID"
                             pagination={false}
                         />
                     )}

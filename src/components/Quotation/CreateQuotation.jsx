@@ -50,6 +50,16 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
         }
     }, [error, dispatch]);
 
+    const handleCustomerChange = (value) => {
+        const selectedCust = customers.find(customer => customer.id === value);
+        setSelectedCustomer(selectedCust);
+
+        setisPremiumCustomer(selectedCust?.isPremium || false);
+
+        form.setFieldsValue({ ProductID: null });
+        setSelectedProduct(null);
+    };
+
     const handleAddOrEditProduct = () => {
         // Validation Logic
         if (!newProduct.brand || !newProduct.model_no || newProduct.price <= 0 || newProduct.quantity <= 0) {
@@ -106,7 +116,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
               phoneNumber: newCustomer.phoneNumber,
               address: newCustomer.address,
               PinCode: newCustomer.pinCode,
-              IsPremium: newCustomer.isPremium,
+              isPremium: newCustomer.isPremium,
               CreatedDate: currentDate.format('YYYY-MM-DD HH:mm:ss'),
             };
             //console.log('Adding new customer:', newCustomerData);
@@ -195,19 +205,23 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
                         label="Select Existing Customer"
                         rules={[{ required: true, message: 'Please select an existing customer' }]}
                     >
-                        <Select
-                            placeholder="Select an existing customer"
-                            style={{ width: '100%', marginBottom: '20px' }}
-                            onChange={handleExistingCustomerChange}
+                                                <Select
+                            showSearch
+                            placeholder="Select a customer"
+                            optionFilterProp="label"
+                            onChange={handleCustomerChange}
                         >
                             {customers && customers.length > 0 ? (
                                 customers.map(customer => (
-                                    <Select.Option key={customer.id} value={customer.id}>
-                                        {`${customer.firstName} ${customer.lastName} (${customer.email})`}
-                                    </Select.Option>
+                                    <Option key={customer.id} value={customer.id} label={`${customer.firstName} ${customer.lastName} ${customer.email}`}>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                            <span>{`${customer.firstName} ${customer.lastName}`}</span>
+                                            <span style={{ marginLeft: '10px', color: 'gray' }}>{customer.email}</span>
+                                        </div>
+                                    </Option>
                                 ))
                             ) : (
-                                <Select.Option value="">No customers available</Select.Option>
+                                <Option value="">No customers found</Option>
                             )}
                         </Select>
                     </Form.Item>
@@ -265,9 +279,11 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
                         columns={[
                             { title: 'Brand', dataIndex: 'brand', key: 'brand' },
                             { title: 'Model No', dataIndex: 'model_no', key: 'model_no' },
+                            { title: 'description', dataIndex: 'description', key: 'description' }, 
                             { title: 'Price', dataIndex: 'price', key: 'price' },
                             { title: 'Quantity', dataIndex: 'quantity', key: 'quantity' },
-                            { title: 'Serial Number?', dataIndex: 'hasSerialNumber', key: 'hasSerialNumber', render: text => (text === 'yes' ? 'Yes' : 'No') },
+                            // { title: 'Serial Number?', dataIndex: 'hasSerialNumber', key: 'hasSerialNumber',
+                            //      render: text => (text === 'yes' ? 'Yes' : 'No') },
                             {
                                 title: 'Actions',
                                 key: 'actions',

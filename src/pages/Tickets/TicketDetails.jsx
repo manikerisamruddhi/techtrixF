@@ -30,7 +30,7 @@ const TicketDetails = () => {
 
     return (
         <Card title="Ticket Details" style={{ width: '100%', maxWidth: 600, margin: 'auto' }}>
-            <title level={4}>{ticket.title}</title>
+            <Title level={4}>{ticket.title}</Title>
             <Paragraph><strong>status:</strong> {ticket.status}</Paragraph>
             <Paragraph><strong>Created by:</strong> {ticket.createdBy}</Paragraph>
             <Paragraph><strong>Description:</strong> {ticket.Description}</Paragraph>
