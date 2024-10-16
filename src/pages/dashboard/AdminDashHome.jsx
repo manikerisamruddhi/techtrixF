@@ -6,6 +6,7 @@ import useTicketCounts from '../../hooks/useTicketCount';
 import CreateTicketModal from '../../components/Ticket/CreateTicketModalForm';
 import CreateQuotationModal from '../../components/Quotation/CreateQuotation';
 import CustomerFormModal from '../../components/Customer/CustomerFormModel';
+import AddProduct from '../Products/AddProduct'
 import {
     Grid,
     Card,
@@ -55,6 +56,7 @@ const Dashboard = () => {
 
     const [showCreateTicketModal, setShowCreateTicketModal] = useState(false);
     const [showCustomerFormModal, setShowCustomerFormModal] = useState(false);
+    const [showCreateProductModal, setShowCreateProductModal] = useState(false);
 
 
     const [showTicketDetails, setShowTicketDetails] = useState(false);
@@ -139,9 +141,16 @@ const Dashboard = () => {
                 <CustomerFormModal
                     visible={showCustomerFormModal}
                     onCancel={() => setShowCustomerFormModal(false)}
-                     onFinish={handleCustomerFormFinish}
+                    onFinish={handleCustomerFormFinish}
                     initialValues={{}}
                     mode="add"
+                />
+            )}
+
+            {showCreateProductModal && (
+                <AddProduct
+                    visible={showCreateProductModal}
+                    onCancel={() => setShowCreateProductModal(false)}
                 />
             )}
 
@@ -259,6 +268,33 @@ const Dashboard = () => {
                             </Card>
                         </Grid>
 
+
+ {/* Products Main Card */}
+ <Grid item xs={12} sm={6} md={4}>
+                            <Card
+                                sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)', position: 'relative' }}
+                                onClick={() => handleMainCardClick(setShowProductDetails)}
+                            >
+                                <Typography variant="h5" sx={{ color: '#000' }}>All Products</Typography>
+                                <Grid container spacing={2} sx={{ marginTop: '20px' }}>
+                                    <Grid item xs={6} sm={6} md={6} marginBottom={1}>
+                                        <Typography variant="h6" sx={{ color: '' }}>Total Products: </Typography>
+                                    </Grid>
+                                </Grid>
+                                <Button
+                                    type="primary"
+                                    className='Button'
+                                    style={{ ...ButtonStyle }}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setShowCreateProductModal(true);
+                                    }}
+                                >
+                                    Create Product
+                                </Button>
+                            </Card>
+                        </Grid>
+
                         {/* Customers Main Card */}
                         <Grid item xs={12} sm={6} md={4}>
                             <Card
@@ -290,6 +326,7 @@ const Dashboard = () => {
                             </Card>
                         </Grid>
 
+
                         {/* Users Main Card */}
                         <Grid item xs={12} sm={6} md={4}>
                             <Card
@@ -318,36 +355,11 @@ const Dashboard = () => {
                             </Card>
                         </Grid>
 
-                        {/* Products Main Card */}
-<Grid item xs={12} sm={6} md={4}>
-    <Card
-        sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)', position: 'relative' }}
-        onClick={() => handleMainCardClick(setShowProductDetails)}
-    >
-        <Typography variant="h5" sx={{ color: '#000' }}>All Products</Typography>
-        <Grid container spacing={2} sx={{ marginTop: '20px' }}>
-            <Grid item xs={6} sm={6} md={6} marginBottom={1}>
-                <Typography variant="h6" sx={{ color: '' }}>Total Products: </Typography>
-            </Grid>
-        </Grid>
-        <Button
-            type="primary"
-            className='Button'
-            style={{ ...ButtonStyle }}
-            onClick={(e) => {
-                e.stopPropagation();
-                setShowCreateProductModal(true); // Create a modal for adding products
-            }}
-        >
-            Create Product
-        </Button>
-    </Card>
-</Grid>
-
+                       
                     </>
                 )}
 
-                
+
                 {/* Show Ticket Subcards */}
                 {showTicketDetails && (
                     <>
@@ -365,12 +377,12 @@ const Dashboard = () => {
                                 >
                                     <Typography variant="h5" sx={{ color: 'blue' }}>Resolved: {resolved}</Typography>
                                     <Grid container spacing={2} sx={{ marginTop: '20px' }}>
-                                    <Grid item xs={6} sm={6} md={6} marginBottom={1}>
-                                        <Typography variant="h6" sx={{ color: '' }}>test:{open}</Typography>
-                                        <Typography variant="h6" sx={{ color: '' }}>test:{resolved}</Typography>
-                                        <Typography variant="h6" sx={{ color: '' }}>test:{total}</Typography>
+                                        <Grid item xs={6} sm={6} md={6} marginBottom={1}>
+                                            <Typography variant="h6" sx={{ color: '' }}>test:{open}</Typography>
+                                            <Typography variant="h6" sx={{ color: '' }}>test:{resolved}</Typography>
+                                            <Typography variant="h6" sx={{ color: '' }}>test:{total}</Typography>
+                                        </Grid>
                                     </Grid>
-                                </Grid>
 
                                 </Card>
                             </Grid>
@@ -381,12 +393,12 @@ const Dashboard = () => {
                                 >
                                     <Typography variant="h5" sx={{ color: 'orangered' }}>Open: {open}</Typography>
                                     <Grid container spacing={2} sx={{ marginTop: '20px' }}>
-                                    <Grid item xs={6} sm={6} md={6} marginBottom={1}>
-                                        <Typography variant="h6" sx={{ color: '' }}>test:{open}</Typography>
-                                        <Typography variant="h6" sx={{ color: '' }}>test:{resolved}</Typography>
-                                        <Typography variant="h6" sx={{ color: '' }}>test:{total}</Typography>
+                                        <Grid item xs={6} sm={6} md={6} marginBottom={1}>
+                                            <Typography variant="h6" sx={{ color: '' }}>test:{open}</Typography>
+                                            <Typography variant="h6" sx={{ color: '' }}>test:{resolved}</Typography>
+                                            <Typography variant="h6" sx={{ color: '' }}>test:{total}</Typography>
+                                        </Grid>
                                     </Grid>
-                                </Grid>
                                 </Card>
                             </Grid>
                             <Grid item xs={6} sm={3} md={4}>
@@ -395,14 +407,14 @@ const Dashboard = () => {
                                     onClick={() => handleSubCardClick('in-progress')}
                                 >
                                     {/* , textAlign: 'center'  */}
-                                    <Typography variant="h5" sx={{ color: 'green'}}>In Progress: {inProgress}</Typography>
+                                    <Typography variant="h5" sx={{ color: 'green' }}>In Progress: {inProgress}</Typography>
                                     <Grid container spacing={2} sx={{ marginTop: '20px' }}>
-                                    <Grid item xs={6} sm={6} md={6} marginBottom={1}>
-                                        <Typography variant="h6" sx={{ color: '' }}>test:{open}</Typography>
-                                        <Typography variant="h6" sx={{ color: '' }}>test:{resolved}</Typography>
-                                        <Typography variant="h6" sx={{ color: '' }}>test:{total}</Typography>
+                                        <Grid item xs={6} sm={6} md={6} marginBottom={1}>
+                                            <Typography variant="h6" sx={{ color: '' }}>test:{open}</Typography>
+                                            <Typography variant="h6" sx={{ color: '' }}>test:{resolved}</Typography>
+                                            <Typography variant="h6" sx={{ color: '' }}>test:{total}</Typography>
+                                        </Grid>
                                     </Grid>
-                                </Grid>
                                 </Card>
                             </Grid>
                             <Grid item xs={6} sm={3} md={4}>
@@ -410,14 +422,14 @@ const Dashboard = () => {
                                     sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2fbe7)' }}
                                     onClick={() => handleSubCardClick('Closed')}
                                 >
-                                    <Typography variant="h5" sx={{ color: '#333'}}>Closed: {closed}</Typography>
+                                    <Typography variant="h5" sx={{ color: '#333' }}>Closed: {closed}</Typography>
                                     <Grid container spacing={2} sx={{ marginTop: '20px' }}>
-                                    <Grid item xs={6} sm={6} md={6} marginBottom={1}>
-                                        <Typography variant="h6" sx={{ color: '' }}>test:{open}</Typography>
-                                        <Typography variant="h6" sx={{ color: '' }}>test:{resolved}</Typography>
-                                        <Typography variant="h6" sx={{ color: '' }}>test:{total}</Typography>
+                                        <Grid item xs={6} sm={6} md={6} marginBottom={1}>
+                                            <Typography variant="h6" sx={{ color: '' }}>test:{open}</Typography>
+                                            <Typography variant="h6" sx={{ color: '' }}>test:{resolved}</Typography>
+                                            <Typography variant="h6" sx={{ color: '' }}>test:{total}</Typography>
+                                        </Grid>
                                     </Grid>
-                                </Grid>
                                 </Card>
                             </Grid>
                         </Grid>
@@ -506,26 +518,26 @@ const Dashboard = () => {
 
 
                 {showProductDetails && (
-    <>
-        <div className='typo' style={{ display: 'flex', justifyContent: 'flex-start', color: 'black', width: '100%' }}>
-            <IconButton onClick={handleBackButtonClick}>
-                <ArrowCircleLeft fontSize="large" />
-            </IconButton>
-            <Typography variant="h4" gutterBottom style={{ marginTop: '12px' }}>Dashboard/Products:</Typography>
-        </div>
-        <Grid container spacing={2} style={{ marginLeft: '10px' }}>
-            <Grid item xs={6} sm={3} md={4}>
-                <Card
-                    sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2fbe7)' }}
-                    onClick={() => navigate("/products")}
-                >
-                    <Typography sx={{ color: 'blue' }}>Total Products: </Typography>
-                </Card>
-            </Grid>
-            {/* Add more subcards for different product categories or statuses as needed */}
-        </Grid>
-    </>
-)}
+                    <>
+                        <div className='typo' style={{ display: 'flex', justifyContent: 'flex-start', color: 'black', width: '100%' }}>
+                            <IconButton onClick={handleBackButtonClick}>
+                                <ArrowCircleLeft fontSize="large" />
+                            </IconButton>
+                            <Typography variant="h4" gutterBottom style={{ marginTop: '12px' }}>Dashboard/Products:</Typography>
+                        </div>
+                        <Grid container spacing={2} style={{ marginLeft: '10px' }}>
+                            <Grid item xs={6} sm={3} md={4}>
+                                <Card
+                                    sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2fbe7)' }}
+                                    onClick={() => navigate("/products")}
+                                >
+                                    <Typography sx={{ color: 'blue' }}>Total Products: </Typography>
+                                </Card>
+                            </Grid>
+                            {/* Add more subcards for different product categories or statuses as needed */}
+                        </Grid>
+                    </>
+                )}
             </Grid>
 
 

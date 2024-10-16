@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, Typography } from 'antd';
 
-const { title, Paragraph } = Typography;
+const { Title, Paragraph } = Typography;
 
 const ProductDetailModal = ({ visible, product, onClose }) => {
     return (

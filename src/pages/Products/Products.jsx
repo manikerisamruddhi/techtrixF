@@ -143,12 +143,12 @@ const Products = () => {
 
                     {/* Create Product Modal */}
                     <ProductFormModal
-                        visible={isCreateModalVisible}
-                        onCancel={() => setCreateModalVisible(false)}
-                        onCreate={handleCreateProduct}
-                    />
+    visible={isCreateModalVisible}
+    onCancel={() => setCreateModalVisible(false)}
+    onCreate={handleCreateProduct}
+/>
 
-                    {/* Edit Product Modal */}
+                    {/* Edit Product Modal
                     {isEditModalVisible && (
                         <EditModal
                             visible={isEditModalVisible}
@@ -156,7 +156,15 @@ const Products = () => {
                             onCancel={() => setEditModalVisible(false)}
                             onSave={handleEditProduct}
                         />
-                    )}
+                    )} */}
+                    
+                    {/* Edit Product Modal */}
+                    <ProductFormModal
+                        visible={isEditModalVisible}
+                        onCancel={() => setEditModalVisible(false)}
+                        onCreate={handleEditProduct}
+                        product={selectedProduct}
+                    />
                 </div>
             </Content>
         </Layout>
