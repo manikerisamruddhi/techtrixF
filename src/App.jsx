@@ -86,12 +86,14 @@ const App = () => {
                                 <SalesTickets />
                             </ProtectedRoute>
                         } />
-                        <Route path="/Sales-Products" element={
+                        <Route path="/Products" element={
                             // <ProtectedRoute allowedRoles={['Sales']}>
                               
                             // </ProtectedRoute>
                               <ProductList />
                         } />
+
+
                         <Route path="/Sales-Quotations" element={
                             <ProtectedRoute allowedRoles={['Sales']}>
                                 <SalesQuotations />
