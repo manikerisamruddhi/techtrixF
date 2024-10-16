@@ -75,21 +75,6 @@ const Products = () => {
         setDetailModalVisible(true);
     };
 
-    // Card filtering logic for product categories
-    const totalProducts = products.length;
-    const electronicsCount = products.filter((product) => product.category === 'Electronics').length;
-    const clothingCount = products.filter((product) => product.category === 'Clothing').length;
-    const furnitureCount = products.filter((product) => product.category === 'Furniture').length;
-
-    const handleCardClick = (category) => {
-        if (category === 'All') {
-            setFilteredProducts(products);
-        } else {
-            const filtered = products.filter(product => product.category === category);
-            setFilteredProducts(filtered);
-        }
-    };
-
     const columns = [
         {
             title: 'Brand',
