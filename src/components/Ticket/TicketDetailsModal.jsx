@@ -55,7 +55,7 @@ const TicketDetailsModal = ({ visible, ticket, onClose, onCreateQuotation, onUpd
                                 <Descriptions.Item label="Customer ID" span={1}>{ticket.customerID}</Descriptions.Item>
                             )}
                             <Descriptions.Item label="Created By" span={1}>{ticket.createdBy}</Descriptions.Item>
-                            <Descriptions.Item label="remark" span={2}>{ticket.remark}</Descriptions.Item>
+                            <Descriptions.Item label="description" span={2}>{ticket.description}</Descriptions.Item>
                             <Descriptions.Item label="status" span={1}>
                                 <Badge status={ticket.status === 'Resolved' ? 'success' : 'processing'} text={ticket.status} />
                             </Descriptions.Item>

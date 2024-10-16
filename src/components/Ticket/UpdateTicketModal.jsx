@@ -28,7 +28,7 @@ const UpdateTicketModal = ({ ticketData, isVisible, onCancel, onClose  }) => {
         isChargeble: ticketData.isChargeble,
         status: ticketData.status,
         createdBy: ticketData.createdBy,
-        remark: ticketData.remark,
+        description: ticketData.description,
         assignedTo: ticketData.assignedTo || null,
       });
     } else {
@@ -164,7 +164,7 @@ const UpdateTicketModal = ({ ticketData, isVisible, onCancel, onClose  }) => {
 
         <Row gutter={16}>
           <Col span={24}>
-            <Form.Item name="remark" label="remark">
+            <Form.Item name="description" label="description">
               <Input.TextArea rows={3} />
             </Form.Item>
           </Col>
