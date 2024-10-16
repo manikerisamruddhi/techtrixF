@@ -162,7 +162,7 @@ const Products = () => {
                     <ProductFormModal
                         visible={isEditModalVisible}
                         onCancel={() => setEditModalVisible(false)}
-                        onCreate={handleEditProduct}
+                        // onCreate={handleEditProduct}
                         product={selectedProduct}
                     />
                 </div>

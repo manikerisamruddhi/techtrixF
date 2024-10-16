@@ -1,9 +1,13 @@
 import React from 'react';
 import { Modal, Form, Input, Radio, Button, Row, Col, message } from 'antd';
+// import { addProduct } from '../../redux/slices/productSlice'; 
 import { addProduct } from '../../redux/slices/productSlice'; // Redux action
+import { useDispatch } from 'react-redux';
 
-const ProductFormModal = ({ visible, onCancel, onCreate, product }) => {
+
+const ProductFormModal = ({ visible, onCancel, product }) => {
     const [form] = Form.useForm();
+    const dispatch = useDispatch();
 
     const handleFinish = (values) => {
         // Set the created date to the current date and time
@@ -11,7 +15,7 @@ const ProductFormModal = ({ visible, onCancel, onCreate, product }) => {
         const productData = product ? { ...product, ...values, created_date: createdDate } : { ...values, created_date: createdDate };
 
         // Call onCreate to handle the product addition
-        onCreate(productData);
+        dispatch(addProduct(productData));
         
         // Show success message
         message.success(product ? "Product updated successfully!" : "Product added successfully!");

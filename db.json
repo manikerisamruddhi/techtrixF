@@ -593,15 +593,6 @@
       "warrenty": 12
     },
     {
-      "id": "ed6f",
-      "TicketID": "5fe0",
-      "customerID": "4f90",
-      "description": "test",
-      "brand": "Service-",
-      "modelNo": "Service-",
-      "price": "2000"
-    },
-    {
       "id": "87de",
       "brand": "afdf",
       "modelNo": "kjlkj",
@@ -612,49 +603,10 @@
       "warrenty": 8
     },
     {
-      "id": "5ada",
-      "brand": "test",
-      "modelNo": "test",
-      "price": 9000,
-      "quantity": 10,
-      "description": "ram rom",
-      "hasSerialNumber": "yes",
-      "warrenty": 8
-    },
-    {
       "id": "9b37",
       "description": "jkasdlkjflkjiuiuiuiuiuiuiuiuiuiuiu",
       "price": "89",
       "key": 1729074426715
-    },
-    {
-      "id": "23c7",
-      "description": "kjkjkkkkkkkkkkkkkkkkkkkkkkkkkkkk",
-      "price": "99999",
-      "key": 1729074735530,
-      "brand": "Default Brand",
-      "model_No": "Default Model No"
-    },
-    {
-      "id": "2d3c",
-      "description": "jjjjjjjjjjjjjjjjjjj",
-      "price": "888",
-      "key": 1729074748422,
-      "brand": "Default Brand",
-      "model_No": "Default Model No"
-    },
-    {
-      "id": "d359",
-      "productid": "kjk",
-      "brand": "jjkjk",
-      "description": "kjk",
-      "hsnCode": "kj",
-      "modelNo": "jkj",
-      "partCode": "jkj",
-      "price": "0",
-      "quantity": "9",
-      "warrantyMonths": "9",
-      "created_date": "2024-10-16T10:51:57.557Z"
     }
   ],
   "invoices": [
