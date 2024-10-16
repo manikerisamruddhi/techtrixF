@@ -11,8 +11,12 @@ export const fetchQuotations = createAsyncThunk('quotations/fetchQuotations', as
 });
 
 export const addQuotation = createAsyncThunk('quotations/addQuotation', async (newQuotation) => {
-    const response = await axios.post(API_URL, newQuotation);
-    return response.data; // Return the added quotation
+    try {
+        const response = await axios.post(API_URL, newQuotation);
+        return response.data; // Return the added quotation
+    } catch (error) {
+        throw error; // Rethrow the error to be caught by the extraReducers
+    }
 });
 
 // Quotation Slice
@@ -41,8 +45,16 @@ const quotationSlice = createSlice({
                 state.loading = false; // Set loading to false
                 state.error = action.error.message; // Set error message
             })
+            .addCase(addQuotation.pending, (state) => {
+                state.loading = true; // Set loading to true
+            })
             .addCase(addQuotation.fulfilled, (state, action) => {
+                state.loading = false; // Set loading to false
                 state.quotations.push(action.payload); // Add new quotation
+            })
+            .addCase(addQuotation.rejected, (state, action) => {
+                state.loading = false; // Set loading to false
+                state.error = action.error.message; // Set error message
             });
     },
 });
