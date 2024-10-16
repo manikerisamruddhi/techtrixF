@@ -1,25 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Table, Button, Spin, Empty, Layout, Typography, Card, Row, Col, Modal, notification } from 'antd';
 import { fetchProducts, deleteProduct, addProduct, updateProduct } from '../../redux/slices/productSlice';
-import { Table, Button, Typography, Modal, notification } from 'antd';
 import ProductDetailModal from './ProductDetails2';
 import ProductFormModal from './AddProduct';
-import EditModal from './EditProduct'; // Import EditModal
+import EditModal from './EditProduct';
 
+const { Content } = Layout;
 const { Title } = Typography;
 
 const Products = () => {
     const dispatch = useDispatch();
     const { items: products, loading, error } = useSelector((state) => state.products);
 
-    const [selectedProduct, setSelectedProduct] = useState(null);
     const [isDetailModalVisible, setDetailModalVisible] = useState(false);
     const [isCreateModalVisible, setCreateModalVisible] = useState(false);
     const [isEditModalVisible, setEditModalVisible] = useState(false);
+    const [selectedProduct, setSelectedProduct] = useState(null);
+    const [filteredProducts, setFilteredProducts] = useState([]);
 
+    // Fetch products on mount
     useEffect(() => {
         dispatch(fetchProducts());
     }, [dispatch]);
+
+    useEffect(() => {
+        setFilteredProducts(products); // Initially, show all products
+    }, [products]);
 
     const handleDelete = (productId) => {
         Modal.confirm({
@@ -31,22 +38,21 @@ const Products = () => {
         });
     };
 
-    const handleViewDetails = (product) => {
-        setSelectedProduct(product);
-        setDetailModalVisible(true);
-    };
-
     const handleCreateProduct = (values) => {
         dispatch(addProduct(values));
         setCreateModalVisible(false);
+        notification.success({
+            message: 'Success',
+            description: 'Product created successfully!',
+        });
     };
 
     const handleEditProduct = (values) => {
-        dispatch(updateProduct({ ...selectedProduct, ...values })) // Merge updated values with the selected product
+        dispatch(updateProduct({ ...selectedProduct, ...values }))
             .then(() => {
                 notification.success({
                     message: 'Success',
-                    description: 'Product updated successfully!', // Show success notification
+                    description: 'Product updated successfully!',
                 });
             })
             .catch((error) => {
@@ -64,6 +70,26 @@ const Products = () => {
         setEditModalVisible(true);
     };
 
+    const handleViewDetails = (product) => {
+        setSelectedProduct(product);
+        setDetailModalVisible(true);
+    };
+
+    // Card filtering logic for product categories
+    const totalProducts = products.length;
+    const electronicsCount = products.filter((product) => product.category === 'Electronics').length;
+    const clothingCount = products.filter((product) => product.category === 'Clothing').length;
+    const furnitureCount = products.filter((product) => product.category === 'Furniture').length;
+
+    const handleCardClick = (category) => {
+        if (category === 'All') {
+            setFilteredProducts(products);
+        } else {
+            const filtered = products.filter(product => product.category === category);
+            setFilteredProducts(filtered);
+        }
+    };
+
     const columns = [
         {
             title: 'Brand',
@@ -72,59 +98,83 @@ const Products = () => {
         },
         {
             title: 'Model No',
-            dataIndex: 'model_no', // Ensure this matches your data
-            key: 'modelNo',
+            dataIndex: 'model_no',
+            key: 'model_no',
+        },
+        {
+            title: 'Description',
+            dataIndex: 'description',
+            key: 'category',
+            width: 600,
         },
         {
             title: 'Actions',
             key: 'actions',
             render: (text, record) => (
                 <span>
-                    <Button type="link" onClick={() => handleViewDetails(record)}>View</Button>
+                    <Button type="primary" onClick={() => handleViewDetails(record)}>View</Button>
                     <Button type="link" onClick={() => handleOpenEditModal(record)}>Edit</Button>
-                    <Button type="link" onClick={() => handleDelete(record.id)}>Delete</Button>
+                    <Button type="danger" onClick={() => handleDelete(record.id)}>Delete</Button>
                 </span>
             ),
         },
     ];
 
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error loading products</div>;
-
     return (
-        <div className="product-list-container">
-            <Title level={1}>Product List</Title>
-            {/* <Button type="primary" className="create-product-btn" onClick={() => setCreateModalVisible(true)}>
-                Create Product
-            </Button> */}
-            <Table
-                dataSource={products}
-                columns={columns}
-                rowKey="id"
-                pagination={false}
-            />
-            {products.length === 0 && <div>No products found.</div>}
-            {selectedProduct && (
-                <ProductDetailModal
-                    visible={isDetailModalVisible}
-                    product={selectedProduct}
-                    onClose={() => setDetailModalVisible(false)}
-                />
-            )}
-            <ProductFormModal
-                visible={isCreateModalVisible}
-                onCancel={() => setCreateModalVisible(false)}
-                onCreate={handleCreateProduct}
-            />
-            {isEditModalVisible && (
-                <EditModal
-                    visible={isEditModalVisible}
-                    product={selectedProduct} // Pass selected product for editing
-                    onCancel={() => setEditModalVisible(false)}
-                    onSave={handleEditProduct}
-                />
-            )}
-        </div>
+        <Layout style={{ minHeight: '100vh', background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)' }}>
+            <Content style={{ padding: '20px' }}>
+                <div className="content-container">
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                        <Title level={4} style={{ margin: 0 }}>Product List</Title>
+                        <Button onClick={() => setCreateModalVisible(true)} type="primary">
+                            Create Product
+                        </Button>
+                    </div>
+
+
+
+                    {/* Products Table */}
+                    {loading ? (
+                        <Spin tip="Loading..." />
+                    ) : filteredProducts.length === 0 ? (
+                        <Empty description="No Products Available" />
+                    ) : (
+                        <Table
+                            dataSource={filteredProducts}
+                            columns={columns}
+                            rowKey="id"
+                            pagination={false}
+                        />
+                    )}
+
+                    {/* Product Details Modal */}
+                    {selectedProduct && (
+                        <ProductDetailModal
+                            visible={isDetailModalVisible}
+                            product={selectedProduct}
+                            onClose={() => setDetailModalVisible(false)}
+                        />
+                    )}
+
+                    {/* Create Product Modal */}
+                    <ProductFormModal
+                        visible={isCreateModalVisible}
+                        onCancel={() => setCreateModalVisible(false)}
+                        onCreate={handleCreateProduct}
+                    />
+
+                    {/* Edit Product Modal */}
+                    {isEditModalVisible && (
+                        <EditModal
+                            visible={isEditModalVisible}
+                            product={selectedProduct}
+                            onCancel={() => setEditModalVisible(false)}
+                            onSave={handleEditProduct}
+                        />
+                    )}
+                </div>
+            </Content>
+        </Layout>
     );
 };
 

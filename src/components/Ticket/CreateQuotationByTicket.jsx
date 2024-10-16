@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Modal, Button, Form, Input, Table, Space, notification } from 'antd';
 import { addQuotation } from '../../redux/slices/quotationSlice';
+import { addProduct } from '../../redux/slices/productSlice';
 import { useDispatch } from 'react-redux';
 
 const CreateQuotationModal = ({ ticketId, visible, onCancel }) => {
@@ -24,11 +25,27 @@ const CreateQuotationModal = ({ ticketId, visible, onCancel }) => {
               // Dispatch the action to add the quotation to the database
               dispatch(addQuotation({ ticketId, products }))
                   .then(() => {
-                      notification.success({
-                          message: 'Quotation Created',
-                          description: 'Your quotation has been successfully created.'
-                      });
-                      handleCancel(); // Close the modal after submission
+                      // Dispatch the action to add each product to the product table with default data
+                      const defaultData = {
+                          brand: 'Default Brand',
+                          model_no: 'Default Model No',
+                      };
+                      const productsWithDefaultData = products.map((product) => ({ ...product, ...defaultData }));
+                      Promise.all(productsWithDefaultData.map((product) => dispatch(addProduct(product))))
+                          .then(() => {
+                              notification.success({
+                                  message: 'Quotation Created',
+                                  description: 'Your quotation has been successfully created.'
+                              });
+                              handleCancel();
+                          })
+                          .catch((error) => {
+                              console.error('Error adding products:', error);
+                              notification.error({
+                                  message: 'Error Adding Products',
+                                  description: 'An error occurred while adding the products.'
+                              });
+                          });
                   })
                   .catch((error) => {
                       console.error('Error creating quotation:', error);
@@ -44,7 +61,7 @@ const CreateQuotationModal = ({ ticketId, visible, onCancel }) => {
   };
  
 
-    const addProduct = () => {
+    const addProductf = () => {
         setEditingProduct(null);
         setShowForm(true);
         productForm.resetFields(); // Reset the product form when adding a new product
@@ -178,11 +195,11 @@ const CreateQuotationModal = ({ ticketId, visible, onCancel }) => {
                             <Input type="number" placeholder="Enter price" />
                         </Form.Item>
                         <Space style={{ marginTop: 16, display: 'flex', justifyContent: 'flex-end' }}>
-                            <Button type="primary" onClick={saveProduct}>
-                                Save
-                            </Button>
                             <Button onClick={() => { setShowForm(false); productForm.resetFields(); }}>
                                 Cancel
+                            </Button>
+                            <Button type="primary" onClick={saveProduct}>
+                                Save
                             </Button>
                         </Space>
                     </Form>
@@ -190,7 +207,7 @@ const CreateQuotationModal = ({ ticketId, visible, onCancel }) => {
 
                 {/* Conditionally render the "Add Service" button */}
                 {!showForm && (
-                    <Button type="dashed" onClick={addProduct} style={{ width: '100%', marginTop: 16 }}>
+                    <Button type="dashed" onClick={addProductf} style={{ width: '100%', marginTop: 16 }}>
                         Add Service
                     </Button>
                 )}
