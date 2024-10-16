@@ -3,6 +3,7 @@ import { Table, Button, Empty, message, Layout, Typography, Spin, Card, Row, Col
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchTickets } from '../../redux/slices/ticketSlice';
 import { fetchUsers, fetchDepartments } from '../../redux/slices/userSlice';
+import { fetchCustomers } from '../../redux/slices/customerSlice';
 import TicketDetailsModal from '../../components/Ticket/TicketDetailsModal';
 import CreateTicketModal from '../../components/Ticket/CreateTicketModalForm'; // Import the CreateTicketModal
 import moment from 'moment'; // Import moment.js for date formatting
@@ -35,6 +36,13 @@ const Tickets = () => {
             await dispatch(fetchUsers());
         };
         fetch_data();
+    }, [dispatch]);
+
+    useEffect(() => {
+        const fetch_customers = async () => {
+            await dispatch(fetchCustomers());
+        };
+        fetch_customers();
     }, [dispatch]);
 
     useEffect(() => {

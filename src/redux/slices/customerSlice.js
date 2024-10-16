@@ -15,6 +15,16 @@ export const fetchCustomers = createAsyncThunk('customers/fetchCustomers', async
     }
 });
 
+export const fetchCustomerByID = createAsyncThunk('customers/fetchCustomerByID', async (id, { rejectWithValue }) => {
+    try {
+        const response = await axios.get(`${BASE_URL}/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching customer by ID:", error);
+        return rejectWithValue(null);
+    }
+});
+
 // Fetch Products for Selected Customer
 export const fetchProductsBycustomerID = createAsyncThunk('customers/fetchProductsBycustomerID', async (customerID, { rejectWithValue }) => {
     try {
@@ -112,6 +122,9 @@ const customerSlice = createSlice({
             })
             .addCase(fetchProductsBycustomerID.fulfilled, (state, action) => {
                 state.selectedCustomerProducts = action.payload; // Set products of the selected customer
+            }) 
+            .addCase(fetchCustomerByID.fulfilled, (state, action) => {
+                state.selectedCustomer = action.payload; // Set the selected customer
             });
     },
 });
