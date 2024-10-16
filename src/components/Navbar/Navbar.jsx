@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu } from 'antd';
-import { AppstoreOutlined, MailOutlined, SettingOutlined, SnippetsOutlined, DollarOutlined, TeamOutlined} from '@ant-design/icons';
+import { AppstoreOutlined, MailOutlined, SettingOutlined, SnippetsOutlined, DollarOutlined, TeamOutlined, DropboxOutlined} from '@ant-design/icons';
 import '../../styles/components/Navbar.css';
 
 const Navbar = () => {
@@ -51,6 +51,9 @@ const Navbar = () => {
 
                 <Menu.Item key="/UserManagement" icon={<TeamOutlined />}>
                     <Link to="/UserManagement">Manage User</Link>
+                </Menu.Item>
+                <Menu.Item key="/Products" icon={<DropboxOutlined />}>
+                    <Link to="/Products">Products</Link>
                 </Menu.Item>
             </Menu>
         </div>
