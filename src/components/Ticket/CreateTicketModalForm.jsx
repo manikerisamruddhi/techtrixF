@@ -71,7 +71,7 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
             status: 'Open',
             createdBy: 'Admin',
             CreatedDate: currentDate,
-            remark: values.remark,
+            description: values.description,
         };
         
 
@@ -120,7 +120,7 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
 
     };
 
-    const filteredProducts = items.filter((product) => product.customerID === selectedCustomer?.id);
+    const filteredProducts = selectedCustomer ? items.filter((product) => product.customerID === selectedCustomer.id) : []; 
 
     return (
         <Modal
@@ -297,13 +297,13 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
                     
 
                     <Form.Item
-                        name="remark"
-                        label="remark"
-                        // rules={[{ required: true, message: 'Add a remark' }]}  //removed the compulsion
+                        name="description"
+                        label="description"
+                        // rules={[{ required: true, message: 'Add a description' }]}  //removed the compulsion
                     >
                         <Input.TextArea
                             rows={2}
-                            placeholder="Enter a remark" />
+                            placeholder="Enter a description" />
                     </Form.Item>
 
                     <Form.Item>
