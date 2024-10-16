@@ -1,8 +1,13 @@
 import React, { useEffect } from 'react';
-import { Modal, Form, Input, Switch, Button, Row, Col } from 'antd';
+import { Modal, Form, Input, Switch, Button, Row, Col, message } from 'antd';
+import { useDispatch } from 'react-redux';
+import { addCustomer, updateCustomer } from '../../redux/slices/customerSlice'; // Import your Redux actions
+import { useNavigate } from 'react-router-dom';
 
-const CustomerFormModal = ({ visible, onCancel, onFinish, initialValues, mode, customerID }) => {
+const CustomerFormModal = ({ visible, onCancel, initialValues, mode, customerID }) => {
     const [form] = Form.useForm(); // Create form instance
+    const dispatch = useDispatch(); // Get the dispatch function
+    const navigate = useNavigate(); // Get the navigate function
 
     // Reset the form when the modal opens in "add" mode
     useEffect(() => {
@@ -13,6 +18,27 @@ const CustomerFormModal = ({ visible, onCancel, onFinish, initialValues, mode, c
         }
     }, [visible, mode, initialValues, form]);
 
+    const handleFormSubmit = (values) => {
+        if (mode === 'edit') {
+            // Update customer API call
+            dispatch(updateCustomer({ customerId: customerID, updatedCustomer: values }))
+            .then(() => {
+                message.success('Customer updated successfully!'); 
+                // Close the modal after successful update
+                onCancel();
+            });
+        } else {
+            // Add customer API call
+            dispatch(addCustomer(values))
+            .then(() => {
+                message.success('Customer added successfully!'); 
+                // Close the modal after successful update
+                onCancel();
+                navigate('/customers');
+            });
+        }
+    };
+
     return (
         <Modal
             title={mode === 'edit' ? 'Edit Customer' : 'Add Customer'}
@@ -20,67 +46,58 @@ const CustomerFormModal = ({ visible, onCancel, onFinish, initialValues, mode, c
             onCancel={onCancel}
             footer={null}
             width={800} // Set the modal width
-            centered // Center the modal vertically // Optional: adjust the top position of the modal
+            centered // Center the modal vertically
         >
-            <Form
-                form={form} // Assign form instance
-                onFinish={(values) => {
-                    // Pass the customer ID if it's an edit operation
-                    const finalValues = mode === 'edit' ? { ...values, customerID } : values;
-                    onFinish(finalValues);
-                    form.resetFields(); // Reset form after submit
-                }}
-                style={{ maxWidth: '100%' }} // Make the form take the full width of the modal
-            >
-                <Row gutter={24}> {/* Set gutter for spacing between columns */}
-                    <Col span={12}> {/* First column */}
-                        <Form.Item label="First Name" name="firstName" rules={[{ required: true }]}>
-                            <Input />
-                        </Form.Item>
-                    </Col>
-                    <Col span={12}> {/* Second column */}
-                        <Form.Item label="Last Name" name="lastName" rules={[{ required: true }]}>
-                            <Input />
-                        </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                        <Form.Item label="email" name="email" rules={[{ required: true, type: 'email' }]}>
-                            <Input />
-                        </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                        <Form.Item label="Phone" name="phoneNumber" rules={[{ required: true }]}>
-                            <Input />
-                        </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                        <Form.Item label="address" name="address">
-                            <Input />
-                        </Form.Item>
-                    </Col>
-                    
-                    
-                    <Col span={12}>
-                        <Form.Item label="Zip Code" name="zipCode">
-                            <Input />
-                        </Form.Item>
-                    </Col>
-                  
-                    {/* <Col span={12}>
-                        <Form.Item label="Active" name="isActive" valuePropName="checked">
-                            <Switch />
-                        </Form.Item>
-                    </Col> */}
-                    <Col span={12}>
-                        <Form.Item label="Premium Customer" name="isPremium" valuePropName="checked">
-                            <Switch />
-                        </Form.Item>
-                    </Col>
-                </Row>
-                <Button type="primary" htmlType="submit">
-                    {mode === 'edit' ? 'Update' : 'Add'}
-                </Button>
-            </Form>
+            <div style={{ border: '1px solid #d9d9d9', padding: '20px', borderRadius: '8px', backgroundColor: '#f9f9f9' }}>
+                <Form
+                    form={form} // Assign form instance
+                    onFinish={handleFormSubmit}
+                    style={{ maxWidth: '100%' }} // Make the form take the full width of the modal
+                >
+                    <Row gutter={24}> {/* Set gutter for spacing between columns */}
+                        <Col span={12}> {/* First column */}
+                            <Form.Item label="First Name" name="firstName" rules={[{ required: true }]}>
+                                <Input />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}> {/* Second column */}
+                            <Form.Item label="Last Name" name="lastName" rules={[{ required: true }]}>
+                                <Input />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item label="Email" name="email" rules={[{ required: true, type: 'email' }]}>
+                                <Input />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item label="Phone" name="phoneNumber" rules={[{ required: true }]}>
+                                <Input />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item label="Address" name="address">
+                                <Input />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item label="Zip Code" name="zipCode">
+                                <Input />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item label="Premium Customer" name="isPremium" valuePropName="checked">
+                                <Switch />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <div style={{ textAlign: 'right' }}>
+                        <Button type="primary" htmlType="submit">
+                            {mode === 'edit' ? 'Update' : 'Add'}
+                        </Button>
+                    </div>
+                </Form>
+            </div>
         </Modal>
     );
 };

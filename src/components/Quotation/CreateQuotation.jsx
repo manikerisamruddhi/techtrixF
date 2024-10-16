@@ -6,6 +6,7 @@ import { fetchQuotations, addQuotation, resetError } from '../../redux/slices/qu
 import { fetchCustomers, addCustomer } from '../../redux/slices/customerSlice'; // Assuming a customer slice exists to fetch customers
 import { addProduct } from '../../redux/slices/productSlice';
 import moment from 'moment';
+import CreateCustomerForm from '../Customer/CreateCustomerForm';
 
 const currentDate = moment();
 
@@ -29,11 +30,15 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
     const [customerType, setCustomerType] = useState('new'); // Track customer type
     const [existingCustomer, setExistingCustomer] = useState(undefined); // Track selected existing customer
     const [newCustomer, setNewCustomer] = useState({
-        name: '',
+        firstName: '',
+        lastName: '',
         email: '',
-        phone: '',
+        phoneNumber: '',
+        address: '',
+        pinCode: '',
+        isPremium: false,
     });
-    const [finalAmount, setFinalAmount] = useState(0); // Track final amount
+    const [finalAmount , setFinalAmount] = useState(0); // Track final amount
     const [comment, setComment] = useState(''); // Track comment
 
     useEffect(() => {
@@ -52,12 +57,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
 
     const handleCustomerChange = (value) => {
         const selectedCust = customers.find(customer => customer.id === value);
-        setSelectedCustomer(selectedCust);
-
-        setisPremiumCustomer(selectedCust?.isPremium || false);
-
-        form.setFieldsValue({ ProductID: null });
-        setSelectedProduct(null);
+        setExistingCustomer(selectedCust);
     };
 
     const handleAddOrEditProduct = () => {
@@ -107,70 +107,70 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
 
     const handleFinish = async () => {
         try {
-          // Create a new customer
-          if (customerType === 'new') {
-            const newCustomerData = {
-              firstName: newCustomer.firstName,
-              lastName: newCustomer.lastName,
-              email: newCustomer.email,
-              phoneNumber: newCustomer.phoneNumber,
-              address: newCustomer.address,
-              PinCode: newCustomer.pinCode,
-              isPremium: newCustomer.isPremium,
-              CreatedDate: currentDate.format('YYYY-MM-DD HH:mm:ss'),
-            };
-            //console.log('Adding new customer:', newCustomerData);
-            const customerResponse = await dispatch(addCustomer(newCustomerData));
-            //console.log('Customer added:', customerResponse);
-          }
-      
-          // Create new products
-          const productPromises = addedProducts.map(async (product) => {
-            const newProductData = {
-              brand: product.brand,
-              modelNo: product.model_no,
-              price: product.price,
-              quantity: product.quantity,
-              description: product.description,
-              hasSerialNumber: product.hasSerialNumber,
-              warrenty:product.warrenty,
-            };
-            //console.log('Adding new product:', newProductData);
-            const productResponse = await dispatch(addProduct(newProductData));
-            //console.log('Product added:', productResponse);
-          });
-          await Promise.all(productPromises);
-      
-          // Create a new quotation
-          const quotationData = {
-            TicketID: ticketId,
-            customerID: customerType === 'existing' ? existingCustomer.id : newCustomer.id,
-            ProductId: addedProducts.map(product => product.id),
-            FinalAmount: addedProducts.reduce((total, prod) => total + prod.price * prod.quantity, 0),
-            status:'Pending',
-            createdBy:'Admin',
-            // finalAmount,
-            CreatedDate: currentDate.format('YYYY-MM-DD HH:mm:ss'),
-            Comments: comment,
-          };
+            // Create a new customer
+            if (customerType === 'new') {
+                const newCustomerData = {
+                    firstName: newCustomer.firstName,
+                    lastName: newCustomer.lastName,
+                    email: newCustomer.email,
+                    phoneNumber: newCustomer.phoneNumber,
+                    address: newCustomer.address,
+                    PinCode: newCustomer.pinCode,
+                    isPremium: newCustomer.isPremium,
+                    CreatedDate: currentDate.format('YYYY-MM-DD HH:mm:ss'),
+                };
+                //console.log('Adding new customer:', newCustomerData);
+                const customerResponse = await dispatch(addCustomer(newCustomerData));
+                //console.log('Customer added:', customerResponse);
+            }
 
-          //console.log('Adding new quotation:', quotationData);
-          const quotationResponse = await dispatch(addQuotation(quotationData));
-          //console.log('Quotation added:', quotationResponse);
-      
-          notification.success({ message: 'Quotation added successfully!' });
-          form.resetFields();
-          setAddedProducts([]);
-          setCustomerType('new'); // Reset customer type
-          setNewCustomer({ name: '', email: '', phone: '' }); // Reset new customer data
-          setFinalAmount(0); // Reset final amount
-          setComment(''); // Reset comment
-          onClose(); // Close modal after submission
+            // Create new products
+            const productPromises = addedProducts.map(async (product) => {
+                const newProductData = {
+                    brand: product.brand,
+                    modelNo: product.model_no,
+                    price: product.price,
+                    quantity: product.quantity,
+                    description: product.description,
+                    hasSerialNumber: product.hasSerialNumber,
+                    warrenty: product.warrenty,
+                };
+                //console.log('Adding new product:', newProductData);
+                const productResponse = await dispatch(addProduct(newProductData));
+                //console.log('Product added:', productResponse);
+            });
+            await Promise.all(productPromises);
+
+            // Create a new quotation
+            const quotationData = {
+                TicketID: ticketId,
+                customerID: customerType === 'existing' ? existingCustomer.id : newCustomer.id,
+                ProductId: addedProducts.map(product => product.id),
+                FinalAmount: addedProducts.reduce((total, prod) => total + prod.price * prod.quantity, 0),
+                status: 'Pending',
+                createdBy: 'Admin',
+                // finalAmount,
+                CreatedDate: currentDate.format('YYYY-MM-DD HH:mm:ss'),
+                Comments: comment,
+            };
+
+            //console.log('Adding new quotation:', quotationData);
+            const quotationResponse = await dispatch(addQuotation(quotationData));
+            //console.log('Quotation added:', quotationResponse);
+
+            notification.success({ message: 'Quotation added successfully!' });
+            form.resetFields();
+            setAddedProducts([]);
+            setCustomerType('new'); // Reset customer type
+            setNewCustomer({ firstName: '', lastName: '', email: '', phoneNumber: '', address: '', pinCode: '', isPremium: false }); // Reset new customer data
+            setFinalAmount(0); // Reset final amount
+            setComment(''); // Reset comment
+            onClose(); // Close modal after submission
         } catch (err) {
-          console.error(err);
-          notification.error({ message: 'Error adding quotation' });
+            console.error(err);
+            notification.error({ message: 'Error adding quotation' });
         }
-      };
+    };
 
     const handleExistingCustomerChange = value => {
         setExistingCustomer(customers.find(cust => cust.id === value));
@@ -205,11 +205,11 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
                         label="Select Existing Customer"
                         rules={[{ required: true, message: 'Please select an existing customer' }]}
                     >
-                                                <Select
+                        <Select
                             showSearch
                             placeholder="Select a customer"
                             optionFilterProp="label"
-                            onChange={handleCustomerChange}
+                            onChange={handleExistingCustomerChange}
                         >
                             {customers && customers.length > 0 ? (
                                 customers.map(customer => (
@@ -228,48 +228,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
                 )}
 
                 {customerType === 'new' && (
-                    <div style={{ border: '1px solid #d9d9d9', padding: '10px', borderRadius: '8px', backgroundColor: '#f9f9f9', marginBottom: '10px' }}>
-                        <h4>New Customer Details</h4>
-                        <Row gutter={20}>
-                            <Col span={7}>
-                                <Form.Item label="First Name" rules={[{ required: true, message: 'Please enter customer first name' }]}>
-                                    <Input value={newCustomer.firstName} onChange={e => setNewCustomer({ ...newCustomer, firstName: e.target.value })} />
-                                </Form.Item>
-                            </Col>
-                            <Col span={7}>
-                                <Form.Item label="Last Name" rules={[{ required: true, message: 'Please enter customer last name' }]}>
-                                    <Input value={newCustomer.lastName} onChange={e => setNewCustomer({ ...newCustomer, lastName: e.target.value })} />
-                                </Form.Item>
-                            </Col>
-                            <Col span={7}>
-                                <Form.Item label="email" rules={[{ required: true, message: 'Please enter customer email' }]}>
-                                    <Input type="email" value={newCustomer.email} onChange={e => setNewCustomer({ ...newCustomer, email: e.target.value })} />
-                                </Form.Item>
-                            </Col>
-                            <Col span={8}>
-                                <Form.Item label="Phone" rules={[{ required: true, message: 'Please enter customer phone number' }]}>
-                                    <Input value={newCustomer.phoneNumber} onChange={e => setNewCustomer({ ...newCustomer, phoneNumber: e.target.value })} />
-                                </Form.Item>
-                            </Col>
-                            <Col span={12}>
-                                <Form.Item label="address">
-                                    <Input value={newCustomer.address} onChange={e => setNewCustomer({ ...newCustomer, address: e.target.value })} />
-                                </Form.Item>
-                            </Col>
-                          
-                            <Col span={8}>
-                                <Form.Item label="Pin Code">
-                                    <Input value={newCustomer.pinCode} onChange={e => setNewCustomer({ ...newCustomer, pinCode: e.target.value })} />
-                                </Form.Item>
-                            </Col>
-                           
-                            <Col span={8}>
-                                <Form.Item label="Is Premium">
-                                    <Switch checked={newCustomer.isPremium} onChange={e => setNewCustomer({ ...newCustomer, isPremium: e })} />
-                                </Form.Item>
-                            </Col>
-                        </Row>
-                    </div>
+                    <CreateCustomerForm customer={newCustomer} setCustomer={setNewCustomer} />
                 )}
 
                 {/* Products Table */}
@@ -279,7 +238,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
                         columns={[
                             { title: 'Brand', dataIndex: 'brand', key: 'brand' },
                             { title: 'Model No', dataIndex: 'model_no', key: 'model_no' },
-                            { title: 'description', dataIndex: 'description', key: 'description' }, 
+                            { title: 'description', dataIndex: 'description', key: 'description' },
                             { title: 'Price', dataIndex: 'price', key: 'price' },
                             { title: 'Quantity', dataIndex: 'quantity', key: 'quantity' },
                             // { title: 'Serial Number?', dataIndex: 'hasSerialNumber', key: 'hasSerialNumber',
@@ -330,7 +289,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
                             marginBottom: '20px',
                         }}
                     >
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px ' }}>
                             <h3>{editIndex !== null ? 'Edit Product' : 'Add Product'}</h3>
                             <Button
                                 type="link"
@@ -384,21 +343,21 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
                             </Col>
 
                             <Col span={7}>
-                            <Form.Item label="Warrenty months:" rules={[{ required: true }]}
-                            labelCol={{ span: 16}}
-                            wrapperCol={{ span: 8}}>
+                                <Form.Item label="Warrenty months:" rules={[{ required: true }]}
+                                    labelCol={{ span: 16 }}
+                                    wrapperCol={{ span: 8 }}>
                                     <Input
                                         type="number"
                                         value={newProduct.warrenty}
                                         onChange={e => setNewProduct({ ...newProduct, warrenty: parseFloat(e.target.value) })}
                                     />
-                                                                    </Form.Item>
+                                </Form.Item>
                             </Col>
 
                             <Col span={8}>
                                 <Form.Item label="Quantity" rules={[{ required: true }]}
-                                  labelCol={{ span: 7}}
-                                  wrapperCol={{ span: 8}}>
+                                    labelCol={{ span: 7 }}
+                                    wrapperCol={{ span: 8 }}>
                                     <Input
                                         type="number"
                                         value={newProduct.quantity}
