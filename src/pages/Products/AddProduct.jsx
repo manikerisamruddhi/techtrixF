@@ -48,7 +48,7 @@ const AddProductModal = ({ visible, onCancel, onCreate }) => {
                     
                     <Col span={12}>
                         <Form.Item
-                            name="hsn_code"
+                            name="hsnCode"
                             label="HSN Code"
                             rules={[{ required: true, message: 'Please input the HSN code!' }]}
                         >
@@ -85,7 +85,7 @@ const AddProductModal = ({ visible, onCancel, onCreate }) => {
                 <Row gutter={16}>
                     <Col span={12}>
                         <Form.Item
-                            name="part_code"
+                            name="partCode"
                             label="Part Code"
                             rules={[{ required: true, message: 'Please input the part code!' }]}
                         >
@@ -114,7 +114,7 @@ const AddProductModal = ({ visible, onCancel, onCreate }) => {
                     </Col>
                     <Col span={12}>
                         <Form.Item
-                            name="warranty_months"
+                            name="warrantyMonths"
                             label="Warranty Months"
                             rules={[{ required: true, message: 'Please input the warranty months!' }]}
                         >

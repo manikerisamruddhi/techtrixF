@@ -44,7 +44,7 @@ export const createTicket = createAsyncThunk('tickets/addTicket', async (newTick
 //         status: newTicket.status,
 //         Priority: newTicket.Priority,
 //         assignedToID: newTicket.assignedToID,
-//         Description: newTicket.Description,
+//         description: newTicket.description,
 //         description: response.data.description,
 //         CreatedDate: new Date().toISOString(),
 //         isChargeable: response.data.isChargeable,

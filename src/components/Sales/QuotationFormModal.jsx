@@ -19,12 +19,12 @@ const QuotationFormModal = ({ visible, onClose, ticketId, onSubmit }) => {
         brand: '',
         modelNo: '',
         description: '',
-        hsn_code: '',
+        hsnCode: '',
         is_negotiable: false,
-        part_code: '',
+        partCode: '',
         price: 0,
         quantity: 1,
-        warranty_months: 0,
+        warrantyMonths: 0,
         warranty_start_date: '',
     });
 
@@ -110,12 +110,12 @@ const QuotationFormModal = ({ visible, onClose, ticketId, onSubmit }) => {
                 brand: '',
                 modelNo: '',
                 description: '',
-                hsn_code: '',
+                hsnCode: '',
                 is_negotiable: false,
-                part_code: '',
+                partCode: '',
                 price: 0,
                 quantity: 1,
-                warranty_months: 0,
+                warrantyMonths: 0,
                 warranty_start_date: '',
             });
             setShowNewProductForm(false); // Hide the product form after adding
@@ -187,8 +187,8 @@ const QuotationFormModal = ({ visible, onClose, ticketId, onSubmit }) => {
                         </Form.Item>
                         <Form.Item label="HSN Code">
                             <Input
-                                value={newProduct.hsn_code}
-                                onChange={(e) => setNewProduct({ ...newProduct, hsn_code: e.target.value })}
+                                value={newProduct.hsnCode}
+                                onChange={(e) => setNewProduct({ ...newProduct, hsnCode: e.target.value })}
                             />
                         </Form.Item>
                         <Form.Item label="Is Negotiable">
@@ -201,8 +201,8 @@ const QuotationFormModal = ({ visible, onClose, ticketId, onSubmit }) => {
                         </Form.Item>
                         <Form.Item label="Part Code">
                             <Input
-                                value={newProduct.part_code}
-                                onChange={(e) => setNewProduct({ ...newProduct, part_code: e.target.value })}
+                                value={newProduct.partCode}
+                                onChange={(e) => setNewProduct({ ...newProduct, partCode: e.target.value })}
                             />
                         </Form.Item>
                         <Form.Item label="Price">
@@ -222,8 +222,8 @@ const QuotationFormModal = ({ visible, onClose, ticketId, onSubmit }) => {
                         <Form.Item label="Warranty Months">
                             <Input
                                 type="number"
-                                value={newProduct.warranty_months}
-                                onChange={(e) => setNewProduct({ ...newProduct, warranty_months: Number(e.target.value) })}
+                                value={newProduct.warrantyMonths}
+                                onChange={(e) => setNewProduct({ ...newProduct, warrantyMonths: Number(e.target.value) })}
                             />
                         </Form.Item>
 

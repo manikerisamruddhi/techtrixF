@@ -210,7 +210,7 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
                     {selectedProduct && ( // Only show if a product is selected
                         <>
                             <Form.Item
-                                name="Description"
+                                name="description"
                                 label="Product Description"
                                 rules={[{ required: true, message: 'Please enter the description' }]}
                             >

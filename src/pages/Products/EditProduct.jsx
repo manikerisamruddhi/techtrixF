@@ -43,7 +43,7 @@ const EditModal = ({ visible, product, onCancel, onSave }) => {
                 <Form.Item name="modelNo" label="Model No" rules={[{ required: true, message: 'Please input the model number!' }]}>
                     <Input />
                 </Form.Item>
-                <Form.Item name="hsn_code" label="hsn_code" rules={[{ required: true, message: 'Please input the hsn_code!' }]}>
+                <Form.Item name="hsnCode" label="hsnCode" rules={[{ required: true, message: 'Please input the hsnCode!' }]}>
                     <Input />
                 </Form.Item>
                 <Form.Item name="description" label="Description">
@@ -55,7 +55,7 @@ const EditModal = ({ visible, product, onCancel, onSave }) => {
                 <Form.Item name="quantity" label="Quantity" rules={[{ required: true, message: 'Please input the quantity!' }]}>
                     <InputNumber style={{ width: '100%' }} min={0} />
                 </Form.Item>
-                <Form.Item name="warranty_months" label="warranty_months" rules={[{ required: true, message: 'Please input the quantity!' }]}>
+                <Form.Item name="warrantyMonths" label="warrantyMonths" rules={[{ required: true, message: 'Please input the quantity!' }]}>
                     <InputNumber style={{ width: '100%' }} min={0} />
                 </Form.Item>
                 
