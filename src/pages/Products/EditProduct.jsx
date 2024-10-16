@@ -40,7 +40,7 @@ const EditModal = ({ visible, product, onCancel, onSave }) => {
                 <Form.Item name="brand" label="Brand" rules={[{ required: true, message: 'Please input the brand!' }]}>
                     <Input />
                 </Form.Item>
-                <Form.Item name="model_no" label="Model No" rules={[{ required: true, message: 'Please input the model number!' }]}>
+                <Form.Item name="modelNo" label="Model No" rules={[{ required: true, message: 'Please input the model number!' }]}>
                     <Input />
                 </Form.Item>
                 <Form.Item name="hsn_code" label="hsn_code" rules={[{ required: true, message: 'Please input the hsn_code!' }]}>

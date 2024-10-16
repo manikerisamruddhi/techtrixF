@@ -99,7 +99,7 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
                         customerID: values.customerID,
                         description: values.NewProdDescription,
                         brand: 'Service-',
-                        model_no: 'Service-',
+                        modelNo: 'Service-',
                         price: values.FinalAmount
                     };
                     await dispatch(addProduct(productValues));
@@ -186,10 +186,10 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
                         >
                             {filteredProducts && filteredProducts.length > 0 ? (
                                 filteredProducts.map(product => (
-                                    <Option key={product.id} value={product.id} label={`${product.brand} ${product.model_no}`}>
+                                    <Option key={product.id} value={product.id} label={`${product.brand} ${product.modelNo}`}>
                                         <div>
                                             <span style={{ marginRight: '10px' }}>Brand: {product.brand}</span>
-                                            <span>Model No: {product.model_no}</span>
+                                            <span>Model No: {product.modelNo}</span>
                                         </div>
                                     </Option>
                                 ))

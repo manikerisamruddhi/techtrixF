@@ -18,7 +18,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
     const [form] = Form.useForm();
     const [newProduct, setNewProduct] = useState({
         brand: '',
-        model_no: '',
+        modelNo: '',
         price: 0,
         quantity: 1,
         description: '',
@@ -62,7 +62,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
 
     const handleAddOrEditProduct = () => {
         // Validation Logic
-        if (!newProduct.brand || !newProduct.model_no || newProduct.price <= 0 || newProduct.quantity <= 0) {
+        if (!newProduct.brand || !newProduct.modelNo || newProduct.price <= 0 || newProduct.quantity <= 0) {
             notification.error({ message: 'Please fill in all product fields correctly!' });
             return;
         }
@@ -83,7 +83,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
         }
 
         // Reset form
-        setNewProduct({ brand: '', model_no: '', price: 0, quantity: 1, description: '', hasSerialNumber: 'no' });
+        setNewProduct({ brand: '', modelNo: '', price: 0, quantity: 1, description: '', hasSerialNumber: 'no' });
         setShowNewProductForm(false);
     };
 
@@ -128,7 +128,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
             const productPromises = addedProducts.map(async (product) => {
                 const newProductData = {
                     brand: product.brand,
-                    modelNo: product.model_no,
+                    modelNo: product.modelNo,
                     price: product.price,
                     quantity: product.quantity,
                     description: product.description,
@@ -237,7 +237,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
                     <Table
                         columns={[
                             { title: 'Brand', dataIndex: 'brand', key: 'brand' },
-                            { title: 'Model No', dataIndex: 'model_no', key: 'model_no' },
+                            { title: 'Model No', dataIndex: 'modelNo', key: 'modelNo' },
                             { title: 'description', dataIndex: 'description', key: 'description' },
                             { title: 'Price', dataIndex: 'price', key: 'price' },
                             { title: 'Quantity', dataIndex: 'quantity', key: 'quantity' },
@@ -296,7 +296,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
                                 icon={<CloseCircleOutlined />}
                                 onClick={() => {
                                     setShowNewProductForm(false);
-                                    setNewProduct({ brand: '', model_no: '', price: 0, quantity: 1, description: '', hasSerialNumber: 'no' });
+                                    setNewProduct({ brand: '', modelNo: '', price: 0, quantity: 1, description: '', hasSerialNumber: 'no' });
                                     setEditIndex(null);
                                 }}
                             />
@@ -310,7 +310,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
                             </Col>
                             <Col span={8}>
                                 <Form.Item label="Model No" rules={[{ required: true }]}>
-                                    <Input value={newProduct.model_no} onChange={e => setNewProduct({ ...newProduct, model_no: e.target.value })} />
+                                    <Input value={newProduct.modelNo} onChange={e => setNewProduct({ ...newProduct, modelNo: e.target.value })} />
                                 </Form.Item>
                             </Col>
                             <Col span={6}>

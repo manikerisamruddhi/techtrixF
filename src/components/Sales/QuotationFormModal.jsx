@@ -17,7 +17,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId, onSubmit }) => {
     // State for new product fields
     const [newProduct, setNewProduct] = useState({
         brand: '',
-        model_no: '',
+        modelNo: '',
         description: '',
         hsn_code: '',
         is_negotiable: false,
@@ -93,7 +93,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId, onSubmit }) => {
     };
 
     const handleAddProduct = async () => {
-        if (!newProduct.brand || !newProduct.model_no || newProduct.price <= 0 || newProduct.quantity <= 0) {
+        if (!newProduct.brand || !newProduct.modelNo || newProduct.price <= 0 || newProduct.quantity <= 0) {
             notification.error({ message: 'Please fill in all product fields correctly!' });
             return;
         }
@@ -108,7 +108,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId, onSubmit }) => {
             // Reset new product fields and hide the form
             setNewProduct({
                 brand: '',
-                model_no: '',
+                modelNo: '',
                 description: '',
                 hsn_code: '',
                 is_negotiable: false,
@@ -149,7 +149,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId, onSubmit }) => {
                     >
                         {products.map(product => (
                             <Option key={product.id} value={product.id}>
-                                {product.brand} : {product.model_no} = ₹{product.price}
+                                {product.brand} : {product.modelNo} = ₹{product.price}
                             </Option>
                         ))}
                     </Select>
@@ -175,8 +175,8 @@ const QuotationFormModal = ({ visible, onClose, ticketId, onSubmit }) => {
                         </Form.Item>
                         <Form.Item label="Model No">
                             <Input
-                                value={newProduct.model_no}
-                                onChange={(e) => setNewProduct({ ...newProduct, model_no: e.target.value })}
+                                value={newProduct.modelNo}
+                                onChange={(e) => setNewProduct({ ...newProduct, modelNo: e.target.value })}
                             />
                         </Form.Item>
                         <Form.Item label="Description">

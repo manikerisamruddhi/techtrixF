@@ -14,7 +14,7 @@ const useQuotationForm = (visible, ticketId) => {
 
     const [newProduct, setNewProduct] = useState({
         brand: '',
-        model_no: '',
+        modelNo: '',
         price: 0,
         quantity: 1,
         description: '',
@@ -44,7 +44,7 @@ const useQuotationForm = (visible, ticketId) => {
     }, [error, dispatch]);
 
     const handleAddOrEditProduct = () => {
-        if (!newProduct.brand || !newProduct.model_no || newProduct.price <= 0 || newProduct.quantity <= 0) {
+        if (!newProduct.brand || !newProduct.modelNo || newProduct.price <= 0 || newProduct.quantity <= 0) {
             notification.error({ message: 'Please fill in all product fields correctly!' });
             return;
         }
@@ -62,7 +62,7 @@ const useQuotationForm = (visible, ticketId) => {
             notification.success({ message: 'Product added successfully!' });
         }
 
-        setNewProduct({ brand: '', model_no: '', price: 0, quantity: 1, description: '', hasSerialNumber: 'no' });
+        setNewProduct({ brand: '', modelNo: '', price: 0, quantity: 1, description: '', hasSerialNumber: 'no' });
         setShowNewProductForm(false);
     };
 

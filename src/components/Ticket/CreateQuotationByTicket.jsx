@@ -28,7 +28,7 @@ const CreateQuotationModal = ({ ticketId, visible, onCancel }) => {
                       // Dispatch the action to add each product to the product table with default data
                       const defaultData = {
                           brand: 'Default Brand',
-                          model_no: 'Default Model No',
+                          modelNo: 'Default Model No',
                       };
                       const productsWithDefaultData = products.map((product) => ({ ...product, ...defaultData }));
                       Promise.all(productsWithDefaultData.map((product) => dispatch(addProduct(product))))

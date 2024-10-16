@@ -83,8 +83,8 @@ const Products = () => {
         },
         {
             title: 'Model No',
-            dataIndex: 'model_no',
-            key: 'model_no',
+            dataIndex: 'modelNo',
+            key: 'modelNo',
         },
         {
             title: 'Description',

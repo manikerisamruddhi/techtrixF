@@ -58,7 +58,7 @@ const AddProductModal = ({ visible, onCancel, onCreate }) => {
 
                     <Col span={12}>
                         <Form.Item
-                            name="model_no"
+                            name="modelNo"
                             label="Model No"
                             rules={[{ required: true, message: 'Please input the model number!' }]}
                         >
