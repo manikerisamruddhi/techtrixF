@@ -54,7 +54,7 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
         }
     };
 
-    // const handleisChargebleChange = (e) => {
+    // const handleisChargeableChange = (e) => {
     //     setIsChargeable(e.target.value === 'Chargeable');
     // };
 
@@ -67,7 +67,7 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
             customerID: values.customerID,
             ProductID: values.ProductID,
             Priority: values.Priority,
-            isChargeble: values.isChargeble,
+            isChargeable: values.isChargeable,
             status: 'Open',
             createdBy: 'Admin',
             CreatedDate: currentDate,
@@ -250,11 +250,11 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
                             )}
 
                             <Form.Item
-                                name="isChargeble"
-                                label="isChargeble : "
-                                rules={[{ required: true, message: 'Please select isChargeble' }]}
+                                name="isChargeable"
+                                label="isChargeable : "
+                                rules={[{ required: true, message: 'Please select isChargeable' }]}
                             >
-                                {/* <Radio.Group onChange={handleisChargebleChange}> */}
+                                {/* <Radio.Group onChange={handleisChargeableChange}> */}
                                 <Radio.Group >
                                     <Radio value={true}>Chargeable</Radio>
                                     <Radio value={false}>Non-chargeable</Radio>

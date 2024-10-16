@@ -61,7 +61,7 @@ const TicketDetailsModal = ({ visible, ticket, onClose, onCreateQuotation, onUpd
                             </Descriptions.Item>
                             <Descriptions.Item label="Created Date" span={1}>{new Date(ticket.CreatedDate).toLocaleString()}</Descriptions.Item>
                             <Descriptions.Item label="Resolved" span={1}>{ticket.isResolved ? 'Yes' : 'No'}</Descriptions.Item>
-                            <Descriptions.Item label="Is Chargeable" span={1}>{ticket.isChargeble ? 'Yes' : 'No'}</Descriptions.Item>
+                            <Descriptions.Item label="Is Chargeable" span={1}>{ticket.isChargeable ? 'Yes' : 'No'}</Descriptions.Item>
                             <Descriptions.Item label="Assigned To" span={1}>{ticket.assignedTo ? ticket.assignedTo : 'Not Assigned'}</Descriptions.Item>
                         </Descriptions>
                         <div style={{ marginTop: '20px', textAlign: 'right' }}>
@@ -75,8 +75,8 @@ const TicketDetailsModal = ({ visible, ticket, onClose, onCreateQuotation, onUpd
                                 Update Ticket
                             </Button>
 
-                            {/* Render the Create Quotation button if isChargeble is true */}
-                            {ticket.isChargeble && (
+                            {/* Render the Create Quotation button if isChargeable is true */}
+                            {ticket.isChargeable && (
                                 <Button 
                                     type="primary" 
                                     onClick={handleCreateQuotationClick}  // Open the Create Quotation modal
