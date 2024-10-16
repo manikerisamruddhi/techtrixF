@@ -25,7 +25,7 @@ const UpdateTicketModal = ({ ticketData, isVisible, onCancel, onClose  }) => {
         customerID: ticketData.customerID,
         productID: ticketData.ProductID,
         priority: ticketData.Priority,
-        isChargeble: ticketData.isChargeble,
+        isChargeable: ticketData.isChargeable,
         status: ticketData.status,
         createdBy: ticketData.createdBy,
         description: ticketData.description,
@@ -156,7 +156,7 @@ const UpdateTicketModal = ({ ticketData, isVisible, onCancel, onClose  }) => {
 
             </Col>
             <Col>
-            <Form.Item name="isChargeble" label="Chargeability" valuePropName="checked">
+            <Form.Item name="isChargeable" label="Chargeability" valuePropName="checked">
       <Switch />
     </Form.Item> 
     </Col>
