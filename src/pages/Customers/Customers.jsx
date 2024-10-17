@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchCustomers, addCustomer, updateCustomer, deleteCustomer } from '../../redux/slices/customerSlice';
 import { Button, Table, Layout, Typography, Empty, Spin, message } from 'antd';
 import { toast } from 'react-toastify';
-import CustomerFormModal from '../../components/Customer/CustomerFormModel'; // Import the new form component
+import CustomerFormModal from '../../components/Customer/CustomerFormModal'; // Import the new form component
 
 const { Content } = Layout;
 const { Title } = Typography;
