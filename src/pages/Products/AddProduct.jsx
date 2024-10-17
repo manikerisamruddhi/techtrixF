@@ -5,27 +5,49 @@ import { addProduct } from '../../redux/slices/productSlice'; // Redux action
 import { useDispatch } from 'react-redux';
 
 
-const ProductFormModal = ({ visible, onCancel, product }) => {
+const ProductFormModal = ({ visible, onCancel, product, customerID, onAddProduct }) => {
     const [form] = Form.useForm();
     const dispatch = useDispatch();
 
     const handleFinish = (values) => {
         // Set the created date to the current date and time
         const createdDate = new Date().toISOString(); // Adjust format as necessary
-        const productData = product ? { ...product, ...values, created_date: createdDate } : { ...values, created_date: createdDate };
-
+        const productData = product
+            ? { ...product, ...values, created_date: createdDate }
+            : { ...values, created_date: createdDate };
+    
+        // Only add customerID if it's defined
+        if (customerID) {
+            productData.customerID = customerID;
+        }
+    
         // Call onCreate to handle the product addition
-        dispatch(addProduct(productData));
+        dispatch(addProduct(productData))
+        .then((resultAction) => {
+            if (addProduct.fulfilled.match(resultAction)) {
+                const newProduct = resultAction.payload;  // Get the newly added customer from the action payload
+                // message.success('Product added successfully!');
+                onCancel();  // Close modal
+
+                // Trigger the parent callback to inform about the new customer
+                if (onAddProduct) {
+                    onAddProduct(newProduct);
+                }
+            } else {
+                message.error('Failed to add product.');
+            }
+            });
         
         // Show success message
         message.success(product ? "Product updated successfully!" : "Product added successfully!");
-
+    
         // Reset the form fields
         form.resetFields();
-
+    
         // Close the modal
         onCancel();
     };
+    
 
     return (
         <Modal
