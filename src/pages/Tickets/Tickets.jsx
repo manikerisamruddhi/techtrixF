@@ -27,7 +27,7 @@ const Tickets = () => {
 
     const [searchParams] = useSearchParams();
   const status = searchParams.get('status');
-  console.log(status);
+//   console.log(status);
 
     useEffect(() => {
         const fetch_data = async () => {
