@@ -5,7 +5,7 @@ import { fetchTickets, fetchQuotations, fetchInvoices } from '../../redux/slices
 import useTicketCounts from '../../hooks/useTicketCount';
 import CreateTicketModal from '../../components/Ticket/CreateTicketModalForm';
 import CreateQuotationModal from '../../components/Quotation/CreateQuotation';
-import CustomerFormModal from '../../components/Customer/CustomerFormModel';
+import CustomerFormModal from '../../components/Customer/CustomerFormModal';
 import AddProduct from '../Products/AddProduct'
 import {
     Grid,
