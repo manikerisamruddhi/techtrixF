@@ -191,15 +191,315 @@
       "CreatedDate": "2024-10-09 15:53:36"
     },
     {
-      "id": "8f73",
-      "firstName": "adsad",
-      "lastName": "sdfa",
-      "email": "asdf",
-      "phoneNumber": "8787",
-      "address": "kjkjhjk",
-      "PinCode": "898989",
-      "isPremium": true,
-      "CreatedDate": "2024-10-09 16:10:28"
+      "id": "a449",
+      "firstName": "ASHISH",
+      "lastName": "BHOSALE",
+      "email": "bhosaleashish311@gmail.com",
+      "phoneNumber": "09075943766",
+      "address": "vishrantwadi, pune06.",
+      "zipCode": "413718",
+      "isPremium": true
+    },
+    {
+      "id": "5624",
+      "firstName": "jkjk",
+      "lastName": "kj",
+      "email": "jkljlk@jkj.com",
+      "phoneNumber": "k",
+      "address": "k",
+      "zipCode": "kkk"
+    },
+    {
+      "id": "5127",
+      "firstName": "ASHISH",
+      "lastName": "BHOSALE",
+      "email": "bhosaleashish311@gmail.com",
+      "phoneNumber": "09075943766",
+      "address": "vishrantwadi, pune06.",
+      "zipCode": "413718"
+    },
+    {
+      "id": "5e17",
+      "firstName": "ASHISH",
+      "lastName": "BHOSALE",
+      "email": "bhosaleashish311@gmail.com",
+      "phoneNumber": "09075943766",
+      "address": "vishrantwadi, pune06.",
+      "zipCode": "413718"
+    },
+    {
+      "id": "7476",
+      "firstName": "dd",
+      "lastName": "ioi",
+      "email": "oio@gmail.com",
+      "phoneNumber": "iooi",
+      "address": "ioo",
+      "zipCode": "io"
+    },
+    {
+      "id": "2af6",
+      "firstName": "lkl",
+      "lastName": "klk",
+      "email": "klk@gmail.com",
+      "phoneNumber": "klk",
+      "address": "klk",
+      "zipCode": "klk"
+    },
+    {
+      "id": "af19",
+      "firstName": "fjjfjfgfhgfgdsfdsd",
+      "lastName": "jhj",
+      "email": "hjhjkhj@gmail.com",
+      "phoneNumber": "fd",
+      "address": "df",
+      "zipCode": "df"
+    },
+    {
+      "id": "5b13",
+      "firstName": "ASHISH",
+      "lastName": "BHOSALE",
+      "email": "bhosaleashish311@gmail.com",
+      "phoneNumber": "09075943766",
+      "address": "vishrantwadi, pune06.",
+      "zipCode": "413718"
+    },
+    {
+      "id": "ee75",
+      "firstName": "ASHISH",
+      "lastName": "BHOSALE",
+      "email": "bhosaleashish311@gmail.com",
+      "phoneNumber": "09075943766",
+      "address": "vishrantwadi, pune06.",
+      "zipCode": "413718"
+    },
+    {
+      "id": "8eeb",
+      "firstName": "ASHISH",
+      "lastName": "BHOSALE",
+      "email": "bhosaleashish311@gmail.com",
+      "phoneNumber": "09075943766",
+      "address": "vishrantwadi, pune06.",
+      "zipCode": "413718"
+    },
+    {
+      "id": "4ea7",
+      "firstName": "ASHISH",
+      "lastName": "BHOSALE",
+      "email": "bhosaleashish311@gmail.com",
+      "phoneNumber": "09075943766",
+      "address": "vishrantwadi, pune06.",
+      "zipCode": "413718"
+    },
+    {
+      "id": "7b94",
+      "firstName": "ASHISH",
+      "lastName": "BHOSALE",
+      "email": "bhosaleashish311@gmail.com",
+      "phoneNumber": "09075943766",
+      "address": "vishrantwadi, pune06.",
+      "zipCode": "413718"
+    },
+    {
+      "id": "6c68",
+      "firstName": "fjjfjfgfhgfgdsfdsd",
+      "lastName": "jhj",
+      "email": "hjhjkhj@gmail.com",
+      "phoneNumber": "fd",
+      "address": "df",
+      "zipCode": "df"
+    },
+    {
+      "id": "519f",
+      "firstName": "fjjfjfgfhgfgdsfdsd",
+      "lastName": "jhj",
+      "email": "hjhjkhj@gmail.com",
+      "phoneNumber": "09075943766",
+      "address": "df",
+      "zipCode": "df"
+    },
+    {
+      "id": "f56d",
+      "firstName": "fjjfjfgfhgfgdsfdsd",
+      "lastName": "jhj",
+      "email": "hjhjkhj@gmail.com",
+      "phoneNumber": "fd",
+      "address": "df",
+      "zipCode": "df"
+    },
+    {
+      "id": "311b",
+      "firstName": "fjjfjfgfhgfgdsfdsd",
+      "lastName": "jhj",
+      "email": "hjhjkhj@gmail.com",
+      "phoneNumber": "fd",
+      "address": "df",
+      "zipCode": "df"
+    },
+    {
+      "id": "438c",
+      "firstName": "fjjfjfgfhgfgdsfdsd",
+      "lastName": "jhj",
+      "email": "hjhjkhj@gmail.com",
+      "phoneNumber": "fd",
+      "address": "df",
+      "zipCode": "df"
+    },
+    {
+      "id": "1c33",
+      "firstName": "fjjfjfgfhgfgdsfdsd",
+      "lastName": "jhj",
+      "email": "hjhjkhj@gmail.com",
+      "phoneNumber": "fd",
+      "address": "df",
+      "zipCode": "df"
+    },
+    {
+      "id": "5664",
+      "firstName": "ASHISH",
+      "lastName": "BHOSALE",
+      "email": "bhosaleashish311@gmail.com",
+      "phoneNumber": "09075943766",
+      "address": "vishrantwadi, pune06.",
+      "zipCode": "413718"
+    },
+    {
+      "id": "8754",
+      "firstName": "Arati",
+      "lastName": "Lahane",
+      "email": "a@gmail.com",
+      "phoneNumber": "sadf",
+      "address": "vishrantwadi, pune06.",
+      "zipCode": "413718"
+    },
+    {
+      "id": "538c",
+      "firstName": "ASHISH2222",
+      "lastName": "BHOSALE",
+      "email": "bhosaleashish311@gmail.com",
+      "phoneNumber": "09075943766",
+      "address": "vishrantwadi, pune06.",
+      "zipCode": "413718"
+    },
+    {
+      "id": "84bf",
+      "firstName": "TEST",
+      "lastName": "TEST",
+      "email": "uuuu@jjk.com",
+      "phoneNumber": "uu",
+      "address": "uu",
+      "zipCode": "u"
+    },
+    {
+      "id": "f82b",
+      "firstName": "TEST",
+      "lastName": "TEST",
+      "email": "uuuu@jjk.com",
+      "phoneNumber": "uu",
+      "address": "uu",
+      "zipCode": "u"
+    },
+    {
+      "id": "1f3c",
+      "firstName": "ASHISH",
+      "lastName": "BHOSALE",
+      "email": "bhosaleashish311@gmail.com",
+      "phoneNumber": "09075943766",
+      "address": "vishrantwadi, pune06.",
+      "zipCode": "413718"
+    },
+    {
+      "id": "7d48",
+      "firstName": "TEST",
+      "lastName": "TEST",
+      "email": "uuuu@jjk.com",
+      "phoneNumber": "uu",
+      "address": "uu",
+      "zipCode": "u",
+      "isPremium": true
+    },
+    {
+      "id": "12a4",
+      "firstName": "testDB",
+      "lastName": "testDB1",
+      "email": "db1@test.com",
+      "phoneNumber": "90",
+      "address": "ajhjk",
+      "zipCode": "9009",
+      "isPremium": true
+    },
+    {
+      "id": "99b9",
+      "firstName": "testDB",
+      "lastName": "testDB1",
+      "email": "db1@test.com",
+      "phoneNumber": "90",
+      "address": "ajhjk",
+      "zipCode": "9009",
+      "isPremium": true
+    },
+    {
+      "id": "e335",
+      "firstName": "testDB",
+      "lastName": "testDB1",
+      "email": "db1@test.com",
+      "phoneNumber": "90",
+      "address": "ajhjk",
+      "zipCode": "9009"
+    },
+    {
+      "id": "297b",
+      "firstName": "testDB",
+      "lastName": "testDB1",
+      "email": "db1@test.com",
+      "phoneNumber": "90",
+      "address": "ajhjk",
+      "zipCode": "9009"
+    },
+    {
+      "id": "dd0c",
+      "firstName": "testDB",
+      "lastName": "testDB1",
+      "email": "db1@test.com",
+      "phoneNumber": "90",
+      "address": "ajhjk",
+      "zipCode": "9009",
+      "isPremium": true
+    },
+    {
+      "id": "82cf",
+      "firstName": "testDB",
+      "lastName": "testDB1",
+      "email": "db1@test.com",
+      "phoneNumber": "90",
+      "address": "ajhjk",
+      "zipCode": "9009"
+    },
+    {
+      "id": "061b",
+      "firstName": "ASHISH testtttttttttt",
+      "lastName": "BHOSALE",
+      "email": "bhosaleashish311@gmail.com",
+      "phoneNumber": "09075943766",
+      "address": "vishrantwadi, pune06.",
+      "zipCode": "413718"
+    },
+    {
+      "id": "3126",
+      "firstName": "testDB",
+      "lastName": "testDB1",
+      "email": "db1@test.com",
+      "phoneNumber": "90",
+      "address": "ajhjk",
+      "zipCode": "9009"
+    },
+    {
+      "id": "fff8",
+      "firstName": "ASHISH testtttttttttt",
+      "lastName": "BHOSALE",
+      "email": "bhosaleashish311@gmail.com",
+      "phoneNumber": "09075943766",
+      "address": "vishrantwadi, pune06.",
+      "zipCode": "413718"
     }
   ],
   "quotations": [
@@ -545,15 +845,6 @@
       "hasSerialNumber": "no"
     },
     {
-      "id": "5b82",
-      "TicketID": "f575",
-      "customerID": "4f90",
-      "description": "mmmm",
-      "brand": "Service-",
-      "modelNo": "Service-",
-      "price": "2000"
-    },
-    {
       "id": "9e14",
       "brand": "sony y",
       "modelNo": "sony m201",
@@ -573,26 +864,6 @@
       "warrenty": 7
     },
     {
-      "id": "ee06",
-      "brand": "adfjklj",
-      "modelNo": "adff",
-      "price": 2000,
-      "quantity": 8,
-      "description": "ram rom",
-      "hasSerialNumber": "no",
-      "warrenty": 8
-    },
-    {
-      "id": "d97e",
-      "brand": "ahha",
-      "modelNo": "adf",
-      "price": 34,
-      "quantity": 12,
-      "description": "adfgg",
-      "hasSerialNumber": "no",
-      "warrenty": 12
-    },
-    {
       "id": "87de",
       "brand": "afdf",
       "modelNo": "kjlkj",
@@ -603,10 +874,341 @@
       "warrenty": 8
     },
     {
-      "id": "9b37",
-      "description": "jkasdlkjflkjiuiuiuiuiuiuiuiuiuiuiu",
-      "price": "89",
-      "key": 1729074426715
+      "id": "ddeb",
+      "brand": "99999",
+      "modelNo": "l",
+      "description": "l",
+      "isSerialNoAllowed": false,
+      "partCode": "l",
+      "hsnCode": "l",
+      "price": "909090909099999999090990909909090",
+      "quantity": "999999999999999999999",
+      "warrantyMonths": "9",
+      "created_date": "2024-10-17T06:13:09.432Z"
+    },
+    {
+      "id": "66cc",
+      "brand": "99999000000000000000",
+      "modelNo": "========",
+      "description": "asdf",
+      "isSerialNoAllowed": false,
+      "partCode": "l",
+      "hsnCode": "l",
+      "price": "909090909099999999090990909909090",
+      "quantity": "999999999999999999999",
+      "warrantyMonths": "9",
+      "created_date": "2024-10-17T06:27:06.747Z"
+    },
+    {
+      "id": "23f9",
+      "brand": "aaaarati",
+      "modelNo": "arati",
+      "description": "aaa",
+      "isSerialNoAllowed": false,
+      "partCode": "jkj",
+      "hsnCode": "jk",
+      "price": "8",
+      "quantity": "8",
+      "warrantyMonths": "8",
+      "created_date": "2024-10-17T06:32:05.505Z"
+    },
+    {
+      "id": "696b",
+      "brand": "ashish",
+      "modelNo": "ashish",
+      "description": "ashish",
+      "isSerialNoAllowed": false,
+      "partCode": "ajksj",
+      "hsnCode": "akjsk",
+      "price": "909090909099999999090990909909090",
+      "quantity": "9",
+      "warrantyMonths": "9",
+      "created_date": "2024-10-17T06:41:22.880Z",
+      "customerID": "538c"
+    },
+    {
+      "id": "1405",
+      "brand": "test",
+      "modelNo": "test",
+      "description": "test ",
+      "isSerialNoAllowed": true,
+      "partCode": "test",
+      "hsnCode": "test",
+      "price": "1",
+      "quantity": "3",
+      "warrantyMonths": "3",
+      "created_date": "2024-10-17T06:42:38.018Z"
+    },
+    {
+      "id": "c5ef",
+      "brand": "aaaarati jane smith",
+      "modelNo": "arati",
+      "description": "hane smith ",
+      "isSerialNoAllowed": false,
+      "partCode": "jkj",
+      "hsnCode": "jk",
+      "price": "8",
+      "quantity": "8",
+      "warrantyMonths": "8",
+      "created_date": "2024-10-17T06:51:21.568Z"
+    },
+    {
+      "id": "d85a",
+      "brand": "ashish",
+      "modelNo": "ashish",
+      "description": "asd",
+      "isSerialNoAllowed": true,
+      "partCode": "asfd",
+      "hsnCode": "sa",
+      "price": "3",
+      "quantity": "33",
+      "warrantyMonths": "33",
+      "created_date": "2024-10-17T06:53:02.988Z",
+      "customerID": "f82b"
+    },
+    {
+      "id": "0fd3",
+      "brand": "test to show ",
+      "modelNo": "test ",
+      "description": "kjakjjalkj",
+      "isSerialNoAllowed": true,
+      "partCode": "sfd",
+      "hsnCode": "sdf",
+      "price": "8",
+      "quantity": "8",
+      "warrantyMonths": "9",
+      "created_date": "2024-10-17T06:59:27.175Z",
+      "customerID": "f82b"
+    },
+    {
+      "id": "fe3d",
+      "brand": "afd",
+      "modelNo": "sdf",
+      "description": "sfd",
+      "isSerialNoAllowed": false,
+      "partCode": "afd",
+      "hsnCode": "sadf",
+      "price": "909090909099999999090990909909090",
+      "quantity": "44",
+      "warrantyMonths": "4",
+      "created_date": "2024-10-17T07:11:02.206Z"
+    },
+    {
+      "id": "5d88",
+      "brand": "afd",
+      "modelNo": "sdf",
+      "description": "sdf",
+      "isSerialNoAllowed": true,
+      "partCode": "fd",
+      "hsnCode": "df",
+      "price": "78",
+      "quantity": "78",
+      "warrantyMonths": "7",
+      "created_date": "2024-10-17T07:15:41.955Z"
+    },
+    {
+      "id": "6d52",
+      "brand": "afd",
+      "modelNo": "sdf",
+      "description": "jkjkj",
+      "isSerialNoAllowed": true,
+      "partCode": "fd",
+      "hsnCode": "df",
+      "price": "78",
+      "quantity": "78",
+      "warrantyMonths": "7",
+      "created_date": "2024-10-17T07:26:12.041Z"
+    },
+    {
+      "id": "d4f4",
+      "brand": "afd",
+      "modelNo": "sdf",
+      "description": "lklk",
+      "isSerialNoAllowed": false,
+      "partCode": "fd",
+      "hsnCode": "df",
+      "price": "78",
+      "quantity": "78",
+      "warrantyMonths": "7",
+      "created_date": "2024-10-17T07:27:37.232Z"
+    },
+    {
+      "id": "ade8",
+      "brand": "kjkl",
+      "modelNo": "kl",
+      "description": "klk",
+      "isSerialNoAllowed": true,
+      "partCode": "jkj",
+      "hsnCode": "jk",
+      "price": "909090909099999999090990909909090",
+      "quantity": "9",
+      "warrantyMonths": "9",
+      "created_date": "2024-10-17T07:29:47.234Z"
+    },
+    {
+      "id": "3d93",
+      "brand": "jkjk",
+      "modelNo": "jkj",
+      "description": "jkj",
+      "isSerialNoAllowed": true,
+      "partCode": "jkj",
+      "hsnCode": "jkj",
+      "price": "8",
+      "quantity": "8",
+      "warrantyMonths": "8",
+      "created_date": "2024-10-17T07:40:46.981Z"
+    },
+    {
+      "id": "5925",
+      "brand": "test to show ",
+      "modelNo": "test ",
+      "description": "sdafasfd",
+      "isSerialNoAllowed": false,
+      "partCode": "sfd",
+      "hsnCode": "sdf",
+      "price": "8",
+      "quantity": "8",
+      "warrantyMonths": "9",
+      "created_date": "2024-10-17T07:49:46.443Z",
+      "customerID": "7d48"
+    },
+    {
+      "id": "b177",
+      "brand": "test to show db",
+      "modelNo": "test ",
+      "description": "adfa",
+      "isSerialNoAllowed": true,
+      "partCode": "sfd",
+      "hsnCode": "sdf",
+      "price": "8",
+      "quantity": "8",
+      "warrantyMonths": "9",
+      "created_date": "2024-10-17T09:19:20.846Z",
+      "customerID": "12a4"
+    },
+    {
+      "id": "d651",
+      "brand": "test to show db",
+      "modelNo": "test ",
+      "description": "dsfdf",
+      "isSerialNoAllowed": true,
+      "partCode": "sfd",
+      "hsnCode": "sdf",
+      "price": "8",
+      "quantity": "8",
+      "warrantyMonths": "9",
+      "created_date": "2024-10-17T09:33:55.617Z",
+      "customerID": "99b9"
+    },
+    {
+      "id": "993b",
+      "brand": "test to show db",
+      "modelNo": "test ",
+      "description": "ssssssss212",
+      "isSerialNoAllowed": false,
+      "partCode": "sfd",
+      "hsnCode": "sdf",
+      "price": "8",
+      "quantity": "8",
+      "warrantyMonths": "9",
+      "created_date": "2024-10-17T09:37:27.091Z",
+      "customerID": "e335"
+    },
+    {
+      "id": "5b84",
+      "brand": "test to show db",
+      "modelNo": "test ",
+      "description": "sdf",
+      "isSerialNoAllowed": true,
+      "partCode": "sfd",
+      "hsnCode": "sdf",
+      "price": "8",
+      "quantity": "8",
+      "warrantyMonths": "9",
+      "created_date": "2024-10-17T09:40:56.006Z",
+      "customerID": "297b"
+    },
+    {
+      "id": "537b",
+      "brand": "test to show db",
+      "modelNo": "test ",
+      "description": "dfd",
+      "isSerialNoAllowed": true,
+      "partCode": "sfd",
+      "hsnCode": "sdf",
+      "price": "8",
+      "quantity": "8",
+      "warrantyMonths": "9",
+      "created_date": "2024-10-17T09:41:30.129Z",
+      "customerID": "dd0c"
+    },
+    {
+      "id": "57c9",
+      "brand": "test to show db",
+      "modelNo": "test ",
+      "description": "dsff",
+      "isSerialNoAllowed": false,
+      "partCode": "sfd",
+      "hsnCode": "sdf",
+      "price": "8",
+      "quantity": "8",
+      "warrantyMonths": "9",
+      "created_date": "2024-10-17T09:50:09.921Z",
+      "customerID": "82cf"
+    },
+    {
+      "id": "ee61",
+      "brand": "test to show db",
+      "modelNo": "test ",
+      "description": "sss",
+      "isSerialNoAllowed": true,
+      "partCode": "sfd",
+      "hsnCode": "sdf",
+      "price": "8",
+      "quantity": "8",
+      "warrantyMonths": "9",
+      "created_date": "2024-10-17T09:53:01.095Z",
+      "customerID": "3126"
+    },
+    {
+      "id": "94ae",
+      "brand": "jkjk",
+      "modelNo": "jkj",
+      "description": "ds",
+      "isSerialNoAllowed": false,
+      "partCode": "jkj",
+      "hsnCode": "jkj",
+      "price": "8",
+      "quantity": "8",
+      "warrantyMonths": "8",
+      "created_date": "2024-10-17T10:09:25.430Z",
+      "customerID": "3126"
+    },
+    {
+      "id": "ae00",
+      "brand": "jkjk",
+      "modelNo": "jkj",
+      "description": "dffd",
+      "isSerialNoAllowed": false,
+      "partCode": "jkj",
+      "hsnCode": "jkj",
+      "price": "8",
+      "quantity": "8",
+      "warrantyMonths": "8",
+      "created_date": "2024-10-17T10:15:35.524Z"
+    },
+    {
+      "id": "2994",
+      "brand": "jkjk",
+      "modelNo": "jkj",
+      "description": "d",
+      "isSerialNoAllowed": true,
+      "partCode": "jkj",
+      "hsnCode": "jkj",
+      "price": "8",
+      "quantity": "8",
+      "warrantyMonths": "8",
+      "created_date": "2024-10-17T11:55:33.494Z"
     }
   ],
   "invoices": [
@@ -1014,6 +1616,51 @@
       "createdBy": "Admin",
       "CreatedDate": "2024-10-15T12:34:29.170Z",
       "description": "as"
+    },
+    {
+      "id": "ac92",
+      "title": "jk",
+      "status": "Open",
+      "createdBy": "Admin",
+      "CreatedDate": "2024-10-17T07:41:57.596Z",
+      "description": "jkj"
+    },
+    {
+      "id": "aa7e",
+      "title": "jkhhhhh",
+      "customerID": "7d48",
+      "status": "Open",
+      "createdBy": "Admin",
+      "CreatedDate": "2024-10-17T07:50:08.517Z",
+      "description": "hhhh"
+    },
+    {
+      "id": "1fd3",
+      "title": "testinf the db for customer",
+      "customerID": "12a4",
+      "status": "Open",
+      "createdBy": "Admin",
+      "CreatedDate": "2024-10-17T09:20:26.948Z",
+      "description": "this is testing"
+    },
+    {
+      "id": "5b30",
+      "title": "new newnewnew",
+      "customerID": "dd0c",
+      "status": "Open",
+      "createdBy": "Admin",
+      "CreatedDate": "2024-10-17T09:42:01.048Z",
+      "description": "sdf"
+    },
+    {
+      "id": "54b5",
+      "title": "new newnewnew chech",
+      "customerID": "82cf",
+      "isChargeable": true,
+      "status": "Open",
+      "createdBy": "Admin",
+      "CreatedDate": "2024-10-17T09:50:22.335Z",
+      "description": "adfdfd"
     }
   ],
   "users": [

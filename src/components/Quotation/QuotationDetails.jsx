@@ -44,6 +44,12 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
                     </div>
                     <h2 style="font-size: 22px; color: #000; margin-bottom: 20px;">Items</h2>
                     <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+
+
+
+
+
+                    jhjhhljhjhjhkjhjhkjhjhjkhkjhkjhjk
                         <thead>
                             <tr>
                                 <th style="border: 1px solid #000; padding: 12px; background-color: #f1f1f1; font-weight: bold;">Sr No</th>
