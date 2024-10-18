@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Button, Empty, message, Layout, Typography, Spin, Card, Row, Col, Pagination} from 'antd';
+import { Table, Button, Empty, message, Layout, Typography, Spin, Card, Row, Col } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchTickets } from '../../redux/slices/ticketSlice';
 import { fetchUsers, fetchDepartments } from '../../redux/slices/userSlice';
@@ -14,8 +14,6 @@ const { Title } = Typography;
 
 const Tickets = () => {
     const dispatch = useDispatch();
-    const [currentPage, setCurrentPage] = useState(1);
-    const [pageSize, setPageSize] = useState(5);
     const { customers } = useSelector((state) => state.customers);
     const { tickets, loading: tickets_loading, error: tickets_error } = useSelector((state) => state.tickets);
     const { users, loading: users_loading, error: users_error, departments, loading: departments_loading, error: departments_error } = useSelector((state) => state.users);
@@ -25,12 +23,11 @@ const Tickets = () => {
     const [filtered_users, set_filtered_users] = useState([]);
     const [is_modal_visible, set_is_modal_visible] = useState(false);
     const [selected_ticket, set_selected_ticket] = useState(null);
-    const [total_filtered_tickets, set_total_filtered_tickets] = useState(0); // Total fi
     const [filtered_tickets, set_filtered_tickets] = useState([]); // State for filtered tickets
 
     const [searchParams] = useSearchParams();
-    
-    const status = searchParams.get('status');
+  const status = searchParams.get('status');
+//   console.log(status);
 
     useEffect(() => {
         const fetch_data = async () => {
@@ -49,22 +46,13 @@ const Tickets = () => {
     }, [dispatch]);
 
     useEffect(() => {
-        const filterTickets = () => {
-            const filtered = status ? tickets.filter(ticket => ticket.status === status) : tickets;
-            set_total_filtered_tickets(filtered.length); // Set total for pagination
-            paginateTickets(filtered); // Paginate filtered tickets
-        };
-
-        if (tickets.length > 0) {
-            filterTickets();
+        if (status) {
+            const filtered = tickets.filter(ticket => ticket.status === status);
+            set_filtered_tickets(filtered);
+        } else {
+            set_filtered_tickets(tickets); // Initially, show all tickets
         }
-    }, [tickets, status, currentPage, pageSize]);
-
-    useEffect(() => {
-        if (tickets.length > 0) {
-            set_filtered_tickets(tickets.slice(0, pageSize));
-        }
-    }, [tickets, pageSize]);
+    }, [tickets, status]);
 
     // Handle backend error
     if (tickets_error || users_error || departments_error) {
@@ -98,43 +86,12 @@ const Tickets = () => {
 
     // Filter tickets based on card click
     const handle_card_click = (status) => {
-        setCurrentPage(1); // Reset to page 1 when filtering
-
-    let filtered;
-
-    if (status === 'Total') {
-        filtered = tickets; // Show all tickets
-    } else {
-        filtered = tickets.filter(ticket => ticket.status === status);
-    }
-
-    set_total_filtered_tickets(filtered.length); // Set total tickets after filtering
-    paginateTickets(filtered); // Paginate filtered tickets based on the new data
-    };
-
-    const handleTableChange = (page, pageSize) => {
-        setCurrentPage(page);
-        setPageSize(pageSize);
-
-        // // Calculate the start and end indices for the current page
-        // const startIndex = (page - 1) * pageSize;
-        // const endIndex = startIndex + pageSize;
-
-        // // If there is a status filter, filter the tickets based on the status
-        // if (status) {
-        //     const filtered = filtered_tickets.filter(ticket => ticket.status === status);
-        //     set_filtered_tickets(filtered.slice(startIndex, endIndex));
-        // } else {
-        //     // Otherwise, filter the tickets based on the current tickets
-        //     const filtered = tickets.filter(ticket => ticket.status === status);
-        //     set_filtered_tickets(filtered.slice(startIndex, endIndex));
-        // }
-    };
-
-    const paginateTickets = (ticketsToPaginate) => {
-        const startIndex = (currentPage - 1) * pageSize;
-        const endIndex = startIndex + pageSize;
-        set_filtered_tickets(ticketsToPaginate.slice(startIndex, endIndex)); // Slice the tickets for the current page
+        if (status === 'Total') {
+            set_filtered_tickets(tickets); // Show all tickets
+        } else {
+            const filtered = tickets.filter(ticket => ticket.status === status);
+            set_filtered_tickets(filtered);
+        }
     };
 
     const columns = [
@@ -280,9 +237,6 @@ const Tickets = () => {
                     ) : filtered_tickets.length === 0 ? (
                         <Empty description="No Tickets Available" />
                     ) : (
-                        <>
-
-
                         <Table
                             dataSource={filtered_tickets}
                             columns={columns}
@@ -290,17 +244,6 @@ const Tickets = () => {
                             pagination={false}
                             headerCellStyle={{ backgroundColor: '#007bff', color: '#ffffff' }} // Set the background color and text color here
                         />
-                         <Pagination
-                                style={{ marginTop: '20px', textAlign: 'right' }}
-                                total={total_filtered_tickets}
-                                current={currentPage}
-                                pageSize={pageSize}
-                                pageSizeOptions={['5', '10', '20', '50']}
-                                showSizeChanger
-                                showQuickJumper
-                                onChange={handleTableChange}
-                            />
-                        </>
                     )}
 
                     {/* Ticket Details Modal */}
