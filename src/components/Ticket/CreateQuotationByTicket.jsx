@@ -22,6 +22,7 @@ const CreateQuotationModal = ({ ticketId, visible, onCancel }) => {
     const handleOk = () => {
       form.validateFields()
           .then(() => {
+            
               // Dispatch the action to add the quotation to the database
               dispatch(addQuotation({ ticketId, products }))
                   .then(() => {
@@ -212,6 +213,16 @@ const CreateQuotationModal = ({ ticketId, visible, onCancel }) => {
                     </Button>
                 )}
 
+<Form.Item
+                            name="Comments"
+                            label="Comment"
+                            rules={[{ required: true, message: 'Please enter the product comment' }]}
+                        >
+                            <Input.TextArea
+                            rows={2}
+                            placeholder="Enter Comment" />
+                        </Form.Item>
+
                 {/* Conditionally render OK/Cancel buttons based on showForm */}
                 {!showForm && products.length > 0 && (
                     <Space style={{ marginTop: 16, display: 'flex', justifyContent: 'flex-end' }}>
@@ -220,7 +231,8 @@ const CreateQuotationModal = ({ ticketId, visible, onCancel }) => {
                             Submit Quotation
                         </Button>
                     </Space>
-                )}
+                )} 
+               
             </Form>
         </Modal>
     );

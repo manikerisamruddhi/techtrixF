@@ -137,7 +137,7 @@ const ProductFormModal = ({ visible, onCancel, product, customerID, onAddProduct
                             <Form.Item
                                 name="partCode"
                                 label="Part Code"
-                                rules={[{ required: true, message: 'Please input the part code!' }]}
+                                // rules={[{ required: true, message: 'Please input the part code!' }]}
                             >
                                 <Input />
                             </Form.Item>
@@ -160,7 +160,7 @@ const ProductFormModal = ({ visible, onCancel, product, customerID, onAddProduct
                             <Form.Item
                                 name="hsnCode"
                                 label="HSN Code"
-                                rules={[{ required: true, message: 'Please input the HSN code!' }]}
+                                // rules={[{ required: true, message: 'Please input the HSN code!' }]}
                             >
                                 <Input />
                             </Form.Item>
@@ -181,7 +181,7 @@ const ProductFormModal = ({ visible, onCancel, product, customerID, onAddProduct
                             <Form.Item
                                 name="quantity"
                                 label="Quantity"
-                                rules={[{ required: true, message: 'Please input the quantity!' }]}
+                                // rules={[{ required: true, message: 'Please input the quantity!' }]}
                             >
                                 <Input type="number" />
                             </Form.Item>
@@ -190,7 +190,7 @@ const ProductFormModal = ({ visible, onCancel, product, customerID, onAddProduct
                             <Form.Item
                                 name="warrantyMonths"
                                 label="Warranty Months"
-                                rules={[{ required: true, message: 'Please input the warranty months!' }]}
+                                // rules={[{ required: true, message: 'Please input the warranty months!' }]}
                             >
                                 <Input type="number" />
                             </Form.Item>
