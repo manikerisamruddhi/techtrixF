@@ -111,8 +111,9 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
                         </div>
                         <div style="text-align: left; font-size: 10px;  margin-bottom: 5%;">
                             <p><strong>Date:</strong> ${quotation?.QuotationDate || '18/10/2024'}</p>
-                            <p><strong>Date:</strong> ${quotation?.QuotationDate || '18/10/2024'}</p>
-                            <p><strong>Date:</strong> ${quotation?.QuotationDate || '18/10/2024'}</p>
+                            <p><strong>customerID:</strong> 'custid'</p>
+                            <p><strong>Q ID:</strong> 'qid'</p>
+                            <p><strong>validity:</strong> 'validity'</p>
                         </div>
                     </div>
 
@@ -120,9 +121,10 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
 <div  style="font-family: 'Arial', sans-serif; font-size: 10px; ">
                     <div style="     background-color: #8080807d;
     font-weight: bolder;">  <strong>Customer:</strong></br>  </div>
-                             ${quotation?.customer || 'address will Be displayed'} </br>
+                               ${quotation?.customer || 'name will be displayed'}</br>
+                               ${quotation?.customer || 'address will Be displayed'} </br>
                              ${quotation?.customer || 'phone no. displayed'}</br>
-                             ${quotation?.customer || 'name will be displayed'}</br>
+                           
 </div>
                         
                         <h3 style="font-size: 12px; color: #000; margin-bottom: 10px;">products:</h3>
