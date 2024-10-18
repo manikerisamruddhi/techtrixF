@@ -484,22 +484,14 @@
       "zipCode": "413718"
     },
     {
-      "id": "3126",
-      "firstName": "testDB",
-      "lastName": "testDB1",
-      "email": "db1@test.com",
-      "phoneNumber": "90",
-      "address": "ajhjk",
-      "zipCode": "9009"
-    },
-    {
-      "id": "fff8",
+      "id": "4294",
       "firstName": "ASHISH testtttttttttt",
       "lastName": "BHOSALE",
       "email": "bhosaleashish311@gmail.com",
       "phoneNumber": "09075943766",
       "address": "vishrantwadi, pune06.",
-      "zipCode": "413718"
+      "zipCode": "413718",
+      "isPremium": true
     }
   ],
   "quotations": [
@@ -749,6 +741,33 @@
           "description": "jjjjjjjjjjjjjjjjjjj",
           "price": "888",
           "key": 1729074748422
+        }
+      ]
+    },
+    {
+      "id": "df50",
+      "ticketId": "fbf1",
+      "products": [
+        {
+          "description": "jjjjjjjjjjjjjjjjjjj",
+          "price": "888",
+          "key": 1729240711785
+        },
+        {
+          "description": "kjjlkllkjlkjlkjlkjlkjlkj",
+          "price": "888",
+          "key": 1729240732970
+        }
+      ]
+    },
+    {
+      "id": "55a4",
+      "ticketId": "fbf1",
+      "products": [
+        {
+          "description": "kjjlkllkjlkjlkjlkjlkjlkj",
+          "price": "888",
+          "key": 1729246546677
         }
       ]
     }
@@ -1185,30 +1204,33 @@
       "customerID": "3126"
     },
     {
-      "id": "ae00",
-      "brand": "jkjk",
-      "modelNo": "jkj",
-      "description": "dffd",
-      "isSerialNoAllowed": false,
-      "partCode": "jkj",
-      "hsnCode": "jkj",
-      "price": "8",
-      "quantity": "8",
-      "warrantyMonths": "8",
-      "created_date": "2024-10-17T10:15:35.524Z"
+      "id": "209f",
+      "description": "jjjjjjjjjjjjjjjjjjj",
+      "price": "888",
+      "key": 1729240711785,
+      "brand": "Default Brand",
+      "modelNo": "Default Model No"
     },
     {
-      "id": "2994",
+      "id": "e2e2",
       "brand": "jkjk",
       "modelNo": "jkj",
-      "description": "d",
+      "description": "fdafsd",
       "isSerialNoAllowed": true,
       "partCode": "jkj",
       "hsnCode": "jkj",
       "price": "8",
       "quantity": "8",
       "warrantyMonths": "8",
-      "created_date": "2024-10-17T11:55:33.494Z"
+      "created_date": "2024-10-18T10:01:27.446Z"
+    },
+    {
+      "id": "1cdb",
+      "description": "kjjlkllkjlkjlkjlkjlkjlkj",
+      "price": "888",
+      "key": 1729246546677,
+      "brand": "Default Brand",
+      "modelNo": "Default Model No"
     }
   ],
   "invoices": [
@@ -1661,6 +1683,17 @@
       "createdBy": "Admin",
       "CreatedDate": "2024-10-17T09:50:22.335Z",
       "description": "adfdfd"
+    },
+    {
+      "id": "d81f",
+      "title": "jkj",
+      "customerID": "4f90",
+      "ProductID": "7e28",
+      "isChargeable": true,
+      "status": "Open",
+      "createdBy": "Admin",
+      "CreatedDate": "2024-10-18T08:37:07.607Z",
+      "description": "jk"
     }
   ],
   "users": [

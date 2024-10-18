@@ -211,7 +211,7 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
                             >
                                 {customers && customers.length > 0 ? (
                                     customers.map(customer => (
-                                        <Option key={customer.id} value={customer.id} label={`${customer.firstName} ${customer.lastName} ${customer.email}`}>
+                                        <Option key={customer.id} value={customer.id} label={`${customer.firstName} ${customer.lastName} ${customer.email} ${customer.phoneNumber} `}>
                                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                                 <span>{`${customer.firstName} ${customer.lastName}`}</span>
                                                 <span style={{ marginLeft: '10px', color: 'gray' }}>{customer.email}</span>
