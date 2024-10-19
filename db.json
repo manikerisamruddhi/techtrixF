@@ -492,6 +492,17 @@
       "address": "vishrantwadi, pune06.",
       "zipCode": "413718",
       "isPremium": true
+    },
+    {
+      "id": "db1b",
+      "firstName": "aaateset test",
+      "lastName": "aahirewww",
+      "email": "ssskk",
+      "phoneNumber": "ss",
+      "address": "ss",
+      "PinCode": "ss",
+      "isPremium": false,
+      "CreatedDate": "2024-10-18 22:21:08"
     }
   ],
   "quotations": [
@@ -770,6 +781,17 @@
           "key": 1729246546677
         }
       ]
+    },
+    {
+      "id": "52fd",
+      "ProductId": [
+        null
+      ],
+      "FinalAmount": 8,
+      "status": "Pending",
+      "createdBy": "Admin",
+      "CreatedDate": "2024-10-18 22:21:08",
+      "Comments": "jkjk"
     }
   ],
   "products": [
@@ -1231,6 +1253,16 @@
       "key": 1729246546677,
       "brand": "Default Brand",
       "modelNo": "Default Model No"
+    },
+    {
+      "id": "481c",
+      "brand": "bhhbhbhb",
+      "modelNo": "jkjkj",
+      "price": 8,
+      "quantity": 1,
+      "description": "kjkjkjkj",
+      "hasSerialNumber": "no",
+      "warrenty": 8
     }
   ],
   "invoices": [
