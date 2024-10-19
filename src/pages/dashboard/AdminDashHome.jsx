@@ -438,9 +438,9 @@ const Dashboard = () => {
                             <Grid item xs={6} sm={3} md={4}>
                                 <Card
                                     sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2fbe7)' }}
-                                    onClick={() => handleSubCardClick('Closed')}
+                                    onClick={() => handleSubCardClick('closed')}
                                 >
-                                    <Typography variant="h5" sx={{ color: '#333' }}>Closed: {closed}</Typography>
+                                    <Typography variant="h5" sx={{ color: '#333' }}>closed: {closed}</Typography>
                                     <Grid container spacing={2} sx={{ marginTop: '20px' }}>
                                         <Grid item xs={6} sm={6} md={6} marginBottom={1}>
                                             <Typography variant="h6" sx={{ color: '' }}>test:{open}</Typography>

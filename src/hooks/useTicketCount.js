@@ -9,7 +9,7 @@ const useTicketCounts = (tickets) => {
         let inProgress = tickets.filter(ticket => ticket.status === 'in-progress').length;
         let open = tickets.filter(ticket => ticket.status === 'Open').length;
         let resolved = tickets.filter(ticket => ticket.status === 'Resolved').length;
-        let closed = tickets.filter(ticket => ticket.status === 'Closed').length;
+        let closed = tickets.filter(ticket => ticket.status === 'closed').length;
 
         return { total, inProgress, resolved, closed, open };
     }, [tickets]);
