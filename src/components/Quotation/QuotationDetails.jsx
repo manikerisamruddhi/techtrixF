@@ -1,10 +1,19 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Modal, Button, Space } from 'antd';
 import html2pdf from 'html2pdf.js';
+import EditQuotationModal from './EditQuotationModal';
 
 const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
     const modalContentRef = useRef();
     const [pdfContent, setPdfContent] = useState(null); // State for PDF content
+    const [isEditModalVisible, setIsEditModalVisible] = useState(false); // State for Edit modal visibility
+    const [editedQuotation, setEditedQuotation] = useState(quotation); // State to store the edited quotation
+   
+    const handleEditQuotation = (updatedQuotation) => {
+        setEditedQuotation(updatedQuotation);
+    };
+    const [editableProducts, setEditableProducts] = useState(quotation?.products || []); // Editable products
+
 
     const [quotationTerms, setQuotationTerms] = useState({
         billing: 'Customer will be billed after indicating acceptance of this quote.',
@@ -27,7 +36,12 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
     //     const data = await response.json();
     //     setQuotationTerms(data);
     // };
-
+    const handleSaveEdit = (updatedProducts, updatedTerms) => {
+        setEditableProducts(updatedProducts); // Update products
+        setQuotationTerms(updatedTerms); // Update terms
+        setIsEditModalVisible(false); // Close the modal
+    };
+    
     const handlePrintQuotation = () => {
         const pdfElement = createPdfContent(); // Generate content for PDF
 
@@ -190,6 +204,7 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
     };
 
     return (
+        <>
         <Modal
             title="Quotation Details"
             visible={visible}
@@ -198,7 +213,7 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
             width={700}
             footer={[
                 <Space key="actions" style={{ float: 'right' }}>
-                    <Button key="edit" onClick={() => console.log("Edit Quotation")}>
+                    <Button key="edit" onClick={() => setIsEditModalVisible(true)}>
                         Edit Quotation
                     </Button>
                     <Button key="print" onClick={handlePrintQuotation}>
@@ -220,7 +235,19 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
             >
                 <div dangerouslySetInnerHTML={{ __html: createPdfContent().innerHTML }} />
             </div>
+
         </Modal>
+
+        {/* Edit Quotation Modal */}
+        <EditQuotationModal
+                    visible={isEditModalVisible}
+                    products={editableProducts}
+                    terms={quotationTerms}
+                    onSave={handleSaveEdit}
+                    onClose={() => setIsEditModalVisible(false)}
+                />
+
+    </>
     );
 };
 
