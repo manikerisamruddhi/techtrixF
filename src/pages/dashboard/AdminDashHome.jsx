@@ -244,7 +244,7 @@ const Dashboard = () => {
                         <Grid item xs={12} sm={6} md={4}>
                             <Card
                                 sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)', position: 'relative' }}
-                                onClick={() => handleMainCardClick(setShowInvoiceDetails)}
+                                onClick={() =>navigate("/Invoices")}
                             >
                                 <Typography variant="h5" sx={{ color: '#000' }}>All Invoices</Typography>
                                 <Grid container spacing={2} sx={{ marginTop: '20px' }}>
@@ -261,7 +261,7 @@ const Dashboard = () => {
                                     style={{
                                         ...ButtonStyle
                                     }}
-                                    onClick={() => navigate("#")}
+                                    onClick={() => navigate("/Invoices")}
                                 >
                                     Create Invoice
                                 </Button>
@@ -273,7 +273,7 @@ const Dashboard = () => {
  <Grid item xs={12} sm={6} md={4}>
                             <Card
                                 sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)', position: 'relative' }}
-                                onClick={() => handleMainCardClick(setShowProductDetails)}
+                                onClick={() =>navigate("/Products")}
                             >
                                 <Typography variant="h5" sx={{ color: '#000' }}>All Products</Typography>
                                 <Grid container spacing={2} sx={{ marginTop: '20px' }}>
@@ -299,7 +299,7 @@ const Dashboard = () => {
                         <Grid item xs={12} sm={6} md={4}>
                             <Card
                                 sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)', position: 'relative' }}
-                                onClick={() => handleMainCardClick(setShowCustomerDetails)}
+                                onClick={() => navigate("/Customers")}
                             >
                                 <Typography variant="h5" sx={{ color: '#000' }}>All Customers</Typography>
                                 <Grid container spacing={2} sx={{ marginTop: '20px' }}>
@@ -331,7 +331,7 @@ const Dashboard = () => {
                         <Grid item xs={12} sm={6} md={4}>
                             <Card
                                 sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)', position: 'relative' }}
-                                onClick={() => handleMainCardClick(setShowUserDetails)}
+                                onClick={() => navigate("/UserManagement")}
                             >
                                 <Typography variant="h5" sx={{ color: '#000' }}>All Users</Typography>
                                 <Grid container spacing={2} sx={{ marginTop: '20px' }}>
@@ -348,7 +348,7 @@ const Dashboard = () => {
                                     style={{
                                         ...ButtonStyle
                                     }}
-                                    onClick={() => navigate("/create-ticket")}
+                                    onClick={() => navigate("/UserManagement")}
                                 >
                                     Create User
                                 </Button>
@@ -368,6 +368,24 @@ const Dashboard = () => {
                                 <ArrowCircleLeft fontSize="large" />
                             </IconButton>
                             <Typography variant="h4" gutterBottom style={{ marginTop: '12px' }}>Dashboard/Tickets:</Typography>
+                            <Button
+                                    type="primary"
+                                    className='Button'
+                                    style={{
+                                        position: 'absolute',
+                                        right: '2%',
+                                   
+                                        // fontSize: '15px',
+                                        padding: '4px 8px',
+                                    }}
+
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setShowCreateTicketModal(true);
+                                    }}
+                                >
+                                    Create Ticket
+                                </Button>
                         </div>
                         <Grid container spacing={2} style={{ marginLeft: '3px' }}>
                             <Grid item xs={6} sm={3} md={4}>
@@ -444,6 +462,21 @@ const Dashboard = () => {
                                 <ArrowCircleLeft fontSize="large" />
                             </IconButton>
                             <Typography variant="h4" gutterBottom style={{ marginTop: '12px' }}>Dashboard/Quotations:</Typography>
+                            <Button
+                                    type="primary"
+                                    className='Button'
+                                    style={{
+                                        position: 'absolute',
+                                        right: '2%',
+                                        padding: '4px 8px',
+                                    }}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        handleCreateQuotationClick();
+                                    }}
+                                >
+                                    Create Quotation
+                                </Button>
                         </div>
                         <Grid container spacing={2} style={{ marginLeft: '10px' }}>
                             <Grid item xs={6} sm={3} md={4}>
