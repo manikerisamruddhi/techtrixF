@@ -503,6 +503,28 @@
       "PinCode": "ss",
       "isPremium": false,
       "CreatedDate": "2024-10-18 22:21:08"
+    },
+    {
+      "id": "bada",
+      "firstName": "Ashish",
+      "lastName": "Bhosale",
+      "email": "a@gmail.com",
+      "phoneNumber": "9090909090",
+      "address": "test",
+      "PinCode": "99999",
+      "isPremium": false,
+      "CreatedDate": "2024-10-19 11:03:16"
+    },
+    {
+      "id": "d67c",
+      "firstName": "",
+      "lastName": "",
+      "email": "",
+      "phoneNumber": "",
+      "address": "",
+      "PinCode": "",
+      "isPremium": false,
+      "CreatedDate": "2024-10-19 11:07:20"
     }
   ],
   "quotations": [
@@ -792,6 +814,40 @@
       "createdBy": "Admin",
       "CreatedDate": "2024-10-18 22:21:08",
       "Comments": "jkjk"
+    },
+    {
+      "id": "ee58",
+      "ProductId": [
+        null
+      ],
+      "FinalAmount": 9,
+      "status": "Pending",
+      "createdBy": "Admin",
+      "CreatedDate": "2024-10-19 11:03:16",
+      "Comments": "added the quoatation"
+    },
+    {
+      "id": "58f6",
+      "ProductId": [
+        null
+      ],
+      "FinalAmount": 24,
+      "status": "Pending",
+      "createdBy": "Admin",
+      "CreatedDate": "2024-10-19 11:07:20",
+      "Comments": "testing comment for quoatation"
+    },
+    {
+      "id": "1d5c",
+      "customerID": "4f90",
+      "ProductId": [
+        null
+      ],
+      "FinalAmount": 80,
+      "status": "Pending",
+      "createdBy": "Admin",
+      "CreatedDate": "2024-10-19 11:29:00",
+      "Comments": "sfd"
     }
   ],
   "products": [
@@ -1263,6 +1319,36 @@
       "description": "kjkjkjkj",
       "hasSerialNumber": "no",
       "warrenty": 8
+    },
+    {
+      "id": "fed2",
+      "brand": "test brand",
+      "modelNo": "modal test ",
+      "price": 3,
+      "quantity": 3,
+      "description": "testing ",
+      "hasSerialNumber": "no",
+      "warrenty": 4
+    },
+    {
+      "id": "cb34",
+      "brand": "brandTest",
+      "modelNo": "modelTest",
+      "price": 3,
+      "quantity": 8,
+      "description": "testing",
+      "hasSerialNumber": "no",
+      "warrenty": 8
+    },
+    {
+      "id": "870a",
+      "brand": "fdfdsf",
+      "modelNo": "233",
+      "price": 10,
+      "quantity": 8,
+      "description": "kkjkjasd",
+      "hasSerialNumber": "no",
+      "warrenty": 2
     }
   ],
   "invoices": [
@@ -1392,12 +1478,12 @@
       "ProductID": "1ea9",
       "Priority": "Medium",
       "isChargeable": true,
-      "status": "in-progress",
+      "status": "closed",
       "createdBy": "admin",
       "CreatedDate": "2024-10-09T09:30:46.707Z",
       "description": "test",
-      "assignedTo": "3c4d5e",
-      "assignedDate": "2024-10-15T11:55:54.138Z"
+      "assignedTo": "2b3c4d",
+      "assignedDate": "2024-10-19T05:03:44.897Z"
     },
     {
       "id": "a7d0",
@@ -1406,12 +1492,12 @@
       "ProductID": "1c95",
       "Priority": "High",
       "isChargeable": false,
-      "status": "in-progress",
+      "status": "closed",
       "createdBy": "admin",
       "CreatedDate": "2024-10-09T09:31:42.377Z",
       "description": "high",
       "assignedTo": "1a2b3c",
-      "assignedDate": "2024-10-15T05:27:08.758Z"
+      "assignedDate": "2024-10-19T05:04:21.403Z"
     },
     {
       "id": "5fe0",
@@ -1420,7 +1506,7 @@
       "ProductID": "1c95",
       "Priority": "High",
       "isChargeable": true,
-      "status": "in-progress",
+      "status": "closed",
       "createdBy": "admin",
       "CreatedDate": "2024-10-09T10:48:26.583Z",
       "description": "adfkk",
@@ -1434,10 +1520,11 @@
       "ProductID": "1c95",
       "Priority": "Medium",
       "isChargeable": false,
-      "status": "Open",
-      "createdBy": "Admin",
+      "status": "in-progress",
+      "createdBy": "admin",
       "CreatedDate": "2024-10-09T11:11:53.776Z",
-      "description": "test"
+      "description": "test",
+      "assignedTo": "2b3c4d"
     },
     {
       "id": "69cf",
@@ -1445,10 +1532,11 @@
       "customerID": "e608",
       "ProductID": "1ea9",
       "isChargeable": true,
-      "status": "Open",
-      "createdBy": "Admin",
+      "status": "closed",
+      "createdBy": "admin",
       "CreatedDate": "2024-10-10T11:50:26.937Z",
-      "description": "asdf"
+      "description": "asdf",
+      "assignedTo": "1a2b3c"
     },
     {
       "id": "da1c",
@@ -1456,10 +1544,11 @@
       "customerID": "4f90",
       "ProductID": "1c95",
       "isChargeable": true,
-      "status": "Open",
-      "createdBy": "Admin",
+      "status": "in-progress",
+      "createdBy": "admin",
       "CreatedDate": "2024-10-10T11:51:01.546Z",
-      "description": "fd"
+      "description": "fd",
+      "assignedTo": "2b3c4d"
     },
     {
       "id": "6e7e",
@@ -1467,10 +1556,11 @@
       "customerID": "4f90",
       "ProductID": "1c95",
       "isChargeable": true,
-      "status": "Open",
-      "createdBy": "Admin",
+      "status": "in-progress",
+      "createdBy": "admin",
       "CreatedDate": "2024-10-10T12:10:35.492Z",
-      "description": "asdf"
+      "description": "asdf",
+      "assignedTo": "2b3c4d"
     },
     {
       "id": "c4a0",

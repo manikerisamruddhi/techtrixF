@@ -64,18 +64,19 @@ const TicketDetailsModal = ({ visible, ticket, onClose, onCreateQuotation, onUpd
                             <Descriptions.Item label="Is Chargeable" span={1}>{ticket.isChargeable ? 'Yes' : 'No'}</Descriptions.Item>
                             <Descriptions.Item label="Assigned To" span={1}>{ticket.assignedTo ? ticket.assignedTo : 'Not Assigned'}</Descriptions.Item>
                         </Descriptions>
+                        {ticket.status !== 'closed' && (
                         <div style={{ marginTop: '20px', textAlign: 'right' }}>
                             {/* Update Ticket Button */}
-                            <Button 
-                                type="primary" 
-                                onClick={handleUpdateTicketClick} // Open the Update Ticket modal
-                                style={{ marginRight: '10px' }}
-                                icon={<ReloadOutlined />}
-                            >
-                                Update Ticket
-                            </Button>
-
-                            {/* Render the Create Quotation button if isChargeable is true */}
+                          
+                                <Button 
+                                    type="primary" 
+                                    onClick={handleUpdateTicketClick} 
+                                    style={{ marginRight: '10px' }}
+                                    icon={<ReloadOutlined />}
+                                >
+                                    Update Ticket
+                                </Button>
+                                 {/* Render the Create Quotation button if isChargeable is true */}
                             {ticket.isChargeable && (
                                 <Button 
                                     type="primary" 
@@ -86,6 +87,11 @@ const TicketDetailsModal = ({ visible, ticket, onClose, onCreateQuotation, onUpd
                                 </Button>
                             )}
                         </div>
+
+
+                            )}
+
+                           
                     </>
                 ) : (
                     <p>No ticket details available</p>

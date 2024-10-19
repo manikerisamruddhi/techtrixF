@@ -41,7 +41,7 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
         setQuotationTerms(updatedTerms); // Update terms
         setIsEditModalVisible(false); // Close the modal
     };
-    
+
     const handlePrintQuotation = () => {
         const pdfElement = createPdfContent(); // Generate content for PDF
 
@@ -102,8 +102,10 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
         pdfContent.innerHTML = `
             <body style="font-family: 'Arial', sans-serif; background-color: #fff; margin: 0; padding: 0.5in; color: #333;">
                 <div style="max-width: 100%; margin: auto; background-color: #fff; padding: 20px; border: 1px solid #000;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                        <img src="logo.png" alt="Company Logo" style="max-width: 120px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; ">
+                        <img src="logo.png" alt="Company Logo" style="    max-width: 24%;">
+                        <h2 style="margin-right: 42%; margin-top: -2%;
+    color: #585757;">Quotaion</h2>
                     </div>
 
                     <div style="margin-bottom: 15px; font-size: 10px; display: flex;
@@ -210,13 +212,21 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
             visible={visible}
             onCancel={onClose}
             centered
-            width={700}
+            width={800}
+            style={{
+              
+                padding: '5px',
+                // Add additional styles here
+                border: '1px solid #ccc', // Example of adding a border
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // Example of adding shadow
+            }}
+             
             footer={[
                 <Space key="actions" style={{ float: 'right' }}>
-                    <Button key="edit" onClick={() => setIsEditModalVisible(true)}>
+                    <Button key="edit" onClick={() => setIsEditModalVisible(true)} style={{ float: 'right' , border: "solid lightblue", borderRadius: '9px' }}>
                         Edit Quotation
                     </Button>
-                    <Button key="print" onClick={handlePrintQuotation}>
+                    <Button key="print" onClick={handlePrintQuotation} style={{ float: 'right' , border: "solid lightblue", borderRadius: '9px' }}>
                         Download Quotation
                     </Button>
                     <Button key="proceed" type="primary" onClick={() => console.log('Proceed with Quotation')}>

@@ -27,7 +27,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
     const [showNewProductForm, setShowNewProductForm] = useState(false);
     const [addedProducts, setAddedProducts] = useState([]);
     const [editIndex, setEditIndex] = useState(null); // To track which product is being edited
-    const [customerType, setCustomerType] = useState('new'); // Track customer type
+    const [customerType, setCustomerType] = useState('existing'); // Track customer type
     const [existingCustomer, setExistingCustomer] = useState(undefined); // Track selected existing customer
     const [newCustomer, setNewCustomer] = useState({
         firstName: '',
@@ -156,12 +156,14 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
 
             //console.log('Adding new quotation:', quotationData);
             const quotationResponse = await dispatch(addQuotation(quotationData));
-            //console.log('Quotation added:', quotationResponse);
+            console.log('Quotation added:', quotationResponse,
+                'sent this data:', quotationData
+            );
 
             notification.success({ message: 'Quotation added successfully!' });
             form.resetFields();
             setAddedProducts([]);
-            setCustomerType('new'); // Reset customer type
+            setCustomerType('existing'); // Reset customer type
             setNewCustomer({ firstName: '', lastName: '', email: '', phoneNumber: '', address: '', pinCode: '', isPremium: false }); // Reset new customer data
             setFinalAmount(0); // Reset final amount
             setComment(''); // Reset comment
@@ -213,7 +215,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
                         >
                             {customers && customers.length > 0 ? (
                                 customers.map(customer => (
-                                    <Option key={customer.id} value={customer.id} label={`${customer.firstName} ${customer.lastName} ${customer.email}`}>
+                                    <Option key={customer.id} value={customer.id} label={`${customer.firstName} ${customer.lastName} ${customer.email} ${customer.phoneNumber}`}>
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                             <span>{`${customer.firstName} ${customer.lastName}`}</span>
                                             <span style={{ marginLeft: '10px', color: 'gray' }}>{customer.email}</span>
@@ -273,11 +275,14 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
                         <p>No products added yet. Please add a product to continue.</p>
                     </div>
                 )}
+<div  style={{display:'flex',justifyContent:'right'}}>
 
-                {/* Add New Product Button */}
-                <Button type="dashed" block style={{ marginBottom: '20px' }} onClick={() => setShowNewProductForm(true)}>
+    {/* Add New Product Button */}
+                <Button type=""  style={{ marginBottom: '20px' }} onClick={() => setShowNewProductForm(true)}>
                     Add New Product
                 </Button>
+</div>
+                
 
                 {showNewProductForm && (
                     <div

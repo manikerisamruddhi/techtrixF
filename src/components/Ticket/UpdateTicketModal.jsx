@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Modal, Form, Input, Select, Row, Col, Switch, message } from "antd";
+import { Modal, Form, Input, Select, Row, Col, Switch, message, Button } from "antd";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUsersByDepartment } from "../../redux/slices/userSlice"; // Adjust the path to your slice
@@ -40,8 +40,9 @@ const UpdateTicketModal = ({ ticketData, isVisible, onCancel, onClose  }) => {
   const serviceTechnicians = useSelector((state) => state.users.users); // Adjust according to your state shape
   const loading = useSelector((state) => state.users.loading);
 
-  const handleUpdate = () => {
+  const handleUpdate = (close = false) => {
     form
+    
       .validateFields()
       .then((values) => {
         // Prepare updated ticket data by merging with existing ticket data
@@ -49,9 +50,13 @@ const UpdateTicketModal = ({ ticketData, isVisible, onCancel, onClose  }) => {
           ...ticketData, // Spread the existing ticket data
           ...values, // Then spread the new values from the form
           createdBy: "admin", // Ensure createdBy is set correctly
-          status: "in-progress", // Set status to "in-progress"
-          assignedDate: moment().toISOString(), // Get the current date for assignedDate when updating
-        };
+          status: close ? "in-progress" : "closed",
+           };
+
+           if (!close) {
+            console.log("clicked close");
+            updatedTicketData.assignedDate = moment().toISOString(); // Set new assignedDate for updates
+          }
 
         // Dispatch the update action with the updated data
         dispatch(updateTicket({ id: ticketData.id, data: updatedTicketData })); // Assuming ticketData has an id field
@@ -89,6 +94,17 @@ const UpdateTicketModal = ({ ticketData, isVisible, onCancel, onClose  }) => {
       okText="Update"
       width={900}
       centered
+      footer={[
+        <Button key="close" type="primary" style={{ backgroundColor: "green", borderColor: "green" }} onClick={(e) => { e.preventDefault(); handleUpdate(); }}>
+          Close Ticket
+        </Button>,
+        <Button key="cancel" onClick={(e) => { e.preventDefault(); onCancel(); }}>
+          Cancel
+        </Button>,
+        <Button key="update" type="primary" onClick={(e) => { e.preventDefault(); handleUpdate(true); }}>
+          Update
+        </Button>
+      ]}
     >
       <Form
         form={form}
