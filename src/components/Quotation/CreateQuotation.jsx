@@ -4,16 +4,28 @@ import { CloseCircleOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchQuotations, addQuotation, resetError } from '../../redux/slices/quotationSlice';
 import { fetchCustomers, addCustomer } from '../../redux/slices/customerSlice'; // Assuming a customer slice exists to fetch customers
-import { addProduct } from '../../redux/slices/productSlice';
+import { addProduct, fetchProducts } from '../../redux/slices/productSlice';
 import moment from 'moment';
 import CreateCustomerForm from '../Customer/CreateCustomerForm';
 
 const currentDate = moment();
 
-const QuotationFormModal = ({ visible, onClose, ticketId }) => {
+const QuotationFormModal = ({ visible, onClose, ticketId, defaultCustomer }) => {
     const dispatch = useDispatch();
     const { quotations, loading, error } = useSelector(state => state.quotations);
     const { customers } = useSelector(state => state.customers); // Assuming customer data is fetched through Redux
+    const [customer, setCustomer] = useState(null);
+    const { items: products } = useSelector(state => state.products); // Assuming you have products in your Redux store
+    console.log('Fetched Products:', products);
+
+    useEffect(() => {
+        if (defaultCustomer) {
+            setCustomer(defaultCustomer);
+        }
+    }, [defaultCustomer]);
+
+    // console.log(customer);
+
 
     const [form] = Form.useForm();
     const [newProduct, setNewProduct] = useState({
@@ -45,6 +57,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
         if (visible) {
             dispatch(fetchQuotations());
             dispatch(fetchCustomers()); // Fetch customers when the modal is visible
+            dispatch(fetchProducts()); // Fetch products when the modal is visible
         }
     }, [dispatch, visible]);
 
@@ -58,6 +71,15 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
     const handleCustomerChange = (value) => {
         const selectedCust = customers.find(customer => customer.id === value);
         setExistingCustomer(selectedCust);
+    };
+
+    const handleProductSelect = (value) => {
+        const selectedProduct = products.find(product => product.id === value);
+        if (selectedProduct) {
+            const productWithKey = { ...selectedProduct, key: Date.now() }; // Add a unique key for rendering
+            setAddedProducts(prev => [...prev, productWithKey]); // Add the selected product to addedProducts
+            notification.success({ message: 'Product added successfully!' });
+        }
     };
 
     const handleAddOrEditProduct = () => {
@@ -179,7 +201,18 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
     };
 
     const calculateTotalAmount = () => {
-        return addedProducts.reduce((total, prod) => total + prod.price * prod.quantity, 0);
+        // Check if any product has a null, undefined, or invalid quantity
+        const hasInvalidQuantity = addedProducts.some(prod => prod.quantity == null || prod.quantity <= 0);
+        
+        if (hasInvalidQuantity) {
+            const Quant = <span style={{color:'lightred'}}>
+            Please update quantity
+            </span>
+            return Quant; // Return the message if any quantity is invalid
+        }
+        
+        // Calculate total amount if all quantities are valid
+        return addedProducts.reduce((total, prod) => total + (prod.price * prod.quantity), 0);
     };
 
     return (
@@ -196,7 +229,9 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
                 {/* Customer Selection */}
                 <div style={{ marginBottom: '20px' }}>
                     <h3>Select Customer</h3>
-                    <Radio.Group value={customerType} onChange={e => setCustomerType(e.target.value)}>
+                    <Radio.Group value={customerType} 
+                    disabled={!!defaultCustomer} 
+                    onChange={e => setCustomerType(e.target.value)}>
                         <Radio value="new">New Customer</Radio>
                         <Radio value="existing">Existing Customer</Radio>
                     </Radio.Group>
@@ -208,10 +243,13 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
                         rules={[{ required: true, message: 'Please select an existing customer' }]}
                     >
                         <Select
+                           value={defaultCustomer ? customer : undefined}
                             showSearch
                             placeholder="Select a customer"
                             optionFilterProp="label"
                             onChange={handleExistingCustomerChange}
+                            disabled={!!defaultCustomer} 
+                            
                         >
                             {customers && customers.length > 0 ? (
                                 customers.map(customer => (
@@ -275,10 +313,38 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
                         <p>No products added yet. Please add a product to continue.</p>
                     </div>
                 )}
+                
+                <Form.Item label="Select Existing Product">
+    <Select
+        showSearch
+         optionFilterProp="label"
+        placeholder="Select a product"
+        onChange={handleProductSelect}
+        style={{ width: '100%' }}
+        dropdownStyle={{ maxHeight: 500, overflowY: 'auto' }} // Control dropdown height
+      
+    >
+        {products && products.length > 0 ? (
+            products.map(product => (
+                <Select.Option 
+                style={{ width: '100%', color: 'black', border: '1px', padding:'10px', }}
+                key={product.id} value={product.id} label={`${product.brand} || ${product.modelNo} || ₹${product.description}`}>
+                    {product.brand} || {product.modelNo} || ₹{product.description}
+                </Select.Option>
+            ))
+        ) : (
+            <Select.Option value="">No products found</Select.Option>
+        )}
+    </Select>
+</Form.Item>
 <div  style={{display:'flex',justifyContent:'right'}}>
 
+
+
     {/* Add New Product Button */}
-                <Button type=""  style={{ marginBottom: '20px' }} onClick={() => setShowNewProductForm(true)}>
+                <Button type=""  style={{ marginBottom: '20px', color:'green' }} onClick={() => setShowNewProductForm(true)
+                    
+                }>
                     Add New Product
                 </Button>
 </div>
@@ -286,12 +352,13 @@ const QuotationFormModal = ({ visible, onClose, ticketId }) => {
 
                 {showNewProductForm && (
                     <div
+                      ref={addProductFormRef}
                         style={{
-                            border: '1px solid #d9d9d9',
+                            border: '2px solid #d9d9d9',
                             padding: '20px',
                             borderRadius: '8px',
                             backgroundColor: '#f9f9f9',
-                            marginBottom: '20px',
+                            marginBottom: '10px',
                         }}
                     >
                         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '10px ' }}>
