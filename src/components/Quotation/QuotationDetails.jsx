@@ -1,9 +1,12 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Modal, Button, Space } from 'antd';
+import { Modal, Button, Space ,message} from 'antd';
 import html2pdf from 'html2pdf.js';
 import EditQuotationModal from './EditQuotationModal';
+import { updateQuotation } from "../../redux/slices/quotationSlice"; 
+import { useDispatch } from "react-redux";
 
 const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
+    const dispatch = useDispatch();
     const modalContentRef = useRef();
     const [pdfContent, setPdfContent] = useState(null); // State for PDF content
     const [isEditModalVisible, setIsEditModalVisible] = useState(false); // State for Edit modal visibility
@@ -58,6 +61,52 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
         html2pdf().from(pdfElement).set(options).save();
     };
 
+
+   
+
+// ...
+
+const handleProceed = () => {
+    if (!quotation || !quotation.id) {
+        console.error("Quotation ID is missing.");
+        return;
+    }
+
+    // Show confirmation modal
+    Modal.confirm({
+        title: 'Are you sure you want to proceed?',
+        content: 'This will approve the quotation and update its status.',
+        okText: 'Yes',
+        cancelText: 'No',
+        onOk: () => {
+            // If the user confirms, proceed with updating the quotation
+            const updatedQuotationData = {
+                status: "Approved", // Assuming you want to update the status
+                // You can add other fields here if needed
+            };
+
+            // Dispatch the action to update the quotation
+            dispatch(updateQuotation({ id: quotation.id, data: updatedQuotationData }))
+                .then(() => {
+                    // Handle success
+                    console.log(`Quotation ID ${quotation.id} has been approved.`);
+                    message.success("Quotation approved successfully!");
+
+                    // Optional: Perform additional actions, like redirecting
+                })
+                .catch((error) => {
+                    // Handle error
+                    console.error("Failed to approve the quotation:", error);
+                    message.error("Failed to approve the quotation.");
+                });
+        },
+        onCancel() {
+            console.log('User canceled proceeding with the quotation.');
+        }
+    });
+};
+
+    
     const createPdfContent = () => {
         const pdfContent = document.createElement('div');
         let products = quotation?.products || []; // Assuming quotation has a products array
@@ -73,7 +122,7 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
                     TotalAmount: 1180, // Amount + GST
                 },
                 {
-                    description: 'Sample Product 2',
+                    description: 'Sample Product klklklklklklklklklklklkl klk klkl klk klkl kl klkl klkl lk  Sample Product klklklklklklklklklklklkl klk klkl klk klkl kl klkl klkl lk Sample Product klklklklklklklklklklklkl klk klkl klk klkl kl klkl klkl lk Sample Product klklklklklklklklklklklkl klk klkl klk klkl kl klkl klkl lk 2',
                     quantity: 1,
                     unitPrice: 800,
                     amount: 800, gstAmount: 144, // Example GST
@@ -223,15 +272,22 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
              
             footer={[
                 <Space key="actions" style={{ float: 'right' }}>
-                    <Button key="edit" onClick={() => setIsEditModalVisible(true)} style={{ float: 'right' , border: "solid lightblue", borderRadius: '9px' }}>
-                        Edit Quotation
-                    </Button>
+
+{quotation?.status !== 'Approved' && (
+                <Button key="edit" onClick={() => setIsEditModalVisible(true)} style={{ float: 'right' , border: "solid lightblue", borderRadius: '9px' }}>
+                Edit Quotation
+            </Button>
+            )}
+                    
                     <Button key="print" onClick={handlePrintQuotation} style={{ float: 'right' , border: "solid lightblue", borderRadius: '9px' }}>
                         Download Quotation
                     </Button>
-                    <Button key="proceed" type="primary" onClick={() => console.log('Proceed with Quotation')}>
-                        Proceed
-                    </Button>
+                     {/* Conditionally render Proceed button only if status is not 'Approved' */}
+            {quotation?.status !== 'Approved' && (
+                <Button key="proceed" type="primary" onClick={handleProceed}>
+                    Proceed
+                </Button>
+            )}
                 </Space>,
             ]}
         >
