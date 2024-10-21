@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState , useRef} from 'react';
 import { Modal, Form, Row, Col, Input, Button, Table, notification, Radio, Select, Switch } from 'antd';
 import { CloseCircleOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,6 +17,8 @@ const QuotationFormModal = ({ visible, onClose, ticketId, defaultCustomer }) => 
     const [customer, setCustomer] = useState(null);
     const { items: products } = useSelector(state => state.products); // Assuming you have products in your Redux store
     console.log('Fetched Products:', products);
+
+    const addProductFormRef = useRef(null);
 
     useEffect(() => {
         if (defaultCustomer) {
@@ -215,6 +217,21 @@ const QuotationFormModal = ({ visible, onClose, ticketId, defaultCustomer }) => 
         return addedProducts.reduce((total, prod) => total + (prod.price * prod.quantity), 0);
     };
 
+    useEffect(() => {
+        // Scroll to the Add Product form when showNewProductForm changes to true
+        if (showNewProductForm && addProductFormRef.current) {
+            addProductFormRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [showNewProductForm]); 
+
+    const handleAddProductClick = () => {
+        setShowNewProductForm(true);
+        // Scroll to the Add Product form
+        if (addProductFormRef.current) {
+            addProductFormRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
+
     return (
         <Modal
             title="Create Quotation"
@@ -342,9 +359,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId, defaultCustomer }) => 
 
 
     {/* Add New Product Button */}
-                <Button type=""  style={{ marginBottom: '20px', color:'green' }} onClick={() => setShowNewProductForm(true)
-                    
-                }>
+                <Button type=""  style={{ marginBottom: '20px', color:'green' }} onClick={handleAddProductClick  }>
                     Add New Product
                 </Button>
 </div>
@@ -352,7 +367,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId, defaultCustomer }) => 
 
                 {showNewProductForm && (
                     <div
-                      ref={addProductFormRef}
+                    ref={addProductFormRef} 
                         style={{
                             border: '2px solid #d9d9d9',
                             padding: '20px',
