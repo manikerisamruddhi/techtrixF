@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { Modal, Descriptions, Badge, Button } from 'antd';
 import { DollarOutlined, ReloadOutlined } from '@ant-design/icons';
-import CreateQuotationModal from './CreateQuotationByTicket'; // Importing the modal component
 import UpdateTicketModal from './UpdateTicketModal'; // Importing the update ticket modal
+import QuotationFormModal from '../Quotation/CreateQuotation';
 
 const TicketDetailsModal = ({ visible, ticket, onClose, onCreateQuotation, onUpdateTicket }) => {
     const [isQuotationModalVisible, setQuotationModalVisible] = useState(false); // State to manage quotation modal visibility
     const [isUpdateModalVisible, setUpdateModalVisible] = useState(false); // State to manage update ticket modal visibility
+    
+    const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
+    
 
     // Function to open the create quotation modal
     const handleCreateQuotationClick = () => {
@@ -27,6 +30,16 @@ const TicketDetailsModal = ({ visible, ticket, onClose, onCreateQuotation, onUpd
     const handleUpdateModalClose = () => {
         setUpdateModalVisible(false); // Close the update ticket modal
     };
+
+    const handleCreateQuotation = (quotationData) => {
+        message.success('Quotation created successfully!');
+        setIsCreateModalVisible(false); // Close the modal after creation
+    };
+
+    const handleCreateModalClose = () => {
+        setIsCreateModalVisible(false);
+    };
+
 
     return (
         <>
@@ -80,7 +93,7 @@ const TicketDetailsModal = ({ visible, ticket, onClose, onCreateQuotation, onUpd
                             {ticket.isChargeable && (
                                 <Button 
                                     type="primary" 
-                                    onClick={handleCreateQuotationClick}  // Open the Create Quotation modal
+                                    onClick={() => setIsCreateModalVisible(true)}  // Open the Create Quotation modal
                                     icon={<DollarOutlined />}
                                 >
                                     Create Quotation
@@ -99,11 +112,13 @@ const TicketDetailsModal = ({ visible, ticket, onClose, onCreateQuotation, onUpd
             </Modal>
 
             {/* Create Quotation Modal */}
-            <CreateQuotationModal 
+            <QuotationFormModal 
                 ticketId={ticket && ticket.id} 
+                defaultCustomer={ticket && ticket.customerID} 
                 title="Create Quotation"
-                visible={isQuotationModalVisible} // This controls the visibility of the quotation modal
-                onCancel={handleQuotationModalClose} // Pass handleQuotationModalClose here
+                visible={isCreateModalVisible}
+                onCreate={handleCreateQuotation}
+                onClose={handleCreateModalClose} 
                 footer={null}
                 centered
             />
