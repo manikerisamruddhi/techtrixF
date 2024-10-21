@@ -525,6 +525,15 @@
       "PinCode": "",
       "isPremium": false,
       "CreatedDate": "2024-10-19 11:07:20"
+    },
+    {
+      "id": "4e35",
+      "firstName": "Subhash",
+      "lastName": "K",
+      "email": "k@g.com",
+      "phoneNumber": "9090909090",
+      "address": "pune",
+      "zipCode": "788998"
     }
   ],
   "quotations": [
@@ -536,7 +545,7 @@
       "TotalAmount": 4653.96,
       "Discount": 385.33,
       "FinalAmount": 2337.48,
-      "status": "Rejected",
+      "status": "Approved",
       "Comments": "Sample comment 1",
       "CreatedDate": "2024-09-27 10:15:10",
       "id": "82e3"
@@ -588,7 +597,7 @@
       "TotalAmount": 2860.2,
       "Discount": 285.54,
       "FinalAmount": 2075.63,
-      "status": "Pending",
+      "status": "Approved",
       "Comments": "Sample comment 5",
       "CreatedDate": "2024-09-27 10:15:10",
       "id": "da71"
@@ -848,6 +857,17 @@
       "createdBy": "Admin",
       "CreatedDate": "2024-10-19 11:29:00",
       "Comments": "sfd"
+    },
+    {
+      "id": "2134",
+      "ticketId": "da1c",
+      "products": [
+        {
+          "description": "hkhjkjh",
+          "price": "9999999",
+          "key": 1729331265882
+        }
+      ]
     }
   ],
   "products": [
@@ -1349,6 +1369,115 @@
       "description": "kkjkjasd",
       "hasSerialNumber": "no",
       "warrenty": 2
+    },
+    {
+      "id": "4b6b",
+      "brand": "brand test",
+      "modelNo": "test ",
+      "description": "test",
+      "isSerialNoAllowed": false,
+      "partCode": "sfd",
+      "hsnCode": "sdf",
+      "price": "8",
+      "quantity": "8",
+      "warrantyMonths": "9",
+      "created_date": "2024-10-19T09:37:48.660Z",
+      "customerID": "4e35"
+    },
+    {
+      "id": "5f07",
+      "description": "hkhjkjh",
+      "price": "9999999",
+      "key": 1729331265882,
+      "brand": "Default Brand",
+      "modelNo": "Default Model No"
+    },
+    {
+      "id": "88b3",
+      "brand": "qygy",
+      "modelNo": "yyg",
+      "price": 800,
+      "quantity": 2,
+      "description": "y7y",
+      "hasSerialNumber": "no",
+      "warrenty": 7
+    },
+    {
+      "id": "28f9",
+      "brand": "Dell",
+      "modelNo": "XPS9370-9823SLV",
+      "price": 12.39,
+      "quantity": 98,
+      "description": "Dell XPS 13 Laptop - 13.3-inch Full HD Display, Intel Core i7 8th Gen Processor, 16GB RAM, 512GB SSD, Windows 11 Home. Ultra-thin, lightweight, and designed for performance, ideal for professionals and creatives on the go."
+    },
+    {
+      "id": "6af3",
+      "brand": "Service-",
+      "modelNo": "Service-",
+      "price": "88009",
+      "quantity": null,
+      "description": "ajkjdfk"
+    },
+    {
+      "id": "a27e",
+      "brand": "sony y",
+      "modelNo": "sony m201",
+      "price": 12,
+      "quantity": 12,
+      "description": "laptaop ram rom ",
+      "hasSerialNumber": "no"
+    },
+    {
+      "id": "2898",
+      "brand": "qygy",
+      "modelNo": "yyg",
+      "price": 800,
+      "quantity": 2,
+      "description": "y7y",
+      "hasSerialNumber": "no",
+      "warrenty": 7
+    },
+    {
+      "id": "4c3c",
+      "brand": "afd",
+      "modelNo": "asf",
+      "price": 233,
+      "quantity": 10,
+      "description": "sadf",
+      "hasSerialNumber": "no"
+    },
+    {
+      "id": "5ddb",
+      "brand": "Service-",
+      "modelNo": "Service-",
+      "price": "88009",
+      "description": "ajkjdfk"
+    },
+    {
+      "id": "891d",
+      "brand": "qygy",
+      "modelNo": "yyg",
+      "price": 800,
+      "quantity": 2,
+      "description": "y7y",
+      "hasSerialNumber": "no",
+      "warrenty": 7
+    },
+    {
+      "id": "2849",
+      "brand": "afd",
+      "modelNo": "asf",
+      "price": 233,
+      "quantity": 10,
+      "description": "sadf",
+      "hasSerialNumber": "no"
+    },
+    {
+      "id": "679f",
+      "brand": "Service-",
+      "modelNo": "Service-",
+      "price": "88009",
+      "description": "ajkjdfk"
     }
   ],
   "invoices": [
@@ -1523,7 +1652,7 @@
       "status": "in-progress",
       "createdBy": "admin",
       "CreatedDate": "2024-10-09T11:11:53.776Z",
-      "description": "test",
+      "description": "testggggg",
       "assignedTo": "2b3c4d"
     },
     {
@@ -1544,11 +1673,12 @@
       "customerID": "4f90",
       "ProductID": "1c95",
       "isChargeable": true,
-      "status": "in-progress",
+      "status": "closed",
       "createdBy": "admin",
       "CreatedDate": "2024-10-10T11:51:01.546Z",
-      "description": "fd",
-      "assignedTo": "2b3c4d"
+      "description": "updated problem solved",
+      "assignedTo": "2b3c4d",
+      "assignedDate": "2024-10-19T09:51:36.848Z"
     },
     {
       "id": "6e7e",
@@ -1816,6 +1946,28 @@
       "createdBy": "Admin",
       "CreatedDate": "2024-10-18T08:37:07.607Z",
       "description": "jk"
+    },
+    {
+      "id": "a5ea",
+      "title": "test",
+      "customerID": "4e35",
+      "isChargeable": false,
+      "status": "in-progress",
+      "createdBy": "admin",
+      "CreatedDate": "2024-10-19T09:38:08.736Z",
+      "description": "2line",
+      "assignedTo": "1a2b3c"
+    },
+    {
+      "id": "8abc",
+      "title": "testing",
+      "customerID": "4e35",
+      "ProductID": "4b6b",
+      "isChargeable": true,
+      "status": "Open",
+      "createdBy": "Admin",
+      "CreatedDate": "2024-10-21T04:20:10.661Z",
+      "description": "this is the test"
     }
   ],
   "users": [
