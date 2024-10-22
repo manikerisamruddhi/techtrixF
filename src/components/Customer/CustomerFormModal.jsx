@@ -64,7 +64,22 @@ const CustomerFormModal = ({ visible, onCancel, initialValues, mode, customerID,
                 >
                     <Row gutter={24}> {/* Set gutter for spacing between columns */}
                         <Col span={12}> {/* First column */}
+                            <Form.Item label="Company name" name="company_name" rules={[{ required: true }]}>
+                                <Input />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item label="Address" name="address">
+                                <Input />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}> {/* First column */}
                             <Form.Item label="First Name" name="firstName" rules={[{ required: true }]}>
+                                <Input />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item label="Zip Code" name="zipCode">
                                 <Input />
                             </Form.Item>
                         </Col>
@@ -83,16 +98,7 @@ const CustomerFormModal = ({ visible, onCancel, initialValues, mode, customerID,
                                 <Input />
                             </Form.Item>
                         </Col>
-                        <Col span={12}>
-                            <Form.Item label="Address" name="address">
-                                <Input />
-                            </Form.Item>
-                        </Col>
-                        <Col span={12}>
-                            <Form.Item label="Zip Code" name="zipCode">
-                                <Input />
-                            </Form.Item>
-                        </Col>
+                       
                         <Col span={12}>
                             <Form.Item label="Premium Customer" name="isPremium" valuePropName="checked">
                                 <Switch />

@@ -7,7 +7,9 @@ import { toast } from 'react-toastify';
 export const fetchProducts = createAsyncThunk('products/fetchProducts', async (_, { rejectWithValue }) => {
   try {
     const response = await axios.get('http://localhost:4000/products');
+    // console.log(response);
     return response.data;
+    
   } catch (error) {
     return rejectWithValue(error.response.data);
   }
