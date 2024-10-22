@@ -1375,8 +1375,8 @@
       "createdBy": "admin",
       "assignedTo": "2b3c4d",
       "description": "ahjhj",
-      "status": "in-progress",
-      "assignedDate": "2024-10-14T07:52:28.972Z",
+      "status": "closed",
+      "assignedDate": "2024-10-22T04:18:27.968Z",
       "id": "0a67"
     },
     {
@@ -1385,8 +1385,8 @@
       "createdBy": "admin",
       "assignedTo": "4d5e6f",
       "description": "Payment not going through for the order.",
-      "status": "in-progress",
-      "assignedDate": "2024-10-14T09:04:13.220Z",
+      "status": "closed",
+      "assignedDate": "2024-10-22T04:18:36.244Z",
       "id": "e734"
     },
     {
