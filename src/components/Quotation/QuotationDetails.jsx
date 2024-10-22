@@ -4,6 +4,7 @@ import html2pdf from 'html2pdf.js';
 import EditQuotationModal from './EditQuotationModal';
 import { updateQuotation } from "../../redux/slices/quotationSlice"; 
 import { useDispatch } from "react-redux";
+import moment from 'moment/moment';
 
 const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
     const dispatch = useDispatch();
@@ -61,6 +62,7 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
         html2pdf().from(pdfElement).set(options).save();
     };
 
+    const formattedDate = moment(quotation?.QuotationDate || '2024-10-18').format('YYYY-MM-DD');
 
    
 
@@ -122,7 +124,7 @@ const handleProceed = () => {
                     TotalAmount: 1180, // Amount + GST
                 },
                 {
-                    description: 'Sample Product klklklklklklklklklklklkl klk klkl klk klkl kl klkl klkl lk  Sample Product klklklklklklklklklklklkl klk klkl klk klkl kl klkl klkl lk Sample Product klklklklklklklklklklklkl klk klkl klk klkl kl klkl klkl lk Sample Product klklklklklklklklklklklkl klk klkl klk klkl kl klkl klkl lk 2',
+                    description: 'Sample Product 2Sample Product 2Sample Product 2Sample Product 2Sample Product 2Sample Product 2',
                     quantity: 1,
                     unitPrice: 800,
                     amount: 800, gstAmount: 144, // Example GST
@@ -133,13 +135,13 @@ const handleProceed = () => {
 
         const productsRows = products.map((product, index) => `
             <tr>
-                <td style="border: 1px solid #000; padding: 8px; font-size: 10px;">${index + 1}</td>
-                <td style="border: 1px solid #000; padding: 8px; font-size: 10px;">${product.description}</td>
-                <td style="border: 1px solid #000; padding: 8px; font-size: 10px;">${product.quantity} Nos</td>
-                <td style="border: 1px solid #000; padding: 8px; font-size: 10px;">₹${product.unitPrice}</td>
-                <td style="border: 1px solid #000; padding: 8px; font-size: 10px;">₹${product.amount}</td>
-                  <td style="border: 1px solid #000; padding: 8px; font-size: 10px;">₹${product.gstAmount}</td>
-            <td style="border: 1px solid #000; padding: 8px; font-size: 10px;">₹${product.TotalAmount}</td>
+                <td style="border: 1px solid #000;   padding: 5px; font-size: 10px;">${index + 1}</td>
+                <td style="border: 1px solid #000;   padding: 5px; font-size: 10px;">${product.description}brand modal</td>
+                <td style="border: 1px solid #000;  text-align: right;  padding: 5px; font-size: 10px;">${product.quantity}</td>
+                <td style="border: 1px solid #000;  text-align: right;  padding: 5px; font-size: 10px;"> Nos</td>
+                <td style="border: 1px solid #000;  text-align: right;  padding: 5px; font-size: 10px;">₹${product.unitPrice}</td>
+                <td style="border: 1px solid #000;  text-align: right;  padding: 5px; font-size: 10px;">₹${product.amount}</td>
+            
       
             </tr>
 
@@ -149,24 +151,26 @@ const handleProceed = () => {
         const totalFinalAmount = products.reduce((accumulator, product) => accumulator + product.TotalAmount, 0);
 
         pdfContent.innerHTML = `
-            <body style="font-family: 'Arial', sans-serif; background-color: #fff; margin: 0; padding: 0.5in; color: #333;">
+            <body style="font-family: 'Arial',  sans-serif; font-size: 10px; background-color: #fff; margin: 0; padding: 0.5in; color: #333;">
                 <div style="max-width: 100%; margin: auto; background-color: #fff; padding: 20px; border: 1px solid #000;">
                     <div style="display: flex; justify-content: space-between; align-items: center; ">
-                        <img src="logo.png" alt="Company Logo" style="    max-width: 24%;">
-                        <h2 style="margin-right: 42%; margin-top: -2%;
-    color: #585757;">Quotaion</h2>
+                        <img src="logo.png" alt="Company Logo" style="      max-width: 24%;
+    margin-top: -8%; 
+    margin-left: -3%;">
+                        <h2 style="       margin-top: -10%;
+    color: #585757; margin-right: 2%;">Quotaion</h2>
                     </div>
 
-                    <div style="margin-bottom: 15px; font-size: 10px; display: flex;
+                    <div style=" font-size: 10px; display: flex;
     align-items: center;
     justify-content: space-between;">
                     <div style="text-align: left; font-size: 10px; ">
                     <div style="text-align: left; margin-bottom: 15px; font-size: 10px;">
-                        <p><strong>Techtrix Solutions Private Limited</strong></p>
-                        <p>437 C/6 Narayan Peth Opp. LIC Common Wealth Bldg,</p>
-                        <p>Laxmi Road, Pune-411030, Maharashtra, India.</p>
-                        <p>Web: www.techtrix.in | Email: info@techtrix.in</p>
-                        <p>Phone No: 020 - 24470788, 24447772</p>
+                        <strong>Techtrix Solutions Private Limited</strong> </br>
+                        437 C/6 Narayan Peth Opp. LIC Common Wealth Bldg, </br>
+                        Laxmi Road, Pune-411030, Maharashtra, India. </br>
+                        Web: www.techtrix.in | Email: info@techtrix.in </br>
+                        Phone No: 020 - 24470788, 24447772 </br>
                     </div>
 
                     
@@ -174,12 +178,26 @@ const handleProceed = () => {
                      <p><strong>Prepared By:</strong> ${quotation?.createdBy || 'N/A'} name will be displayed</p>
                           
                         </div>
-                        <div style="text-align: left; font-size: 10px;  margin-bottom: 5%;">
-                            <p><strong>Date:</strong> ${quotation?.QuotationDate || '18/10/2024'}</p>
-                            <p><strong>customerID:</strong> 'custid'</p>
-                            <p><strong>Q ID:</strong> 'qid'</p>
-                            <p><strong>validity:</strong> 'validity'</p>
-                        </div>
+                    <table style="border-collapse: collapse; font-size: 8px; margin-bottom: 5%; border: 1px solid black; width: auto;">
+    <tr>
+        <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;"><strong>Date</strong></td>
+        <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;">${quotation?.formattedDate || '18/10/2024'}</td>
+    </tr>
+    <tr>
+        <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;"><strong>Customer ID</strong></td>
+        <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;">'custid'</td>
+    </tr>
+    <tr>
+        <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;"><strong>Q ID</strong></td>
+        <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;">'qid'</td>
+    </tr>
+    <tr>
+        <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;"><strong>Validity</strong></td>
+        <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;">'validity'</td>
+    </tr>
+</table>
+
+
                     </div>
 
 
@@ -192,35 +210,66 @@ const handleProceed = () => {
                            
 </div>
                         
-                        <h3 style="font-size: 12px; color: #000; margin-bottom: 10px;">products:</h3>
+                        <h3 style="font-size: 12px; color: #000; margin-bottom: 10px; margin-top: 10px;">products:</h3>
                         <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
                         <thead>
                             <tr>
-                                <th style="border: 1px solid #000; padding: 8px; background-color: #f1f1f1; font-size: 10px;">Sr No</th>
-                                <th style="border: 1px solid #000; padding: 8px; background-color: #f1f1f1; font-size: 10px;">Description</th>
-                                <th style="border: 1px solid #000; padding: 8px; background-color: #f1f1f1; font-size: 10px;">Qty</th>
-                                <th style="border: 1px solid #000; padding: 8px; background-color: #f1f1f1; font-size: 10px;">Unit Price</th>
-                                <th style="border: 1px solid #000; padding: 8px; background-color: #f1f1f1; font-size: 10px;">Amount</th>
-                           <th style="border: 1px solid #000; padding: 8px; background-color: #f1f1f1; font-size: 10px;">GST Amount</th>
-                            <th style="border: 1px solid #000; padding: 8px; background-color: #f1f1f1; font-size: 10px;">Total Amount</th>
-                          
+                                <th style="border: 1px solid #000; padding: 5px; background-color: #f1f1f1; font-size: 10px;">Sr No</th>
+                                <th style="border: 1px solid #000; padding: 5px; background-color: #f1f1f1; font-size: 10px;">Description</th>
+                                <th style="border: 1px solid #000; padding: 5px; background-color: #f1f1f1; font-size: 10px;">Qty</th>
+                                <th style="border: 1px solid #000; padding: 5px; background-color: #f1f1f1; font-size: 10px;">UoM</th>
+                                <th style="border: 1px solid #000; padding: 5px; background-color: #f1f1f1; font-size: 10px;">Unit Price</th>
+                                <th style="border: 1px solid #000; padding: 5px; background-color: #f1f1f1; font-size: 10px;">Amount</th>
+                           
                             </tr>
+                            
                         </thead>
                         <tbody>
                             ${productsRows}
+                            <tr>
+            <!-- Empty cells for the first 6 columns -->
+            <td ></td>
+            <td ></td>
+            <td ></td>
+            <td ></td>
+            <td ></td>
+            <!-- Validity in the 7th column -->
+            <td>
+            
+             <table style="border-collapse: collapse; font-size: 10px; margin-bottom: 5%; border: 1px solid black; width: 100%;">
+    <tr>
+        <td style="border: 1px solid black; padding: 2px 3px; white-space: nowrap;"><strong>Subtotal</strong></td>
+        <td style="border: 1px solid black; padding: 2px 3px; white-space: nowrap; text-align: right;">₹ ${totalFinalAmount} </td>
+    </tr>
+    <tr>
+        <td style="border: 1px solid black; padding: 2px 3px; white-space: nowrap;"><strong>Tax Rate 18 %</strong></td>
+        <td style="border: 1px solid black; padding: 2px 3px; white-space: nowrap; text-align: right;">8989</td>
+    </tr>
+    <tr>
+        <td style="border: 1px solid black; padding: 2px 3px; white-space: nowrap;"><strong>Tax Rate 28 %</strong></td>
+        <td style="border: 1px solid black; padding: 2px 3px; white-space: nowrap; text-align: right;">8989</td>
+    </tr>
+    <tr>
+        <td style="border: 1px solid black; padding: 2px 3px; white-space: nowrap;"><strong>Total Amount</strong></td>
+        <td style="border: 1px solid black; padding: 2px 3px; white-space: nowrap; text-align: right;">898989</td>
+    </tr>
+</table>
+            
+            </td>
+        </tr>
                         </tbody>
-                        
+                          
                     </table>
                     
 
- <div style="margin-top: 10px; margin-right: 20px; text-align: right; font-style: bold; font-size: 10px; font-weight:bold; ">
-                        <span >Total Final Amount : </span>
-                        <span style="text-decoration:underline;"> ₹ ${totalFinalAmount} </span>
-                    </div>
+
 
                     <div style="margin-bottom: 10px; font-size: 10px; display: flex;
+                        margin-top: -6%;
     align-items: center;
     justify-content: space-between;" >
+
+    
                        <div  >
                         <p><strong>Customer will be billed:</strong> ${quotationTerms.billing}</p>
                         <p><strong>Taxes:</strong> ${quotationTerms.taxes}</p>
@@ -230,11 +279,20 @@ const handleProceed = () => {
                         <p><strong>Transport:</strong> ${quotationTerms.transport}</p>
                         </div>
 
-                         <div style="text-align: center; font-size: 10px;     margin-top: 5%;">
+                         <div style="text-align: center; font-size: 10px;     margin-top: 10%;">
                      
-                        <p>Your’s sincerely,</p>
-                        <p>For Techtrix Solutions Pvt. Ltd. </p>
-                     <p>  Pune</p>
+
+                         <div style="display:flex; flex-direction:column;">
+
+                        
+                         
+                        <span style="margin-bottom: -6%">Your’s sincerely,</span></br>
+                        <span style="margin-bottom: -6%">For Techtrix Solutions Pvt. Ltd., </span></br>
+                        <span style="margin-bottom: -6%">  Pune</span></br>
+                        <span style="margin-bottom: -6%"> prepared By name and phone no.</span></br>
+                        
+                        </div>
+                       
                     </div>
                     </div>
                     <h5 style="font-size: 10px; margin-top: 10px;">Customer Acceptance (sign below):</h5>
