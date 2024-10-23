@@ -1,133 +1,73 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import React, { useState } from 'react';
+import { Form, Row, Col, Input, Switch } from 'antd';
 
-const BASE_URL = 'http://localhost:4000/customers';
-const PRODUCT_URL = 'http://localhost:4000/products';
+const CreateCustomerForm = ({ customer, setCustomer }) => {
+    const [newCustomer, setNewCustomer] = useState(customer);
 
-// Async Thunks
-export const fetchCustomers = createAsyncThunk('customers/fetchCustomers', async (_, { rejectWithValue }) => {
-    try {
-        const response = await axios.get(BASE_URL); // Use the base URL
-        return response.data; // Assuming the mock API returns an array of customers
-    } catch (error) {
-        console.error("Error fetching customers:", error);
-        return rejectWithValue([]); // Return an empty array on failure
-    }
-});
+    const handleInputChange = (e) => {
+        setNewCustomer({ ...newCustomer, [e.target.name]: e.target.value });
+        setCustomer({ ...newCustomer, [e.target.name]: e.target.value });
+    };
 
-export const fetchCustomerByID = createAsyncThunk('customers/fetchCustomerByID', async (id, { rejectWithValue }) => {
-    try {
-        const response = await axios.get(`${BASE_URL}/${id}`);
-        return response.data;
-    } catch (error) {
-        console.error("Error fetching customer by ID:", error);
-        return rejectWithValue(null);
-    }
-});
+    return (
+        <div style={{ border: '1px solid #d9d9d9', padding: '15px', borderRadius: '8px', backgroundColor: '#f9f9f9', marginBottom: '10px' }}>
+            <h4>New Customer Details</h4>
+            <Row gutter={24}> {/* Set gutter for spacing between columns */}
+                <Col span={12}> {/* First column */}
+                    <Form.Item label="Company name" name="companyName"
+                    //  rules={[{ required: true }]}
+                    >
+                        <Input value={newCustomer.companyName} onChange={handleInputChange} name="companyName" />
+                    </Form.Item>
+                </Col>
+                <Col span={12}>
+                    <Form.Item label="Address" name="address"
+                        rules={[{ required: true }]}>
+                        <Input value={newCustomer.address} onChange={handleInputChange} name="address" />
+                    </Form.Item>
+                </Col>
+                <Col span={12}> {/* First column */}
+                    <Form.Item label="First Name" name="firstName" rules={[{ required: true }]}>
+                        <Input value={newCustomer.firstName} onChange={handleInputChange} name="firstName" />
+                    </Form.Item>
+                </Col>
+                <Col span={12}>
+                    <Form.Item label="Pin Code" name="zipCode">
+                        <Input value={newCustomer.pinCode} onChange={handleInputChange} name="zipCode" 
+                        rules={[
+                            { required: true, message: 'Please input your zip code!' },
+                            { pattern: /^[1-9][0-9]{5}$/, message: 'Pin code must be 6 digits and cannot start with 0.' },
+                        ]}/>
+                    </Form.Item>
+                </Col>
+                <Col span={12}> {/* Second column */}
+                    <Form.Item label="Last Name" name="lastName" rules={[{ required: true }]}>
+                        <Input value={newCustomer.lastName} onChange={handleInputChange} name="lastName" />
+                    </Form.Item>
+                </Col>
+                <Col span={12}>
+                    <Form.Item label="Email" name="email" rules={[{ required: true, type: 'email' }]}>
+                        <Input type="email" value={newCustomer.email} onChange={handleInputChange} name="email" />
+                    </Form.Item>
+                </Col>
+                <Col span={12}>
+                    <Form.Item label="Phone" name="phoneNumber"
+                        rules={[
+                            { required: true, message: 'Please input your phone number!' },
+                            { pattern: /^[0-9]{10}$/, message: 'Phone number must be 10 digits' },
+                        ]}>
+                        <Input value={newCustomer.phoneNumber} onChange={handleInputChange} name="phoneNumber" />
+                    </Form.Item>
+                </Col>
 
-// Fetch Products for Selected Customer
-export const fetchProductsBycustomerID = createAsyncThunk('customers/fetchProductsBycustomerID', async (customerID, { rejectWithValue }) => {
-    try {
-        //console.log(`${BASE_URL}/${customerID}`)
-        const customerResponse = await axios.get(`${BASE_URL}/${customerID}`);
-        const productIds = customerResponse.data.products || []; // Default to an empty array if products is undefined
+                <Col span={12}>
+                    <Form.Item label="Premium Customer" name="isPremium" valuePropName="checked">
+                        <Switch checked={newCustomer.isPremium} onChange={(e) => setNewCustomer({ ...newCustomer, isPremium: e })} />
+                    </Form.Item>
+                </Col>
+            </Row>
+        </div>
+    );
+};
 
-        if (productIds.length > 0) {
-            const productsResponse = await axios.get(PRODUCT_URL);
-            // Filter products based on the IDs from the customer
-            return productsResponse.data.filter(product => productIds.includes(product.id));
-        } else {
-            return []; // Return empty if no products
-        }
-    } catch (error) {
-        console.error("Error fetching products for customer:", error);
-        return rejectWithValue([]); // Return empty array on error
-    }
-});
-
-
-export const addCustomer = createAsyncThunk('customers/addCustomer', async (newCustomer, { rejectWithValue }) => {
-    try {
-        const response = await axios.post(BASE_URL, newCustomer); // Use the base URL
-        return response.data;
-    } catch (error) {
-        console.error("Error adding customer:", error);
-        return rejectWithValue(null);
-    }
-});
-
-export const updateCustomer = createAsyncThunk('customers/updateCustomer', async ({ customerID, updatedCustomer }, { rejectWithValue }) => {
-    try {
-        const response = await axios.put(`${BASE_URL}/${customerID}`, updatedCustomer); // Use the base URL
-        return response.data;
-    } catch (error) {
-        console.error("Error updating customer:", error);
-        return rejectWithValue(null);
-    }
-});
-
-export const deleteCustomer = createAsyncThunk('customers/deleteCustomer', async (customerID, { rejectWithValue }) => {
-    try {
-        await axios.delete(`${BASE_URL}/${customerID}`); // Use the base URL
-        return customerID;
-    } catch (error) {
-        console.error("Error deleting customer:", error);
-        return rejectWithValue(null);
-    }
-});
-
-// Customer Slice
-const customerSlice = createSlice({
-    name: 'customers',
-    initialState: {
-        customers: [],
-        selectedCustomerProducts: [],
-        status: 'idle',
-        error: null,
-    },
-    reducers: {},
-    extraReducers: (builder) => {
-        builder
-            .addCase(fetchCustomers.pending, (state) => {
-                state.status = 'loading';
-            })
-            .addCase(fetchCustomers.fulfilled, (state, action) => {
-                state.status = 'succeeded';
-                state.customers = action.payload;
-            })
-            .addCase(fetchCustomers.rejected, (state, action) => {
-                state.status = 'failed';
-                state.customers = []; // Use an empty array on failure
-                state.error = action.error.message;
-            })
-            .addCase(addCustomer.fulfilled, (state, action) => {
-                if (action.payload) {
-                    state.customers.push(action.payload);
-                }
-            })
-            .addCase(updateCustomer.fulfilled, (state, action) => {
-                if (action.payload) {
-                    const updatedCustomer = action.payload;
-                    const index = state.customers.findIndex(customer => customer.customerID === updatedCustomer.customerID);
-                    if (index !== -1) {
-                        state.customers[index] = updatedCustomer; // Update the customer in the state
-                    }
-                }
-            })
-            .addCase(deleteCustomer.fulfilled, (state, action) => {
-                if (action.payload) {
-                    const customerID = action.payload;
-                    state.customers = state.customers.filter(customer => customer.customerID !== customerID);
-                }
-            })
-            .addCase(fetchProductsBycustomerID.fulfilled, (state, action) => {
-                state.selectedCustomerProducts = action.payload; // Set products of the selected customer
-            }) 
-            .addCase(fetchCustomerByID.fulfilled, (state, action) => {
-                state.selectedCustomer = action.payload; // Set the selected customer
-            });
-    },
-});
-
-// Export the reducer as default
-export default customerSlice.reducer;
+export default CreateCustomerForm;
