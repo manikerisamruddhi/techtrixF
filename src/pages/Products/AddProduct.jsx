@@ -78,7 +78,7 @@ const ProductFormModal = ({ visible, onCancel, product, customerID, onAddProduct
                         <Col span={12}>
                             <Form.Item
                                 name="brand"
-                                label="Brand"
+                                label="Brand :"
                                 rules={[{ required: true, message: 'Please input the brand!' }]}
                             >
                                 <Input />
@@ -88,7 +88,7 @@ const ProductFormModal = ({ visible, onCancel, product, customerID, onAddProduct
                         <Col span={12}>
                             <Form.Item
                                 name="modelNo"
-                                label="Model No"
+                                label="Model No :"
                                 rules={[{ required: true, message: 'Please input the model number!' }]}
                             >
                                 <Input />
@@ -107,7 +107,7 @@ const ProductFormModal = ({ visible, onCancel, product, customerID, onAddProduct
                         <Col span={24}>
                             <Form.Item
                                 name="description"
-                                label="Description"
+                                label="Product description :"
 
                                 rules={[{ required: true, message: 'Please input the description!' }]}
                             >
@@ -123,7 +123,7 @@ const ProductFormModal = ({ visible, onCancel, product, customerID, onAddProduct
                         <Col span={12}>
                             <Form.Item
                                 name="isSerialNoAllowed"
-                                label="Is Serial No Allowed"
+                                label="Is Serial No Allowed :"
                                 rules={[{ required: true, message: 'Please select is serial no allowed' }]}
                             >
                                 <Radio.Group>
@@ -136,7 +136,7 @@ const ProductFormModal = ({ visible, onCancel, product, customerID, onAddProduct
                         <Col span={12}>
                             <Form.Item
                                 name="partCode"
-                                label="Part Code"
+                                label="Part Code :"
                                 // rules={[{ required: true, message: 'Please input the part code!' }]}
                             >
                                 <Input />
@@ -159,7 +159,7 @@ const ProductFormModal = ({ visible, onCancel, product, customerID, onAddProduct
                         <Col span={12}>
                             <Form.Item
                                 name="hsnCode"
-                                label="HSN Code"
+                                label="HSN Code :"
                                 // rules={[{ required: true, message: 'Please input the HSN code!' }]}
                             >
                                 <Input />
@@ -169,8 +169,8 @@ const ProductFormModal = ({ visible, onCancel, product, customerID, onAddProduct
                         <Col span={12}>
                             <Form.Item
                                 name="price"
-                                label="Price"
-                                rules={[{ required: true, message: 'Please input the price!' }]}
+                                label="Price :"
+                                // rules={[{ required: true, message: 'Please input the price!' }]}
                             >
                                 <Input type="number" />
                             </Form.Item>
@@ -180,7 +180,7 @@ const ProductFormModal = ({ visible, onCancel, product, customerID, onAddProduct
                         <Col span={12}>
                             <Form.Item
                                 name="quantity"
-                                label="Quantity"
+                                label="Quantity :"
                                 // rules={[{ required: true, message: 'Please input the quantity!' }]}
                             >
                                 <Input type="number" />
@@ -189,7 +189,7 @@ const ProductFormModal = ({ visible, onCancel, product, customerID, onAddProduct
                         <Col span={12}>
                             <Form.Item
                                 name="warrantyMonths"
-                                label="Warranty Months"
+                                label="Warranty Months :"
                                 // rules={[{ required: true, message: 'Please input the warranty months!' }]}
                             >
                                 <Input type="number" />
