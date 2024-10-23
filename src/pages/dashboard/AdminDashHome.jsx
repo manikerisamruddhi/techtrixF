@@ -177,7 +177,7 @@ const Dashboard = () => {
                                 sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)', position: 'relative' }}
                                 onClick={() => handleMainCardClick(setShowTicketDetails)}
                             >
-                                <Typography variant="h5" sx={{ color: '#000' }}>All Tickets</Typography>
+                                <Typography variant="h5" sx={{ color: '#000' }}> Tickets</Typography>
 
                                 <Grid container spacing={2} sx={{ marginTop: '20px' }}>
                                     <Grid item xs={6} sm={6} md={6} marginBottom={1}>
@@ -215,7 +215,7 @@ const Dashboard = () => {
                                     }
                                 }}
                             >
-                                <Typography variant="h5" sx={{ color: '#000' }}>All Quotations</Typography>
+                                <Typography variant="h5" sx={{ color: '#000' }}> Quotations</Typography>
 
                                 <Grid container spacing={2} sx={{ marginTop: '20px' }}>
                                     <Grid item xs={6} sm={6} md={6} marginBottom={1}>
@@ -246,7 +246,7 @@ const Dashboard = () => {
                                 sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)', position: 'relative' }}
                                 onClick={() =>navigate("/Invoices")}
                             >
-                                <Typography variant="h5" sx={{ color: '#000' }}>All Invoices</Typography>
+                                <Typography variant="h5" sx={{ color: '#000' }}> Invoices</Typography>
                                 <Grid container spacing={2} sx={{ marginTop: '20px' }}>
                                     <Grid item xs={6} sm={6} md={6} marginBottom={1}>
                                         <Typography variant="h6" sx={{ color: '' }}>test:{open}</Typography>
@@ -275,7 +275,7 @@ const Dashboard = () => {
                                 sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)', position: 'relative' }}
                                 onClick={() =>navigate("/Products")}
                             >
-                                <Typography variant="h5" sx={{ color: '#000' }}>All Products</Typography>
+                                <Typography variant="h5" sx={{ color: '#000' }}> Products</Typography>
                                 <Grid container spacing={2} sx={{ marginTop: '20px' }}>
                                     <Grid item xs={6} sm={6} md={6} marginBottom={1}>
                                         <Typography variant="h6" sx={{ color: '' }}>Total Products: </Typography>
@@ -301,7 +301,7 @@ const Dashboard = () => {
                                 sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)', position: 'relative' }}
                                 onClick={() => navigate("/Customers")}
                             >
-                                <Typography variant="h5" sx={{ color: '#000' }}>All Customers</Typography>
+                                <Typography variant="h5" sx={{ color: '#000' }}> Customers</Typography>
                                 <Grid container spacing={2} sx={{ marginTop: '20px' }}>
                                     <Grid item xs={6} sm={6} md={6} marginBottom={1}>
                                         <Typography variant="h6" sx={{ color: '' }}>test:{open}</Typography>
@@ -333,7 +333,7 @@ const Dashboard = () => {
                                 sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)', position: 'relative' }}
                                 onClick={() => navigate("/UserManagement")}
                             >
-                                <Typography variant="h5" sx={{ color: '#000' }}>All Users</Typography>
+                                <Typography variant="h5" sx={{ color: '#000' }}> Users</Typography>
                                 <Grid container spacing={2} sx={{ marginTop: '20px' }}>
                                     <Grid item xs={6} sm={6} md={6} marginBottom={1}>
                                         <Typography variant="h6" sx={{ color: '' }}>test:{open}</Typography>
