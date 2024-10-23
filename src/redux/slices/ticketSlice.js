@@ -1,16 +1,17 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { notification } from 'antd'; // Import notification
+import ticketApi from '../../api/ticketApi';
 
 // Async Thunks
 export const fetchTickets = createAsyncThunk('tickets/fetchTickets', async () => {
-    const response = await axios.get('http://localhost:4000/tickets'); // Adjusted endpoint
+    const response = await ticketApi.getAllTickets(); // Adjusted endpoint
+    // console.log(response);
     return response.data;
 });
 
 export const fetchTicketDetails = createAsyncThunk('tickets/fetchTicketDetails', async (ticketId) => {
     try {
-        const response = await axios.get(`http://localhost:4000/tickets/${ticketId}`);
+        const response = await ticketApi.getTicketById(ticketId);
 
         if (response.status !== 200) {
             throw new Error('Ticket not found');
@@ -30,7 +31,7 @@ export const fetchTicketDetails = createAsyncThunk('tickets/fetchTicketDetails',
 });
 
 export const createTicket = createAsyncThunk('tickets/addTicket', async (newTicket) => {
-    const response = await axios.post('http://localhost:4000/tickets', newTicket);
+    const response = await ticketApi.createTicket(newTicket);
 
     return response.data;
 });
@@ -54,7 +55,7 @@ export const createTicket = createAsyncThunk('tickets/addTicket', async (newTick
 // Add the updateTicket async thunk
 export const updateTicket = createAsyncThunk('tickets/updateTicket', async ({ id, data }) => {
     // console.log(data);
-    const response = await axios.put(`http://localhost:4000/tickets/${id}`, data);
+    const response = await ticketApi.updateTicket(id, data);
     return response.data;
 });
 

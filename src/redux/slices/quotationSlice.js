@@ -1,29 +1,28 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-
-// Set the base URL for the API
-const API_URL = 'http://localhost:4000/quotations';
+import quotationApi from '../../api/quotationApi';
 
 // Async Thunks
 export const fetchQuotations = createAsyncThunk('quotations/fetchQuotations', async () => {
-    const response = await axios.get(API_URL);
+    const response = await quotationApi.getAllQuotations;
     return response.data; // Return the fetched data
 });
 
 export const addQuotation = createAsyncThunk('quotations/addQuotation', async (newQuotation) => {
     try {
-        const response = await axios.post(API_URL, newQuotation);
+        const response = await quotationApi.createQuotation(newQuotation);
         return response.data; // Return the added quotation
     } catch (error) {
         throw error; // Rethrow the error to be caught by the extraReducers
     }
 });
 
+//update quoatation ----
 // New AsyncThunk for updating quotation status
 export const updateQuotation = createAsyncThunk('quotations/updateQuotation', async ({ id, data }) => {
     try {
-        const response = await axios.patch(`${API_URL}/${id}`, data); // Use PATCH or PUT depending on your API
-        return response.data; // Return the updated quotation
+        const response = await quoatationApi.updateQuoatation(id, data)
+                return response.data; // Return the updated quotation
     } catch (error) {
         throw error; // Rethrow the error to be caught by the extraReducers
     }

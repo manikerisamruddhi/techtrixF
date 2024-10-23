@@ -25,6 +25,7 @@ const Products = () => {
     }, [dispatch]);
 
     useEffect(() => {
+        console.log('Fetched Products:', products); 
         setFilteredProducts(products); // Initially, show all products
     }, [products]);
 
@@ -85,6 +86,11 @@ const Products = () => {
             title: 'Model No',
             dataIndex: 'modelNo',
             key: 'modelNo',
+        },   {
+            title: 'Customer Name',
+            dataIndex: ['firstName'], // Accessing nested customer data
+            key: 'customerName',
+            render: (text, record) => `${record.customer?.firstName || ''} ${record.customer?.lastName || ''}`,
         },
         {
             title: 'Description',
@@ -118,19 +124,21 @@ const Products = () => {
 
 
 
-                    {/* Products Table */}
-                    {loading ? (
-                        <Spin tip="Loading..." />
-                    ) : filteredProducts.length === 0 ? (
-                        <Empty description="No Products Available" />
-                    ) : (
-                        <Table
-                            dataSource={filteredProducts}
-                            columns={columns}
-                            rowKey="id"
-                            pagination={false}
-                        />
-                    )}
+
+{/* Products Table */}
+{loading ? (
+    <Spin tip="Loading..." />
+) : (Array.isArray(filteredProducts) && filteredProducts.length === 0) ? (
+    <Empty description="No Products Available" />
+) : (
+    <Table
+        dataSource={filteredProducts || []} // Fallback to an empty array if undefined/null
+        columns={columns}
+        rowKey="id"
+        pagination={false}
+    />
+)}
+
 
                     {/* Product Details Modal */}
                     {selectedProduct && (
