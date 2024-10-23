@@ -130,6 +130,34 @@ const handleProceed = () => {
                     amount: 800, gstAmount: 144, // Example GST
                     TotalAmount: 944, // Amount + GST
                 },
+                {
+                    description: 'Sample Product 2Sample Product 2Sample Product 2Sample Product 2Sample Product 2Sample Product 2',
+                    quantity: 1,
+                    unitPrice: 800,
+                    amount: 800, gstAmount: 144, // Example GST
+                    TotalAmount: 944, // Amount + GST
+                },
+                {
+                    description: 'Sample Product 2Sample Product 2Sample Product 2Sample Product 2Sample Product 2Sample Product 2',
+                    quantity: 1,
+                    unitPrice: 800,
+                    amount: 800, gstAmount: 144, // Example GST
+                    TotalAmount: 944, // Amount + GST
+                },
+                {
+                    description: 'Sample Product 2Sample Product 2Sample Product 2Sample Product 2Sample Product 2Sample Product 2',
+                    quantity: 1,
+                    unitPrice: 800,
+                    amount: 800, gstAmount: 144, // Example GST
+                    TotalAmount: 944, // Amount + GST
+                },
+                {
+                    description: 'Sample Product 2Sample Product 2Sample Product 2Sample Product 2Sample Product 2Sample Product 2',
+                    quantity: 1,
+                    unitPrice: 800,
+                    amount: 800, gstAmount: 144, // Example GST
+                    TotalAmount: 944, // Amount + GST
+                },
             ];
         }
 
@@ -154,19 +182,19 @@ const handleProceed = () => {
             <body style="font-family: 'Arial',  sans-serif; font-size: 10px; background-color: #fff; margin: 0; padding: 0.5in; color: #333;">
                 <div style="max-width: 100%; margin: auto; background-color: #fff; padding: 20px; border: 1px solid #000;">
                     <div style="display: flex; justify-content: space-between; align-items: center; ">
-                        <img src="logo.png" alt="Company Logo" style="      max-width: 24%;
-    margin-top: -8%; 
-    margin-left: -3%;">
-                        <h2 style="       margin-top: -10%;
-    color: #585757; margin-right: 2%;">Quotaion</h2>
+                        <img src="logo.png" alt="Company Logo" style="      max-width: 22%; margin-top:-1%;
+ 
+        margin-left: -0.5%;">
+                        <h2 style="       margin-top: -1%;
+    color: #17A0CC; margin-right: 1.5%;">Quotation</h2>
                     </div>
 
-                    <div style=" font-size: 10px; display: flex;
+                    <div style=" font-size: 10px;     margin-top: 2%; display: flex;
     align-items: center;
     justify-content: space-between;">
                     <div style="text-align: left; font-size: 10px; ">
                     <div style="text-align: left; margin-bottom: 15px; font-size: 10px;">
-                        <strong>Techtrix Solutions Private Limited</strong> </br>
+                        <strong style>Techtrix Solutions Private Limited</strong> </br>
                         437 C/6 Narayan Peth Opp. LIC Common Wealth Bldg, </br>
                         Laxmi Road, Pune-411030, Maharashtra, India. </br>
                         Web: www.techtrix.in | Email: info@techtrix.in </br>
@@ -202,8 +230,8 @@ const handleProceed = () => {
 
 
 <div  style="font-family: 'Arial', sans-serif; font-size: 10px; ">
-                    <div style="     background-color: #8080807d;
-    font-weight: bolder;">  <strong>Customer:</strong></br>  </div>
+                    <div style="     background-color: #838282; color:white;
+    font-weight: bolder;">  <strong  style=" margin-left:0.5%;">Customer:</strong></br>  </div>
                                ${quotation?.customer || 'name will be displayed'}</br>
                                ${quotation?.customer || 'address will Be displayed'} </br>
                              ${quotation?.customer || 'phone no. displayed'}</br>
@@ -212,14 +240,14 @@ const handleProceed = () => {
                         
                         <h3 style="font-size: 12px; color: #000; margin-bottom: 10px; margin-top: 10px;">products:</h3>
                         <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
-                        <thead>
+                        <thead >
                             <tr>
-                                <th style="border: 1px solid #000; padding: 5px; background-color: #f1f1f1; font-size: 10px;">Sr No</th>
-                                <th style="border: 1px solid #000; padding: 5px; background-color: #f1f1f1; font-size: 10px;">Description</th>
-                                <th style="border: 1px solid #000; padding: 5px; background-color: #f1f1f1; font-size: 10px;">Qty</th>
-                                <th style="border: 1px solid #000; padding: 5px; background-color: #f1f1f1; font-size: 10px;">UoM</th>
-                                <th style="border: 1px solid #000; padding: 5px; background-color: #f1f1f1; font-size: 10px;">Unit Price</th>
-                                <th style="border: 1px solid #000; padding: 5px; background-color: #f1f1f1; font-size: 10px;">Amount</th>
+                                <th style="border: 1px solid #000; padding: 5px; background-color: #17A0CC; color:white; font-size: 10px;">Sr No</th>
+                                <th style="border: 1px solid #000; padding: 5px; background-color: #17A0CC; color:white; font-size: 10px;">Description</th>
+                                <th style="border: 1px solid #000; padding: 5px; background-color: #17A0CC; color:white; font-size: 10px;">Qty</th>
+                                <th style="border: 1px solid #000; padding: 5px; background-color: #17A0CC; color:white; font-size: 10px;">UoM</th>
+                                <th style="border: 1px solid #000; padding: 5px; background-color: #17A0CC; color:white; font-size: 10px;">Unit Price</th>
+                                <th style="border: 1px solid #000; padding: 5px; background-color: #17A0CC; color:white; font-size: 10px;">Amount</th>
                            
                             </tr>
                             
@@ -271,12 +299,13 @@ const handleProceed = () => {
 
     
                        <div  >
-                        <p><strong>Customer will be billed:</strong> ${quotationTerms.billing}</p>
-                        <p><strong>Taxes:</strong> ${quotationTerms.taxes}</p>
-                        <p><strong>Delivery:</strong> ${quotationTerms.delivery}</p>
-                        <p><strong>Payment:</strong> ${quotationTerms.payment}</p>
-                        <p><strong>Warranty / Support:</strong> ${quotationTerms.warranty}</p>
-                        <p><strong>Transport:</strong> ${quotationTerms.transport}</p>
+                        <p style=" margin-bottom:-2%; border: 1px solid #000; padding: 2px; background-color: #17A0CC; color:white; font-size: 10px;"><strong>Terms and conditions:</strong><p>
+                        <span><strong>Customer will be billed:</strong> ${quotationTerms.billing}</span></br>
+                        <span><strong>Taxes:</strong> ${quotationTerms.taxes}</span></br>
+                        <span><strong>Delivery:</strong> ${quotationTerms.delivery}</span></br>
+                        <span><strong>Payment:</strong> ${quotationTerms.payment}</span></br>
+                        <span><strong>Warranty / Support:</strong> ${quotationTerms.warranty}</span></br>
+                        <span><strong>Transport:</strong> ${quotationTerms.transport}</span></br>
                         </div>
 
                          <div style="text-align: center; font-size: 10px;     margin-top: 10%;">
@@ -286,10 +315,10 @@ const handleProceed = () => {
 
                         
                          
-                        <span style="margin-bottom: -6%">Your’s sincerely,</span></br>
-                        <span style="margin-bottom: -6%">For Techtrix Solutions Pvt. Ltd., </span></br>
-                        <span style="margin-bottom: -6%">  Pune</span></br>
-                        <span style="margin-bottom: -6%"> prepared By name and phone no.</span></br>
+                        <span style="margin-bottom: -12%">Your’s sincerely,</span></br>
+                        <span style="margin-bottom: -12%">For Techtrix Solutions Pvt. Ltd., </span></br>
+                        <span style="margin-bottom: -12%">  Pune</span></br>
+                        <span style="margin-bottom: -12%"> prepared By name and phone no.</span></br>
                         
                         </div>
                        
