@@ -64,12 +64,15 @@ const CustomerFormModal = ({ visible, onCancel, initialValues, mode, customerID,
                 >
                     <Row gutter={24}> {/* Set gutter for spacing between columns */}
                         <Col span={12}> {/* First column */}
-                            <Form.Item label="Company name" name="company_name" rules={[{ required: true }]}>
+                            <Form.Item label="Company name" name="companyName"
+                            //  rules={[{ required: true }]}
+                             >
                                 <Input />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item label="Address" name="address">
+                            <Form.Item label="Address" name="address"
+                            rules={[{ required: true }]}>
                                 <Input />
                             </Form.Item>
                         </Col>
@@ -79,7 +82,12 @@ const CustomerFormModal = ({ visible, onCancel, initialValues, mode, customerID,
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item label="Zip Code" name="zipCode">
+                            <Form.Item label="Pin Code" name="zipCode"
+                            rules={[
+                                { required: true, message: 'Please input your zip code!' },
+                                { pattern: /^[1-9][0-9]{5}$/, message: 'Pin code must be 6 digits and cannot start with 0.' },
+                            ]}
+                            >
                                 <Input />
                             </Form.Item>
                         </Col>
@@ -94,7 +102,11 @@ const CustomerFormModal = ({ visible, onCancel, initialValues, mode, customerID,
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item label="Phone" name="phoneNumber" rules={[{ required: true }]}>
+                            <Form.Item label="Phone" name="phoneNumber" 
+                            rules={[
+                                { required: true, message: 'Please input your phone number!' },
+                                { pattern: /^[0-9]{10}$/, message: 'Phone number must be 10 digits' },
+                              ]}>
                                 <Input />
                             </Form.Item>
                         </Col>
