@@ -10,6 +10,7 @@ const TicketDetailsModal = ({ visible, ticket, onClose, onCreateQuotation, onUpd
     
     const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
     
+    
 
     // Function to open the create quotation modal
     const handleCreateQuotationClick = () => {
@@ -68,13 +69,14 @@ const TicketDetailsModal = ({ visible, ticket, onClose, onCreateQuotation, onUpd
                                 <Descriptions.Item label="Customer ID" span={1}>{ticket.customerID}</Descriptions.Item>
                             )}
                             <Descriptions.Item label="Created By" span={1}>{ticket.createdBy}</Descriptions.Item>
-                            <Descriptions.Item label="description" span={2}>{ticket.description}</Descriptions.Item>
+                            <Descriptions.Item label="Remark" span={2}>{ticket.description}</Descriptions.Item>
                             <Descriptions.Item label="status" span={1}>
                                 <Badge status={ticket.status === 'Resolved' ? 'success' : 'processing'} text={ticket.status} />
                             </Descriptions.Item>
-                            <Descriptions.Item label="Created Date" span={1}>{new Date(ticket.CreatedDate).toLocaleString()}</Descriptions.Item>
+                            <Descriptions.Item label="Created Date" span={1}>{new Date(ticket.createdDate).toLocaleString()}</Descriptions.Item>
                             <Descriptions.Item label="Resolved" span={1}>{ticket.isResolved ? 'Yes' : 'No'}</Descriptions.Item>
                             <Descriptions.Item label="Is Chargeable" span={1}>{ticket.isChargeable ? 'Yes' : 'No'}</Descriptions.Item>
+                      {/* <Descriptions.Item label="Isqqq" span={1}>{ticket.isQuotationCreated ? 'Yes' : 'No'}</Descriptions.Item> */}
                             <Descriptions.Item label="Assigned To" span={1}>{ticket.assignedTo ? ticket.assignedTo : 'Not Assigned'}</Descriptions.Item>
                         </Descriptions>
                         {ticket.status !== 'closed' && (
@@ -90,7 +92,7 @@ const TicketDetailsModal = ({ visible, ticket, onClose, onCreateQuotation, onUpd
                                     Update Ticket
                                 </Button>
                                  {/* Render the Create Quotation button if isChargeable is true */}
-                            {ticket.isChargeable && (
+                            {!ticket.isQuotationCreated && (
                                 <Button 
                                     type="primary" 
                                     onClick={() => setIsCreateModalVisible(true)}  // Open the Create Quotation modal
