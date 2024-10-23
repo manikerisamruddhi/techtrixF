@@ -20,8 +20,8 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
 
 
     const [quotationTerms, setQuotationTerms] = useState({
-        billing: 'Customer will be billed after indicating acceptance of this quote.',
-        taxes: 'Inclusive in qoutation',
+        billing: 'after indicating acceptance of this quote.',
+        taxes: 'Inclusive in quotation',
         delivery: '3 to 4 Days',
         payment: '100% Advance',
         warranty: 'As per Principal',
@@ -122,6 +122,7 @@ const handleProceed = () => {
                     amount: 1000,
                     gstAmount: 180, // Example GST
                     TotalAmount: 1180, // Amount + GST
+                    partCode: 'sample'
                 },
                 {
                     description: 'Sample Product 2Sample Product 2Sample Product 2Sample Product 2Sample Product 2Sample Product 2',
@@ -129,6 +130,7 @@ const handleProceed = () => {
                     unitPrice: 800,
                     amount: 800, gstAmount: 144, // Example GST
                     TotalAmount: 944, // Amount + GST
+                    partCode: 'sample'
                 },
                 {
                     description: 'Sample Product 2Sample Product 2Sample Product 2Sample Product 2Sample Product 2Sample Product 2',
@@ -136,6 +138,7 @@ const handleProceed = () => {
                     unitPrice: 800,
                     amount: 800, gstAmount: 144, // Example GST
                     TotalAmount: 944, // Amount + GST
+                    partCode: 'sample'
                 },
                 {
                     description: 'Sample Product 2Sample Product 2Sample Product 2Sample Product 2Sample Product 2Sample Product 2',
@@ -143,6 +146,7 @@ const handleProceed = () => {
                     unitPrice: 800,
                     amount: 800, gstAmount: 144, // Example GST
                     TotalAmount: 944, // Amount + GST
+                    partCode: 'sample'
                 },
                 {
                     description: 'Sample Product 2Sample Product 2Sample Product 2Sample Product 2Sample Product 2Sample Product 2',
@@ -150,6 +154,7 @@ const handleProceed = () => {
                     unitPrice: 800,
                     amount: 800, gstAmount: 144, // Example GST
                     TotalAmount: 944, // Amount + GST
+                    partCode: 'sample'
                 },
                 {
                     description: 'Sample Product 2Sample Product 2Sample Product 2Sample Product 2Sample Product 2Sample Product 2',
@@ -157,6 +162,7 @@ const handleProceed = () => {
                     unitPrice: 800,
                     amount: 800, gstAmount: 144, // Example GST
                     TotalAmount: 944, // Amount + GST
+                    partCode: 'sample'
                 },
             ];
         }
@@ -164,6 +170,8 @@ const handleProceed = () => {
         const productsRows = products.map((product, index) => `
             <tr>
                 <td style="border: 1px solid #000;   padding: 5px; font-size: 10px;">${index + 1}</td>
+
+                <td style="border: 1px solid #000;   padding: 5px; font-size: 10px;">${product.partCode}</td>
                 <td style="border: 1px solid #000;   padding: 5px; font-size: 10px;">${product.description}brand modal</td>
                 <td style="border: 1px solid #000;  text-align: right;  padding: 5px; font-size: 10px;">${product.quantity}</td>
                 <td style="border: 1px solid #000;  text-align: right;  padding: 5px; font-size: 10px;"> Nos</td>
@@ -202,8 +210,7 @@ const handleProceed = () => {
                     </div>
 
                     
-                    
-                     <p><strong>Prepared By:</strong> ${quotation?.createdBy || 'N/A'} name will be displayed</p>
+                
                           
                         </div>
                     <table style="border-collapse: collapse; font-size: 8px; margin-bottom: 5%; border: 1px solid black; width: auto;">
@@ -232,21 +239,19 @@ const handleProceed = () => {
 <div  style="font-family: 'Arial', sans-serif; font-size: 10px; ">
                     <div style="     background-color: #838282; color:white;
     font-weight: bolder;">  <strong  style=" margin-left:0.5%;">Customer:</strong></br>  </div>
-                               ${quotation?.customer || 'name will be displayed'}</br>
+                               ${quotation?.customer || 'company name will be displayed'}</br>
                                ${quotation?.customer || 'address will Be displayed'} </br>
-                             ${quotation?.customer || 'phone no. displayed'}</br>
                            
 </div>
-                        
-                        <h3 style="font-size: 12px; color: #000; margin-bottom: 10px; margin-top: 10px;">products:</h3>
-                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;">
+                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;     margin-top: 2%;">
                         <thead >
                             <tr>
-                                <th style="border: 1px solid #000; padding: 5px; background-color: #17A0CC; color:white; font-size: 10px;">Sr No</th>
+                                <th style="border: 1px solid #000; padding: 5px; background-color: #17A0CC; color:white; font-size: 10px;     width: 7%;">Sr. No.</th>
+                                <th style="border: 1px solid #000; padding: 5px; background-color: #17A0CC; color:white; font-size: 10px; width: 9%;">Part Code</th>
                                 <th style="border: 1px solid #000; padding: 5px; background-color: #17A0CC; color:white; font-size: 10px;">Description</th>
                                 <th style="border: 1px solid #000; padding: 5px; background-color: #17A0CC; color:white; font-size: 10px;">Qty</th>
                                 <th style="border: 1px solid #000; padding: 5px; background-color: #17A0CC; color:white; font-size: 10px;">UoM</th>
-                                <th style="border: 1px solid #000; padding: 5px; background-color: #17A0CC; color:white; font-size: 10px;">Unit Price</th>
+                                <th style="border: 1px solid #000; padding: 5px; background-color: #17A0CC; color:white; font-size: 10px; width: 9%;">Unit Price</th>
                                 <th style="border: 1px solid #000; padding: 5px; background-color: #17A0CC; color:white; font-size: 10px;">Amount</th>
                            
                             </tr>
@@ -256,6 +261,7 @@ const handleProceed = () => {
                             ${productsRows}
                             <tr>
             <!-- Empty cells for the first 6 columns -->
+            <td ></td>
             <td ></td>
             <td ></td>
             <td ></td>
@@ -293,7 +299,7 @@ const handleProceed = () => {
 
 
                     <div style="margin-bottom: 10px; font-size: 10px; display: flex;
-                        margin-top: -6%;
+                        margin-top: -13%;
     align-items: center;
     justify-content: space-between;" >
 
@@ -311,7 +317,7 @@ const handleProceed = () => {
                          <div style="text-align: center; font-size: 10px;     margin-top: 10%;">
                      
 
-                         <div style="display:flex; flex-direction:column;">
+                         <div style="display:flex; flex-direction:column; margin-top:10%">
 
                         
                          
