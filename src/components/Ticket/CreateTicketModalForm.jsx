@@ -68,7 +68,7 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
 
             if (!newProduct) {
                 form.setFieldsValue({ Sdescription: product.description });
-                console.log(`Description ${product.description}`)
+                // console.log(`Description ${product.description}`)
                 setWarrantyDetails(product.warranty_end_date);
             } else {
                 // Clear description if a new product is being added
@@ -83,17 +83,22 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
     const onFinish = async (values) => {
         const currentDate = new Date().toISOString();
 
+        console.log(values);
+
         const ticketData = {
             title: values.title,
             customerID: values.customerID || (newCustomer ? newCustomer.id : null),
             ProductID: values.ProductID,
-            Priority: values.Priority,
-            isChargeable: values.isChargeable || true,
+            // Priority: values.Priority,
+            isChargeable: values.isChargeable !== undefined ? values.isChargeable : true,
+
             status: 'Open',
             createdBy: 'Admin',
             CreatedDate: currentDate,
             description: values.description,
         };
+
+        console.log(ticketData);
 
         try {
             const resultAction = await dispatch(createTicket(ticketData));
@@ -124,8 +129,16 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
                     await dispatch(addProduct(productValues));
                     message.success('Product updated successfully!');
                 }
-
+                
                 form.resetFields();
+                setSelectedProduct(null); // Reset selected product
+                setSelectedCustomer(null); // Reset selected customer
+                setNewCustomer(null); // Reset new customer state
+                setNewProduct(null); // Reset new product state
+                setCustomerType('existing'); // Reset customer type to default
+                setIsChargeable(false); // Reset chargeable state
+                setisPremiumCustomer(false); // Reset premium customer state
+    
                 onClose();
             } else {
                 message.error('Failed to create ticket.');
@@ -382,26 +395,7 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
                         </>
                     )}
 
-                    {isChargeable && (
-                        <>
-                            <h3>Quotation Details</h3>
-                            <Form.Item
-                                name="FinalAmount"
-                                label="Quotation Amount"
-                                rules={[{ required: true, message: 'Please enter quotation amount' }]}
-                            >
-                                <Input placeholder="Enter quotation amount" />
-                            </Form.Item>
-                            <Form.Item
-                                name="NewProdDescription"
-                                label="Quotation Description (new product description)"
-                                rules={[{ required: true, message: 'Please enter quotation description' }]}
-                            >
-                                <Input.TextArea rows={4} placeholder="Enter quotation description" />
-                            </Form.Item>
-                        </>
-                    )}
-
+                   
                     {/* <Form.Item
                         name="Priority"
                         label="Priority"
