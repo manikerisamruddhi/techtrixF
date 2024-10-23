@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchQuotations } from '../../redux/slices/quotationSlice';
-import { Link } from 'react-router-dom';
 import { Layout, Table, Button, Empty, message, Spin, Typography, Input, Space } from 'antd';
 import CreateQuotationFormModal from '../../components/Quotation/CreateQuotation';
 import QuotationDetailsModal from '../../components/Quotation/QuotationDetails';
 import { SearchOutlined } from '@ant-design/icons';
+import moment from 'moment';
 
 const { Content } = Layout;
 const { Title } = Typography;
@@ -116,6 +116,20 @@ const Quotations = () => {
             // render: (text) => <Link to={`/quotation/${text}`}>Quotation #{text}</Link>,
             // ...getColumnSearchProps('id'), // Search filter for Quotation ID
         },
+       
+        {
+            title: 'Comments',
+            dataIndex: 'Comments',
+            key: 'Comments',
+            ...getColumnSearchProps('Comments'), // Search filter for Final Amount
+        },
+        
+        {
+            title: 'Final Amount',
+            dataIndex: 'FinalAmount',
+            key: 'FinalAmount',
+            // ...getColumnSearchProps('FinalAmount'), // Search filter for Final Amount
+        },
         {
             title: 'status',
             dataIndex: 'status',
@@ -128,18 +142,12 @@ const Quotations = () => {
             onFilter: (value, record) => record.status.includes(value),
         },
         {
-            title: 'Comments',
-            dataIndex: 'Comments',
-            key: 'Comments',
-            ...getColumnSearchProps('Comments'), // Search filter for Final Amount
+            title: 'createdDate',
+            dataIndex: 'createdDate',
+            key: 'createdDate',
+            render: (text) => moment(text).format('YYYY-MM-DD'),
         },
-        {
-            title: 'Final Amount',
-            dataIndex: 'FinalAmount',
-            key: 'FinalAmount',
-            ...getColumnSearchProps('FinalAmount'), // Search filter for Final Amount
-        },
-       
+        
         {
             title: 'Actions',
             key: 'actions',
