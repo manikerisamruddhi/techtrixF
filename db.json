@@ -8,7 +8,7 @@
       "address": "1234 Elm Street",
       "ZipCode": "90210",
       "CountryCode": "+1",
-      "CreatedDate": "2023-01-01T08:00:00Z",
+      "createdDate": "2023-01-01T08:00:00Z",
       "LastUpdateDate": "2023-01-05T14:30:00Z",
       "isActive": true,
       "id": "4f90",
@@ -24,7 +24,7 @@
       "StateCode": "NY",
       "zipCode": "10001",
       "CountryCode": "+1",
-      "CreatedDate": "2023-01-02T09:00:00Z",
+      "createdDate": "2023-01-02T09:00:00Z",
       "LastUpdateDate": "2023-01-06T15:00:00Z",
       "isActive": true,
       "id": "e608",
@@ -40,7 +40,7 @@
       "StateCode": "TX",
       "zipCode": "73301",
       "CountryCode": "+1",
-      "CreatedDate": "2023-01-03T10:00:00Z",
+      "createdDate": "2023-01-03T10:00:00Z",
       "LastUpdateDate": "2023-01-07T16:30:00Z",
       "isActive": true,
       "id": "350c",
@@ -56,7 +56,7 @@
       "StateCode": "FL",
       "zipCode": "33101",
       "CountryCode": "+1",
-      "CreatedDate": "2023-01-04T11:00:00Z",
+      "createdDate": "2023-01-04T11:00:00Z",
       "LastUpdateDate": "2023-01-08T17:00:00Z",
       "isActive": true,
       "id": "4e50",
@@ -72,7 +72,7 @@
       "StateCode": "IL",
       "zipCode": "60601",
       "CountryCode": "+1",
-      "CreatedDate": "2023-01-05T12:00:00Z",
+      "createdDate": "2023-01-05T12:00:00Z",
       "LastUpdateDate": "2023-01-09T18:00:00Z",
       "isActive": true,
       "id": "50c4",
@@ -88,7 +88,7 @@
       "StateCode": "WA",
       "zipCode": "98001",
       "CountryCode": "+1",
-      "CreatedDate": "2023-01-06T13:00:00Z",
+      "createdDate": "2023-01-06T13:00:00Z",
       "LastUpdateDate": "2023-01-10T19:00:00Z",
       "isActive": true,
       "id": "9d82",
@@ -104,7 +104,7 @@
       "StateCode": "CO",
       "zipCode": "80201",
       "CountryCode": "+1",
-      "CreatedDate": "2023-01-07T14:00:00Z",
+      "createdDate": "2023-01-07T14:00:00Z",
       "LastUpdateDate": "2023-01-11T20:00:00Z",
       "isActive": true,
       "id": "0345",
@@ -120,7 +120,7 @@
       "StateCode": "AZ",
       "zipCode": "85001",
       "CountryCode": "+1",
-      "CreatedDate": "2023-01-08T15:00:00Z",
+      "createdDate": "2023-01-08T15:00:00Z",
       "LastUpdateDate": "2023-01-12T21:00:00Z",
       "isActive": true,
       "id": "84bf",
@@ -136,7 +136,7 @@
       "StateCode": "OR",
       "zipCode": "97001",
       "CountryCode": "+1",
-      "CreatedDate": "2023-01-09T16:00:00Z",
+      "createdDate": "2023-01-09T16:00:00Z",
       "LastUpdateDate": "2023-01-13T22:00:00Z",
       "isActive": true,
       "id": "991d",
@@ -152,7 +152,7 @@
       "StateCode": "NV",
       "zipCode": "89501",
       "CountryCode": "+1",
-      "CreatedDate": "2023-01-10T17:00:00Z",
+      "createdDate": "2023-01-10T17:00:00Z",
       "LastUpdateDate": "2023-01-14T23:00:00Z",
       "isActive": true,
       "id": "20a5",
@@ -188,7 +188,7 @@
       "phoneNumber": "9090909090",
       "address": "pune",
       "PinCode": "413718",
-      "CreatedDate": "2024-10-09 15:53:36"
+      "createdDate": "2024-10-09 15:53:36"
     },
     {
       "id": "a449",
@@ -502,7 +502,7 @@
       "address": "ss",
       "PinCode": "ss",
       "isPremium": false,
-      "CreatedDate": "2024-10-18 22:21:08"
+      "createdDate": "2024-10-18 22:21:08"
     },
     {
       "id": "bada",
@@ -513,7 +513,7 @@
       "address": "test",
       "PinCode": "99999",
       "isPremium": false,
-      "CreatedDate": "2024-10-19 11:03:16"
+      "createdDate": "2024-10-19 11:03:16"
     },
     {
       "id": "d67c",
@@ -524,7 +524,7 @@
       "address": "",
       "PinCode": "",
       "isPremium": false,
-      "CreatedDate": "2024-10-19 11:07:20"
+      "createdDate": "2024-10-19 11:07:20"
     },
     {
       "id": "4e35",
@@ -534,6 +534,56 @@
       "phoneNumber": "9090909090",
       "address": "pune",
       "zipCode": "788998"
+    },
+    {
+      "id": "d5fd",
+      "companyName": "NA",
+      "address": "dfff",
+      "firstName": "add",
+      "zipCode": "413718",
+      "lastName": "dff",
+      "email": "mca2022.ashish@asmedu.org",
+      "phoneNumber": "09075943766"
+    },
+    {
+      "id": "dbd1",
+      "companyName": "techtrix",
+      "address": "pune",
+      "firstName": "jkjk",
+      "zipCode": "9009",
+      "lastName": "ll",
+      "email": "email@g.com",
+      "phoneNumber": "9090"
+    },
+    {
+      "id": "05ee",
+      "companyName": "techtrix",
+      "address": "pune",
+      "firstName": "jkjk",
+      "zipCode": "9009",
+      "lastName": "ll",
+      "email": "email@g.com",
+      "phoneNumber": "9090"
+    },
+    {
+      "id": "5377",
+      "companyName": "techtrix",
+      "address": "pune",
+      "firstName": "jkjk",
+      "zipCode": "9009",
+      "lastName": "ll",
+      "email": "email@g.com",
+      "phoneNumber": "9090"
+    },
+    {
+      "id": "db51",
+      "companyName": "techtrix",
+      "address": "pune",
+      "firstName": "jkjk",
+      "zipCode": "9009",
+      "lastName": "ll",
+      "email": "email@g.com",
+      "phoneNumber": "9090"
     }
   ],
   "quotations": [
@@ -547,7 +597,7 @@
       "FinalAmount": 2337.48,
       "status": "Approved",
       "Comments": "Sample comment 1",
-      "CreatedDate": "2024-09-27 10:15:10",
+      "createdDate": "2024-09-27 10:15:10",
       "id": "82e3"
     },
     {
@@ -558,9 +608,9 @@
       "TotalAmount": 3649.93,
       "Discount": 331.99,
       "FinalAmount": 955.68,
-      "status": "Pending",
+      "status": "Approved",
       "Comments": "Sample comment 2",
-      "CreatedDate": "2024-09-27 10:15:10",
+      "createdDate": "2024-09-27 10:15:10",
       "id": "55b6"
     },
     {
@@ -573,7 +623,7 @@
       "FinalAmount": 4487.7,
       "status": "Approved",
       "Comments": "Sample comment 3",
-      "CreatedDate": "2024-09-27 10:15:10",
+      "createdDate": "2024-09-27 10:15:10",
       "id": "850a"
     },
     {
@@ -586,7 +636,7 @@
       "FinalAmount": 2524.14,
       "status": "Approved",
       "Comments": "Sample comment 4",
-      "CreatedDate": "2024-09-27 10:15:10",
+      "createdDate": "2024-09-27 10:15:10",
       "id": "8e2c"
     },
     {
@@ -599,7 +649,7 @@
       "FinalAmount": 2075.63,
       "status": "Approved",
       "Comments": "Sample comment 5",
-      "CreatedDate": "2024-09-27 10:15:10",
+      "createdDate": "2024-09-27 10:15:10",
       "id": "da71"
     },
     {
@@ -612,7 +662,7 @@
       "FinalAmount": 1335.37,
       "status": "Approved",
       "Comments": "Sample comment 6",
-      "CreatedDate": "2024-09-27 10:15:10",
+      "createdDate": "2024-09-27 10:15:10",
       "id": "063f"
     },
     {
@@ -625,7 +675,7 @@
       "FinalAmount": 1387.43,
       "status": "Pending",
       "Comments": "Sample comment 7",
-      "CreatedDate": "2024-09-27 10:15:10",
+      "createdDate": "2024-09-27 10:15:10",
       "id": "fb40"
     },
     {
@@ -638,7 +688,7 @@
       "FinalAmount": 4168.89,
       "status": "Pending",
       "Comments": "Sample comment 8",
-      "CreatedDate": "2024-09-27 10:15:10",
+      "createdDate": "2024-09-27 10:15:10",
       "id": "b7a9"
     },
     {
@@ -651,7 +701,7 @@
       "FinalAmount": 2374.15,
       "status": "Rejected",
       "Comments": "Sample comment 9",
-      "CreatedDate": "2024-09-27 10:15:10",
+      "createdDate": "2024-09-27 10:15:10",
       "id": "c924"
     },
     {
@@ -664,27 +714,27 @@
       "FinalAmount": 3192.6,
       "status": "Pending",
       "Comments": "Sample comment 10",
-      "CreatedDate": "2024-09-27 10:15:10",
+      "createdDate": "2024-09-27 10:15:10",
       "id": "5ab2"
     },
     {
       "id": "d671",
       "FinalAmount": "90000",
-      "CreatedDate": "2024-10-05T11:50:16.050Z",
+      "createdDate": "2024-10-05T11:50:16.050Z",
       "status": "Pending"
     },
     {
       "id": "61b4",
       "TicketID": "9642",
       "FinalAmount": "88009",
-      "CreatedDate": "2024-10-05T11:57:18.579Z",
+      "createdDate": "2024-10-05T11:57:18.579Z",
       "status": "Pending"
     },
     {
       "id": "eea0",
       "TicketID": "f575",
       "FinalAmount": "2000",
-      "CreatedDate": "2024-10-09T09:24:47.960Z",
+      "createdDate": "2024-10-09T09:24:47.960Z",
       "status": "Pending"
     },
     {
@@ -704,7 +754,7 @@
       ],
       "FinalAmount": 1080,
       "status": "Pending",
-      "CreatedDate": "2024-10-09 15:46:04",
+      "createdDate": "2024-10-09 15:46:04",
       "Comments": "delever fast"
     },
     {
@@ -716,14 +766,14 @@
       "FinalAmount": 16408,
       "status": "Pending",
       "createdBy": "Admin",
-      "CreatedDate": "2024-10-09 15:53:36",
+      "createdDate": "2024-10-09 15:53:36",
       "Comments": "urgetnt "
     },
     {
       "id": "662f",
       "TicketID": "5fe0",
       "FinalAmount": "2000",
-      "CreatedDate": "2024-10-09T10:48:26.583Z",
+      "createdDate": "2024-10-09T10:48:26.583Z",
       "status": "Pending"
     },
     {
@@ -734,7 +784,7 @@
       "FinalAmount": 900,
       "status": "Pending",
       "createdBy": "Admin",
-      "CreatedDate": "2024-10-09 16:10:28",
+      "createdDate": "2024-10-09 16:10:28",
       "Comments": "asdf"
     },
     {
@@ -745,7 +795,7 @@
       "FinalAmount": 90000,
       "status": "Pending",
       "createdBy": "Admin",
-      "CreatedDate": "2024-10-09 16:10:28",
+      "createdDate": "2024-10-09 16:10:28",
       "Comments": "delvary"
     },
     {
@@ -821,7 +871,7 @@
       "FinalAmount": 8,
       "status": "Pending",
       "createdBy": "Admin",
-      "CreatedDate": "2024-10-18 22:21:08",
+      "createdDate": "2024-10-18 22:21:08",
       "Comments": "jkjk"
     },
     {
@@ -832,7 +882,7 @@
       "FinalAmount": 9,
       "status": "Pending",
       "createdBy": "Admin",
-      "CreatedDate": "2024-10-19 11:03:16",
+      "createdDate": "2024-10-19 11:03:16",
       "Comments": "added the quoatation"
     },
     {
@@ -843,7 +893,7 @@
       "FinalAmount": 24,
       "status": "Pending",
       "createdBy": "Admin",
-      "CreatedDate": "2024-10-19 11:07:20",
+      "createdDate": "2024-10-19 11:07:20",
       "Comments": "testing comment for quoatation"
     },
     {
@@ -855,7 +905,7 @@
       "FinalAmount": 80,
       "status": "Pending",
       "createdBy": "Admin",
-      "CreatedDate": "2024-10-19 11:29:00",
+      "createdDate": "2024-10-19 11:29:00",
       "Comments": "sfd"
     },
     {
@@ -868,6 +918,32 @@
           "key": 1729331265882
         }
       ]
+    },
+    {
+      "id": "5d97",
+      "customerID": "e608",
+      "ProductId": [
+        "1ea9"
+      ],
+      "FinalAmount": 1214.22,
+      "status": "Pending",
+      "createdBy": "Admin",
+      "isQuotationCreated": true,
+      "createdDate": "2024-10-23 11:13:32",
+      "Comments": "af"
+    },
+    {
+      "id": "7387",
+      "customerID": "4f90",
+      "ProductId": [
+        "1c95"
+      ],
+      "FinalAmount": 34592.36,
+      "status": "Pending",
+      "createdBy": "Admin",
+      "isQuotationCreated": true,
+      "createdDate": "2024-10-23 16:14:27",
+      "Comments": "hello hello"
     }
   ],
   "products": [
@@ -1478,6 +1554,394 @@
       "modelNo": "Service-",
       "price": "88009",
       "description": "ajkjdfk"
+    },
+    {
+      "id": "83e9",
+      "brand": "brand test",
+      "modelNo": "test ",
+      "description": "dffdf",
+      "isSerialNoAllowed": true,
+      "partCode": "sfd",
+      "hsnCode": "sdf",
+      "price": "0",
+      "quantity": "",
+      "warrantyMonths": "9",
+      "created_date": "2024-10-23T05:02:46.162Z",
+      "customerID": "d5fd"
+    },
+    {
+      "id": "ebb3",
+      "brand": "Sony",
+      "modelNo": "CFI-1015A01",
+      "price": 596.42,
+      "quantity": 58,
+      "description": "Sony PlayStation 5 Console - 825GB SSD, 4K Gaming, DualSense Wireless Controller, Ray Tracing Support, and Backward Compatibility with PlayStation 4 games. Experience ultra-fast load times and a new level of immersive gaming with next-gen graphics."
+    },
+    {
+      "id": "73c4",
+      "brand": "nnnnnn",
+      "modelNo": "dd",
+      "price": 20,
+      "quantity": 1,
+      "description": "",
+      "hasSerialNumber": "no"
+    },
+    {
+      "id": "6de2",
+      "brand": "Sony",
+      "modelNo": "CFI-1015A01",
+      "price": 596.42,
+      "quantity": 58,
+      "description": "Sony PlayStation 5 Console - 825GB SSD, 4K Gaming, DualSense Wireless Controller, Ray Tracing Support, and Backward Compatibility with PlayStation 4 games. Experience ultra-fast load times and a new level of immersive gaming with next-gen graphics."
+    },
+    {
+      "id": "0095",
+      "brand": "nnnnnn",
+      "modelNo": "dd",
+      "price": 20,
+      "quantity": 1,
+      "description": "",
+      "hasSerialNumber": "no"
+    },
+    {
+      "id": "7b27",
+      "brand": "Sony",
+      "modelNo": "CFI-1015A01",
+      "price": 596.42,
+      "quantity": 58,
+      "description": "Sony PlayStation 5 Console - 825GB SSD, 4K Gaming, DualSense Wireless Controller, Ray Tracing Support, and Backward Compatibility with PlayStation 4 games. Experience ultra-fast load times and a new level of immersive gaming with next-gen graphics."
+    },
+    {
+      "id": "1e23",
+      "brand": "nnnnnn",
+      "modelNo": "dd",
+      "price": 20,
+      "quantity": 1,
+      "description": "",
+      "hasSerialNumber": "no"
+    },
+    {
+      "id": "3a90",
+      "brand": "Sony",
+      "modelNo": "CFI-1015A01",
+      "price": 596.42,
+      "quantity": 58,
+      "description": "Sony PlayStation 5 Console - 825GB SSD, 4K Gaming, DualSense Wireless Controller, Ray Tracing Support, and Backward Compatibility with PlayStation 4 games. Experience ultra-fast load times and a new level of immersive gaming with next-gen graphics."
+    },
+    {
+      "id": "8673",
+      "brand": "nnnnnn",
+      "modelNo": "dd",
+      "price": 20,
+      "quantity": 1,
+      "description": "",
+      "hasSerialNumber": "no"
+    },
+    {
+      "id": "e6d6",
+      "brand": "Sony",
+      "modelNo": "CFI-1015A01",
+      "price": 596.42,
+      "quantity": 58,
+      "description": "Sony PlayStation 5 Console - 825GB SSD, 4K Gaming, DualSense Wireless Controller, Ray Tracing Support, and Backward Compatibility with PlayStation 4 games. Experience ultra-fast load times and a new level of immersive gaming with next-gen graphics."
+    },
+    {
+      "id": "df43",
+      "brand": "nnnnnn",
+      "modelNo": "dd",
+      "price": 20,
+      "quantity": 1,
+      "description": "",
+      "hasSerialNumber": "no"
+    },
+    {
+      "id": "a180",
+      "brand": "Sony",
+      "modelNo": "CFI-1015A01",
+      "price": 596.42,
+      "quantity": 58,
+      "description": "Sony PlayStation 5 Console - 825GB SSD, 4K Gaming, DualSense Wireless Controller, Ray Tracing Support, and Backward Compatibility with PlayStation 4 games. Experience ultra-fast load times and a new level of immersive gaming with next-gen graphics."
+    },
+    {
+      "id": "55f0",
+      "brand": "nnnnnn",
+      "modelNo": "dd",
+      "price": 20,
+      "quantity": 1,
+      "description": "",
+      "hasSerialNumber": "no"
+    },
+    {
+      "id": "9a42",
+      "brand": "Sony",
+      "modelNo": "CFI-1015A01",
+      "price": 596.42,
+      "quantity": 58,
+      "description": "Sony PlayStation 5 Console - 825GB SSD, 4K Gaming, DualSense Wireless Controller, Ray Tracing Support, and Backward Compatibility with PlayStation 4 games. Experience ultra-fast load times and a new level of immersive gaming with next-gen graphics."
+    },
+    {
+      "id": "cbd1",
+      "brand": "nnnnnn",
+      "modelNo": "dd",
+      "price": 20,
+      "quantity": 1,
+      "description": "",
+      "hasSerialNumber": "no"
+    },
+    {
+      "id": "ca5e",
+      "brand": "Sony",
+      "modelNo": "CFI-1015A01",
+      "price": 596.42,
+      "quantity": 58,
+      "description": "Sony PlayStation 5 Console - 825GB SSD, 4K Gaming, DualSense Wireless Controller, Ray Tracing Support, and Backward Compatibility with PlayStation 4 games. Experience ultra-fast load times and a new level of immersive gaming with next-gen graphics."
+    },
+    {
+      "id": "1b9a",
+      "brand": "nnnnnn",
+      "modelNo": "dd",
+      "price": 20,
+      "quantity": 1,
+      "description": "",
+      "hasSerialNumber": "no"
+    },
+    {
+      "id": "bc96",
+      "brand": "Sony",
+      "modelNo": "CFI-1015A01",
+      "price": 596.42,
+      "quantity": 58,
+      "description": "Sony PlayStation 5 Console - 825GB SSD, 4K Gaming, DualSense Wireless Controller, Ray Tracing Support, and Backward Compatibility with PlayStation 4 games. Experience ultra-fast load times and a new level of immersive gaming with next-gen graphics."
+    },
+    {
+      "id": "e793",
+      "brand": "nnnnnn",
+      "modelNo": "dd",
+      "price": 20,
+      "quantity": 1,
+      "description": "",
+      "hasSerialNumber": "no"
+    },
+    {
+      "id": "f46f",
+      "brand": "Sony",
+      "modelNo": "CFI-1015A01",
+      "price": 596.42,
+      "quantity": 58,
+      "description": "Sony PlayStation 5 Console - 825GB SSD, 4K Gaming, DualSense Wireless Controller, Ray Tracing Support, and Backward Compatibility with PlayStation 4 games. Experience ultra-fast load times and a new level of immersive gaming with next-gen graphics."
+    },
+    {
+      "id": "3316",
+      "brand": "nnnnnn",
+      "modelNo": "dd",
+      "price": 20,
+      "quantity": 1,
+      "description": "",
+      "hasSerialNumber": "no"
+    },
+    {
+      "id": "8d36",
+      "brand": "Sony",
+      "modelNo": "CFI-1015A01",
+      "price": 596.42,
+      "quantity": 58,
+      "description": "Sony PlayStation 5 Console - 825GB SSD, 4K Gaming, DualSense Wireless Controller, Ray Tracing Support, and Backward Compatibility with PlayStation 4 games. Experience ultra-fast load times and a new level of immersive gaming with next-gen graphics."
+    },
+    {
+      "id": "b8df",
+      "brand": "nnnnnn",
+      "modelNo": "dd",
+      "price": 20,
+      "quantity": 1,
+      "description": "asdf",
+      "hasSerialNumber": "no"
+    },
+    {
+      "id": "da48",
+      "brand": "Sony",
+      "modelNo": "CFI-1015A01",
+      "price": 596.42,
+      "quantity": 58,
+      "description": "Sony PlayStation 5 Console - 825GB SSD, 4K Gaming, DualSense Wireless Controller, Ray Tracing Support, and Backward Compatibility with PlayStation 4 games. Experience ultra-fast load times and a new level of immersive gaming with next-gen graphics."
+    },
+    {
+      "id": "b47d",
+      "brand": "nnnnnn",
+      "modelNo": "dd",
+      "price": 20,
+      "quantity": 1,
+      "description": "asdf",
+      "hasSerialNumber": "no"
+    },
+    {
+      "id": "5a35",
+      "brand": "Sony",
+      "modelNo": "CFI-1015A01",
+      "price": 596.42,
+      "quantity": 58,
+      "description": "Sony PlayStation 5 Console - 825GB SSD, 4K Gaming, DualSense Wireless Controller, Ray Tracing Support, and Backward Compatibility with PlayStation 4 games. Experience ultra-fast load times and a new level of immersive gaming with next-gen graphics."
+    },
+    {
+      "id": "93d6",
+      "brand": "nnnnnn",
+      "modelNo": "dd",
+      "price": 20,
+      "quantity": 1,
+      "description": "asdf",
+      "hasSerialNumber": "no"
+    },
+    {
+      "id": "e059",
+      "brand": "Sony",
+      "modelNo": "CFI-1015A01",
+      "price": 596.42,
+      "quantity": 58,
+      "description": "Sony PlayStation 5 Console - 825GB SSD, 4K Gaming, DualSense Wireless Controller, Ray Tracing Support, and Backward Compatibility with PlayStation 4 games. Experience ultra-fast load times and a new level of immersive gaming with next-gen graphics."
+    },
+    {
+      "id": "5249",
+      "brand": "nnnnnn",
+      "modelNo": "dd",
+      "price": 20,
+      "quantity": 1,
+      "description": "asdf",
+      "hasSerialNumber": "no"
+    },
+    {
+      "id": "db03",
+      "brand": "Sony",
+      "modelNo": "CFI-1015A01",
+      "price": 596.42,
+      "quantity": 58,
+      "description": "Sony PlayStation 5 Console - 825GB SSD, 4K Gaming, DualSense Wireless Controller, Ray Tracing Support, and Backward Compatibility with PlayStation 4 games. Experience ultra-fast load times and a new level of immersive gaming with next-gen graphics."
+    },
+    {
+      "id": "ee7e",
+      "brand": "nnnnnn",
+      "modelNo": "dd",
+      "price": 20,
+      "quantity": 1,
+      "description": "asdf",
+      "hasSerialNumber": "no"
+    },
+    {
+      "id": "2b94",
+      "brand": "Sony",
+      "modelNo": "CFI-1015A01",
+      "price": 596.42,
+      "quantity": 58,
+      "description": "Sony PlayStation 5 Console - 825GB SSD, 4K Gaming, DualSense Wireless Controller, Ray Tracing Support, and Backward Compatibility with PlayStation 4 games. Experience ultra-fast load times and a new level of immersive gaming with next-gen graphics."
+    },
+    {
+      "id": "6dc1",
+      "brand": "nnnnnn",
+      "modelNo": "dd",
+      "price": 20,
+      "quantity": 1,
+      "description": "asdf",
+      "hasSerialNumber": "no"
+    },
+    {
+      "id": "3c41",
+      "brand": "Sony",
+      "modelNo": "CFI-1015A01",
+      "price": 596.42,
+      "quantity": 58,
+      "description": "Sony PlayStation 5 Console - 825GB SSD, 4K Gaming, DualSense Wireless Controller, Ray Tracing Support, and Backward Compatibility with PlayStation 4 games. Experience ultra-fast load times and a new level of immersive gaming with next-gen graphics."
+    },
+    {
+      "id": "ef04",
+      "brand": "nnnnnn",
+      "modelNo": "dd",
+      "price": 20,
+      "quantity": 1,
+      "description": "asdf",
+      "hasSerialNumber": "no",
+      "warrenty": 1
+    },
+    {
+      "id": "16c7",
+      "brand": "nnnnnn",
+      "modelNo": "dd",
+      "price": 20,
+      "quantity": 1,
+      "description": "asdf",
+      "hasSerialNumber": "no",
+      "warrenty": 1
+    },
+    {
+      "id": "47eb",
+      "brand": "Sony",
+      "modelNo": "CFI-1015A01",
+      "price": 596.42,
+      "quantity": 58,
+      "description": "Sony PlayStation 5 Console - 825GB SSD, 4K Gaming, DualSense Wireless Controller, Ray Tracing Support, and Backward Compatibility with PlayStation 4 games. Experience ultra-fast load times and a new level of immersive gaming with next-gen graphics."
+    },
+    {
+      "id": "12b8",
+      "brand": "Service-",
+      "modelNo": "Service-",
+      "price": "88009",
+      "quantity": 1,
+      "description": "ajkjdfk",
+      "warrenty": 1
+    },
+    {
+      "id": "3412",
+      "brand": "Dell",
+      "modelNo": "XPS9370-9823SLV",
+      "price": 12.39,
+      "quantity": 98,
+      "description": "Dell XPS 13 Laptop - 13.3-inch Full HD Display, Intel Core i7 8th Gen Processor, 16GB RAM, 512GB SSD, Windows 11 Home. Ultra-thin, lightweight, and designed for performance, ideal for professionals and creatives on the go."
+    },
+    {
+      "id": "17c9",
+      "brand": "jjjj",
+      "modelNo": "jj",
+      "description": "jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj",
+      "isSerialNoAllowed": false,
+      "created_date": "2024-10-23T06:20:02.230Z"
+    },
+    {
+      "id": "d632",
+      "brand": "jjjj",
+      "modelNo": "jj",
+      "description": "sdf",
+      "isSerialNoAllowed": true,
+      "created_date": "2024-10-23T06:30:46.219Z"
+    },
+    {
+      "id": "67ab",
+      "brand": "adfdf",
+      "modelNo": "asdfsad",
+      "description": "asdfadffds",
+      "isSerialNoAllowed": false,
+      "created_date": "2024-10-23T06:33:03.581Z"
+    },
+    {
+      "id": "1ea9",
+      "customerID": "e608",
+      "brand": "Dell",
+      "created_date": "2024-10-23T09:50:34.783Z",
+      "description": "Dell XPS 13 Laptop - 13.3-inch Full HD Display, Intel Core i7 8th Gen Processor, 16GB RAM, 512GB SSD, Windows 11 Home. Ultra-thin, lightweight, and designed for performance, ideal for professionals and creatives on the go.",
+      "hsnCode": "HSN003",
+      "is_negotiable": false,
+      "modelNo": "XPS9370-9823SLV",
+      "partCode": "XPS13",
+      "price": 12.39,
+      "quantity": 98,
+      "warrantyMonths": 14,
+      "warranty_start_date": "2024-09-09 11:51:11",
+      "warranty_end_date": "2026-11-09 11:51:11",
+      "isSerialNoAllowed": false
+    },
+    {
+      "id": "416f",
+      "brand": "Sony",
+      "modelNo": "CFI-1015A01",
+      "price": 596.42,
+      "quantity": 58,
+      "description": "Sony PlayStation 5 Console - 825GB SSD, 4K Gaming, DualSense Wireless Controller, Ray Tracing Support, and Backward Compatibility with PlayStation 4 games. Experience ultra-fast load times and a new level of immersive gaming with next-gen graphics."
     }
   ],
   "invoices": [
@@ -1506,7 +1970,8 @@
       "description": "ahjhj",
       "status": "in-progress",
       "assignedDate": "2024-10-14T07:52:28.972Z",
-      "id": "0a67"
+      "id": "0a67",
+      "isQuotationCreated": true
     },
     {
       "title": "titel 2",
@@ -1516,7 +1981,8 @@
       "description": "Payment not going through for the order.",
       "status": "in-progress",
       "assignedDate": "2024-10-14T09:04:13.220Z",
-      "id": "e734"
+      "id": "e734",
+      "isQuotationCreated": true
     },
     {
       "title": "titel 2",
@@ -1527,7 +1993,8 @@
       "status": "in-progress",
       "assignedDate": "2024-10-15T11:08:27.760Z",
       "id": "59b1",
-      "isChargeable": true
+      "isChargeable": true,
+      "isQuotationCreated": false
     },
     {
       "title": "titel 2",
@@ -1537,7 +2004,8 @@
       "description": "Customer requesting a refund for a recent purchase.",
       "status": "in-progress",
       "assignedDate": "2024-10-14T06:44:17.324Z",
-      "id": "70f6"
+      "id": "70f6",
+      "isQuotationCreated": true
     },
     {
       "title": "titel 2",
@@ -1547,7 +2015,8 @@
       "description": "Customer requesting a new feature in the application.",
       "status": "in-progress",
       "assignedDate": "2024-10-14T06:44:42.512Z",
-      "id": "f27a"
+      "id": "f27a",
+      "isQuotationCreated": true
     },
     {
       "title": "titel 2",
@@ -1557,7 +2026,8 @@
       "description": "complete it by today\n",
       "status": "in-progress",
       "assignedDate": "2024-10-14T06:48:58.537Z",
-      "id": "9536"
+      "id": "9536",
+      "isQuotationCreated": true
     },
     {
       "title": "titel 2",
@@ -1567,7 +2037,8 @@
       "description": "testttt",
       "status": "in-progress",
       "assignedDate": "2024-10-14T06:49:24.328Z",
-      "id": "30f5"
+      "id": "30f5",
+      "isQuotationCreated": true
     },
     {
       "title": "titel 2",
@@ -1577,7 +2048,8 @@
       "description": "afdfgaddd",
       "status": "in-progress",
       "assignedDate": "2024-10-14T06:35:39.929Z",
-      "id": "fe3c"
+      "id": "fe3c",
+      "isQuotationCreated": true
     },
     {
       "title": "titel 2",
@@ -1587,7 +2059,8 @@
       "description": "adffff",
       "status": "in-progress",
       "assignedDate": "2024-10-14T06:49:45.246Z",
-      "id": "b4cd"
+      "id": "b4cd",
+      "isQuotationCreated": true
     },
     {
       "title": "titel 2",
@@ -1598,7 +2071,8 @@
       "status": "in-progress",
       "assignedDate": "2024-10-15T11:08:51.138Z",
       "id": "f575",
-      "isChargeable": true
+      "isChargeable": true,
+      "isQuotationCreated": false
     },
     {
       "id": "fbf1",
@@ -1609,10 +2083,11 @@
       "isChargeable": true,
       "status": "closed",
       "createdBy": "admin",
-      "CreatedDate": "2024-10-09T09:30:46.707Z",
+      "createdDate": "2024-10-09T09:30:46.707Z",
       "description": "test",
       "assignedTo": "2b3c4d",
-      "assignedDate": "2024-10-19T05:03:44.897Z"
+      "assignedDate": "2024-10-19T05:03:44.897Z",
+      "isQuotationCreated": false
     },
     {
       "id": "a7d0",
@@ -1623,10 +2098,11 @@
       "isChargeable": false,
       "status": "closed",
       "createdBy": "admin",
-      "CreatedDate": "2024-10-09T09:31:42.377Z",
+      "createdDate": "2024-10-09T09:31:42.377Z",
       "description": "high",
       "assignedTo": "1a2b3c",
-      "assignedDate": "2024-10-19T05:04:21.403Z"
+      "assignedDate": "2024-10-19T05:04:21.403Z",
+      "isQuotationCreated": true
     },
     {
       "id": "5fe0",
@@ -1637,10 +2113,11 @@
       "isChargeable": true,
       "status": "closed",
       "createdBy": "admin",
-      "CreatedDate": "2024-10-09T10:48:26.583Z",
+      "createdDate": "2024-10-09T10:48:26.583Z",
       "description": "adfkk",
       "assignedTo": "2b3c4d",
-      "assignedDate": "2024-10-15T11:56:05.769Z"
+      "assignedDate": "2024-10-15T11:56:05.769Z",
+      "isQuotationCreated": false
     },
     {
       "id": "58ec",
@@ -1651,9 +2128,10 @@
       "isChargeable": false,
       "status": "in-progress",
       "createdBy": "admin",
-      "CreatedDate": "2024-10-09T11:11:53.776Z",
+      "createdDate": "2024-10-09T11:11:53.776Z",
       "description": "testggggg",
-      "assignedTo": "2b3c4d"
+      "assignedTo": "2b3c4d",
+      "isQuotationCreated": true
     },
     {
       "id": "69cf",
@@ -1663,9 +2141,10 @@
       "isChargeable": true,
       "status": "closed",
       "createdBy": "admin",
-      "CreatedDate": "2024-10-10T11:50:26.937Z",
+      "createdDate": "2024-10-10T11:50:26.937Z",
       "description": "asdf",
-      "assignedTo": "1a2b3c"
+      "assignedTo": "1a2b3c",
+      "isQuotationCreated": true
     },
     {
       "id": "da1c",
@@ -1675,10 +2154,11 @@
       "isChargeable": true,
       "status": "closed",
       "createdBy": "admin",
-      "CreatedDate": "2024-10-10T11:51:01.546Z",
+      "createdDate": "2024-10-10T11:51:01.546Z",
       "description": "updated problem solved",
       "assignedTo": "2b3c4d",
-      "assignedDate": "2024-10-19T09:51:36.848Z"
+      "assignedDate": "2024-10-19T09:51:36.848Z",
+      "isQuotationCreated": true
     },
     {
       "id": "6e7e",
@@ -1688,9 +2168,10 @@
       "isChargeable": true,
       "status": "in-progress",
       "createdBy": "admin",
-      "CreatedDate": "2024-10-10T12:10:35.492Z",
+      "createdDate": "2024-10-10T12:10:35.492Z",
       "description": "asdf",
-      "assignedTo": "2b3c4d"
+      "assignedTo": "2b3c4d",
+      "isQuotationCreated": true
     },
     {
       "id": "c4a0",
@@ -1700,8 +2181,9 @@
       "isChargeable": true,
       "status": "Open",
       "createdBy": "Admin",
-      "CreatedDate": "2024-10-10T12:18:02.449Z",
-      "description": "afda"
+      "createdDate": "2024-10-10T12:18:02.449Z",
+      "description": "afda",
+      "isQuotationCreated": true
     },
     {
       "id": "e30b",
@@ -1711,10 +2193,11 @@
       "isChargeable": true,
       "status": "in-progress",
       "createdBy": "admin",
-      "CreatedDate": "2024-10-10T12:20:07.500Z",
+      "createdDate": "2024-10-10T12:20:07.500Z",
       "assignedTo": "3c4d5e",
       "description": "hjhhkjk",
-      "assignedDate": "2024-10-15T11:23:14.122Z"
+      "assignedDate": "2024-10-15T11:23:14.122Z",
+      "isQuotationCreated": true
     },
     {
       "id": "d5c3",
@@ -1724,10 +2207,11 @@
       "isChargeable": true,
       "status": "in-progress",
       "createdBy": "admin",
-      "CreatedDate": "2024-10-10T12:21:22.038Z",
+      "createdDate": "2024-10-10T12:21:22.038Z",
       "assignedTo": "3c4d5e",
       "description": "hkjhkjkjklllkljlkjlkj",
-      "assignedDate": "2024-10-14T07:14:52.813Z"
+      "assignedDate": "2024-10-14T07:14:52.813Z",
+      "isQuotationCreated": true
     },
     {
       "customerID": "4f90",
@@ -1736,7 +2220,8 @@
       "description": "asdfdsaffffffffffffffff",
       "status": "in-progress",
       "assignedDate": "2024-10-14T06:53:07.194Z",
-      "id": "cd15"
+      "id": "cd15",
+      "isQuotationCreated": true
     },
     {
       "customerID": "4f90",
@@ -1745,7 +2230,8 @@
       "description": "testttjhjhj",
       "status": "in-progress",
       "assignedDate": "2024-10-14T06:50:26.016Z",
-      "id": "155f"
+      "id": "155f",
+      "isQuotationCreated": true
     },
     {
       "id": "aae3",
@@ -1755,8 +2241,9 @@
       "isChargeable": true,
       "status": "Open",
       "createdBy": "Admin",
-      "CreatedDate": "2024-10-14T07:32:10.110Z",
-      "description": "kiiiillll"
+      "createdDate": "2024-10-14T07:32:10.110Z",
+      "description": "kiiiillll",
+      "isQuotationCreated": true
     },
     {
       "id": "c0e8",
@@ -1766,10 +2253,11 @@
       "isChargeable": true,
       "status": "in-progress",
       "createdBy": "admin",
-      "CreatedDate": "2024-10-14T07:41:59.383Z",
+      "createdDate": "2024-10-14T07:41:59.383Z",
       "description": "assighned to jane smith take details from john doe",
       "assignedTo": "2b3c4d",
-      "assignedDate": "2024-10-14T08:03:20.532Z"
+      "assignedDate": "2024-10-14T08:03:20.532Z",
+      "isQuotationCreated": true
     },
     {
       "id": "0c77",
@@ -1779,8 +2267,9 @@
       "isChargeable": true,
       "status": "Open",
       "createdBy": "Admin",
-      "CreatedDate": "2024-10-14T12:42:52.869Z",
-      "description": "teset"
+      "createdDate": "2024-10-14T12:42:52.869Z",
+      "description": "teset",
+      "isQuotationCreated": true
     },
     {
       "id": "dab8",
@@ -1790,8 +2279,9 @@
       "isChargeable": true,
       "status": "Open",
       "createdBy": "Admin",
-      "CreatedDate": "2024-10-14T12:43:57.686Z",
-      "description": "adffd"
+      "createdDate": "2024-10-14T12:43:57.686Z",
+      "description": "adffd",
+      "isQuotationCreated": true
     },
     {
       "id": "3fe0",
@@ -1801,8 +2291,9 @@
       "isChargeable": false,
       "status": "Open",
       "createdBy": "Admin",
-      "CreatedDate": "2024-10-15T10:41:05.004Z",
-      "description": "dff"
+      "createdDate": "2024-10-15T10:41:05.004Z",
+      "description": "dff",
+      "isQuotationCreated": true
     },
     {
       "id": "f828",
@@ -1812,8 +2303,9 @@
       "isChargeable": true,
       "status": "Open",
       "createdBy": "Admin",
-      "CreatedDate": "2024-10-15T10:45:44.500Z",
-      "description": "df"
+      "createdDate": "2024-10-15T10:45:44.500Z",
+      "description": "df",
+      "isQuotationCreated": true
     },
     {
       "id": "1eac",
@@ -1823,8 +2315,9 @@
       "isChargeable": false,
       "status": "Open",
       "createdBy": "Admin",
-      "CreatedDate": "2024-10-15T10:46:55.084Z",
-      "description": "jk"
+      "createdDate": "2024-10-15T10:46:55.084Z",
+      "description": "jk",
+      "isQuotationCreated": true
     },
     {
       "id": "2fa3",
@@ -1834,8 +2327,9 @@
       "isChargeable": true,
       "status": "Open",
       "createdBy": "Admin",
-      "CreatedDate": "2024-10-15T11:57:50.005Z",
-      "description": ""
+      "createdDate": "2024-10-15T11:57:50.005Z",
+      "description": "",
+      "isQuotationCreated": false
     },
     {
       "id": "397c",
@@ -1845,8 +2339,9 @@
       "isChargeable": true,
       "status": "Open",
       "createdBy": "Admin",
-      "CreatedDate": "2024-10-15T12:04:56.409Z",
-      "description": "a"
+      "createdDate": "2024-10-15T12:04:56.409Z",
+      "description": "a",
+      "isQuotationCreated": true
     },
     {
       "id": "08f6",
@@ -1856,7 +2351,8 @@
       "isChargeable": true,
       "status": "Open",
       "createdBy": "Admin",
-      "CreatedDate": "2024-10-15T12:11:23.233Z"
+      "createdDate": "2024-10-15T12:11:23.233Z",
+      "isQuotationCreated": true
     },
     {
       "id": "5ffe",
@@ -1866,8 +2362,9 @@
       "isChargeable": false,
       "status": "Open",
       "createdBy": "Admin",
-      "CreatedDate": "2024-10-15T12:18:27.003Z",
-      "description": "fd"
+      "createdDate": "2024-10-15T12:18:27.003Z",
+      "description": "fd",
+      "isQuotationCreated": true
     },
     {
       "id": "ddb1",
@@ -1877,8 +2374,9 @@
       "isChargeable": true,
       "status": "Open",
       "createdBy": "Admin",
-      "CreatedDate": "2024-10-15T12:25:36.287Z",
-      "description": "jk"
+      "createdDate": "2024-10-15T12:25:36.287Z",
+      "description": "jk",
+      "isQuotationCreated": true
     },
     {
       "id": "2ca5",
@@ -1888,16 +2386,18 @@
       "isChargeable": true,
       "status": "Open",
       "createdBy": "Admin",
-      "CreatedDate": "2024-10-15T12:34:29.170Z",
-      "description": "as"
+      "createdDate": "2024-10-15T12:34:29.170Z",
+      "description": "as",
+      "isQuotationCreated": true
     },
     {
       "id": "ac92",
       "title": "jk",
       "status": "Open",
       "createdBy": "Admin",
-      "CreatedDate": "2024-10-17T07:41:57.596Z",
-      "description": "jkj"
+      "createdDate": "2024-10-17T07:41:57.596Z",
+      "description": "jkj",
+      "isQuotationCreated": true
     },
     {
       "id": "aa7e",
@@ -1905,8 +2405,9 @@
       "customerID": "7d48",
       "status": "Open",
       "createdBy": "Admin",
-      "CreatedDate": "2024-10-17T07:50:08.517Z",
-      "description": "hhhh"
+      "createdDate": "2024-10-17T07:50:08.517Z",
+      "description": "hhhh",
+      "isQuotationCreated": true
     },
     {
       "id": "1fd3",
@@ -1914,8 +2415,9 @@
       "customerID": "12a4",
       "status": "Open",
       "createdBy": "Admin",
-      "CreatedDate": "2024-10-17T09:20:26.948Z",
-      "description": "this is testing"
+      "createdDate": "2024-10-17T09:20:26.948Z",
+      "description": "this is testing",
+      "isQuotationCreated": true
     },
     {
       "id": "5b30",
@@ -1923,8 +2425,9 @@
       "customerID": "dd0c",
       "status": "Open",
       "createdBy": "Admin",
-      "CreatedDate": "2024-10-17T09:42:01.048Z",
-      "description": "sdf"
+      "createdDate": "2024-10-17T09:42:01.048Z",
+      "description": "sdf",
+      "isQuotationCreated": true
     },
     {
       "id": "54b5",
@@ -1933,8 +2436,9 @@
       "isChargeable": true,
       "status": "Open",
       "createdBy": "Admin",
-      "CreatedDate": "2024-10-17T09:50:22.335Z",
-      "description": "adfdfd"
+      "createdDate": "2024-10-17T09:50:22.335Z",
+      "description": "adfdfd",
+      "isQuotationCreated": true
     },
     {
       "id": "d81f",
@@ -1944,8 +2448,9 @@
       "isChargeable": true,
       "status": "Open",
       "createdBy": "Admin",
-      "CreatedDate": "2024-10-18T08:37:07.607Z",
-      "description": "jk"
+      "createdDate": "2024-10-18T08:37:07.607Z",
+      "description": "jk",
+      "isQuotationCreated": true
     },
     {
       "id": "a5ea",
@@ -1954,9 +2459,10 @@
       "isChargeable": false,
       "status": "in-progress",
       "createdBy": "admin",
-      "CreatedDate": "2024-10-19T09:38:08.736Z",
+      "createdDate": "2024-10-19T09:38:08.736Z",
       "description": "2line",
-      "assignedTo": "1a2b3c"
+      "assignedTo": "1a2b3c",
+      "isQuotationCreated": true
     },
     {
       "id": "8abc",
@@ -1966,15 +2472,189 @@
       "isChargeable": true,
       "status": "Open",
       "createdBy": "Admin",
-      "CreatedDate": "2024-10-21T04:20:10.661Z",
-      "description": "this is the test"
+      "createdDate": "2024-10-21T04:20:10.661Z",
+      "description": "this is the test",
+      "isQuotationCreated": true
+    },
+    {
+      "id": "d5e7",
+      "title": "test",
+      "customerID": "e608",
+      "ProductID": "83e9",
+      "isChargeable": true,
+      "status": "Open",
+      "createdBy": "Admin",
+      "createdDate": "2024-10-23T05:03:22.212Z",
+      "description": "kjkj",
+      "isQuotationCreated": false
+    },
+    {
+      "id": "af10",
+      "title": "jeees",
+      "customerID": "0345",
+      "ProductID": "17c9",
+      "isChargeable": true,
+      "status": "Open",
+      "createdBy": "Admin",
+      "createdDate": "2024-10-23T06:20:27.497Z",
+      "description": "asdf"
+    },
+    {
+      "id": "aa71",
+      "title": "testing",
+      "customerID": "dbd1",
+      "isChargeable": true,
+      "status": "Open",
+      "createdBy": "Admin",
+      "createdDate": "2024-10-23T06:27:02.177Z",
+      "description": "asdfsdf"
+    },
+    {
+      "id": "ebcd",
+      "title": "priti",
+      "customerID": "05ee",
+      "isChargeable": true,
+      "status": "Open",
+      "createdBy": "Admin",
+      "createdDate": "2024-10-23T06:27:35.600Z",
+      "description": "kkkkk"
+    },
+    {
+      "id": "73f9",
+      "title": "Test",
+      "customerID": "5377",
+      "isChargeable": true,
+      "status": "Open",
+      "createdBy": "Admin",
+      "createdDate": "2024-10-23T06:29:09.045Z",
+      "description": "asdfad"
+    },
+    {
+      "id": "0260",
+      "title": "llluara",
+      "customerID": "20a5",
+      "ProductID": "d632",
+      "isChargeable": true,
+      "status": "Open",
+      "createdBy": "Admin",
+      "createdDate": "2024-10-23T06:31:07.003Z",
+      "description": "sdfs"
+    },
+    {
+      "id": "afd7",
+      "title": "ddddd",
+      "customerID": "0345",
+      "ProductID": "67ab",
+      "isChargeable": true,
+      "status": "Open",
+      "createdBy": "Admin",
+      "createdDate": "2024-10-23T06:33:15.785Z",
+      "description": "klkajs"
+    },
+    {
+      "id": "555a",
+      "title": "check this",
+      "customerID": "e608",
+      "ProductID": "1ea9",
+      "isChargeable": true,
+      "status": "Open",
+      "createdBy": "Admin",
+      "createdDate": "2024-10-23T06:34:29.074Z",
+      "description": "jkljasdf"
+    },
+    {
+      "id": "3674",
+      "title": "sundayyyyyyyy",
+      "customerID": "350c",
+      "ProductID": "1b63",
+      "isChargeable": true,
+      "status": "Open",
+      "createdBy": "Admin",
+      "createdDate": "2024-10-23T06:35:35.545Z",
+      "description": "lklk"
+    },
+    {
+      "id": "fcf2",
+      "title": "sundayyyyyyyy2",
+      "customerID": "350c",
+      "ProductID": "1b63",
+      "isChargeable": true,
+      "status": "Open",
+      "createdBy": "Admin",
+      "createdDate": "2024-10-23T06:39:42.469Z",
+      "description": "dd"
+    },
+    {
+      "id": "54d1",
+      "title": "charge1",
+      "customerID": "e608",
+      "ProductID": "1ea9",
+      "isChargeable": true,
+      "status": "Open",
+      "createdBy": "Admin",
+      "createdDate": "2024-10-23T06:45:19.045Z",
+      "description": "charge"
+    },
+    {
+      "id": "b3c5",
+      "title": "charge2",
+      "customerID": "e608",
+      "ProductID": "1ea9",
+      "isChargeable": true,
+      "status": "Open",
+      "createdBy": "Admin",
+      "createdDate": "2024-10-23T06:46:46.446Z",
+      "description": "dafd"
+    },
+    {
+      "id": "574b",
+      "title": "charge3",
+      "customerID": "e608",
+      "ProductID": "1ea9",
+      "isChargeable": true,
+      "status": "Open",
+      "createdBy": "Admin",
+      "createdDate": "2024-10-23T06:50:56.441Z",
+      "description": "hkh"
+    },
+    {
+      "id": "a723",
+      "title": "charge 4",
+      "customerID": "e608",
+      "ProductID": "1ea9",
+      "isChargeable": false,
+      "status": "Open",
+      "createdBy": "Admin",
+      "createdDate": "2024-10-23T06:52:29.597Z",
+      "description": "jljkl"
+    },
+    {
+      "id": "f165",
+      "title": "charge 4",
+      "customerID": "e608",
+      "ProductID": "fa16",
+      "isChargeable": true,
+      "status": "Open",
+      "createdBy": "Admin",
+      "createdDate": "2024-10-23T06:53:03.265Z",
+      "description": "jkjklj"
+    },
+    {
+      "id": "fbe5",
+      "title": "f",
+      "customerID": null,
+      "isChargeable": true,
+      "status": "Open",
+      "createdBy": "Admin",
+      "createdDate": "2024-10-23T06:59:33.546Z",
+      "description": "ff"
     }
   ],
   "users": [
     {
       "department": "Sales",
-      "first_name": "John",
-      "last_name": "Doe",
+      "firstName": "John",
+      "lastName": "Doe",
       "password_hash": "1234",
       "is_active": 1,
       "phone_number": "123-456-7890",
@@ -1989,8 +2669,8 @@
     },
     {
       "department": "Logistics",
-      "first_name": "Jane",
-      "last_name": "Smith",
+      "firstName": "Jane",
+      "lastName": "Smith",
       "password_hash": "hashed_password_2",
       "is_active": 1,
       "phone_number": "234-567-8901",
@@ -2005,8 +2685,8 @@
     },
     {
       "department": "Service_Technical",
-      "first_name": "Michael",
-      "last_name": "Johnson",
+      "firstName": "Michael",
+      "lastName": "Johnson",
       "password_hash": "hashed_password_3",
       "is_active": 1,
       "phone_number": "345-678-9012",
@@ -2021,8 +2701,8 @@
     },
     {
       "department": "Sales",
-      "first_name": "Emily",
-      "last_name": "Davis",
+      "firstName": "Emily",
+      "lastName": "Davis",
       "password_hash": "hashed_password_4",
       "is_active": 1,
       "phone_number": "456-789-0123",
@@ -2037,8 +2717,8 @@
     },
     {
       "department": "Logistics",
-      "first_name": "James",
-      "last_name": "Wilson",
+      "firstName": "James",
+      "lastName": "Wilson",
       "password_hash": "hashed_password_5",
       "is_active": 1,
       "phone_number": "567-890-1234",
@@ -2053,8 +2733,8 @@
     },
     {
       "department": "Service_Technical",
-      "first_name": "Sophia",
-      "last_name": "Brown",
+      "firstName": "Sophia",
+      "lastName": "Brown",
       "password_hash": "hashed_password_6",
       "is_active": 1,
       "phone_number": "678-901-2345",
@@ -2069,8 +2749,8 @@
     },
     {
       "department": "Sales",
-      "first_name": "Liam",
-      "last_name": "Jones",
+      "firstName": "Liam",
+      "lastName": "Jones",
       "password_hash": "hashed_password_7",
       "is_active": 1,
       "phone_number": "789-012-3456",
@@ -2085,8 +2765,8 @@
     },
     {
       "department": "Logistics",
-      "first_name": "Olivia",
-      "last_name": "Garcia",
+      "firstName": "Olivia",
+      "lastName": "Garcia",
       "password_hash": "hashed_password_8",
       "is_active": 1,
       "phone_number": "890-123-4567",
@@ -2101,8 +2781,8 @@
     },
     {
       "department": "Service_Technical",
-      "first_name": "Noah",
-      "last_name": "Martinez",
+      "firstName": "Noah",
+      "lastName": "Martinez",
       "password_hash": "hashed_password_9",
       "is_active": 1,
       "phone_number": "901-234-5678",
@@ -2117,8 +2797,8 @@
     },
     {
       "department": "Sales",
-      "first_name": "Ava",
-      "last_name": "Hernandez",
+      "firstName": "Ava",
+      "lastName": "Hernandez",
       "password": "hashed_password_10",
       "is_active": 1,
       "phone_number": "012-345-6789",

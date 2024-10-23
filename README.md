@@ -176,7 +176,7 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
         <table style="width:100%; border-collapse: collapse;">
             <tr>
                 <td style="border: 1px solid #000; padding: 8px;"><strong>Quotation ID:</strong> ${quotation.id}</td>
-                <td style="border: 1px solid #000; padding: 8px;"><strong>Created Date:</strong> ${quotation.CreatedDate}</td>
+                <td style="border: 1px solid #000; padding: 8px;"><strong>Created Date:</strong> ${quotation.createdDate}</td>
          
             </tr>
             <tr>
