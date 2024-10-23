@@ -60,7 +60,7 @@ const AssignToModal = ({ visible, onClose, ticketId, onAssign }) => {
                         {logisticsUsers && logisticsUsers.length > 0 ? (
                             logisticsUsers.map(user => (
                                 <Select.Option key={user.userid} value={user.userid}>
-                                    {`${user.userid} ${user.first_name} ${user.last_name}`}
+                                    {`${user.userid} ${user.firstName} ${user.lastName}`}
                                 </Select.Option>
                             ))
                         ) : (

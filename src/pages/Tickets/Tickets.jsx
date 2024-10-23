@@ -82,7 +82,7 @@ const Tickets = () => {
     const total_tickets = tickets.length;
     const open_tickets = tickets.filter(ticket => ticket.status === 'Open').length;
     const in_progress = tickets.filter(ticket => ticket.status === 'in-progress').length;
-    const resolved_tickets = tickets.filter(ticket => ticket.status === 'Resolved').length;
+    const closed_tickets = tickets.filter(ticket => ticket.status === 'closed').length;
 
     // Filter tickets based on card click
     const handle_card_click = (status) => {
@@ -137,9 +137,11 @@ const Tickets = () => {
         {
             title: 'Assighned to',
             dataIndex: 'assignedTo',
-            // filters: get_unique_filters(tickets, 'status'),
-            // onFilter: (value, record) => record.status === value,
-        },
+            render: (assignedTo) => {
+                const user = users.find(user => user.id === assignedTo);
+                return user ? `${user.firstName} ${user.lastName}` : '-';
+            },
+          },
         // hide priority
         // {
         //     title: 'Priority',
@@ -150,9 +152,9 @@ const Tickets = () => {
         // },
         {
             title: 'Date Created',
-            dataIndex: 'CreatedDate',
-            key: 'CreatedDate',
-            sorter: (a, b) => moment(b.CreatedDate).unix() - moment(a.CreatedDate).unix(),
+            dataIndex: 'createdDate',
+            key: 'createdDate',
+            sorter: (a, b) => moment(b.createdDate).unix() - moment(a.createdDate).unix(),
             defaultSortOrder: 'descend',
             render: (date) => moment(date).format('YYYY-MM-DD'),
         },
@@ -224,10 +226,10 @@ const Tickets = () => {
                             <Card 
                                 hoverable 
                                 bordered={false} 
-                                onClick={() => handle_card_click('Resolved')} 
+                                onClick={() => handle_card_click('closed')} 
                                 style={{ cursor: 'pointer', backgroundColor:'#e9f5f7' }} // Add your desired background color
                             >
-                                Resolved Tickets : {resolved_tickets}
+                                Closed Tickets : {closed_tickets}
                             </Card>
                         </Col>
                     </Row>
@@ -251,6 +253,7 @@ const Tickets = () => {
                         visible={is_modal_visible}
                         ticket={selected_ticket}
                         onClose={handle_modal_close}
+                        users={users} 
                     />
 
                     {/* Create Ticket Modal */}

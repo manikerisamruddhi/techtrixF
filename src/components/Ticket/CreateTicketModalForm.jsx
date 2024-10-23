@@ -94,7 +94,7 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
 
             status: 'Open',
             createdBy: 'Admin',
-            CreatedDate: currentDate,
+            createdDate: currentDate,
             description: values.description,
         };
 
@@ -112,7 +112,7 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
                     const quotationValues = {
                         TicketID: newTicketID,
                         FinalAmount: values.FinalAmount,
-                        CreatedDate: currentDate,
+                        createdDate: currentDate,
                         status: "Pending",
                     };
                     await dispatch(addQuotation(quotationValues));
@@ -213,7 +213,7 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
                     {customerType === 'existing' ? (
                         <Form.Item
                             name="customerID"
-                            label="Customer"
+                            label="Customer :"
                             rules={[{ required: true, message: 'Please select a customer' }]}
                         >
                             <Select
@@ -258,7 +258,7 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
                     {customerType === 'existing' &&
                         <Form.Item
                             name="ProductID"
-                            label="Product"
+                            label="Product :"
                             rules={[{ required: true, message: 'Please select a product' }]}
                         >
                             <Select
@@ -325,7 +325,7 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
 
                     <Form.Item
                         name="title"
-                        label="title"
+                        label="Title :"
                         rules={[{ required: true, message: 'Please enter the ticket title' }]}
                     >
                         <Input placeholder="Enter ticket title" />
@@ -411,7 +411,7 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
 
                     <Form.Item
                         name="description"
-                        label="description"
+                        label="Description/Remark :"
                     // rules={[{ required: true, message: 'Add a description' }]}  //removed the compulsion
                     >
                         <Input.TextArea

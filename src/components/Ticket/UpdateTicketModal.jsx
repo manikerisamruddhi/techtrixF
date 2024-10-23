@@ -138,7 +138,7 @@ const UpdateTicketModal = ({ ticketData, isVisible, onCancel, onClose  }) => {
       loading
         ? "Loading..."
         : currentTechnician
-        ? `${currentTechnician.first_name} ${currentTechnician.last_name} (ID: ${currentTechnician.id})`
+        ? `${currentTechnician.firstName} ${currentTechnician.lastName} (ID: ${currentTechnician.id})`
         : "Select Service Technician"
     }
     loading={loading}
@@ -153,7 +153,7 @@ const UpdateTicketModal = ({ ticketData, isVisible, onCancel, onClose  }) => {
       <Option
         key={tech.id}
         value={tech.id}
-        label={`${tech.first_name} ${tech.last_name} [ID: ${tech.id}]`}
+        label={`${tech.firstName} ${tech.lastName} [ID: ${tech.id}]`}
       >
         <div
           style={{
@@ -162,7 +162,7 @@ const UpdateTicketModal = ({ ticketData, isVisible, onCancel, onClose  }) => {
             alignItems: "center",
           }}
         >
-          <span>{`${tech.first_name} ${tech.last_name}`}</span>
+          <span>{`${tech.firstName} ${tech.lastName}`}</span>
           <span style={{ marginLeft: "10px" }}>{`(ID: ${tech.id})`}</span>
         </div>
       </Option>

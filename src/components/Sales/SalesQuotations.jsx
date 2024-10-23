@@ -126,7 +126,7 @@ const SalesQuotations = () => {
                                 <p><strong>Final amount after discount:</strong> ₹{selectedQuotation.FinalAmount}</p>
                                 <p><strong>status:</strong> {selectedQuotation.status}</p>
                                 <p><strong>Comments:</strong> {selectedQuotation.Comments}</p>
-                                <p><strong>Created date:</strong> {selectedQuotation.CreatedDate}</p>
+                                <p><strong>Created date:</strong> {selectedQuotation.createdDate}</p>
                                 {/* Add other fields as needed */}
                             </div>
                         ) : (

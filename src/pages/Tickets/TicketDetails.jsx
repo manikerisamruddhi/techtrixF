@@ -36,7 +36,7 @@ const TicketDetails = () => {
             <Paragraph><strong>Description:</strong> {ticket.Description}</Paragraph>
             <Paragraph><strong>Priority:</strong> {ticket.Priority}</Paragraph>
             <Paragraph><strong>Category:</strong> {ticket.Category}</Paragraph>
-            <Paragraph><strong>Created Date:</strong> {new Date(ticket.CreatedDate).toLocaleString()}</Paragraph>
+            <Paragraph><strong>Created Date:</strong> {new Date(ticket.createdDate).toLocaleString()}</Paragraph>
             <Paragraph><strong>Resolved:</strong> {ticket.IsResolved ? 'Yes' : 'No'}</Paragraph>
             <Paragraph><strong>Assigned To ID:</strong> {ticket.assignedToID}</Paragraph>
             <Paragraph><strong>Customer ID:</strong> {ticket.customerID}</Paragraph>

@@ -5,6 +5,7 @@ import { notification } from 'antd'; // Import notification
 // Async Thunks
 export const fetchTickets = createAsyncThunk('tickets/fetchTickets', async () => {
     const response = await axios.get('http://localhost:4000/tickets'); // Adjusted endpoint
+    console.log(response);
     return response.data;
 });
 
@@ -46,7 +47,7 @@ export const createTicket = createAsyncThunk('tickets/addTicket', async (newTick
 //         assignedToID: newTicket.assignedToID,
 //         description: newTicket.description,
 //         description: response.data.description,
-//         CreatedDate: new Date().toISOString(),
+//         createdDate: new Date().toISOString(),
 //         isChargeable: response.data.isChargeable,
 //     };
 // });
