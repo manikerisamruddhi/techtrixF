@@ -2,7 +2,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Tickets from './pages/Tickets/Tickets';
-import CreateTicket from './components/Ticket/CreateTicket';
 import TicketDetails from './pages/Tickets/TicketDetails';
 import Quotations from './pages/Quotations/Quotations';
 import Dashboard from './pages/dashboard/AdminDashHome';
@@ -45,11 +44,7 @@ const App = () => {
                             </ProtectedRoute>
                         } />
                         
-                        <Route path="/CreateTicket" element={
-                            <ProtectedRoute allowedRoles={['Admin', 'Sales']}>
-                                <CreateTicket />
-                            </ProtectedRoute>
-                        } />
+                       
                         
                         <Route path="/Quotations" element={
                             <ProtectedRoute allowedRoles={['Admin', 'Sales']}>
