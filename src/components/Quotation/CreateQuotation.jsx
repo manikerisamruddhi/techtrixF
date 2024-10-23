@@ -16,7 +16,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId, defaultCustomer }) => 
     const { customers } = useSelector(state => state.customers); // Assuming customer data is fetched through Redux
     const [customer, setCustomer] = useState(null);
     const { items: products } = useSelector(state => state.products); // Assuming you have products in your Redux store
-    console.log('Fetched Products:', products);
+    // console.log('Fetched Products:', products);
 
     const addProductFormRef = useRef(null);
 
@@ -141,7 +141,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId, defaultCustomer }) => 
                     address: newCustomer.address,
                     PinCode: newCustomer.pinCode,
                     isPremium: newCustomer.isPremium,
-                    CreatedDate: currentDate.format('YYYY-MM-DD HH:mm:ss'),
+                    createdDate: currentDate.format('YYYY-MM-DD HH:mm:ss'),
                 };
                 //console.log('Adding new customer:', newCustomerData);
                 const customerResponse = await dispatch(addCustomer(newCustomerData));
@@ -173,8 +173,9 @@ const QuotationFormModal = ({ visible, onClose, ticketId, defaultCustomer }) => 
                 FinalAmount: addedProducts.reduce((total, prod) => total + prod.price * prod.quantity, 0),
                 status: 'Pending',
                 createdBy: 'Admin',
+                isQuotationCreated: true,
                 // finalAmount,
-                CreatedDate: currentDate.format('YYYY-MM-DD HH:mm:ss'),
+                createdDate: currentDate.format('YYYY-MM-DD HH:mm:ss'),
                 Comments: comment,
             };
 
