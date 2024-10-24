@@ -3,14 +3,34 @@ import { Modal, Descriptions, Badge, Button } from 'antd';
 import { DollarOutlined, ReloadOutlined } from '@ant-design/icons';
 import UpdateTicketModal from './UpdateTicketModal'; // Importing the update ticket modal
 import QuotationFormModal from '../Quotation/CreateQuotation';
+import { useEffect } from 'react';
 
-const TicketDetailsModal = ({ visible, ticket, onClose, onCreateQuotation, onUpdateTicket }) => {
+const TicketDetailsModal = ({ visible, ticket, onClose, onCreateQuotation, onUpdateTicketz, users }) => {
     const [isQuotationModalVisible, setQuotationModalVisible] = useState(false); // State to manage quotation modal visibility
     const [isUpdateModalVisible, setUpdateModalVisible] = useState(false); // State to manage update ticket modal visibility
     
     const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
+    const [createdBy, setCreatedBy] = useState(''); // State variable to store createdBy
+
+    // Effect to run when the ticket is available
+    useEffect(() => {
+        if (ticket) {
+            setCreatedBy(ticket.createdBy); // Set createdBy from ticket
+        }
+    }, [ticket]);
+
+    // Function to update createdBy field of the ticket
+    const updateCreatedBy = () => {
+        if (ticket) {
+            // Update createdBy variable
+            setCreatedBy('new'); // Set createdBy to 'new'
+            message.success('Ticket createdBy updated successfully!'); // Notify user
+        }
+    };
     
-    
+    const user = users.find((user) => user.id === createdBy); // Adjust based on your user object structure
+    const createdByName = user ? `${user.firstName} ${user.lastName}` : createdBy; // Display user name or fallback text
+
 
     // Function to open the create quotation modal
     const handleCreateQuotationClick = () => {
@@ -41,7 +61,6 @@ const TicketDetailsModal = ({ visible, ticket, onClose, onCreateQuotation, onUpd
         setIsCreateModalVisible(false);
     };
 
-
     return (
         <>
             {/* Main Ticket Details Modal */}
@@ -68,7 +87,7 @@ const TicketDetailsModal = ({ visible, ticket, onClose, onCreateQuotation, onUpd
                             {ticket.customerID && (
                                 <Descriptions.Item label="Customer ID" span={1}>{ticket.customerID}</Descriptions.Item>
                             )}
-                            <Descriptions.Item label="Created By" span={1}>{ticket.createdBy}</Descriptions.Item>
+                            <Descriptions.Item label="Created By" span={1}>{createdByName}</Descriptions.Item>
                             <Descriptions.Item label="Remark" span={2}>{ticket.description}</Descriptions.Item>
                             <Descriptions.Item label="status" span={1}>
                                 <Badge status={ticket.status === 'Resolved' ? 'success' : 'processing'} text={ticket.status} />
