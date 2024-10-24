@@ -1,32 +1,23 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-
-// Create an instance of Axios
-const axiosInstance = axios.create({
-    baseURL: 'http://localhost:4000', // Assuming the JSON server is running on port 4000
-    headers: {
-        'Content-Type': 'application/json',
-    },
-});
+import userApi from '../../api/userApi'; // Import userApi
 
 // Async Thunks
 
-// Fetch user login from db.json mock API
+// Fetch user login using userApi
 export const loginUser = createAsyncThunk(
     'users/loginUser',
     async (credentials, { rejectWithValue }) => {
         try {
-            const response = await axiosInstance.get('/users', {
-                params: { email: credentials.email, password: credentials.password },
-            });
+            // Assuming API call for login user, you might need to adapt based on your actual login endpoint
+            const response = await userApi.getAllusers(); // Fetch all users from the API
 
-            const user = response.data[0]; // Assuming a match returns an array of users
+            const user = response.data.find(
+                (user) => user.email === credentials.email && user.passwordHash === credentials.password
+            );
 
-            console.log(user);
-            if (user && user.isAuthenticated) {
+            if (user) {
                 // Save user info to local storage
-                const s = localStorage.setItem('user', JSON.stringify(user));
-                console.log(s)
+                localStorage.setItem('user', JSON.stringify(user));
                 return user;
             } else {
                 return rejectWithValue('Invalid credentials');
@@ -37,7 +28,7 @@ export const loginUser = createAsyncThunk(
     }
 );
 
-// Logout user
+// Logout user using userApi
 export const logoutUser = createAsyncThunk('users/logoutUser', async () => {
     // Clear user from local storage
     localStorage.removeItem('user');
@@ -82,4 +73,4 @@ const userSlice = createSlice({
 
 export const { clearError } = userSlice.actions;
 
-export default userSlice.reducer; // Fix the export to use userSlice
+export default userSlice.reducer;

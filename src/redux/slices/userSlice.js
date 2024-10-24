@@ -1,67 +1,26 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-
-// Set the base URL for axios
-const API_URL = 'http://localhost:4000'; // Update the base URL to point to your mock API
-
-// Create an instance of Axios
-const axiosInstance = axios.create({
-    baseURL: API_URL,
-    headers: {
-        'Content-Type': 'application/json',
-    },
-});
+import userApi from '../../api/userApi';
 
 // Async Thunks
 
-// Fetch user login from db.json mock API
-export const loginUser = createAsyncThunk(
-    'users/loginUser',
-    async (credentials, { rejectWithValue }) => {
-        try {
-            const response = await axiosInstance.get('/users', {
-                params: { email: credentials.email, password: credentials.password },
-            });
-
-            const user = response.data[0]; // Assuming a match returns an array of users
-            //console.log(user);
-
-            if (user) {
-                return {
-                    user: user,
-                    token: 'fake-jwt-token',
-                    isAuthenticated: true,
-                };
-            } else {
-                return rejectWithValue('Invalid credentials');
-            }
-        } catch (error) {
-            return rejectWithValue(error.message || 'Failed to login');
-        }
-    }
-);
-
-// Logout user
-export const logoutUser = createAsyncThunk('users/logoutUser', async () => {
-    return {}; // Simulate logout logic
-});
+// Set the base URL for axios
+const API_URL = 'http://localhost:8080/api/users/all'; // Update the base URL to point to your mock API
 
 // Fetch users
 export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
-    const response = await axios.get(`${API_URL}/users`);
+    const response = await userApi.getAllusers();
     return response.data;
 });
 
-export const fetchUsersByIds = createAsyncThunk('users/fetchByIds', async (userIds) => {
-    const response = await axios.get('/api/users', {
-        params: { ids: userIds }, // Adjust the API endpoint and parameters as needed
-    });
-    return response.data; // Assuming the API returns an array of users
-});
+// export const fetchUsersByIds = createAsyncThunk('users/fetchByIds', async (userIds) => {
+//     const response = await userApi.getuserById(userIds);
+//     return response.data; // Assuming the API returns an array of users
+// });
 
 // Fetch unique departments based on users data
 export const fetchDepartments = createAsyncThunk('users/fetchDepartments', async () => {
-    const response = await axios.get(`${API_URL}/users`);
+    const response = await axios.get(`${API_URL}`);
     const users = response.data;
 
     const departments = [...new Set(users.map(user => user.department))].map(department => ({
@@ -74,25 +33,25 @@ export const fetchDepartments = createAsyncThunk('users/fetchDepartments', async
 
 // Fetch users by department
 export const fetchUsersByDepartment = createAsyncThunk('users/fetchUsersByDepartment', async (department) => {
-    const response = await axios.get(`${API_URL}/users?department=${department}`);
+    const response = await axios.get(`${API_URL}?department=${department}`);
     return response.data;
 });
 
 // Add a new user
 export const addUser = createAsyncThunk('users/addUser', async (newUser) => {
-    const response = await axios.post(`${API_URL}/users`, newUser);
+    const response = await userApi.createuser(newUser);
     return response.data;
 });
 
 // Update user
 export const updateUser = createAsyncThunk('users/updateUser', async ({ userId, userData }) => {
-    const response = await axios.put(`${API_URL}/users/${userId}`, userData);
+    const response = await userApi.updateuser(userId, userData);
     return response.data;
 });
 
 // Delete user
 export const deleteUser = createAsyncThunk('users/deleteUser', async (userId) => {
-    await axios.delete(`${API_URL}/users/${userId}`);
+    await userApi.deleteuser(userId);
     return userId;
 });
 
@@ -119,29 +78,7 @@ const userSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(loginUser.pending, (state) => {
-                state.loading = true;
-                state.error = null;
-            })
-            .addCase(loginUser.fulfilled, (state, action) => {
-                state.user = action.payload.user;
-                state.token = action.payload.token;
-                state.isAuthenticated = action.payload.isAuthenticated;
-                state.loggedIn = true;
-                state.userData = action.payload.user; // Optional: store user data if needed
-                state.loading = false;
-            })
-            .addCase(loginUser.rejected, (state, action) => {
-                state.loading = false;
-                state.error = action.payload;
-            })
-            .addCase(logoutUser.fulfilled, (state) => {
-                state.user = null;
-                state.token = null;
-                state.isAuthenticated = false;
-                state.loggedIn = false;
-                state.userData = null; // Clear user data if necessary
-            })
+           
             .addCase(fetchUsers.pending, (state) => {
                 state.status = 'loading';
             })
@@ -180,26 +117,27 @@ const userSlice = createSlice({
             })
             .addCase(updateUser.fulfilled, (state, action) => {
                 const updatedUser = action.payload;
-                const index = state.users.findIndex(user => user.id === updatedUser.id);
+                const index = state.users.findIndex(user => user.userId === updatedUser.userId);
                 if (index !== -1) {
                     state.users[index] = updatedUser; // Update the user in the state
                 }
             })
             .addCase(deleteUser.fulfilled, (state, action) => {
                 const userId = action.payload;
-                state.users = state.users.filter(user => user.id !== userId);
+                state.users = state.users.filter(user => user.userId !== userId);
             })
-            .addCase(fetchUsersByIds.pending, (state) => {
-                state.loading = true;
-            })
-            .addCase(fetchUsersByIds.fulfilled, (state, action) => {
-                state.loading = false;
-                state.users = action.payload;
-            })
-            .addCase(fetchUsersByIds.rejected, (state, action) => {
-                state.loading = false;
-                state.error = action.error.message;
-            });
+            // .addCase(fetchUsersByIds.pending, (state) => {
+            //     state.loading = true;
+            // })
+            // .addCase(fetchUsersByIds.fulfilled, (state, action) => {
+            //     state.loading = false;
+            //     state.users = action.payload;
+            // })
+            // .addCase(fetchUsersByIds.rejected, (state, action) => {
+            //     state.loading = false;
+            //     state.error = action.error.message;
+            // })
+            ;
     },
 });
 
