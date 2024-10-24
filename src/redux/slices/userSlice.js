@@ -52,6 +52,13 @@ export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
     return response.data;
 });
 
+export const fetchUsersByIds = createAsyncThunk('users/fetchByIds', async (userIds) => {
+    const response = await axios.get('/api/users', {
+        params: { ids: userIds }, // Adjust the API endpoint and parameters as needed
+    });
+    return response.data; // Assuming the API returns an array of users
+});
+
 // Fetch unique departments based on users data
 export const fetchDepartments = createAsyncThunk('users/fetchDepartments', async () => {
     const response = await axios.get(`${API_URL}/users`);
@@ -181,6 +188,17 @@ const userSlice = createSlice({
             .addCase(deleteUser.fulfilled, (state, action) => {
                 const userId = action.payload;
                 state.users = state.users.filter(user => user.id !== userId);
+            })
+            .addCase(fetchUsersByIds.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(fetchUsersByIds.fulfilled, (state, action) => {
+                state.loading = false;
+                state.users = action.payload;
+            })
+            .addCase(fetchUsersByIds.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
             });
     },
 });
