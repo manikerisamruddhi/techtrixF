@@ -1942,6 +1942,17 @@
       "price": 596.42,
       "quantity": 58,
       "description": "Sony PlayStation 5 Console - 825GB SSD, 4K Gaming, DualSense Wireless Controller, Ray Tracing Support, and Backward Compatibility with PlayStation 4 games. Experience ultra-fast load times and a new level of immersive gaming with next-gen graphics."
+    },
+    {
+      "id": "652e",
+      "brand": "test to show db",
+      "modelNo": "test ",
+      "description": "sadfasdf",
+      "isSerialNoAllowed": true,
+      "partCode": "sadfa",
+      "hsnCode": "afafds",
+      "price": "33",
+      "created_date": "2024-10-24T09:11:42.229Z"
     }
   ],
   "invoices": [
@@ -2648,6 +2659,123 @@
       "createdBy": "Admin",
       "createdDate": "2024-10-23T06:59:33.546Z",
       "description": "ff"
+    },
+    {
+      "id": "0fe2",
+      "title": "trying for created by",
+      "customerID": "e608",
+      "ProductID": "1ea9",
+      "isChargeable": false,
+      "status": "Open",
+      "createdBy": "Ashish Bhosale",
+      "createdDate": "2024-10-24T06:48:52.499Z",
+      "description": "klkl"
+    },
+    {
+      "id": "936d",
+      "title": "df",
+      "customerID": "e608",
+      "ProductID": "1ea9",
+      "isChargeable": true,
+      "status": "Open",
+      "createdBy": "0j1k7l",
+      "createdDate": "2024-10-24T06:51:26.261Z",
+      "description": "adfa"
+    },
+    {
+      "id": "f7a5",
+      "title": "jkj",
+      "customerID": "e608",
+      "ProductID": "1ea9",
+      "isChargeable": true,
+      "status": "Open",
+      "createdBy": "0j1k7l",
+      "createdDate": "2024-10-24T09:02:06.906Z",
+      "description": "mmmm"
+    },
+    {
+      "id": "572a",
+      "createdById": "0j1k7l",
+      "title": "trying for created by",
+      "description": "klkl",
+      "status": "Open",
+      "category": "issue",
+      "assignedTo": null,
+      "customer": {
+        "customerId": "e608"
+      },
+      "isChargeable": true,
+      "isQuotationCreated": false,
+      "ticketType": "Issue",
+      "products": [
+        {
+          "productId": "1ea9"
+        }
+      ]
+    },
+    {
+      "id": "3dc5",
+      "createdById": "0j1k7l",
+      "title": "df",
+      "description": "adfa",
+      "status": "Open",
+      "category": "issue",
+      "assignedTo": null,
+      "customer": {
+        "customerId": "50c4"
+      },
+      "isChargeable": true,
+      "isQuotationCreated": false,
+      "ticketType": "Issue",
+      "products": [
+        {
+          "productId": "652e"
+        },
+        {
+          "productId": "652e"
+        }
+      ]
+    },
+    {
+      "id": "b622",
+      "createdById": "0j1k7l",
+      "title": "ashish",
+      "description": "adfa",
+      "status": "Open",
+      "category": "issue",
+      "assignedTo": null,
+      "customer": {
+        "customerId": "4f90"
+      },
+      "isChargeable": true,
+      "isQuotationCreated": false,
+      "ticketType": "Issue",
+      "products": [
+        {
+          "productId": "1c95"
+        }
+      ]
+    },
+    {
+      "id": "0598",
+      "createdBy": "0j1k7l",
+      "title": "ashish",
+      "description": "asfdasf",
+      "status": "Open",
+      "category": "issue",
+      "assignedTo": null,
+      "customer": {
+        "customerId": "4f90"
+      },
+      "isChargeable": true,
+      "isQuotationCreated": false,
+      "ticketType": "Issue",
+      "products": [
+        {
+          "productId": "1c95"
+        }
+      ],
+      "createdDate": "2024-10-24T09:22:15.352Z"
     }
   ],
   "users": [
@@ -2812,10 +2940,13 @@
       "id": "0j1k2l"
     },
     {
+      "firstName": "Ashish",
+      "lastName": "Bhosale",
       "id": "0j1k7l",
       "role": "Admin",
       "email": "admin@example.com",
-      "password": "Admin"
+      "password": "Admin",
+      "isAuthenticated": true
     },
     {
       "id": "0j1",
