@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Form, Input, Button, Alert } from 'antd';
 import { useDispatch } from 'react-redux';  // Import useDispatch
-import { loginUser } from '../../redux/slices/userSlice';  // Import loginUser thunk
+import { loginUser } from '../../redux/slices/loginSlice';  // Import loginUser thunk
 
 const LoginPage = () => {
     const [credentials, setCredentials] = useState({ email: '', password: '' });
@@ -13,10 +13,10 @@ const LoginPage = () => {
     const handleLogin = async (values) => {
         try {
             const resultAction = await dispatch(loginUser(values));
-            //console.log(resultAction);
+            console.log(resultAction);
             if (loginUser.fulfilled.match(resultAction)) {
                 const userRole = resultAction.payload.role;
-    
+    console.log(userRole);
                 // Navigate based on the role
                 if (userRole === 'Admin') {
                     navigate('/');  // Redirect to Admin
