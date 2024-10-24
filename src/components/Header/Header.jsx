@@ -1,12 +1,36 @@
 // src/components/Header/Header.js
-import React from 'react';
-import { Layout, Typography, Space, Badge } from 'antd';
-import { BellOutlined } from '@ant-design/icons';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Layout, Typography, Space, Button } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
+import { logoutUser } from '../../redux/slices/loginSlice'; // Adjust the path as necessary
+import { LogoutOutlined } from '@ant-design/icons';
 
 const { Header } = Layout;
 const { Text } = Typography;
 
 const CustomHeader = () => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const user = JSON.parse(localStorage.getItem('user')); // Get user from local storage
+    const userName = user ? user.firstName : ''; // Adjust based on the actual field name in your user object
+
+    const [isHovered, setIsHovered] = useState(false);
+
+    const buttonStyle = {
+        backgroundColor: isHovered ? 'darkred' : 'orangered', // Change color on hover
+        borderColor: isHovered ? 'darkred' : 'red', // Change border color on hover
+        color: 'white', // Text color
+        borderRadius: '15px', // Optional: add border radius
+    };
+
+    // Function to handle logout
+    const handleLogout = () => {
+        dispatch(logoutUser()); // Dispatch the logout action to Redux
+        navigate('/login');
+    };
+
     return (
         <Header style={{ 
             background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)',
@@ -21,11 +45,19 @@ const CustomHeader = () => {
             <Text strong style={{ fontSize: '18px' }}>
                 Techtrix
             </Text>
-            <Space>
-                {/* <Badge count={5} overflowCount={99}>
-                    <BellOutlined style={{ fontSize: '24px', cursor: 'pointer' }} />
-                </Badge> */}
-            </Space>
+            {user && ( // Conditionally render Space if user exists
+                <Space>
+                    Welcome, <strong>{userName}</strong> ji! {/* Display the logged-in user's name */}
+                    <Button 
+                        type="danger" 
+                        icon={<LogoutOutlined />} 
+                        style={buttonStyle} // Custom red color
+                        onClick={handleLogout}
+                        onMouseEnter={() => setIsHovered(true)} // Set hover state to true
+                        onMouseLeave={() => setIsHovered(false)} // Set hover state to false
+                    />
+                </Space>
+            )}
         </Header>
     );
 };
