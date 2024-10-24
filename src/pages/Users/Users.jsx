@@ -18,7 +18,7 @@ const Users = () => {
 
   const handleAddOrEditUser = (values) => {
     if (editUser) {
-      dispatch(updateUser({ userId: editUser.id, updatedUser: values })).then(() => {
+      dispatch(updateUser({ userId: editUser.userId, updatedUser: values })).then(() => {
         toast.success('User updated successfully!');
         setEditUser(null);
       });
@@ -42,7 +42,7 @@ const Users = () => {
   };
 
   const columns = [
-    { title: 'ID', dataIndex: 'id', key: 'id' },
+    { title: 'ID', dataIndex: 'userId', key: 'userId' },
     { title: 'Name', dataIndex: 'name', key: 'name' },
     { title: 'email', dataIndex: 'email', key: 'email' },
     { title: 'Role', dataIndex: 'role', key: 'role' },

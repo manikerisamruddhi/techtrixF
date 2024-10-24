@@ -135,7 +135,7 @@ const SalesTickets = () => {
 
             if (ticket) {
                 await axios.post('http://localhost:4000/quotations', quotationData);
-                await axios.patch(`http://localhost:4000/tickets/${ticket.id}`, { status: 'in-progress', createdBy: 'Sales' });
+                await axios.patch(`http://localhost:4000/tickets/${ticket.ticketId}`, { status: 'in-progress', createdById: 'Sales' });
               
                 // Update tickets state to reflect new status
                 setTickets(prevTickets => prevTickets.map(t =>
@@ -155,7 +155,7 @@ const SalesTickets = () => {
 
     // Handle ticket assignment to a user from logistics
     const handleAssignTo = async (ticketId, userId) => {
-        await axios.patch(`http://localhost:4000/tickets/${ticket.id}`);
+        await axios.patch(`http://localhost:4000/tickets/${ticket.ticketId}`);
         const idd = response.id;
         //console.log('Assigning to Ticket ID:', idd, 'User ID:', userId);
         try {

@@ -97,16 +97,16 @@ const Tickets = () => {
     const columns = [
         {
             title: 'Ticket ID',
-            dataIndex: 'id',
+            dataIndex: 'ticketId',
             key: 'id',
         },
 
         {
             title: 'Customer',
-            dataIndex: 'customerID',
-            key: 'customerID',
-            render: (customerID, record) => {
-                const customer = customers.find(customer => customer.id === customerID);
+            dataIndex: 'customerId',
+            key: 'customerId',
+            render: (customerId, record) => {
+                const customer = customers.find(customer => customer.customerId === customerId);
                 return customer ? `${customer.firstName} ${customer.lastName}` : 'Unknown Customer';
             },
         },
@@ -122,14 +122,14 @@ const Tickets = () => {
         },
         {
             title: 'Created By',
-            dataIndex: 'createdBy',
-            key: 'createdBy',
+            dataIndex: 'createdById',
+            key: 'createdById',
             render: (text) => {
-                const user = users.find((user) => user.id === text); // Adjust based on your user object structure
+                const user = users.find((user) => user.userId === text); // Adjust based on your user object structure
                 return user ? `${user.firstName} ${user.lastName}` : text; // Display user name or fallback text
             },
-            filters: get_unique_filters(tickets, 'createdBy'),
-            onFilter: (value, record) => record.createdBy === value,
+            filters: get_unique_filters(tickets, 'createdById'),
+            onFilter: (value, record) => record.createdById === value,
         },
         {
             title: 'status',
@@ -142,7 +142,7 @@ const Tickets = () => {
             title: 'Assighned to',
             dataIndex: 'assignedTo',
             render: (assignedTo) => {
-                const user = users.find(user => user.id === assignedTo);
+                const user = users.find(user => user.userId === assignedTo);
                 return user ? `${user.firstName} ${user.lastName}` : '-';
             },
           },

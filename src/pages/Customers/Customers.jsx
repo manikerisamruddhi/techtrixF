@@ -57,7 +57,7 @@ const Customers = () => {
     };
 
     const columns = [
-        { title: 'ID', dataIndex: 'id', key: 'CustomerID' },
+        { title: 'ID', dataIndex: 'customerId', key: 'customerId' },
         { title: 'First Name', dataIndex: 'firstName', key: 'firstName' },
         { title: 'Last Name', dataIndex: 'lastName', key: 'lastName' },
         { title: 'email', dataIndex: 'email', key: 'email' },
@@ -117,7 +117,7 @@ const Customers = () => {
                         onFinish={handleAddOrEditCustomer}
                         initialValues={editCustomer}
                         mode={mode} // Pass the mode (edit/add)
-                        customerId={editCustomer?.id} // Pass customer ID when editing
+                        customerId={editCustomer?.customerId} // Pass customer ID when editing
                     />
                 </div>
             </Content>

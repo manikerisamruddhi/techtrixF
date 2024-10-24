@@ -40,8 +40,10 @@ const CustomerFormModal = ({ visible, onCancel, initialValues, mode, customerID,
                 if (onAddCustomer) {
                     onAddCustomer(newCustomer);
                 }
-            } else {
-                message.error('Failed to add customer.');
+            } else if (addCustomer.rejected.match(resultAction)) {
+                // If the action was rejected, extract the error message from resultAction
+                const errorMessage = resultAction.error?.message || resultAction.payload?.message || 'Failed to add customer.';
+                message.error(`Error: ${errorMessage}`);  // Display the error message
             }
             });
         }

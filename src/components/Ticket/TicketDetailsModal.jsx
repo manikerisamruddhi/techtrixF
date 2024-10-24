@@ -10,27 +10,30 @@ const TicketDetailsModal = ({ visible, ticket, onClose, onCreateQuotation, onUpd
     const [isUpdateModalVisible, setUpdateModalVisible] = useState(false); // State to manage update ticket modal visibility
     
     const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
-    const [createdBy, setCreatedBy] = useState(''); // State variable to store createdBy
+    const [createdById, setCreatedBy] = useState(''); // State variable to store createdById
 
     // Effect to run when the ticket is available
     useEffect(() => {
         if (ticket) {
-            setCreatedBy(ticket.createdBy); // Set createdBy from ticket
+            setCreatedBy(ticket.createdById); // Set createdById from ticket
         }
     }, [ticket]);
 
-    // Function to update createdBy field of the ticket
+    // Function to update createdById field of the ticket
     const updateCreatedBy = () => {
         if (ticket) {
-            // Update createdBy variable
-            setCreatedBy('new'); // Set createdBy to 'new'
-            message.success('Ticket createdBy updated successfully!'); // Notify user
+            // Update createdById variable
+            setCreatedBy('new'); // Set createdById to 'new'
+            message.success('Ticket createdById updated successfully!'); // Notify user
         }
     };
     
-    const user = users.find((user) => user.id === createdBy); // Adjust based on your user object structure
-    const createdByName = user ? `${user.firstName} ${user.lastName}` : createdBy; // Display user name or fallback text
 
+
+    const user = users.find((user) => user.userId === createdById); // Adjust based on your user object structure
+    const createdByIdName = user ? `${user.firstName} ${user.lastName}` : createdById; // Display user name or fallback text
+
+    // console.log(user);
 
     // Function to open the create quotation modal
     const handleCreateQuotationClick = () => {
@@ -82,12 +85,12 @@ const TicketDetailsModal = ({ visible, ticket, onClose, onCreateQuotation, onUpd
                             labelStyle={{ padding: '10px 24px' }}
                             contentStyle={{ padding: '10px 24px' }}
                         >
-                            <Descriptions.Item label="Ticket ID" span={1}>{ticket.id}</Descriptions.Item>
+                            <Descriptions.Item label="Ticket ID" span={1}>{ticket.ticketId}</Descriptions.Item>
                             <Descriptions.Item label="title" span={1}>{ticket.title}</Descriptions.Item>
-                            {ticket.customerID && (
-                                <Descriptions.Item label="Customer ID" span={1}>{ticket.customerID}</Descriptions.Item>
+                            {ticket.customerId && (
+                                <Descriptions.Item label="Customer ID" span={1}>{ticket.customerId}</Descriptions.Item>
                             )}
-                            <Descriptions.Item label="Created By" span={1}>{createdByName}</Descriptions.Item>
+                            <Descriptions.Item label="Created By" span={1}>{createdByIdName}</Descriptions.Item>
                             <Descriptions.Item label="Remark" span={2}>{ticket.description}</Descriptions.Item>
                             <Descriptions.Item label="status" span={1}>
                                 <Badge status={ticket.status === 'Resolved' ? 'success' : 'processing'} text={ticket.status} />
@@ -134,8 +137,8 @@ const TicketDetailsModal = ({ visible, ticket, onClose, onCreateQuotation, onUpd
 
             {/* Create Quotation Modal */}
             <QuotationFormModal 
-                ticketId={ticket && ticket.id} 
-                defaultCustomer={ticket && ticket.customerID} 
+                ticketId={ticket && ticket.ticketId} 
+                defaultCustomer={ticket && ticket.customerId} 
                 title="Create Quotation"
                 visible={isCreateModalVisible}
                 onCreate={handleCreateQuotation}

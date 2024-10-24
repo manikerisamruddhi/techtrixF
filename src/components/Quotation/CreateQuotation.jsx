@@ -19,7 +19,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId, defaultCustomer }) => 
     
     const loggedInUser = JSON.parse(localStorage.getItem('user')); // Get user from local storage
     // const loggedInUserName = `${loggedInUser.firstName} ${loggedInUser.lastName}`
-    const looggedInUserId = loggedInUser.id;
+    const looggedInUserId = loggedInUser.userId;
 
     // console.log('Fetched Products:', products);
     const addProductFormRef = useRef(null);
@@ -172,11 +172,11 @@ const QuotationFormModal = ({ visible, onClose, ticketId, defaultCustomer }) => 
             // Create a new quotation
             const quotationData = {
                 TicketID: ticketId,
-                customerID: customerType === 'existing' ? existingCustomer.id : newCustomer.id,
+                customerId: customerType === 'existing' ? existingCustomer.id : newCustomer.id,
                 ProductId: addedProducts.map(product => product.id),
                 FinalAmount: addedProducts.reduce((total, prod) => total + prod.price * prod.quantity, 0),
                 status: 'Pending',
-                createdBy: looggedInUserId,
+                createdById: looggedInUserId,
                 isQuotationCreated: true,
                 // finalAmount,
                 createdDate: currentDate.format('YYYY-MM-DD HH:mm:ss'),

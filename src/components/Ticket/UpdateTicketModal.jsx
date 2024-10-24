@@ -22,12 +22,12 @@ const UpdateTicketModal = ({ ticketData, isVisible, onCancel, onClose }) => {
       // Populate form with existing ticket data
       form.setFieldsValue({
         title: ticketData.title,
-        customerID: ticketData.customerID,
+        customerId: ticketData.customerId,
         productID: ticketData.ProductID,
         priority: ticketData.Priority,
         isChargeable: ticketData.isChargeable,
         status: ticketData.status,
-        createdBy: ticketData.createdBy,
+        createdById: ticketData.createdById,
         description: ticketData.description,
         assignedTo: ticketData.assignedTo || null,
       });
@@ -49,7 +49,7 @@ const UpdateTicketModal = ({ ticketData, isVisible, onCancel, onClose }) => {
         const updatedTicketData = {
           ...ticketData, // Spread the existing ticket data
           ...values, // Then spread the new values from the form
-          createdBy: "admin", // Ensure createdBy is set correctly
+          createdById: "admin", // Ensure createdById is set correctly
           status: close ? "in-progress" : "closed",
         };
 
@@ -113,12 +113,12 @@ const UpdateTicketModal = ({ ticketData, isVisible, onCancel, onClose }) => {
       >
         <Row gutter={16}>
           <Col span={12}>
-            <Form.Item name="customerID" label="Customer ID">
+            <Form.Item name="customerId" label="Customer ID">
               <Input disabled />
             </Form.Item>
           </Col>
           <Col span={12}>
-            <Form.Item name="createdBy" label="Created By">
+            <Form.Item name="createdById" label="Created By">
               <Input disabled />
             </Form.Item>
           </Col>

@@ -31,7 +31,7 @@
 
         const loggedInUser = JSON.parse(localStorage.getItem('user')); // Get user from local storage
         // const loggedInUserName = `${loggedInUser.firstName} ${loggedInUser.lastName}`
-        const looggedInUserId = loggedInUser.id;
+        const looggedInUserId = loggedInUser.userId;
 
         const { customers } = useSelector((state) => state.customers);
         const { items } = useSelector((state) => state.products);
@@ -87,14 +87,14 @@
         
             // Prepare the ticket data according to the specified structure
             const ticketData = {
-                createdBy: looggedInUserId,
+                createdById: looggedInUserId,
                 title: values.title,
                 description: values.description,
                 status: 'Open',
                 category: 'issue', // You can modify this if you have a different category
                 assignedTo: null, // Assuming you have logic to assign users if needed
                 customer: {
-                    customerId: values.customerID || (newCustomer ? newCustomer.id : null), // Use new customer if available
+                    customerId: values.customerId || (newCustomer ? newCustomer.id : null), // Use new customer if available
                 },
                 isChargeable: values.isChargeable !== undefined ? values.isChargeable : true,
                 isQuotationCreated: false, // Set to false as per the requirement
@@ -139,7 +139,7 @@
             }
         };
 
-        const filteredProducts = selectedCustomer ? items.filter((product) => product.customerID === selectedCustomer.id) : [];
+        const filteredProducts = selectedCustomer ? items.filter((product) => product.customerId === selectedCustomer.id) : [];
 
         const openCustomerForm = () => {
             setCustomerModalVisible(true);
@@ -148,7 +148,7 @@
 
         const handleCustomerAdded = (newCustomer) => {
             setSelectedCustomer(newCustomer);
-            form.setFieldsValue({ customerID: newCustomer.id });
+            form.setFieldsValue({ customerId: newCustomer.id });
             setisPremiumCustomer(newCustomer.isPremium);
             setCustomerModalVisible(false);
             form.setFieldsValue({ customerName: `${newCustomer.firstName} ${newCustomer.lastName}` });
@@ -203,7 +203,7 @@
                         {/* Conditional Rendering based on Customer Type */}
                         {customerType === 'existing' ? (
                             <Form.Item
-                                name="customerID"
+                                name="customerId"
                                 label="Customer :"
                                 rules={[{ required: true, message: 'Please select a customer' }]}
                             >
@@ -310,7 +310,7 @@
                             visible={productModalVisible}
                             onCancel={() => setProductModalVisible(false)}
                             onAddProduct={handleProductAdded}
-                            customerID={newCustomer?.id}
+                            customerId={newCustomer?.id}
                         />
                         {/* )} */}
 

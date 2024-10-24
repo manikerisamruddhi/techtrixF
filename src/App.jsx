@@ -2,13 +2,13 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Tickets from './pages/Tickets/Tickets';
-import TicketDetails from './pages/Tickets/TicketDetails';
+// import TicketDetails from './pages/Tickets/TicketDetails';
 import Quotations from './pages/Quotations/Quotations';
 import Dashboard from './pages/dashboard/AdminDashHome';
-import UserManagement from './pages/dashboard/UserManagement';
+import UserManagement from './pages/Users/UserManagement';
 import Login from './pages/auth/LoginPage';
-import ForgotPass from './pages/auth/ForgotPasswordPage';
-import Register from './pages/auth/RegisterPage';
+// import ForgotPass from './pages/auth/ForgotPasswordPage';
+// import Register from './pages/auth/RegisterPage';
 import Customers from './pages/Customers/Customers';
 import Invoices from './pages/Invoice';
 import SalesTickets from './components/Sales/SalesTickets';
@@ -30,8 +30,8 @@ const App = () => {
                     <Routes>
                         {/* Public Routes */}
                         <Route path="/login" element={<Login />} />
-                        <Route path="/forgot-password" element={<ForgotPass />} />
-                        <Route path="/register" element={<Register />} />
+                        {/* <Route path="/forgot-password" element={<ForgotPass />} /> */}
+                        {/* <Route path="/register" element={<Register />} /> */}
                         
                         {/* Protected Routes */}
                         <Route path="/" element={
@@ -84,12 +84,7 @@ const App = () => {
                                 <SalesQuotations />
                             </ProtectedRoute>
                         } />
-                        {/* Ticket Details Accessible for all authenticated users */}
-                        <Route path="/Tickets/:ticketId" element={
-                            <ProtectedRoute>
-                                <TicketDetails />
-                            </ProtectedRoute>
-                        } />
+                      
                     </Routes>
                 </Layout>
             </Router>

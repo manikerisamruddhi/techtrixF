@@ -5,7 +5,7 @@ import { addProduct } from '../../redux/slices/productSlice'; // Redux action
 import { useDispatch } from 'react-redux';
 
 
-const ProductFormModal = ({ visible, onCancel, product, customerID, onAddProduct }) => {
+const ProductFormModal = ({ visible, onCancel, product, customerId, onAddProduct }) => {
     const [form] = Form.useForm();
     const dispatch = useDispatch();
 
@@ -16,9 +16,9 @@ const ProductFormModal = ({ visible, onCancel, product, customerID, onAddProduct
             ? { ...product, ...values, created_date: createdDate }
             : { ...values, created_date: createdDate };
     
-        // Only add customerID if it's defined
-        if (customerID) {
-            productData.customerID = customerID;
+        // Only add customerId if it's defined
+        if (customerId) {
+            productData.customerId = customerId;
         }
     
         // Call onCreate to handle the product addition
