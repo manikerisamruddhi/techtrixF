@@ -16,8 +16,12 @@ const QuotationFormModal = ({ visible, onClose, ticketId, defaultCustomer }) => 
     const { customers } = useSelector(state => state.customers); // Assuming customer data is fetched through Redux
     const [customer, setCustomer] = useState(null);
     const { items: products } = useSelector(state => state.products); // Assuming you have products in your Redux store
-    // console.log('Fetched Products:', products);
+    
+    const loggedInUser = JSON.parse(localStorage.getItem('user')); // Get user from local storage
+    // const loggedInUserName = `${loggedInUser.firstName} ${loggedInUser.lastName}`
+    const looggedInUserId = loggedInUser.id;
 
+    // console.log('Fetched Products:', products);
     const addProductFormRef = useRef(null);
 
     useEffect(() => {
@@ -172,7 +176,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId, defaultCustomer }) => 
                 ProductId: addedProducts.map(product => product.id),
                 FinalAmount: addedProducts.reduce((total, prod) => total + prod.price * prod.quantity, 0),
                 status: 'Pending',
-                createdBy: 'Admin',
+                createdBy: looggedInUserId,
                 isQuotationCreated: true,
                 // finalAmount,
                 createdDate: currentDate.format('YYYY-MM-DD HH:mm:ss'),
