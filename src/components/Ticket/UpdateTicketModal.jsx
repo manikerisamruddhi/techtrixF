@@ -8,12 +8,12 @@ import { useNavigate } from "react-router-dom";
 
 const { Option } = Select;
 
-const UpdateTicketModal = ({ ticketData, isVisible, onCancel, onClose  }) => {
+const UpdateTicketModal = ({ ticketData, isVisible, onCancel, onClose }) => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
-// console.log(ticketData);
+  // console.log(ticketData);
 
   // Fetch service technicians from the "Service_Technical" department
   useEffect(() => {
@@ -42,7 +42,7 @@ const UpdateTicketModal = ({ ticketData, isVisible, onCancel, onClose  }) => {
 
   const handleUpdate = (close = false) => {
     form
-    
+
       .validateFields()
       .then((values) => {
         // Prepare updated ticket data by merging with existing ticket data
@@ -51,12 +51,12 @@ const UpdateTicketModal = ({ ticketData, isVisible, onCancel, onClose  }) => {
           ...values, // Then spread the new values from the form
           createdBy: "admin", // Ensure createdBy is set correctly
           status: close ? "in-progress" : "closed",
-           };
+        };
 
-           if (!close) {
-            console.log("clicked close");
-            updatedTicketData.assignedDate = moment().toISOString(); // Set new assignedDate for updates
-          }
+        if (!close) {
+          console.log("clicked close");
+          updatedTicketData.assignedDate = moment().toISOString(); // Set new assignedDate for updates
+        }
 
         // Dispatch the update action with the updated data
         dispatch(updateTicket({ id: ticketData.id, data: updatedTicketData })); // Assuming ticketData has an id field
@@ -64,9 +64,9 @@ const UpdateTicketModal = ({ ticketData, isVisible, onCancel, onClose  }) => {
         message.success("Ticket updated successfully!");
         onCancel(); // Close the modal after updating
         onClose();
-  
+
         // Add console log for debugging
-    
+
         navigate('/tickets');
         console.log("Navigating to /tickets...");
       })
@@ -76,11 +76,11 @@ const UpdateTicketModal = ({ ticketData, isVisible, onCancel, onClose  }) => {
   };
 
 
-  const currentTechnician = ticketData && ticketData.assignedToID 
-  ? serviceTechnicians.find((tech) => tech.id === ticketData.assignedToID)
-  : null;
+  const currentTechnician = ticketData && ticketData.assignedToID
+    ? serviceTechnicians.find((tech) => tech.id === ticketData.assignedToID)
+    : null;
 
-  
+
 
   return (
     <Modal
@@ -126,61 +126,61 @@ const UpdateTicketModal = ({ ticketData, isVisible, onCancel, onClose  }) => {
 
         <Row gutter={16}>
           <Col span={12}>
-      
 
-<Form.Item
-  name="assignedTo"
-  label="Assign Service Technician"
-  rules={[{ required: true, message: "Please assign a service technician" }]}
->
-  <Select
-    placeholder={
-      loading
-        ? "Loading..."
-        : currentTechnician
-        ? `${currentTechnician.firstName} ${currentTechnician.lastName} (ID: ${currentTechnician.id})`
-        : "Select Service Technician"
-    }
-    loading={loading}
-    showSearch
-    optionFilterProp="label"
-    filterOption={(input, option) => {
-      const label = option.label.toLowerCase();
-      return label.includes(input.toLowerCase());
-    }}
-  >
-    {serviceTechnicians.map((tech) => (
-      <Option
-        key={tech.id}
-        value={tech.id}
-        label={`${tech.firstName} ${tech.lastName} [ID: ${tech.id}]`}
-      >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <span>{`${tech.firstName} ${tech.lastName}`}</span>
-          <span style={{ marginLeft: "10px" }}>{`(ID: ${tech.id})`}</span>
-        </div>
-      </Option>
-    ))}
-  </Select>
-</Form.Item>
 
-            </Col>
-            <Col>
+            <Form.Item
+              name="assignedTo"
+              label="Assign Service Technician"
+              rules={[{ required: true, message: "Please assign a service technician" }]}
+            >
+              <Select
+                placeholder={
+                  loading
+                    ? "Loading..."
+                    : currentTechnician
+                      ? `${currentTechnician.firstName} ${currentTechnician.lastName} (ID: ${currentTechnician.id})`
+                      : "Select Service Technician"
+                }
+                loading={loading}
+                showSearch
+                optionFilterProp="label"
+                filterOption={(input, option) => {
+                  const label = option.label.toLowerCase();
+                  return label.includes(input.toLowerCase());
+                }}
+              >
+                {serviceTechnicians.map((tech) => (
+                  <Option
+                    key={tech.id}
+                    value={tech.id}
+                    label={`${tech.firstName} ${tech.lastName} [ID: ${tech.id}]`}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                      }}
+                    >
+                      <span>{`${tech.firstName} ${tech.lastName}`}</span>
+                      <span style={{ marginLeft: "10px" }}>{`(ID: ${tech.id})`}</span>
+                    </div>
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>
+
+          </Col>
+          <Col>
             <Form.Item name="isChargeable" label="Chargeability" valuePropName="checked">
-      <Switch />
-    </Form.Item> 
-    </Col>
+              <Switch />
+            </Form.Item>
+          </Col>
         </Row>
 
         <Row gutter={16}>
           <Col span={24}>
-            <Form.Item name="description" label="description">
+            <Form.Item name="description" label="description/remark :">
               <Input.TextArea rows={3} />
             </Form.Item>
           </Col>
