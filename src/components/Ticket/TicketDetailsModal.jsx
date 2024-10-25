@@ -97,6 +97,11 @@ const TicketDetailsModal = ({ visible, ticket, onClose, onCreateQuotation, onUpd
                             <Descriptions.Item label="Is Chargeable" span={1}>{ticket.isChargeable ? 'Yes' : 'No'}</Descriptions.Item>
                       {/* <Descriptions.Item label="Isqqq" span={1}>{ticket.isQuotationCreated ? 'Yes' : 'No'}</Descriptions.Item> */}
                             <Descriptions.Item label="Assigned To" span={1}>{ticket.assignedTo ? ticket.assignedTo : 'Not Assigned'}</Descriptions.Item>
+                           
+                           {ticket.isChargeable && (
+                            <Descriptions.Item label="is Quoatation Created" span={1}>{ticket.isQuotationCreated ? 'Created' : 'Not created'}</Descriptions.Item>
+                           )}
+                            
                         </Descriptions>
                         {ticket.status !== 'closed' && (
                         <div style={{ marginTop: '20px', textAlign: 'right' }}>
@@ -111,7 +116,7 @@ const TicketDetailsModal = ({ visible, ticket, onClose, onCreateQuotation, onUpd
                                     Update Ticket
                                 </Button>
                                  {/* Render the Create Quotation button if isChargeable is true */}
-                            {!ticket.isQuotationCreated && (
+                            {!ticket.isQuotationCreated && ticket.isChargeable &&(
                                 <Button 
                                     type="primary" 
                                     onClick={() => setIsCreateModalVisible(true)}  // Open the Create Quotation modal
