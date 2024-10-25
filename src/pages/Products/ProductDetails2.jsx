@@ -21,7 +21,7 @@ const ProductDetailModal = ({ visible, product, onClose }) => {
             <Paragraph><strong>warrantyMonths:</strong> {product.warrantyMonths}</Paragraph>
             <Paragraph><strong>Model No:</strong> {product.modelNo}</Paragraph>
             <Paragraph><strong>hsnCode:</strong> {product.hsnCode}</Paragraph>
-            <Paragraph><strong>Created Date:</strong> {new Date(product.created_date).toLocaleDateString()}</Paragraph> 
+            <Paragraph><strong>Created Date:</strong> {new Date(product.createdDate).toLocaleDateString()}</Paragraph> 
             {/* Add additional fields as necessary */}
         </Modal>
     );

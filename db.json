@@ -950,7 +950,7 @@
     {
       "customerId": "4f90",
       "brand": "Sony",
-      "created_date": "2024-09-26 11:51:11",
+      "createdDate": "2024-09-26 11:51:11",
       "description": "Sony PlayStation 5 Console - 825GB SSD, 4K Gaming, DualSense Wireless Controller, Ray Tracing Support, and Backward Compatibility with PlayStation 4 games. Experience ultra-fast load times and a new level of immersive gaming with next-gen graphics.",
       "hsnCode": "HSN001",
       "is_negotiable": false,
@@ -966,7 +966,7 @@
     {
       "customerId": "e608",
       "brand": "Dell",
-      "created_date": "2024-09-11 11:51:11",
+      "createdDate": "2024-09-11 11:51:11",
       "description": "Dell XPS 13 Laptop - 13.3-inch Full HD Display, Intel Core i7 8th Gen Processor, 16GB RAM, 512GB SSD, Windows 11 Home. Ultra-thin, lightweight, and designed for performance, ideal for professionals and creatives on the go.",
       "hsnCode": "HSN003",
       "is_negotiable": false,
@@ -982,7 +982,7 @@
     {
       "customerId": "350c",
       "brand": "LG",
-      "created_date": "2024-09-19 11:51:11",
+      "createdDate": "2024-09-19 11:51:11",
       "description": "LG 55-inch OLED TV - OLED55CXPUA, 4K Ultra HD Smart TV with AI ThinQ, Dolby Vision, and Dolby Atmos. Enjoy perfect black levels, stunning picture quality, and smooth, responsive gaming with NVIDIA G-Sync compatibility.",
       "hsnCode": "HSN002",
       "is_negotiable": true,
@@ -998,7 +998,7 @@
     {
       "customerId": "50c4",
       "brand": "Microsoft",
-      "created_date": "2024-09-27 11:51:11",
+      "createdDate": "2024-09-27 11:51:11",
       "description": "Microsoft Surface Pro 7 - 12.3-inch Touchscreen, Intel Core i5 10th Gen Processor, 8GB RAM, 256GB SSD, Windows 10 Home. A versatile 2-in-1 device that combines the power of a laptop with the portability of a tablet, perfect for work, play, and everything in between.",
       "hsnCode": "HSN002",
       "is_negotiable": true,
@@ -1077,7 +1077,7 @@
       "price": "909090909099999999090990909909090",
       "quantity": "999999999999999999999",
       "warrantyMonths": "9",
-      "created_date": "2024-10-17T06:13:09.432Z"
+      "createdDate": "2024-10-17T06:13:09.432Z"
     },
     {
       "id": "66cc",
@@ -1090,7 +1090,7 @@
       "price": "909090909099999999090990909909090",
       "quantity": "999999999999999999999",
       "warrantyMonths": "9",
-      "created_date": "2024-10-17T06:27:06.747Z"
+      "createdDate": "2024-10-17T06:27:06.747Z"
     },
     {
       "id": "23f9",
@@ -1103,7 +1103,7 @@
       "price": "8",
       "quantity": "8",
       "warrantyMonths": "8",
-      "created_date": "2024-10-17T06:32:05.505Z"
+      "createdDate": "2024-10-17T06:32:05.505Z"
     },
     {
       "id": "696b",
@@ -1116,7 +1116,7 @@
       "price": "909090909099999999090990909909090",
       "quantity": "9",
       "warrantyMonths": "9",
-      "created_date": "2024-10-17T06:41:22.880Z",
+      "createdDate": "2024-10-17T06:41:22.880Z",
       "customerId": "538c"
     },
     {
@@ -1130,7 +1130,7 @@
       "price": "1",
       "quantity": "3",
       "warrantyMonths": "3",
-      "created_date": "2024-10-17T06:42:38.018Z"
+      "createdDate": "2024-10-17T06:42:38.018Z"
     },
     {
       "id": "c5ef",
@@ -1143,7 +1143,7 @@
       "price": "8",
       "quantity": "8",
       "warrantyMonths": "8",
-      "created_date": "2024-10-17T06:51:21.568Z"
+      "createdDate": "2024-10-17T06:51:21.568Z"
     },
     {
       "id": "d85a",
@@ -1156,7 +1156,7 @@
       "price": "3",
       "quantity": "33",
       "warrantyMonths": "33",
-      "created_date": "2024-10-17T06:53:02.988Z",
+      "createdDate": "2024-10-17T06:53:02.988Z",
       "customerId": "f82b"
     },
     {
@@ -1170,7 +1170,7 @@
       "price": "8",
       "quantity": "8",
       "warrantyMonths": "9",
-      "created_date": "2024-10-17T06:59:27.175Z",
+      "createdDate": "2024-10-17T06:59:27.175Z",
       "customerId": "f82b"
     },
     {
@@ -1184,7 +1184,7 @@
       "price": "909090909099999999090990909909090",
       "quantity": "44",
       "warrantyMonths": "4",
-      "created_date": "2024-10-17T07:11:02.206Z"
+      "createdDate": "2024-10-17T07:11:02.206Z"
     },
     {
       "id": "5d88",
@@ -1197,7 +1197,7 @@
       "price": "78",
       "quantity": "78",
       "warrantyMonths": "7",
-      "created_date": "2024-10-17T07:15:41.955Z"
+      "createdDate": "2024-10-17T07:15:41.955Z"
     },
     {
       "id": "6d52",
@@ -1210,7 +1210,7 @@
       "price": "78",
       "quantity": "78",
       "warrantyMonths": "7",
-      "created_date": "2024-10-17T07:26:12.041Z"
+      "createdDate": "2024-10-17T07:26:12.041Z"
     },
     {
       "id": "d4f4",
@@ -1223,7 +1223,7 @@
       "price": "78",
       "quantity": "78",
       "warrantyMonths": "7",
-      "created_date": "2024-10-17T07:27:37.232Z"
+      "createdDate": "2024-10-17T07:27:37.232Z"
     },
     {
       "id": "ade8",
@@ -1236,7 +1236,7 @@
       "price": "909090909099999999090990909909090",
       "quantity": "9",
       "warrantyMonths": "9",
-      "created_date": "2024-10-17T07:29:47.234Z"
+      "createdDate": "2024-10-17T07:29:47.234Z"
     },
     {
       "id": "3d93",
@@ -1249,7 +1249,7 @@
       "price": "8",
       "quantity": "8",
       "warrantyMonths": "8",
-      "created_date": "2024-10-17T07:40:46.981Z"
+      "createdDate": "2024-10-17T07:40:46.981Z"
     },
     {
       "id": "5925",
@@ -1262,7 +1262,7 @@
       "price": "8",
       "quantity": "8",
       "warrantyMonths": "9",
-      "created_date": "2024-10-17T07:49:46.443Z",
+      "createdDate": "2024-10-17T07:49:46.443Z",
       "customerId": "7d48"
     },
     {
@@ -1276,7 +1276,7 @@
       "price": "8",
       "quantity": "8",
       "warrantyMonths": "9",
-      "created_date": "2024-10-17T09:19:20.846Z",
+      "createdDate": "2024-10-17T09:19:20.846Z",
       "customerId": "12a4"
     },
     {
@@ -1290,7 +1290,7 @@
       "price": "8",
       "quantity": "8",
       "warrantyMonths": "9",
-      "created_date": "2024-10-17T09:33:55.617Z",
+      "createdDate": "2024-10-17T09:33:55.617Z",
       "customerId": "99b9"
     },
     {
@@ -1304,7 +1304,7 @@
       "price": "8",
       "quantity": "8",
       "warrantyMonths": "9",
-      "created_date": "2024-10-17T09:37:27.091Z",
+      "createdDate": "2024-10-17T09:37:27.091Z",
       "customerId": "e335"
     },
     {
@@ -1318,7 +1318,7 @@
       "price": "8",
       "quantity": "8",
       "warrantyMonths": "9",
-      "created_date": "2024-10-17T09:40:56.006Z",
+      "createdDate": "2024-10-17T09:40:56.006Z",
       "customerId": "297b"
     },
     {
@@ -1332,7 +1332,7 @@
       "price": "8",
       "quantity": "8",
       "warrantyMonths": "9",
-      "created_date": "2024-10-17T09:41:30.129Z",
+      "createdDate": "2024-10-17T09:41:30.129Z",
       "customerId": "dd0c"
     },
     {
@@ -1346,7 +1346,7 @@
       "price": "8",
       "quantity": "8",
       "warrantyMonths": "9",
-      "created_date": "2024-10-17T09:50:09.921Z",
+      "createdDate": "2024-10-17T09:50:09.921Z",
       "customerId": "82cf"
     },
     {
@@ -1360,7 +1360,7 @@
       "price": "8",
       "quantity": "8",
       "warrantyMonths": "9",
-      "created_date": "2024-10-17T09:53:01.095Z",
+      "createdDate": "2024-10-17T09:53:01.095Z",
       "customerId": "3126"
     },
     {
@@ -1374,7 +1374,7 @@
       "price": "8",
       "quantity": "8",
       "warrantyMonths": "8",
-      "created_date": "2024-10-17T10:09:25.430Z",
+      "createdDate": "2024-10-17T10:09:25.430Z",
       "customerId": "3126"
     },
     {
@@ -1396,7 +1396,7 @@
       "price": "8",
       "quantity": "8",
       "warrantyMonths": "8",
-      "created_date": "2024-10-18T10:01:27.446Z"
+      "createdDate": "2024-10-18T10:01:27.446Z"
     },
     {
       "id": "1cdb",
@@ -1457,7 +1457,7 @@
       "price": "8",
       "quantity": "8",
       "warrantyMonths": "9",
-      "created_date": "2024-10-19T09:37:48.660Z",
+      "createdDate": "2024-10-19T09:37:48.660Z",
       "customerId": "4e35"
     },
     {
@@ -1566,7 +1566,7 @@
       "price": "0",
       "quantity": "",
       "warrantyMonths": "9",
-      "created_date": "2024-10-23T05:02:46.162Z",
+      "createdDate": "2024-10-23T05:02:46.162Z",
       "customerId": "d5fd"
     },
     {
@@ -1900,7 +1900,7 @@
       "modelNo": "jj",
       "description": "jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj",
       "isSerialNoAllowed": false,
-      "created_date": "2024-10-23T06:20:02.230Z"
+      "createdDate": "2024-10-23T06:20:02.230Z"
     },
     {
       "id": "d632",
@@ -1908,7 +1908,7 @@
       "modelNo": "jj",
       "description": "sdf",
       "isSerialNoAllowed": true,
-      "created_date": "2024-10-23T06:30:46.219Z"
+      "createdDate": "2024-10-23T06:30:46.219Z"
     },
     {
       "id": "67ab",
@@ -1916,13 +1916,13 @@
       "modelNo": "asdfsad",
       "description": "asdfadffds",
       "isSerialNoAllowed": false,
-      "created_date": "2024-10-23T06:33:03.581Z"
+      "createdDate": "2024-10-23T06:33:03.581Z"
     },
     {
       "id": "1ea9",
       "customerId": "e608",
       "brand": "Dell",
-      "created_date": "2024-10-23T09:50:34.783Z",
+      "createdDate": "2024-10-23T09:50:34.783Z",
       "description": "Dell XPS 13 Laptop - 13.3-inch Full HD Display, Intel Core i7 8th Gen Processor, 16GB RAM, 512GB SSD, Windows 11 Home. Ultra-thin, lightweight, and designed for performance, ideal for professionals and creatives on the go.",
       "hsnCode": "HSN003",
       "is_negotiable": false,
@@ -1952,7 +1952,7 @@
       "partCode": "sadfa",
       "hsnCode": "afafds",
       "price": "33",
-      "created_date": "2024-10-24T09:11:42.229Z"
+      "createdDate": "2024-10-24T09:11:42.229Z"
     }
   ],
   "invoices": [
@@ -2787,7 +2787,7 @@
       "is_active": 1,
       "phoneNumber": "123-456-7890",
       "last_login_date": "2024-09-01 10:00:00",
-      "created_date": "2023-01-01 10:00:00",
+      "createdDate": "2023-01-01 10:00:00",
       "last_updated_date": "2024-09-01 10:00:00",
       "role": "Sales",
       "hire_date": "2023-01-15 10:00:00",
@@ -2803,7 +2803,7 @@
       "is_active": 1,
       "phoneNumber": "234-567-8901",
       "last_login_date": "2024-09-02 10:10:10",
-      "created_date": "2023-02-01 10:00:00",
+      "createdDate": "2023-02-01 10:00:00",
       "last_updated_date": "2024-09-02 10:10:10",
       "role": "Logistics",
       "hire_date": "2023-02-15 10:00:00",
@@ -2819,7 +2819,7 @@
       "is_active": 1,
       "phoneNumber": "345-678-9012",
       "last_login_date": "2024-09-03 10:20:20",
-      "created_date": "2023-03-01 10:00:00",
+      "createdDate": "2023-03-01 10:00:00",
       "last_updated_date": "2024-09-03 10:20:20",
       "role": "Service_Technical",
       "hire_date": "2023-03-15 10:00:00",
@@ -2835,7 +2835,7 @@
       "is_active": 1,
       "phoneNumber": "456-789-0123",
       "last_login_date": "2024-09-04 10:30:30",
-      "created_date": "2023-04-01 10:00:00",
+      "createdDate": "2023-04-01 10:00:00",
       "last_updated_date": "2024-09-04 10:30:30",
       "role": "Sales",
       "hire_date": "2023-04-15 10:00:00",
@@ -2851,7 +2851,7 @@
       "is_active": 1,
       "phoneNumber": "567-890-1234",
       "last_login_date": "2024-09-05 10:40:40",
-      "created_date": "2023-05-01 10:00:00",
+      "createdDate": "2023-05-01 10:00:00",
       "last_updated_date": "2024-09-05 10:40:40",
       "role": "Logistics",
       "hire_date": "2023-05-15 10:00:00",
@@ -2867,7 +2867,7 @@
       "is_active": 1,
       "phoneNumber": "678-901-2345",
       "last_login_date": "2024-09-06 10:50:50",
-      "created_date": "2023-06-01 10:00:00",
+      "createdDate": "2023-06-01 10:00:00",
       "last_updated_date": "2024-09-06 10:50:50",
       "role": "Service_Technical",
       "hire_date": "2023-06-15 10:00:00",
@@ -2883,7 +2883,7 @@
       "is_active": 1,
       "phoneNumber": "789-012-3456",
       "last_login_date": "2024-09-07 11:00:00",
-      "created_date": "2023-07-01 10:00:00",
+      "createdDate": "2023-07-01 10:00:00",
       "last_updated_date": "2024-09-07 11:00:00",
       "role": "Sales",
       "hire_date": "2023-07-15 10:00:00",
@@ -2899,7 +2899,7 @@
       "is_active": 1,
       "phoneNumber": "890-123-4567",
       "last_login_date": "2024-09-08 11:10:10",
-      "created_date": "2023-08-01 10:00:00",
+      "createdDate": "2023-08-01 10:00:00",
       "last_updated_date": "2024-09-08 11:10:10",
       "role": "Logistics",
       "hire_date": "2023-08-15 10:00:00",
@@ -2915,7 +2915,7 @@
       "is_active": 1,
       "phoneNumber": "901-234-5678",
       "last_login_date": "2024-09-09 11:20:20",
-      "created_date": "2023-09-01 10:00:00",
+      "createdDate": "2023-09-01 10:00:00",
       "last_updated_date": "2024-09-09 11:20:20",
       "role": "Service_Technical",
       "hire_date": "2023-09-15 10:00:00",
@@ -2931,7 +2931,7 @@
       "is_active": 1,
       "phoneNumber": "012-345-6789",
       "last_login_date": "2024-09-10 11:30:30",
-      "created_date": "2023-10-01 10:00:00",
+      "createdDate": "2023-10-01 10:00:00",
       "last_updated_date": "2024-09-10 11:30:30",
       "role": "Sales",
       "hire_date": "2023-10-15 10:00:00",

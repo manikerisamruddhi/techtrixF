@@ -151,8 +151,8 @@ const UpdateTicketModal = ({ ticketData, isVisible, onCancel, onClose }) => {
               >
                 {serviceTechnicians.map((tech) => (
                   <Option
-                    key={tech.id}
-                    value={tech.id}
+                    key={tech.userId}
+                    value={tech.userId}
                     label={`${tech.firstName} ${tech.lastName} [ID: ${tech.id}]`}
                   >
                     <div
@@ -163,7 +163,7 @@ const UpdateTicketModal = ({ ticketData, isVisible, onCancel, onClose }) => {
                       }}
                     >
                       <span>{`${tech.firstName} ${tech.lastName}`}</span>
-                      <span style={{ marginLeft: "10px" }}>{`(ID: ${tech.id})`}</span>
+                      <span style={{ marginLeft: "10px" }}>{`(ID: ${tech.userId})`}</span>
                     </div>
                   </Option>
                 ))}
