@@ -9,6 +9,7 @@ const productApi = {
         return axiosInstance.get(`/products/get/${id}`);
     },
     createProduct: (productData) => {
+        // console.log(productData);
         return axiosInstance.post('/products/add', productData);
     },
     updateProduct: (id, productData) => {
