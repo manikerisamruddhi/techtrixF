@@ -67,6 +67,40 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
    
 
 // ...
+const handleRejectQuotation = () => {
+    // Logic to update the status to 'Rejected'
+    // This could be an API call or state update
+    
+    Modal.confirm({
+        title: 'Are you sure you want to proceed?',
+        content: 'This will approve the quotation and update its status.',
+        okText: 'Yes',
+        cancelText: 'No',
+        onOk: () => {
+            // If the user confirms, proceed with updating the quotation
+            const updatedQuotationData = { ...quotation, status: 'Rejected' };
+
+            // Dispatch the action to update the quotation
+            dispatch(updateQuotation({ id: quotation.id, data: updatedQuotationData }))
+            .then(response => {
+                // Handle success (e.g., update local state, show a message)
+                // console.log('Quotation rejected successfully:', response);
+                message.warning("Quotation Rejected!");
+            })
+            .catch(error => {
+                // Handle error (e.g., show an error message)
+                console.error('Error rejecting quotation:', error);
+                message.error("Error approving quotation");
+            });
+            onClose();
+        },
+        onCancel() {
+            console.log('User canceled rejecting the quotation.');
+            message.warning('User canceled rejecting the quotation.');
+        }
+    });
+      
+};
 
 const handleProceed = () => {
     if (!quotation || !quotation.id) {
@@ -365,24 +399,51 @@ const handleProceed = () => {
              
             footer={[
                 <Space key="actions" style={{ float: 'right' }}>
-
-{quotation?.status !== 'Approved' && (
-                <Button key="edit" onClick={() => setIsEditModalVisible(true)} style={{ float: 'right' , border: "solid lightblue", borderRadius: '9px' }}>
-                Edit Quotation
-            </Button>
-            )}
-                    
-                    <Button key="print" onClick={handlePrintQuotation} style={{ float: 'right' , border: "solid lightblue", borderRadius: '9px' }}>
+                    {quotation?.status === 'Pending' && (
+                        <Button
+                            key="edit"
+                            onClick={() => setIsEditModalVisible(true)}
+                            style={{ float: 'right', border: "solid lightblue", borderRadius: '9px' }}
+                        >
+                            Edit Quotation
+                        </Button>
+                    )}
+            
+                    <Button
+                        key="print"
+                        onClick={handlePrintQuotation}
+                        style={{ float: 'right', border: "solid lightblue", borderRadius: '9px' }}
+                    >
                         Download Quotation
                     </Button>
-                     {/* Conditionally render Proceed button only if status is not 'Approved' */}
-            {quotation?.status !== 'Approved' && (
-                <Button key="proceed" type="primary" onClick={handleProceed}>
-                    Proceed
-                </Button>
-            )}
+            
+            
+                    {/* Add Reject button to update status to 'Rejected' */}
+                    {quotation?.status === 'Pending' && (
+                        <Button
+                            key="reject"
+                            type="danger"
+                            onClick={() => handleRejectQuotation()}
+                            style={{ float: 'right', border: "solid lightblue", borderRadius: '9px', color:'red', background:'white'}}
+                        >
+                            Reject
+                        </Button>
+                    )}
+
+                    {/* Conditionally render Proceed button only if status is not 'Approved' */}
+                    {quotation?.status === 'Pending' && (
+                        <Button
+                            key="proceed"
+                            type="primary"
+                            onClick={handleProceed}
+                        >
+                            Proceed
+                        </Button>
+                    )}
+            
                 </Space>,
             ]}
+
         >
             <div
                 ref={modalContentRef}
