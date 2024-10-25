@@ -54,7 +54,7 @@
         };
 
         const handleCustomerChange = (value) => {
-            const selectedCust = customers.find(customer => customer.id === value);
+            const selectedCust = customers.find(customer => customer.customerId === value);
             setSelectedCustomer(selectedCust);
             setisPremiumCustomer(selectedCust?.isPremium || false);
             form.setFieldsValue({ ProductID: null });
@@ -94,7 +94,7 @@
                 category: 'issue', // You can modify this if you have a different category
                 assignedTo: null, // Assuming you have logic to assign users if needed
                 customer: {
-                    customerId: values.customerId || (newCustomer ? newCustomer.id : null), // Use new customer if available
+                    customerId: values.customerId || (newCustomer ? newCustomer.customerId : null), // Use new customer if available
                 },
                 isChargeable: values.isChargeable !== undefined ? values.isChargeable : true,
                 isQuotationCreated: false, // Set to false as per the requirement
@@ -139,7 +139,7 @@
             }
         };
 
-        const filteredProducts = selectedCustomer ? items.filter((product) => product.customerId === selectedCustomer.id) : [];
+        const filteredProducts = selectedCustomer ? items.filter((product) => product.customerId === selectedCustomer.customerId) : [];
 
         const openCustomerForm = () => {
             setCustomerModalVisible(true);
@@ -148,7 +148,7 @@
 
         const handleCustomerAdded = (newCustomer) => {
             setSelectedCustomer(newCustomer);
-            form.setFieldsValue({ customerId: newCustomer.id });
+            form.setFieldsValue({ customerId: newCustomer.customerId });
             setisPremiumCustomer(newCustomer.isPremium);
             setCustomerModalVisible(false);
             form.setFieldsValue({ customerName: `${newCustomer.firstName} ${newCustomer.lastName}` });
@@ -215,7 +215,7 @@
                                 >
                                     {customers && customers.length > 0 ? (
                                         customers.map(customer => (
-                                            <Option key={customer.id} value={customer.id} label={`${customer.firstName} ${customer.lastName} ${customer.email} ${customer.phoneNumber} `}>
+                                            <Option key={customer.customerId} value={customer.customerId} label={`${customer.firstName} ${customer.lastName} ${customer.email} ${customer.phoneNumber} `}>
                                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                                     <span>{`${customer.firstName} ${customer.lastName}`}</span>
                                                     <span style={{ marginLeft: '10px', color: 'gray' }}>{customer.email}</span>
@@ -310,7 +310,7 @@
                             visible={productModalVisible}
                             onCancel={() => setProductModalVisible(false)}
                             onAddProduct={handleProductAdded}
-                            customerId={newCustomer?.id}
+                            customerId={newCustomer?.customerId}
                         />
                         {/* )} */}
 
