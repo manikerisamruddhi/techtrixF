@@ -673,7 +673,7 @@
       "TotalAmount": 2775.11,
       "Discount": 76.5,
       "FinalAmount": 1387.43,
-      "status": "Pending",
+      "status": "Rejected",
       "Comments": "Sample comment 7",
       "createdDate": "2024-09-27 10:15:10",
       "id": "fb40"
@@ -686,7 +686,7 @@
       "TotalAmount": 4579.14,
       "Discount": 148.23,
       "FinalAmount": 4168.89,
-      "status": "Pending",
+      "status": "Rejected",
       "Comments": "Sample comment 8",
       "createdDate": "2024-09-27 10:15:10",
       "id": "b7a9"
@@ -712,7 +712,7 @@
       "TotalAmount": 2579.99,
       "Discount": 308.72,
       "FinalAmount": 3192.6,
-      "status": "Pending",
+      "status": "Rejected",
       "Comments": "Sample comment 10",
       "createdDate": "2024-09-27 10:15:10",
       "id": "5ab2"
@@ -721,14 +721,14 @@
       "id": "d671",
       "FinalAmount": "90000",
       "createdDate": "2024-10-05T11:50:16.050Z",
-      "status": "Pending"
+      "status": "Rejected"
     },
     {
       "id": "61b4",
       "TicketID": "9642",
       "FinalAmount": "88009",
       "createdDate": "2024-10-05T11:57:18.579Z",
-      "status": "Pending"
+      "status": "Rejected"
     },
     {
       "id": "eea0",
@@ -2312,11 +2312,12 @@
       "customerID": "e608",
       "ProductID": "1ea9",
       "isChargeable": true,
-      "status": "Open",
-      "createdBy": "Admin",
+      "status": "in-progress",
+      "createdBy": "admin",
       "createdDate": "2024-10-15T10:45:44.500Z",
       "description": "df",
-      "isQuotationCreated": true
+      "isQuotationCreated": true,
+      "assignedTo": "1a2b3c"
     },
     {
       "id": "1eac",
@@ -2776,6 +2777,27 @@
         }
       ],
       "createdDate": "2024-10-24T09:22:15.352Z"
+    },
+    {
+      "id": "8758",
+      "createdBy": "0j1k7l",
+      "title": "test",
+      "description": "solve today",
+      "status": "Open",
+      "category": "issue",
+      "assignedTo": null,
+      "customer": {
+        "customerId": "4f90"
+      },
+      "isChargeable": true,
+      "isQuotationCreated": false,
+      "ticketType": "Issue",
+      "products": [
+        {
+          "productId": "1c95"
+        }
+      ],
+      "createdDate": "2024-10-25T07:47:03.475Z"
     }
   ],
   "users": [
@@ -2940,8 +2962,8 @@
       "id": "0j1k2l"
     },
     {
-      "firstName": "Ashish",
-      "lastName": "Bhosale",
+      "firstName": "Subhash",
+      "lastName": "K",
       "id": "0j1k7l",
       "role": "Admin",
       "email": "admin@example.com",

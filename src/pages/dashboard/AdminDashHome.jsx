@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { fetchTickets, fetchQuotations, fetchInvoices } from '../../redux/slices/adminDash';
 import useTicketCounts from '../../hooks/useTicketCount';
+import useQuotationCounts from '../../hooks/useQuotationCount';
 import CreateTicketModal from '../../components/Ticket/CreateTicketModalForm';
 import CreateQuotationModal from '../../components/Quotation/CreateQuotation';
 import CustomerFormModal from '../../components/Customer/CustomerFormModal';
@@ -70,6 +71,7 @@ const Dashboard = () => {
     const dispatch = useDispatch();
     const { tickets, quotations, invoices, loading, error } = useSelector(state => state.dashboard);
     const { total, inProgress, resolved, closed, open } = useTicketCounts(tickets);
+    const { pending, approved} = useQuotationCounts(quotations);
 
     useEffect(() => {
         dispatch(fetchTickets());
@@ -107,7 +109,11 @@ const Dashboard = () => {
     };
 
     const handleSubCardClick = (status) => {
-        navigate(`/tickets?status=${status}`);
+        if(!status)
+            navigate(`/tickets`);
+        else {
+            navigate(`/tickets?status=${status}`);
+        }
     };
 
     const handleBackButtonClick = () => {
@@ -181,9 +187,9 @@ const Dashboard = () => {
 
                                 <Grid container spacing={2} sx={{ marginTop: '20px' }}>
                                     <Grid item xs={6} sm={6} md={6} marginBottom={1}>
-                                        <Typography variant="h6" sx={{ color: '' }}>Open:{open}</Typography>
-                                        <Typography variant="h6" sx={{ color: '' }}>Resolved:{resolved}</Typography>
-                                        <Typography variant="h6" sx={{ color: '' }}>Total:{total}</Typography>
+                                        <Typography variant="h6" sx={{ color: '' }}>Open :{open}</Typography>
+                                        <Typography variant="h6" sx={{ color: '' }}>In-progress :{inProgress}</Typography>
+                                        <Typography variant="h6" sx={{ color: '' }}>Total :{total}</Typography>
                                     </Grid>
                                 </Grid>
 
@@ -219,9 +225,9 @@ const Dashboard = () => {
 
                                 <Grid container spacing={2} sx={{ marginTop: '20px' }}>
                                     <Grid item xs={6} sm={6} md={6} marginBottom={1}>
-                                        <Typography variant="h6" sx={{ color: '' }}>test:{open}</Typography>
-                                        <Typography variant="h6" sx={{ color: '' }}>test:{resolved}</Typography>
-                                        <Typography variant="h6" sx={{ color: '' }}>test:{total}</Typography>
+                                        <Typography variant="h6" sx={{ color: '' }}>Pending :{pending}</Typography>
+                                        <Typography variant="h6" sx={{ color: '' }}>Approved:{approved}</Typography>
+                                        {/* <Typography variant="h6" sx={{ color: '' }}>test:{total}</Typography> */}
                                     </Grid>
                                 </Grid>
                                 <Button
@@ -249,9 +255,9 @@ const Dashboard = () => {
                                 <Typography variant="h5" sx={{ color: '#000' }}> Invoices</Typography>
                                 <Grid container spacing={2} sx={{ marginTop: '20px' }}>
                                     <Grid item xs={6} sm={6} md={6} marginBottom={1}>
-                                        <Typography variant="h6" sx={{ color: '' }}>test:{open}</Typography>
-                                        <Typography variant="h6" sx={{ color: '' }}>test:{resolved}</Typography>
-                                        <Typography variant="h6" sx={{ color: '' }}>test:{total}</Typography>
+                                        <Typography variant="h6" sx={{ color: '' }}>Invoices</Typography>
+                                        {/* <Typography variant="h6" sx={{ color: '' }}>test:{resolved}</Typography>
+                                        <Typography variant="h6" sx={{ color: '' }}>test:{total}</Typography> */}
                                     </Grid>
                                 </Grid>
 
@@ -304,9 +310,9 @@ const Dashboard = () => {
                                 <Typography variant="h5" sx={{ color: '#000' }}> Customers</Typography>
                                 <Grid container spacing={2} sx={{ marginTop: '20px' }}>
                                     <Grid item xs={6} sm={6} md={6} marginBottom={1}>
-                                        <Typography variant="h6" sx={{ color: '' }}>test:{open}</Typography>
+                                        {/* <Typography variant="h6" sx={{ color: '' }}>test:{open}</Typography>
                                         <Typography variant="h6" sx={{ color: '' }}>test:{resolved}</Typography>
-                                        <Typography variant="h6" sx={{ color: '' }}>test:{total}</Typography>
+                                        <Typography variant="h6" sx={{ color: '' }}>test:{total}</Typography> */}
                                     </Grid>
                                 </Grid>
 
@@ -336,9 +342,9 @@ const Dashboard = () => {
                                 <Typography variant="h5" sx={{ color: '#000' }}> Users</Typography>
                                 <Grid container spacing={2} sx={{ marginTop: '20px' }}>
                                     <Grid item xs={6} sm={6} md={6} marginBottom={1}>
-                                        <Typography variant="h6" sx={{ color: '' }}>test:{open}</Typography>
+                                        {/* <Typography variant="h6" sx={{ color: '' }}>test:{open}</Typography>
                                         <Typography variant="h6" sx={{ color: '' }}>test:{resolved}</Typography>
-                                        <Typography variant="h6" sx={{ color: '' }}>test:{total}</Typography>
+                                        <Typography variant="h6" sx={{ color: '' }}>test:{total}</Typography> */}
                                     </Grid>
                                 </Grid>
 
@@ -388,12 +394,12 @@ const Dashboard = () => {
                                 </Button>
                         </div>
                         <Grid container spacing={2} style={{ marginLeft: '3px' }}>
-                            <Grid item xs={6} sm={3} md={4}>
+                        <Grid item xs={6} sm={3} md={4}>
                                 <Card
                                     sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2fbe7)' }}
-                                    onClick={() => handleSubCardClick('Resolved')}
+                                    onClick={() => handleSubCardClick('closed')}
                                 >
-                                    <Typography variant="h5" sx={{ color: 'blue' }}>Resolved: {resolved}</Typography>
+                                    <Typography variant="h5" sx={{ color: '#333' }}>closed: {closed}</Typography>
                                     <Grid container spacing={2} sx={{ marginTop: '20px' }}>
                                         <Grid item xs={6} sm={6} md={6} marginBottom={1}>
                                             <Typography variant="h6" sx={{ color: '' }}>test:{open}</Typography>
@@ -401,7 +407,6 @@ const Dashboard = () => {
                                             <Typography variant="h6" sx={{ color: '' }}>test:{total}</Typography>
                                         </Grid>
                                     </Grid>
-
                                 </Card>
                             </Grid>
                             <Grid item xs={6} sm={3} md={4}>
@@ -438,9 +443,9 @@ const Dashboard = () => {
                             <Grid item xs={6} sm={3} md={4}>
                                 <Card
                                     sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2fbe7)' }}
-                                    onClick={() => handleSubCardClick('closed')}
+                                    onClick={() => handleSubCardClick()}
                                 >
-                                    <Typography variant="h5" sx={{ color: '#333' }}>closed: {closed}</Typography>
+                                    <Typography variant="h5" sx={{ color: 'blue' }}>Total: {total}</Typography>
                                     <Grid container spacing={2} sx={{ marginTop: '20px' }}>
                                         <Grid item xs={6} sm={6} md={6} marginBottom={1}>
                                             <Typography variant="h6" sx={{ color: '' }}>test:{open}</Typography>
@@ -448,8 +453,10 @@ const Dashboard = () => {
                                             <Typography variant="h6" sx={{ color: '' }}>test:{total}</Typography>
                                         </Grid>
                                     </Grid>
+
                                 </Card>
                             </Grid>
+                           
                         </Grid>
                     </>
                 )}
@@ -479,17 +486,28 @@ const Dashboard = () => {
                                 </Button>
                         </div>
                         <Grid container spacing={2} style={{ marginLeft: '10px' }}>
-                            <Grid item xs={6} sm={3} md={4}>
+                        <Grid item xs={6} sm={3} md={4}>
                                 <Link to="/quotations" style={{ textDecoration: 'none' }}>
                                     <Card sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2fbe7)' }}>
-                                        <Typography sx={{ color: 'blue' }}>Delivered: {quotations.delivered}</Typography>
+                                        <Typography variant="h5" sx={{ color: 'blue' }}>Total: {}</Typography>
+                                        <Typography variant="h5" sx={{ color: 'blue' }}></Typography>
                                     </Card>
                                 </Link>
                             </Grid>
                             <Grid item xs={6} sm={3} md={4}>
                                 <Link to="/quotations" style={{ textDecoration: 'none' }}>
                                     <Card sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2fbe7)' }}>
-                                        <Typography sx={{ color: 'orangered' }}>Pending: {quotations.pending}</Typography>
+                                        <Typography variant="h5" sx={{ color: 'green' }}>Approved: {quotations.delivered}</Typography>
+                                        <Typography variant="h5" sx={{ color: 'blue' }}>{approved}</Typography>
+                                    </Card>
+                                </Link>
+                            </Grid>
+                            <Grid item xs={6} sm={3} md={4}>
+                                <Link to="/quotations" style={{ textDecoration: 'none' }}>
+                                    <Card sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2fbe7)' }}>
+                                        <Typography variant="h5" sx={{ color: 'orangered' }}>Pending: {quotations.pending}</Typography>
+                                        <Typography variant="h5" sx={{ color: 'orangered' }}>{pending}</Typography>
+                                   
                                     </Card>
                                 </Link>
                             </Grid>
