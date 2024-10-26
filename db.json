@@ -584,6 +584,36 @@
       "lastName": "ll",
       "email": "email@g.com",
       "phoneNumber": "9090"
+    },
+    {
+      "id": "5585",
+      "companyName": "prushal",
+      "address": "pune",
+      "firstName": "jkjk",
+      "zipCode": "898989",
+      "lastName": "ll",
+      "email": "test@gmail.com",
+      "phoneNumber": "0899898989"
+    },
+    {
+      "id": "e904",
+      "companyName": "prushal",
+      "address": "pune",
+      "firstName": "Nitish",
+      "zipCode": "909099",
+      "lastName": "Sharma",
+      "email": "admin@example.com",
+      "phoneNumber": "0899898989"
+    },
+    {
+      "id": "6099",
+      "companyName": "prushal",
+      "address": "pune",
+      "firstName": "jkjk",
+      "zipCode": "898989",
+      "lastName": "ll",
+      "email": "test@gmail.com",
+      "phoneNumber": "0899898989"
     }
   ],
   "quotations": [
@@ -944,6 +974,30 @@
       "isQuotationCreated": true,
       "createdDate": "2024-10-23 16:14:27",
       "Comments": "hello hello"
+    },
+    {
+      "id": "5d9c",
+      "customerID": "4f90",
+      "ProductId": [
+        "1c95"
+      ],
+      "FinalAmount": 34592.36,
+      "status": "Pending",
+      "isQuotationCreated": true,
+      "createdDate": "2024-10-26 11:18:44",
+      "Comments": "test 1 q"
+    },
+    {
+      "id": "6aa7",
+      "customerID": "4f90",
+      "ProductId": [
+        "1c95"
+      ],
+      "FinalAmount": 34592.36,
+      "status": "Pending",
+      "isQuotationCreated": true,
+      "createdDate": "2024-10-26 11:18:44",
+      "Comments": "k"
     }
   ],
   "products": [
@@ -1953,6 +2007,104 @@
       "hsnCode": "afafds",
       "price": "33",
       "created_date": "2024-10-24T09:11:42.229Z"
+    },
+    {
+      "id": "daa5",
+      "brand": "test to show db",
+      "modelNo": "test ",
+      "description": "dffd",
+      "isSerialNoAllowed": false,
+      "partCode": "sadfa",
+      "hsnCode": "afafds",
+      "price": "33",
+      "quantity": "8",
+      "warrantyMonths": "8",
+      "created_date": "2024-10-26T05:15:25.096Z",
+      "customerID": "5585"
+    },
+    {
+      "id": "70fd",
+      "brand": "test to show db",
+      "modelNo": "test ",
+      "description": "ewr",
+      "isSerialNoAllowed": false,
+      "partCode": "sadfa",
+      "hsnCode": "afafds",
+      "price": "33",
+      "quantity": "8",
+      "warrantyMonths": "8",
+      "created_date": "2024-10-26T05:15:41.888Z",
+      "customerID": "5585"
+    },
+    {
+      "id": "1492",
+      "brand": "abcd",
+      "modelNo": "test ",
+      "description": "adddddd",
+      "isSerialNoAllowed": true,
+      "partCode": "sadfa",
+      "hsnCode": "afafds",
+      "price": "33",
+      "quantity": "8",
+      "warrantyMonths": "8",
+      "created_date": "2024-10-26T05:16:00.180Z",
+      "customerID": "5585"
+    },
+    {
+      "id": "2f48",
+      "brand": "new ",
+      "modelNo": "test ",
+      "description": "new",
+      "isSerialNoAllowed": true,
+      "partCode": "sadfa",
+      "hsnCode": "afafds",
+      "price": "33",
+      "quantity": "8",
+      "warrantyMonths": "8",
+      "created_date": "2024-10-26T05:18:50.978Z"
+    },
+    {
+      "id": "d8cb",
+      "brand": "new product",
+      "modelNo": "test 2",
+      "description": "test 2",
+      "isSerialNoAllowed": true,
+      "partCode": "sadfa",
+      "hsnCode": "afafds",
+      "price": "33",
+      "quantity": "8",
+      "warrantyMonths": "8",
+      "created_date": "2024-10-26T05:34:40.907Z",
+      "customerID": "e904"
+    },
+    {
+      "id": "b1f2",
+      "brand": "new p 2",
+      "modelNo": "test 3",
+      "description": "test 3",
+      "isSerialNoAllowed": true,
+      "partCode": "asd",
+      "hsnCode": "fs",
+      "price": "8",
+      "quantity": "8",
+      "warrantyMonths": "8",
+      "created_date": "2024-10-26T05:43:30.851Z"
+    },
+    {
+      "id": "10ce",
+      "brand": "Sony",
+      "modelNo": "CFI-1015A01",
+      "price": 596.42,
+      "quantity": 58,
+      "description": "Sony PlayStation 5 Console - 825GB SSD, 4K Gaming, DualSense Wireless Controller, Ray Tracing Support, and Backward Compatibility with PlayStation 4 games. Experience ultra-fast load times and a new level of immersive gaming with next-gen graphics."
+    },
+    {
+      "id": "e612",
+      "brand": "Sony",
+      "modelNo": "CFI-1015A01",
+      "price": 596.42,
+      "quantity": 58,
+      "description": "Sony PlayStation 5 Console - 825GB SSD, 4K Gaming, DualSense Wireless Controller, Ray Tracing Support, and Backward Compatibility with PlayStation 4 games. Experience ultra-fast load times and a new level of immersive gaming with next-gen graphics."
     }
   ],
   "invoices": [
@@ -2798,6 +2950,42 @@
         }
       ],
       "createdDate": "2024-10-25T07:47:03.475Z"
+    },
+    {
+      "id": "3c5a",
+      "title": "test",
+      "description": "hhhhh",
+      "status": "Open",
+      "category": "issue",
+      "assignedTo": null,
+      "customer": {
+        "customerId": "5585"
+      },
+      "isChargeable": true,
+      "isQuotationCreated": false,
+      "ticketType": "Issue",
+      "products": [],
+      "createdDate": "2024-10-26T05:16:38.032Z"
+    },
+    {
+      "id": "2713",
+      "title": "test3",
+      "description": "test 3",
+      "status": "Open",
+      "category": "issue",
+      "assignedTo": null,
+      "customer": {
+        "customerId": "4f90"
+      },
+      "isChargeable": true,
+      "isQuotationCreated": false,
+      "ticketType": "Issue",
+      "products": [
+        {
+          "productId": "b1f2"
+        }
+      ],
+      "createdDate": "2024-10-26T05:43:51.819Z"
     }
   ],
   "users": [

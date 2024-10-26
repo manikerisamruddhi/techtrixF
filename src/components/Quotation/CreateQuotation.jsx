@@ -2,7 +2,7 @@ import React, { useEffect, useState , useRef} from 'react';
 import { Modal, Form, Row, Col, Input, Button, Table, notification, Radio, Select, Switch } from 'antd';
 import { CloseCircleOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchQuotations, addQuotation, resetError } from '../../redux/slices/quotationSlice';
+import { addQuotation, resetError } from '../../redux/slices/quotationSlice';
 import { fetchCustomers, addCustomer } from '../../redux/slices/customerSlice'; // Assuming a customer slice exists to fetch customers
 import { addProduct, fetchProducts } from '../../redux/slices/productSlice';
 import moment from 'moment';
@@ -61,7 +61,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId, defaultCustomer }) => 
 
     useEffect(() => {
         if (visible) {
-            dispatch(fetchQuotations());
+            // dispatch(fetchQuotations());
             dispatch(fetchCustomers()); // Fetch customers when the modal is visible
             dispatch(fetchProducts()); // Fetch products when the modal is visible
         }

@@ -57,7 +57,7 @@
             const selectedCust = customers.find(customer => customer.id === value);
             setSelectedCustomer(selectedCust);
             setisPremiumCustomer(selectedCust?.isPremium || false);
-            form.setFieldsValue({ ProductID: null });
+            form.setFieldsValue({ productId: null });
             setSelectedProduct(null);
         };
 
@@ -94,7 +94,7 @@
                 category: 'issue', // You can modify this if you have a different category
                 assignedTo: null, // Assuming you have logic to assign users if needed
                 customer: {
-                    customerId: values.customerID || (newCustomer ? newCustomer.id : null), // Use new customer if available
+                    customerId: values.customerID , // new customer id also asigned by modal(handleCustomerAdded)
                 },
                 isChargeable: values.isChargeable !== undefined ? values.isChargeable : true,
                 isQuotationCreated: false, // Set to false as per the requirement
@@ -104,8 +104,8 @@
             };
         
             // Add selected product(s) to the products array
-            if (values.ProductID) {
-                ticketData.products.push({ productId: values.ProductID });
+            if (values.productId) {
+                ticketData.products.push({ productId: values.productId });
             }
             // if (newProduct) {
             //     ticketData.products.push({ productId: newProduct.id });
@@ -162,7 +162,7 @@
 
         const handleProductAdded = (newProduct) => {
             setSelectedProduct(newProduct); // Set the newly added product
-            form.setFieldsValue({ ProductID: newProduct.id });
+            form.setFieldsValue({ productId: newProduct.id });
             setNewProduct(newProduct); // Update the new product state
             setProductModalVisible(false); // Close product modal
             handleProductChange(newProduct.id);
@@ -248,7 +248,7 @@
 
                         {customerType === 'existing' &&
                             <Form.Item
-                                name="ProductID"
+                                name="productId"
                                 label="Product :"
                                 rules={[{ required: true, message: 'Please select a product' }]}
                             >
