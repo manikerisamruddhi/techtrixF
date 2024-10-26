@@ -7,8 +7,8 @@ import Quotations from './pages/Quotations/Quotations';
 import Dashboard from './pages/dashboard/AdminDashHome';
 import UserManagement from './pages/dashboard/UserManagement';
 import Login from './pages/auth/LoginPage';
-import ForgotPass from './pages/auth/ForgotPasswordPage';
-import Register from './pages/auth/RegisterPage';
+// import ForgotPass from './pages/auth/ForgotPasswordPage';
+// import Register from './pages/auth/RegisterPage';
 import Customers from './pages/Customers/Customers';
 import Invoices from './pages/Invoice';
 import SalesTickets from './components/Sales/SalesTickets';
@@ -30,8 +30,8 @@ const App = () => {
                     <Routes>
                         {/* Public Routes */}
                         <Route path="/login" element={<Login />} />
-                        <Route path="/forgot-password" element={<ForgotPass />} />
-                        <Route path="/register" element={<Register />} />
+                        {/* <Route path="/forgot-password" element={<ForgotPass />} />
+                        <Route path="/register" element={<Register />} /> */}
                         
                         {/* Protected Routes */}
                         <Route path="/" element={

@@ -778,7 +778,7 @@
     },
     {
       "id": "5dc7",
-      "customerID": "4f90",
+      "customerId": "4f90",
       "ProductId": [
         null
       ],
@@ -928,7 +928,7 @@
     },
     {
       "id": "1d5c",
-      "customerID": "4f90",
+      "customerId": "4f90",
       "ProductId": [
         null
       ],
@@ -951,7 +951,7 @@
     },
     {
       "id": "5d97",
-      "customerID": "e608",
+      "customerId": "e608",
       "ProductId": [
         "1ea9"
       ],
@@ -964,7 +964,7 @@
     },
     {
       "id": "7387",
-      "customerID": "4f90",
+      "customerId": "4f90",
       "ProductId": [
         "1c95"
       ],
@@ -977,7 +977,7 @@
     },
     {
       "id": "5d9c",
-      "customerID": "4f90",
+      "customerId": "4f90",
       "ProductId": [
         "1c95"
       ],
@@ -989,7 +989,7 @@
     },
     {
       "id": "6aa7",
-      "customerID": "4f90",
+      "customerId": "4f90",
       "ProductId": [
         "1c95"
       ],
@@ -1002,7 +1002,7 @@
   ],
   "products": [
     {
-      "customerID": "4f90",
+      "customerId": "4f90",
       "brand": "Sony",
       "created_date": "2024-09-26 11:51:11",
       "description": "Sony PlayStation 5 Console - 825GB SSD, 4K Gaming, DualSense Wireless Controller, Ray Tracing Support, and Backward Compatibility with PlayStation 4 games. Experience ultra-fast load times and a new level of immersive gaming with next-gen graphics.",
@@ -1018,7 +1018,7 @@
       "id": "1c95"
     },
     {
-      "customerID": "e608",
+      "customerId": "e608",
       "brand": "Dell",
       "created_date": "2024-09-11 11:51:11",
       "description": "Dell XPS 13 Laptop - 13.3-inch Full HD Display, Intel Core i7 8th Gen Processor, 16GB RAM, 512GB SSD, Windows 11 Home. Ultra-thin, lightweight, and designed for performance, ideal for professionals and creatives on the go.",
@@ -1034,7 +1034,7 @@
       "id": "1ea9"
     },
     {
-      "customerID": "350c",
+      "customerId": "350c",
       "brand": "LG",
       "created_date": "2024-09-19 11:51:11",
       "description": "LG 55-inch OLED TV - OLED55CXPUA, 4K Ultra HD Smart TV with AI ThinQ, Dolby Vision, and Dolby Atmos. Enjoy perfect black levels, stunning picture quality, and smooth, responsive gaming with NVIDIA G-Sync compatibility.",
@@ -1050,7 +1050,7 @@
       "id": "1b63"
     },
     {
-      "customerID": "50c4",
+      "customerId": "50c4",
       "brand": "Microsoft",
       "created_date": "2024-09-27 11:51:11",
       "description": "Microsoft Surface Pro 7 - 12.3-inch Touchscreen, Intel Core i5 10th Gen Processor, 8GB RAM, 256GB SSD, Windows 10 Home. A versatile 2-in-1 device that combines the power of a laptop with the portability of a tablet, perfect for work, play, and everything in between.",
@@ -1067,7 +1067,7 @@
     },
     {
       "id": "fa16",
-      "customerID": "e608",
+      "customerId": "e608",
       "description": "this is the product for the quotation",
       "brand": "Service-",
       "modelNo": "Service-",
@@ -1076,7 +1076,7 @@
     {
       "id": "c020",
       "TicketID": "9642",
-      "customerID": "4f90",
+      "customerId": "4f90",
       "description": "ajkjdfk",
       "brand": "Service-",
       "modelNo": "Service-",
@@ -1171,7 +1171,7 @@
       "quantity": "9",
       "warrantyMonths": "9",
       "created_date": "2024-10-17T06:41:22.880Z",
-      "customerID": "538c"
+      "customerId": "538c"
     },
     {
       "id": "1405",
@@ -1211,7 +1211,7 @@
       "quantity": "33",
       "warrantyMonths": "33",
       "created_date": "2024-10-17T06:53:02.988Z",
-      "customerID": "f82b"
+      "customerId": "f82b"
     },
     {
       "id": "0fd3",
@@ -1225,7 +1225,7 @@
       "quantity": "8",
       "warrantyMonths": "9",
       "created_date": "2024-10-17T06:59:27.175Z",
-      "customerID": "f82b"
+      "customerId": "f82b"
     },
     {
       "id": "fe3d",
@@ -1317,7 +1317,7 @@
       "quantity": "8",
       "warrantyMonths": "9",
       "created_date": "2024-10-17T07:49:46.443Z",
-      "customerID": "7d48"
+      "customerId": "7d48"
     },
     {
       "id": "b177",
@@ -1331,7 +1331,7 @@
       "quantity": "8",
       "warrantyMonths": "9",
       "created_date": "2024-10-17T09:19:20.846Z",
-      "customerID": "12a4"
+      "customerId": "12a4"
     },
     {
       "id": "d651",
@@ -1345,7 +1345,7 @@
       "quantity": "8",
       "warrantyMonths": "9",
       "created_date": "2024-10-17T09:33:55.617Z",
-      "customerID": "99b9"
+      "customerId": "99b9"
     },
     {
       "id": "993b",
@@ -1359,7 +1359,7 @@
       "quantity": "8",
       "warrantyMonths": "9",
       "created_date": "2024-10-17T09:37:27.091Z",
-      "customerID": "e335"
+      "customerId": "e335"
     },
     {
       "id": "5b84",
@@ -1373,7 +1373,7 @@
       "quantity": "8",
       "warrantyMonths": "9",
       "created_date": "2024-10-17T09:40:56.006Z",
-      "customerID": "297b"
+      "customerId": "297b"
     },
     {
       "id": "537b",
@@ -1387,7 +1387,7 @@
       "quantity": "8",
       "warrantyMonths": "9",
       "created_date": "2024-10-17T09:41:30.129Z",
-      "customerID": "dd0c"
+      "customerId": "dd0c"
     },
     {
       "id": "57c9",
@@ -1401,7 +1401,7 @@
       "quantity": "8",
       "warrantyMonths": "9",
       "created_date": "2024-10-17T09:50:09.921Z",
-      "customerID": "82cf"
+      "customerId": "82cf"
     },
     {
       "id": "ee61",
@@ -1415,7 +1415,7 @@
       "quantity": "8",
       "warrantyMonths": "9",
       "created_date": "2024-10-17T09:53:01.095Z",
-      "customerID": "3126"
+      "customerId": "3126"
     },
     {
       "id": "94ae",
@@ -1429,7 +1429,7 @@
       "quantity": "8",
       "warrantyMonths": "8",
       "created_date": "2024-10-17T10:09:25.430Z",
-      "customerID": "3126"
+      "customerId": "3126"
     },
     {
       "id": "209f",
@@ -1512,7 +1512,7 @@
       "quantity": "8",
       "warrantyMonths": "9",
       "created_date": "2024-10-19T09:37:48.660Z",
-      "customerID": "4e35"
+      "customerId": "4e35"
     },
     {
       "id": "5f07",
@@ -1621,7 +1621,7 @@
       "quantity": "",
       "warrantyMonths": "9",
       "created_date": "2024-10-23T05:02:46.162Z",
-      "customerID": "d5fd"
+      "customerId": "d5fd"
     },
     {
       "id": "ebb3",
@@ -1974,7 +1974,7 @@
     },
     {
       "id": "1ea9",
-      "customerID": "e608",
+      "customerId": "e608",
       "brand": "Dell",
       "created_date": "2024-10-23T09:50:34.783Z",
       "description": "Dell XPS 13 Laptop - 13.3-inch Full HD Display, Intel Core i7 8th Gen Processor, 16GB RAM, 512GB SSD, Windows 11 Home. Ultra-thin, lightweight, and designed for performance, ideal for professionals and creatives on the go.",
@@ -2020,7 +2020,7 @@
       "quantity": "8",
       "warrantyMonths": "8",
       "created_date": "2024-10-26T05:15:25.096Z",
-      "customerID": "5585"
+      "customerId": "5585"
     },
     {
       "id": "70fd",
@@ -2034,7 +2034,7 @@
       "quantity": "8",
       "warrantyMonths": "8",
       "created_date": "2024-10-26T05:15:41.888Z",
-      "customerID": "5585"
+      "customerId": "5585"
     },
     {
       "id": "1492",
@@ -2048,7 +2048,7 @@
       "quantity": "8",
       "warrantyMonths": "8",
       "created_date": "2024-10-26T05:16:00.180Z",
-      "customerID": "5585"
+      "customerId": "5585"
     },
     {
       "id": "2f48",
@@ -2075,7 +2075,7 @@
       "quantity": "8",
       "warrantyMonths": "8",
       "created_date": "2024-10-26T05:34:40.907Z",
-      "customerID": "e904"
+      "customerId": "e904"
     },
     {
       "id": "b1f2",
@@ -2110,7 +2110,7 @@
   "invoices": [
     {
       "InvoiceID": 1,
-      "customerID": 1,
+      "customerId": 1,
       "TotalAmount": 79.98,
       "InvoiceDate": "2023-03-20T14:00:00Z",
       "status": "Paid",
@@ -2118,7 +2118,7 @@
     },
     {
       "InvoiceID": 2,
-      "customerID": 2,
+      "customerId": 2,
       "TotalAmount": 49.99,
       "InvoiceDate": "2023-04-20T15:30:00Z",
       "status": "Pending",
@@ -2131,29 +2131,29 @@
       "createdBy": "admin",
       "assignedTo": "2b3c4d",
       "description": "ahjhj",
-      "status": "in-progress",
+      "status": "InProgress",
       "assignedDate": "2024-10-14T07:52:28.972Z",
       "id": "0a67",
       "isQuotationCreated": true
     },
     {
       "title": "titel 2",
-      "customerID": 102,
+      "customerId": 102,
       "createdBy": "admin",
       "assignedTo": "4d5e6f",
       "description": "Payment not going through for the order.",
-      "status": "in-progress",
+      "status": "InProgress",
       "assignedDate": "2024-10-14T09:04:13.220Z",
       "id": "e734",
       "isQuotationCreated": true
     },
     {
       "title": "titel 2",
-      "customerID": 89,
+      "customerId": 89,
       "createdBy": "admin",
       "assignedTo": "1a2b3c",
       "description": "Customer's account is locked after multiple failed login attempts.ss",
-      "status": "in-progress",
+      "status": "InProgress",
       "assignedDate": "2024-10-15T11:08:27.760Z",
       "id": "59b1",
       "isChargeable": true,
@@ -2161,77 +2161,77 @@
     },
     {
       "title": "titel 2",
-      "customerID": 110,
+      "customerId": 110,
       "createdBy": "admin",
       "assignedTo": "2b3c4d",
       "description": "Customer requesting a refund for a recent purchase.",
-      "status": "in-progress",
+      "status": "InProgress",
       "assignedDate": "2024-10-14T06:44:17.324Z",
       "id": "70f6",
       "isQuotationCreated": true
     },
     {
       "title": "titel 2",
-      "customerID": 95,
+      "customerId": 95,
       "createdBy": "admin",
       "assignedTo": "3c4d5e",
       "description": "Customer requesting a new feature in the application.",
-      "status": "in-progress",
+      "status": "InProgress",
       "assignedDate": "2024-10-14T06:44:42.512Z",
       "id": "f27a",
       "isQuotationCreated": true
     },
     {
       "title": "titel 2",
-      "customerID": "4f90",
+      "customerId": "4f90",
       "createdBy": "admin",
       "assignedTo": "2b3c4d",
       "description": "complete it by today\n",
-      "status": "in-progress",
+      "status": "InProgress",
       "assignedDate": "2024-10-14T06:48:58.537Z",
       "id": "9536",
       "isQuotationCreated": true
     },
     {
       "title": "titel 2",
-      "customerID": "4f90",
+      "customerId": "4f90",
       "createdBy": "admin",
       "assignedTo": "2b3c4d",
       "description": "testttt",
-      "status": "in-progress",
+      "status": "InProgress",
       "assignedDate": "2024-10-14T06:49:24.328Z",
       "id": "30f5",
       "isQuotationCreated": true
     },
     {
       "title": "titel 2",
-      "customerID": "4f90",
+      "customerId": "4f90",
       "createdBy": "admin",
       "assignedTo": "4d5e6f",
       "description": "afdfgaddd",
-      "status": "in-progress",
+      "status": "InProgress",
       "assignedDate": "2024-10-14T06:35:39.929Z",
       "id": "fe3c",
       "isQuotationCreated": true
     },
     {
       "title": "titel 2",
-      "customerID": "4f90",
+      "customerId": "4f90",
       "createdBy": "admin",
       "assignedTo": "2b3c4d",
       "description": "adffff",
-      "status": "in-progress",
+      "status": "InProgress",
       "assignedDate": "2024-10-14T06:49:45.246Z",
       "id": "b4cd",
       "isQuotationCreated": true
     },
     {
       "title": "titel 2",
-      "customerID": "4f90",
+      "customerId": "4f90",
       "createdBy": "admin",
       "assignedTo": "2b3c4d",
       "description": "make it by todayyyyylll",
-      "status": "in-progress",
+      "status": "InProgress",
       "assignedDate": "2024-10-15T11:08:51.138Z",
       "id": "f575",
       "isChargeable": true,
@@ -2240,7 +2240,7 @@
     {
       "id": "fbf1",
       "title": "titel 2",
-      "customerID": "e608",
+      "customerId": "e608",
       "ProductID": "1ea9",
       "Priority": "Medium",
       "isChargeable": true,
@@ -2255,7 +2255,7 @@
     {
       "id": "a7d0",
       "title": "tttt",
-      "customerID": "4f90",
+      "customerId": "4f90",
       "ProductID": "1c95",
       "Priority": "High",
       "isChargeable": false,
@@ -2270,7 +2270,7 @@
     {
       "id": "5fe0",
       "title": "issue laptop",
-      "customerID": "4f90",
+      "customerId": "4f90",
       "ProductID": "1c95",
       "Priority": "High",
       "isChargeable": true,
@@ -2285,11 +2285,11 @@
     {
       "id": "58ec",
       "title": "test",
-      "customerID": "4f90",
+      "customerId": "4f90",
       "ProductID": "1c95",
       "Priority": "Medium",
       "isChargeable": false,
-      "status": "in-progress",
+      "status": "InProgress",
       "createdBy": "admin",
       "createdDate": "2024-10-09T11:11:53.776Z",
       "description": "testggggg",
@@ -2299,7 +2299,7 @@
     {
       "id": "69cf",
       "title": "dfdff",
-      "customerID": "e608",
+      "customerId": "e608",
       "ProductID": "1ea9",
       "isChargeable": true,
       "status": "closed",
@@ -2312,7 +2312,7 @@
     {
       "id": "da1c",
       "title": "jkjk",
-      "customerID": "4f90",
+      "customerId": "4f90",
       "ProductID": "1c95",
       "isChargeable": true,
       "status": "closed",
@@ -2326,10 +2326,10 @@
     {
       "id": "6e7e",
       "title": "adfs",
-      "customerID": "4f90",
+      "customerId": "4f90",
       "ProductID": "1c95",
       "isChargeable": true,
-      "status": "in-progress",
+      "status": "InProgress",
       "createdBy": "admin",
       "createdDate": "2024-10-10T12:10:35.492Z",
       "description": "asdf",
@@ -2339,7 +2339,7 @@
     {
       "id": "c4a0",
       "title": "afdsd",
-      "customerID": "4f90",
+      "customerId": "4f90",
       "ProductID": "1c95",
       "isChargeable": true,
       "status": "Open",
@@ -2351,10 +2351,10 @@
     {
       "id": "e30b",
       "title": "hjh",
-      "customerID": "4f90",
+      "customerId": "4f90",
       "ProductID": "1c95",
       "isChargeable": true,
-      "status": "in-progress",
+      "status": "InProgress",
       "createdBy": "admin",
       "createdDate": "2024-10-10T12:20:07.500Z",
       "assignedTo": "3c4d5e",
@@ -2365,10 +2365,10 @@
     {
       "id": "d5c3",
       "title": "hjh",
-      "customerID": "4f90",
+      "customerId": "4f90",
       "ProductID": "1c95",
       "isChargeable": true,
-      "status": "in-progress",
+      "status": "InProgress",
       "createdBy": "admin",
       "createdDate": "2024-10-10T12:21:22.038Z",
       "assignedTo": "3c4d5e",
@@ -2377,21 +2377,21 @@
       "isQuotationCreated": true
     },
     {
-      "customerID": "4f90",
+      "customerId": "4f90",
       "createdBy": "admin",
       "assignedTo": "2b3c4d",
       "description": "asdfdsaffffffffffffffff",
-      "status": "in-progress",
+      "status": "InProgress",
       "assignedDate": "2024-10-14T06:53:07.194Z",
       "id": "cd15",
       "isQuotationCreated": true
     },
     {
-      "customerID": "4f90",
+      "customerId": "4f90",
       "createdBy": "admin",
       "assignedTo": "2b3c4d",
       "description": "testttjhjhj",
-      "status": "in-progress",
+      "status": "InProgress",
       "assignedDate": "2024-10-14T06:50:26.016Z",
       "id": "155f",
       "isQuotationCreated": true
@@ -2399,7 +2399,7 @@
     {
       "id": "aae3",
       "title": "111",
-      "customerID": "e608",
+      "customerId": "e608",
       "ProductID": "1ea9",
       "isChargeable": true,
       "status": "Open",
@@ -2411,10 +2411,10 @@
     {
       "id": "c0e8",
       "title": "fffffffffffffffffffff",
-      "customerID": "e608",
+      "customerId": "e608",
       "ProductID": "1ea9",
       "isChargeable": true,
-      "status": "in-progress",
+      "status": "InProgress",
       "createdBy": "admin",
       "createdDate": "2024-10-14T07:41:59.383Z",
       "description": "assighned to jane smith take details from john doe",
@@ -2425,7 +2425,7 @@
     {
       "id": "0c77",
       "title": "tet",
-      "customerID": "e608",
+      "customerId": "e608",
       "ProductID": "1ea9",
       "isChargeable": true,
       "status": "Open",
@@ -2437,7 +2437,7 @@
     {
       "id": "dab8",
       "title": "ad",
-      "customerID": "e608",
+      "customerId": "e608",
       "ProductID": "1ea9",
       "isChargeable": true,
       "status": "Open",
@@ -2449,7 +2449,7 @@
     {
       "id": "3fe0",
       "title": "dfasd",
-      "customerID": "e608",
+      "customerId": "e608",
       "ProductID": "1ea9",
       "isChargeable": false,
       "status": "Open",
@@ -2461,10 +2461,10 @@
     {
       "id": "f828",
       "title": "asdf",
-      "customerID": "e608",
+      "customerId": "e608",
       "ProductID": "1ea9",
       "isChargeable": true,
-      "status": "in-progress",
+      "status": "InProgress",
       "createdBy": "admin",
       "createdDate": "2024-10-15T10:45:44.500Z",
       "description": "df",
@@ -2474,7 +2474,7 @@
     {
       "id": "1eac",
       "title": "jjk",
-      "customerID": "e608",
+      "customerId": "e608",
       "ProductID": "1ea9",
       "isChargeable": false,
       "status": "Open",
@@ -2486,7 +2486,7 @@
     {
       "id": "2fa3",
       "title": "uuu",
-      "customerID": "e608",
+      "customerId": "e608",
       "ProductID": "1ea9",
       "isChargeable": true,
       "status": "Open",
@@ -2498,7 +2498,7 @@
     {
       "id": "397c",
       "title": "titlte ashish",
-      "customerID": "e608",
+      "customerId": "e608",
       "ProductID": "1ea9",
       "isChargeable": true,
       "status": "Open",
@@ -2510,7 +2510,7 @@
     {
       "id": "08f6",
       "title": "ii",
-      "customerID": "e608",
+      "customerId": "e608",
       "ProductID": "1ea9",
       "isChargeable": true,
       "status": "Open",
@@ -2521,7 +2521,7 @@
     {
       "id": "5ffe",
       "title": "asd",
-      "customerID": "e608",
+      "customerId": "e608",
       "ProductID": "1ea9",
       "isChargeable": false,
       "status": "Open",
@@ -2533,7 +2533,7 @@
     {
       "id": "ddb1",
       "title": "hjh",
-      "customerID": "e608",
+      "customerId": "e608",
       "ProductID": "1ea9",
       "isChargeable": true,
       "status": "Open",
@@ -2545,7 +2545,7 @@
     {
       "id": "2ca5",
       "title": "ttttttttt",
-      "customerID": "e608",
+      "customerId": "e608",
       "ProductID": "1ea9",
       "isChargeable": true,
       "status": "Open",
@@ -2566,7 +2566,7 @@
     {
       "id": "aa7e",
       "title": "jkhhhhh",
-      "customerID": "7d48",
+      "customerId": "7d48",
       "status": "Open",
       "createdBy": "Admin",
       "createdDate": "2024-10-17T07:50:08.517Z",
@@ -2576,7 +2576,7 @@
     {
       "id": "1fd3",
       "title": "testinf the db for customer",
-      "customerID": "12a4",
+      "customerId": "12a4",
       "status": "Open",
       "createdBy": "Admin",
       "createdDate": "2024-10-17T09:20:26.948Z",
@@ -2586,7 +2586,7 @@
     {
       "id": "5b30",
       "title": "new newnewnew",
-      "customerID": "dd0c",
+      "customerId": "dd0c",
       "status": "Open",
       "createdBy": "Admin",
       "createdDate": "2024-10-17T09:42:01.048Z",
@@ -2596,7 +2596,7 @@
     {
       "id": "54b5",
       "title": "new newnewnew chech",
-      "customerID": "82cf",
+      "customerId": "82cf",
       "isChargeable": true,
       "status": "Open",
       "createdBy": "Admin",
@@ -2607,7 +2607,7 @@
     {
       "id": "d81f",
       "title": "jkj",
-      "customerID": "4f90",
+      "customerId": "4f90",
       "ProductID": "7e28",
       "isChargeable": true,
       "status": "Open",
@@ -2619,9 +2619,9 @@
     {
       "id": "a5ea",
       "title": "test",
-      "customerID": "4e35",
+      "customerId": "4e35",
       "isChargeable": false,
-      "status": "in-progress",
+      "status": "InProgress",
       "createdBy": "admin",
       "createdDate": "2024-10-19T09:38:08.736Z",
       "description": "2line",
@@ -2631,7 +2631,7 @@
     {
       "id": "8abc",
       "title": "testing",
-      "customerID": "4e35",
+      "customerId": "4e35",
       "ProductID": "4b6b",
       "isChargeable": true,
       "status": "Open",
@@ -2643,7 +2643,7 @@
     {
       "id": "d5e7",
       "title": "test",
-      "customerID": "e608",
+      "customerId": "e608",
       "ProductID": "83e9",
       "isChargeable": true,
       "status": "Open",
@@ -2655,7 +2655,7 @@
     {
       "id": "af10",
       "title": "jeees",
-      "customerID": "0345",
+      "customerId": "0345",
       "ProductID": "17c9",
       "isChargeable": true,
       "status": "Open",
@@ -2666,7 +2666,7 @@
     {
       "id": "aa71",
       "title": "testing",
-      "customerID": "dbd1",
+      "customerId": "dbd1",
       "isChargeable": true,
       "status": "Open",
       "createdBy": "Admin",
@@ -2676,7 +2676,7 @@
     {
       "id": "ebcd",
       "title": "priti",
-      "customerID": "05ee",
+      "customerId": "05ee",
       "isChargeable": true,
       "status": "Open",
       "createdBy": "Admin",
@@ -2686,7 +2686,7 @@
     {
       "id": "73f9",
       "title": "Test",
-      "customerID": "5377",
+      "customerId": "5377",
       "isChargeable": true,
       "status": "Open",
       "createdBy": "Admin",
@@ -2696,7 +2696,7 @@
     {
       "id": "0260",
       "title": "llluara",
-      "customerID": "20a5",
+      "customerId": "20a5",
       "ProductID": "d632",
       "isChargeable": true,
       "status": "Open",
@@ -2707,7 +2707,7 @@
     {
       "id": "afd7",
       "title": "ddddd",
-      "customerID": "0345",
+      "customerId": "0345",
       "ProductID": "67ab",
       "isChargeable": true,
       "status": "Open",
@@ -2718,7 +2718,7 @@
     {
       "id": "555a",
       "title": "check this",
-      "customerID": "e608",
+      "customerId": "e608",
       "ProductID": "1ea9",
       "isChargeable": true,
       "status": "Open",
@@ -2729,7 +2729,7 @@
     {
       "id": "3674",
       "title": "sundayyyyyyyy",
-      "customerID": "350c",
+      "customerId": "350c",
       "ProductID": "1b63",
       "isChargeable": true,
       "status": "Open",
@@ -2740,7 +2740,7 @@
     {
       "id": "fcf2",
       "title": "sundayyyyyyyy2",
-      "customerID": "350c",
+      "customerId": "350c",
       "ProductID": "1b63",
       "isChargeable": true,
       "status": "Open",
@@ -2751,7 +2751,7 @@
     {
       "id": "54d1",
       "title": "charge1",
-      "customerID": "e608",
+      "customerId": "e608",
       "ProductID": "1ea9",
       "isChargeable": true,
       "status": "Open",
@@ -2762,7 +2762,7 @@
     {
       "id": "b3c5",
       "title": "charge2",
-      "customerID": "e608",
+      "customerId": "e608",
       "ProductID": "1ea9",
       "isChargeable": true,
       "status": "Open",
@@ -2773,7 +2773,7 @@
     {
       "id": "574b",
       "title": "charge3",
-      "customerID": "e608",
+      "customerId": "e608",
       "ProductID": "1ea9",
       "isChargeable": true,
       "status": "Open",
@@ -2784,7 +2784,7 @@
     {
       "id": "a723",
       "title": "charge 4",
-      "customerID": "e608",
+      "customerId": "e608",
       "ProductID": "1ea9",
       "isChargeable": false,
       "status": "Open",
@@ -2795,7 +2795,7 @@
     {
       "id": "f165",
       "title": "charge 4",
-      "customerID": "e608",
+      "customerId": "e608",
       "ProductID": "fa16",
       "isChargeable": true,
       "status": "Open",
@@ -2806,7 +2806,7 @@
     {
       "id": "fbe5",
       "title": "f",
-      "customerID": null,
+      "customerId": null,
       "isChargeable": true,
       "status": "Open",
       "createdBy": "Admin",
@@ -2816,7 +2816,7 @@
     {
       "id": "0fe2",
       "title": "trying for created by",
-      "customerID": "e608",
+      "customerId": "e608",
       "ProductID": "1ea9",
       "isChargeable": false,
       "status": "Open",
@@ -2827,7 +2827,7 @@
     {
       "id": "936d",
       "title": "df",
-      "customerID": "e608",
+      "customerId": "e608",
       "ProductID": "1ea9",
       "isChargeable": true,
       "status": "Open",
@@ -2838,7 +2838,7 @@
     {
       "id": "f7a5",
       "title": "jkj",
-      "customerID": "e608",
+      "customerId": "e608",
       "ProductID": "1ea9",
       "isChargeable": true,
       "status": "Open",

@@ -188,7 +188,7 @@ const Dashboard = () => {
                                 <Grid container spacing={2} sx={{ marginTop: '20px' }}>
                                     <Grid item xs={6} sm={6} md={6} marginBottom={1}>
                                         <Typography variant="h6" sx={{ color: '' }}>Open :{open}</Typography>
-                                        <Typography variant="h6" sx={{ color: '' }}>In-progress :{inProgress}</Typography>
+                                        <Typography variant="h6" sx={{ color: '' }}>InProgress :{inProgress}</Typography>
                                         <Typography variant="h6" sx={{ color: '' }}>Total :{total}</Typography>
                                     </Grid>
                                 </Grid>
@@ -427,7 +427,7 @@ const Dashboard = () => {
                             <Grid item xs={6} sm={3} md={4}>
                                 <Card
                                     sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2fbe7)' }}
-                                    onClick={() => handleSubCardClick('in-progress')}
+                                    onClick={() => handleSubCardClick('InProgress')}
                                 >
                                     {/* , textAlign: 'center'  */}
                                     <Typography variant="h5" sx={{ color: 'green' }}>In Progress: {inProgress}</Typography>

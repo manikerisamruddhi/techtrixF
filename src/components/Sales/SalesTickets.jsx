@@ -70,7 +70,7 @@ const SalesTickets = () => {
                         </Button>
                     )}
                     
-                    {record.status === 'in-progress' && (
+                    {record.status === 'InProgress' && (
                         <Button
                             type="default"
                             onClick={() => showAssignToModal(record.TicketID)} // Open the AssignTo modal
@@ -135,14 +135,14 @@ const SalesTickets = () => {
 
             if (ticket) {
                 await axios.post('http://localhost:4000/quotations', quotationData);
-                await axios.patch(`http://localhost:4000/tickets/${ticket.id}`, { status: 'in-progress', createdBy: 'Sales' });
+                await axios.patch(`http://localhost:4000/tickets/${ticket.id}`, { status: 'InProgress', createdBy: 'Sales' });
               
                 // Update tickets state to reflect new status
                 setTickets(prevTickets => prevTickets.map(t =>
-                    t.TicketID === selectedTicketId ? { ...t, status: 'in-progress' } : t
+                    t.TicketID === selectedTicketId ? { ...t, status: 'InProgress' } : t
                 ));
 
-                message.success('Quotation created successfully and ticket status updated to in-progress!');
+                message.success('Quotation created successfully and ticket status updated to InProgress!');
                 handleModalClose();
             } else {
                 message.error('Ticket not found. Please try again.');
@@ -165,7 +165,7 @@ const SalesTickets = () => {
 
             // Update tickets state to reflect the assigned user
             setTickets(prevTickets => prevTickets.map(t =>
-                t.TicketID === ticketId ? { ...t, assignedToID: userId, status: 'in-progress' } : t
+                t.TicketID === ticketId ? { ...t, assignedToID: userId, status: 'InProgress' } : t
             ));
 
             message.success('Ticket assigned successfully!');

@@ -3,12 +3,16 @@ import { Modal, Form, Input, Switch, Button, Row, Col, message } from 'antd';
 import { useDispatch } from 'react-redux';
 import { addCustomer, updateCustomer } from '../../redux/slices/customerSlice'; // Import your Redux actions
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-const CustomerFormModal = ({ visible, onCancel, initialValues, mode, customerID, onAddCustomer }) => {
+const CustomerFormModal = ({ visible, onCancel, initialValues, mode, customerId, onAddCustomer }) => {
     const [form] = Form.useForm(); // Create form instance
     const dispatch = useDispatch(); // Get the dispatch function
     const navigate = useNavigate(); // Get the navigate function
 
+    const { successMessage, error } = useSelector((state) => state.customers);
+
+    
     // Reset the form when the modal opens in "add" mode
     useEffect(() => {
         if (visible && mode === 'add') {
@@ -21,7 +25,7 @@ const CustomerFormModal = ({ visible, onCancel, initialValues, mode, customerID,
     const handleFormSubmit = (values) => {
         if (mode === 'edit') {
             // Update customer API call
-            dispatch(updateCustomer({ customerId: customerID, updatedCustomer: values }))
+            dispatch(updateCustomer({ customerId: customerId, updatedCustomer: values }))
             .then(() => {
                 message.success('Customer updated successfully!'); 
                 // Close the modal after successful update
@@ -41,7 +45,7 @@ const CustomerFormModal = ({ visible, onCancel, initialValues, mode, customerID,
                     onAddCustomer(newCustomer);
                 }
             } else {
-                message.error('Failed to add customer.');
+                message.error( error );
             }
             });
         }

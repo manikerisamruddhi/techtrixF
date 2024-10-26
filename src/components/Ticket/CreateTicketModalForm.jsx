@@ -31,7 +31,7 @@
 
         const loggedInUser = JSON.parse(localStorage.getItem('user')); // Get user from local storage
         // const loggedInUserName = `${loggedInUser.firstName} ${loggedInUser.lastName}`
-        const looggedInUserId = loggedInUser.id;
+        const looggedInUserId = loggedInUser.userId;
 
         const { customers } = useSelector((state) => state.customers);
         const { items } = useSelector((state) => state.products);
@@ -54,7 +54,7 @@
         };
 
         const handleCustomerChange = (value) => {
-            const selectedCust = customers.find(customer => customer.id === value);
+            const selectedCust = customers.find(customer => customer.customerId === value);
             setSelectedCustomer(selectedCust);
             setisPremiumCustomer(selectedCust?.isPremium || false);
             form.setFieldsValue({ productId: null });
@@ -62,7 +62,7 @@
         };
 
         const handleProductChange = (value) => {
-            const product = items.find((item) => item.id === value);
+            const product = items.find((item) => item.productId === value);
             setSelectedProduct(product);
 
             if (product) {
@@ -94,7 +94,7 @@
                 category: 'issue', // You can modify this if you have a different category
                 assignedTo: null, // Assuming you have logic to assign users if needed
                 customer: {
-                    customerId: values.customerID , // new customer id also asigned by modal(handleCustomerAdded)
+                    customerId: values.customerId , // new customer id also asigned by modal(handleCustomerAdded)
                 },
                 isChargeable: values.isChargeable !== undefined ? values.isChargeable : true,
                 isQuotationCreated: false, // Set to false as per the requirement
@@ -117,7 +117,6 @@
                 const resultAction = await dispatch(createTicket(ticketData));
         
                 if (createTicket.fulfilled.match(resultAction)) {
-                    const newTicketID = resultAction.payload.id;
         
                     message.success('Ticket created successfully!');
                     
@@ -139,7 +138,7 @@
             }
         };
 
-        const filteredProducts = selectedCustomer ? items.filter((product) => product.customerID === selectedCustomer.id) : [];
+        const filteredProducts = selectedCustomer ? items.filter((product) => product.customerId === selectedCustomer.customerId) : [];
 
         const openCustomerForm = () => {
             setCustomerModalVisible(true);
@@ -148,7 +147,7 @@
 
         const handleCustomerAdded = (newCustomer) => {
             setSelectedCustomer(newCustomer);
-            form.setFieldsValue({ customerID: newCustomer.id });
+            form.setFieldsValue({ customerId: newCustomer.customerId });
             setisPremiumCustomer(newCustomer.isPremium);
             setCustomerModalVisible(false);
             form.setFieldsValue({ customerName: `${newCustomer.firstName} ${newCustomer.lastName}` });
@@ -162,10 +161,10 @@
 
         const handleProductAdded = (newProduct) => {
             setSelectedProduct(newProduct); // Set the newly added product
-            form.setFieldsValue({ productId: newProduct.id });
+            form.setFieldsValue({ productId: newProduct.productId });
             setNewProduct(newProduct); // Update the new product state
             setProductModalVisible(false); // Close product modal
-            handleProductChange(newProduct.id);
+            handleProductChange(newProduct.productId);
             // message.success('Product added successfully!');
         };
 
@@ -203,7 +202,7 @@
                         {/* Conditional Rendering based on Customer Type */}
                         {customerType === 'existing' ? (
                             <Form.Item
-                                name="customerID"
+                                name="customerId"
                                 label="Customer :"
                                 rules={[{ required: true, message: 'Please select a customer' }]}
                             >
@@ -215,7 +214,7 @@
                                 >
                                     {customers && customers.length > 0 ? (
                                         customers.map(customer => (
-                                            <Option key={customer.id} value={customer.id} label={`${customer.firstName} ${customer.lastName} ${customer.email} ${customer.phoneNumber} `}>
+                                            <Option key={customer.customerId} value={customer.customerId} label={`${customer.firstName} ${customer.lastName} ${customer.email} ${customer.phoneNumber} `}>
                                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                                     <span>{`${customer.firstName} ${customer.lastName}`}</span>
                                                     <span style={{ marginLeft: '10px', color: 'gray' }}>{customer.email}</span>
@@ -260,7 +259,7 @@
                                 >
                                     {filteredProducts && filteredProducts.length > 0 ? (
                                         filteredProducts.map(product => (
-                                            <Option key={product.id} value={product.id} label={`${product.brand} ${product.modelNo}`}>
+                                            <Option key={product.productId} value={product.productId} label={`${product.brand} ${product.modelNo}`}>
                                                 <div>
                                                     <span style={{ marginRight: '10px' }}>Brand: {product.brand}</span>
                                                     <span>Model No: {product.modelNo}</span>
@@ -310,7 +309,7 @@
                             visible={productModalVisible}
                             onCancel={() => setProductModalVisible(false)}
                             onAddProduct={handleProductAdded}
-                            customerID={newCustomer?.id}
+                            customerId={newCustomer?.customerId}
                         />
                         {/* )} */}
 

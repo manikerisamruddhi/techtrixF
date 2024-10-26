@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Modal, Form, Input, Select, Row, Col, Switch, message, Button } from "antd";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUsersByDepartment } from "../../redux/slices/userSlice"; // Adjust the path to your slice
+import { fetchUsersByRole } from "../../redux/slices/userSlice"; // Adjust the path to your slice
 import { updateTicket } from "../../redux/slices/ticketSlice";
 import { useNavigate } from "react-router-dom";
 
@@ -18,12 +18,13 @@ const UpdateTicketModal = ({ ticketData, isVisible, onCancel, onClose }) => {
   // Fetch service technicians from the "Service_Technical" department
   useEffect(() => {
     if (isVisible) {
-      dispatch(fetchUsersByDepartment("Service_Technical"));
+       const techs = dispatch(fetchUsersByRole('Admin'));
       // Populate form with existing ticket data
+      console.log(`by role ${techs}`);
       form.setFieldsValue({
         title: ticketData.title,
-        customerID: ticketData.customerID,
-        productID: ticketData.ProductID,
+        customerId: ticketData.customerId,
+        productID: ticketData.productID,
         priority: ticketData.Priority,
         isChargeable: ticketData.isChargeable,
         status: ticketData.status,
@@ -37,8 +38,12 @@ const UpdateTicketModal = ({ ticketData, isVisible, onCancel, onClose }) => {
   }, [isVisible, dispatch, form, ticketData]);
 
   // Selectors to get service technicians from the Redux state
-  const serviceTechnicians = useSelector((state) => state.users.users); // Adjust according to your state shape
+  const serviceTechnicians = useSelector((state) =>
+    state.users.users.filter((user) => user.role === "Service_Technical")
+  ); // Adjust according to your state shape
   const loading = useSelector((state) => state.users.loading);
+
+  console.log(serviceTechnicians);
 
   const handleUpdate = (close = false) => {
     form
@@ -50,7 +55,7 @@ const UpdateTicketModal = ({ ticketData, isVisible, onCancel, onClose }) => {
           ...ticketData, // Spread the existing ticket data
           ...values, // Then spread the new values from the form
           createdBy: "admin", // Ensure createdBy is set correctly
-          status: close ? "in-progress" : "closed",
+          status: close ? "InProgress" : "closed",
         };
 
         if (!close) {
@@ -59,7 +64,7 @@ const UpdateTicketModal = ({ ticketData, isVisible, onCancel, onClose }) => {
         }
 
         // Dispatch the update action with the updated data
-        dispatch(updateTicket({ id: ticketData.id, data: updatedTicketData })); // Assuming ticketData has an id field
+        dispatch(updateTicket({ id: ticketData.ticketId, data: updatedTicketData })); // Assuming ticketData has an id field
         form.resetFields(); // Reset the form fields after update
         message.success("Ticket updated successfully!");
         onCancel(); // Close the modal after updating
@@ -77,7 +82,7 @@ const UpdateTicketModal = ({ ticketData, isVisible, onCancel, onClose }) => {
 
 
   const currentTechnician = ticketData && ticketData.assignedToID
-    ? serviceTechnicians.find((tech) => tech.id === ticketData.assignedToID)
+    ? serviceTechnicians.find((tech) => tech.userId === ticketData.assignedToID)
     : null;
 
 
@@ -113,7 +118,7 @@ const UpdateTicketModal = ({ ticketData, isVisible, onCancel, onClose }) => {
       >
         <Row gutter={16}>
           <Col span={12}>
-            <Form.Item name="customerID" label="Customer ID">
+            <Form.Item name="customerId" label="Customer ID">
               <Input disabled />
             </Form.Item>
           </Col>
@@ -138,7 +143,7 @@ const UpdateTicketModal = ({ ticketData, isVisible, onCancel, onClose }) => {
                   loading
                     ? "Loading..."
                     : currentTechnician
-                      ? `${currentTechnician.firstName} ${currentTechnician.lastName} (ID: ${currentTechnician.id})`
+                      ? `${currentTechnician.firstName} ${currentTechnician.lastName} (ID: ${currentTechnician.userId})`
                       : "Select Service Technician"
                 }
                 loading={loading}
@@ -151,9 +156,9 @@ const UpdateTicketModal = ({ ticketData, isVisible, onCancel, onClose }) => {
               >
                 {serviceTechnicians.map((tech) => (
                   <Option
-                    key={tech.id}
-                    value={tech.id}
-                    label={`${tech.firstName} ${tech.lastName} [ID: ${tech.id}]`}
+                    key={tech.userId}
+                    value={tech.userId}
+                    label={`${tech.firstName} ${tech.lastName} [ID: ${tech.userId}]`}
                   >
                     <div
                       style={{
@@ -163,7 +168,7 @@ const UpdateTicketModal = ({ ticketData, isVisible, onCancel, onClose }) => {
                       }}
                     >
                       <span>{`${tech.firstName} ${tech.lastName}`}</span>
-                      <span style={{ marginLeft: "10px" }}>{`(ID: ${tech.id})`}</span>
+                      <span style={{ marginLeft: "10px" }}>{`(ID: ${tech.userId})`}</span>
                     </div>
                   </Option>
                 ))}

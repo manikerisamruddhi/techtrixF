@@ -26,23 +26,23 @@ const Customers = () => {
         }
     }, [error]);
 
-    const handleAddOrEditCustomer = (values) => {
-        if (mode === 'edit') {
-            dispatch(updateCustomer({ customerId: values.customerId, updatedCustomer: values }))
-                .then(() => {
-                    toast.success('Customer updated successfully!');
-                    setEditCustomer(null);
-                    dispatch(fetchCustomers());  // Fetch the updated customer list
-                });
-        } else {
-            dispatch(addCustomer(values))
-                .then(() => {
-                    toast.success('Customer added successfully!');
-                    dispatch(fetchCustomers());  // Fetch the updated customer list
-                });
-        }
-        setIsModalVisible(false);
-    };
+    // const handleAddOrEditCustomer = (values) => {
+    //     if (mode === 'edit') {
+    //         dispatch(updateCustomer({ customerId: values.customerId, updatedCustomer: values }))
+    //             .then(() => {
+    //                 toast.success('Customer updated successfully!');
+    //                 setEditCustomer(null);
+    //                 dispatch(fetchCustomers());  // Fetch the updated customer list
+    //             });
+    //     } else {
+    //         dispatch(addCustomer(values))
+    //             .then(() => {
+    //                 toast.success('Customer added successfully!');
+    //                 dispatch(fetchCustomers());  // Fetch the updated customer list
+    //             });
+    //     }
+    //     setIsModalVisible(false);
+    // };
 
     const handleEdit = (customer) => {
         setEditCustomer(customer);
@@ -57,7 +57,7 @@ const Customers = () => {
     };
 
     const columns = [
-        { title: 'ID', dataIndex: 'id', key: 'CustomerID' },
+        { title: 'ID', dataIndex: 'customerId', key: 'customerId' },
         { title: 'First Name', dataIndex: 'firstName', key: 'firstName' },
         { title: 'Last Name', dataIndex: 'lastName', key: 'lastName' },
         { title: 'email', dataIndex: 'email', key: 'email' },
@@ -104,7 +104,7 @@ const Customers = () => {
                         <Table
                             dataSource={customers}
                             columns={columns}
-                            rowKey="CustomerID"
+                            rowKey="customerId"
                             pagination={false}
                         />
                     )}
@@ -114,10 +114,10 @@ const Customers = () => {
                         key={mode} // Add a key prop to the modal
                         visible={isModalVisible}
                         onCancel={() => setIsModalVisible(false)}
-                        onFinish={handleAddOrEditCustomer}
+                        // onFinish={handleAddOrEditCustomer}
                         initialValues={editCustomer}
                         mode={mode} // Pass the mode (edit/add)
-                        customerId={editCustomer?.id} // Pass customer ID when editing
+                        customerId={editCustomer?.customerId} // Pass customer ID when editing
                     />
                 </div>
             </Content>

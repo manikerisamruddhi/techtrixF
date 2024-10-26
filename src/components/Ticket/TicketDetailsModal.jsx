@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { Modal, Descriptions, Badge, Button } from 'antd';
+import { useDispatch } from 'react-redux';
 import { DollarOutlined, ReloadOutlined } from '@ant-design/icons';
 import UpdateTicketModal from './UpdateTicketModal'; // Importing the update ticket modal
 import QuotationFormModal from '../Quotation/CreateQuotation';
 import { useEffect } from 'react';
+import { updateTicket } from '../../redux/slices/ticketSlice';
 
-const TicketDetailsModal = ({ visible, ticket, onClose, onCreateQuotation, onUpdateTicketz, users }) => {
+const TicketDetailsModal = ({ visible, ticket, onClose, onCreateQuotation, users }) => {
     const [isQuotationModalVisible, setQuotationModalVisible] = useState(false); // State to manage quotation modal visibility
     const [isUpdateModalVisible, setUpdateModalVisible] = useState(false); // State to manage update ticket modal visibility
     
@@ -28,13 +30,18 @@ const TicketDetailsModal = ({ visible, ticket, onClose, onCreateQuotation, onUpd
         }
     };
     
-    const user = users.find((user) => user.id === createdBy); // Adjust based on your user object structure
+    const user = users.find((user) => user.userId === createdBy); // Adjust based on your user object structure
     const createdByName = user ? `${user.firstName} ${user.lastName}` : createdBy; // Display user name or fallback text
 
 
     // Function to open the create quotation modal
     const handleCreateQuotationClick = () => {
         setQuotationModalVisible(true); // Open the create quotation modal
+    };
+
+    const onUpdateTicket = (updatedTicket) => {
+        dispatch(updateTicket(updatedTicket)); // Dispatch the update action
+        message.success('Ticket updated successfully!');
     };
 
     // Function to close the create quotation modal
@@ -82,10 +89,10 @@ const TicketDetailsModal = ({ visible, ticket, onClose, onCreateQuotation, onUpd
                             labelStyle={{ padding: '10px 24px' }}
                             contentStyle={{ padding: '10px 24px' }}
                         >
-                            <Descriptions.Item label="Ticket ID" span={1}>{ticket.id}</Descriptions.Item>
+                            <Descriptions.Item label="Ticket ID" span={1}>{ticket.ticketId}</Descriptions.Item>
                             <Descriptions.Item label="title" span={1}>{ticket.title}</Descriptions.Item>
-                            {ticket.customerID && (
-                                <Descriptions.Item label="Customer ID" span={1}>{ticket.customerID}</Descriptions.Item>
+                            {ticket.customerId && (
+                                <Descriptions.Item label="Customer ID" span={1}>{ticket.customerId}</Descriptions.Item>
                             )}
                             <Descriptions.Item label="Created By" span={1}>{createdByName}</Descriptions.Item>
                             <Descriptions.Item label="Remark" span={2}>{ticket.description}</Descriptions.Item>
@@ -139,8 +146,8 @@ const TicketDetailsModal = ({ visible, ticket, onClose, onCreateQuotation, onUpd
 
             {/* Create Quotation Modal */}
             <QuotationFormModal 
-                ticketId={ticket && ticket.id} 
-                defaultCustomer={ticket && ticket.customerID} 
+                ticketId={ticket && ticket.ticketId} 
+                defaultCustomer={ticket && ticket.customerId} 
                 title="Create Quotation"
                 visible={isCreateModalVisible}
                 onCreate={handleCreateQuotation}

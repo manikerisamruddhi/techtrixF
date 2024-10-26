@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Table, Button, Empty, message, Layout, Typography, Spin, Card, Row, Col } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchTickets } from '../../redux/slices/ticketSlice';
-import { fetchUsers, fetchDepartments } from '../../redux/slices/userSlice';
+import { fetchUsers} from '../../redux/slices/userSlice';
 import { fetchCustomers } from '../../redux/slices/customerSlice';
 import TicketDetailsModal from '../../components/Ticket/TicketDetailsModal';
 import CreateTicketModal from '../../components/Ticket/CreateTicketModalForm'; // Import the CreateTicketModal
@@ -32,7 +32,7 @@ const Tickets = () => {
     useEffect(() => {
         const fetch_data = async () => {
             await dispatch(fetchTickets());
-            await dispatch(fetchDepartments());
+            // await dispatch(fetchDepartments());
             await dispatch(fetchUsers());
         };
         fetch_data();
@@ -56,7 +56,7 @@ const Tickets = () => {
 
     // Handle backend error
     if (tickets_error || users_error || departments_error) {
-        message.error(`Failed to load data: ${tickets_error || users_error || departments_error}. Please check backend connectivity.`);
+        message.error(`Failed to load data:Please check backend connectivity.`);
     }
 
     // Filter users based on selected department
@@ -81,7 +81,7 @@ const Tickets = () => {
     // Calculate card data
     const total_tickets = tickets.length;
     const open_tickets = tickets.filter(ticket => ticket.status === 'Open').length;
-    const in_progress = tickets.filter(ticket => ticket.status === 'in-progress').length;
+    const in_progress = tickets.filter(ticket => ticket.status === 'InProgress').length;
     const closed_tickets = tickets.filter(ticket => ticket.status === 'closed').length;
 
     // Filter tickets based on card click
@@ -97,16 +97,16 @@ const Tickets = () => {
     const columns = [
         {
             title: 'Ticket ID',
-            dataIndex: 'id',
-            key: 'id',
+            dataIndex: 'ticketId',
+            key: 'ticketId',
         },
 
         {
             title: 'Customer',
-            dataIndex: 'customerID',
-            key: 'customerID',
-            render: (customerID, record) => {
-                const customer = customers.find(customer => customer.id === customerID);
+            dataIndex: 'customerId',
+            key: 'customerId',
+            render: (customerId, record) => {
+                const customer = customers.find(customer => customer.customerId === customerId);
                 return customer ? `${customer.firstName} ${customer.lastName}` : 'Unknown Customer';
             },
         },
@@ -125,7 +125,7 @@ const Tickets = () => {
             dataIndex: 'createdBy',
             key: 'createdBy',
             render: (text) => {
-                const user = users.find((user) => user.id === text); // Adjust based on your user object structure
+                const user = users.find((user) => user.userId === text); // Adjust based on your user object structure
                 return user ? `${user.firstName} ${user.lastName}` : text; // Display user name or fallback text
             },
             filters: get_unique_filters(tickets, 'createdBy'),
@@ -142,7 +142,7 @@ const Tickets = () => {
             title: 'Assighned to',
             dataIndex: 'assignedTo',
             render: (assignedTo) => {
-                const user = users.find(user => user.id === assignedTo);
+                const user = users.find(user => user.userId === assignedTo);
                 return user ? `${user.firstName} ${user.lastName}` : '-';
             },
           },
@@ -220,10 +220,10 @@ const Tickets = () => {
                             <Card 
                                 hoverable 
                                 bordered={false} 
-                                onClick={() => handle_card_click('in-progress')} 
+                                onClick={() => handle_card_click('InProgress')} 
                                 style={{ cursor: 'pointer', backgroundColor: '#e9f5f7' }} // Add your desired background color
                             >
-                               In-progress Tickets : {in_progress}
+                               InProgress Tickets : {in_progress}
                             </Card>
                         </Col>
                         <Col span={6}>

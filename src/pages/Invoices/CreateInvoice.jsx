@@ -11,7 +11,7 @@ const CreateInvoice = () => {
     const { customers } = useSelector((state) => state.customers);
     const { quotations } = useSelector((state) => state.quotations);
     const [formData, setFormData] = useState({
-        customerID: '',
+        customerId: '',
         quotationId: '',
         invoiceDate: '',
         dueDate: '',
@@ -52,14 +52,14 @@ const CreateInvoice = () => {
                 <div>
                     <label>Customer</label>
                     <select
-                        name="customerID"
-                        value={formData.customerID}
-                        onChange={(e) => setFormData({ ...formData, customerID: e.target.value })}
+                        name="customerId"
+                        value={formData.customerId}
+                        onChange={(e) => setFormData({ ...formData, customerId: e.target.value })}
                         required
                     >
                         <option value="">Select Customer</option>
                         {customers.map((customer) => (
-                            <option key={customer.id} value={customer.id}>
+                            <option key={customer.customerId} value={customer.customerId}>
                                 {customer.name}
                             </option>
                         ))}

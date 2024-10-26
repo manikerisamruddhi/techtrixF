@@ -75,7 +75,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId, defaultCustomer }) => 
     }, [error, dispatch]);
 
     const handleCustomerChange = (value) => {
-        const selectedCust = customers.find(customer => customer.id === value);
+        const selectedCust = customers.find(customer => customer.customerId === value);
         setExistingCustomer(selectedCust);
     };
 
@@ -172,7 +172,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId, defaultCustomer }) => 
             // Create a new quotation
             const quotationData = {
                 TicketID: ticketId,
-                customerID: customerType === 'existing' ? existingCustomer.id : newCustomer.id,
+                customerId: customerType === 'existing' ? existingCustomer.id : newCustomer.customerId,
                 ProductId: addedProducts.map(product => product.id),
                 FinalAmount: addedProducts.reduce((total, prod) => total + prod.price * prod.quantity, 0),
                 status: 'Pending',
@@ -275,7 +275,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId, defaultCustomer }) => 
                         >
                             {customers && customers.length > 0 ? (
                                 customers.map(customer => (
-                                    <Option key={customer.id} value={customer.id} label={`${customer.firstName} ${customer.lastName} ${customer.email} ${customer.phoneNumber}`}>
+                                    <Option key={customer.customerId} value={customer.customerId} label={`${customer.firstName} ${customer.lastName} ${customer.email} ${customer.phoneNumber}`}>
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                             <span>{`${customer.firstName} ${customer.lastName}`}</span>
                                             <span style={{ marginLeft: '10px', color: 'gray' }}>{customer.email}</span>

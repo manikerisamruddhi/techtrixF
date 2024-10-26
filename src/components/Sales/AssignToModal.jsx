@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Select, Button, message, Spin } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUsers } from '../../redux/slices/userSlice'; // Use fetchUsers instead of fetchUsersByDepartment
+import { fetchUsers } from '../../redux/slices/userSlice'; // Use fetchUsers instead of fetchUsersByRole
 import { selectUserstatus } from '../../redux/slices/userSlice'; // Select the correct status
 import axios from 'axios'; // Axios for making the API call
 

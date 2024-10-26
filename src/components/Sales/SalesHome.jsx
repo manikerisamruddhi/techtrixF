@@ -11,7 +11,7 @@ const Dashboard = () => {
                         <h2>All Tickets</h2>
                         <div className="sub-card">
                             <p>total: 10</p> {/* Replace with dynamic data */}
-                            <p>in-progress: 5</p> {/* Replace with dynamic data */}
+                            <p>InProgress: 5</p> {/* Replace with dynamic data */}
                             <p>resolved: 3</p> {/* Replace with dynamic data */}
                             <p>closed: 2</p> {/* Replace with dynamic data */}
                         </div>
