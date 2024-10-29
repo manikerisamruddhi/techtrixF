@@ -122,14 +122,14 @@ const Tickets = () => {
         },
         {
             title: 'Created By',
-            dataIndex: 'createdBy',
-            key: 'createdBy',
+            dataIndex: 'createdById',
+            key: 'createdById',
             render: (text) => {
                 const user = users.find((user) => user.userId === text); // Adjust based on your user object structure
                 return user ? `${user.firstName} ${user.lastName}` : text; // Display user name or fallback text
             },
-            filters: get_unique_filters(tickets, 'createdBy'),
-            onFilter: (value, record) => record.createdBy === value,
+            filters: get_unique_filters(tickets, 'createdById'),
+            onFilter: (value, record) => record.createdById === value,
         },
         {
             title: 'status',

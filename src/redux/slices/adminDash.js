@@ -1,12 +1,14 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import ticketApi from '../../api/ticketApi';
+
 
 // Define the base URL of your JSON server
 const BASE_URL = 'http://localhost:4000';
 
 // Async thunk to fetch tickets
 export const fetchTickets = createAsyncThunk('dashboard/fetchTickets', async () => {
-    const response = await axios.get(`${BASE_URL}/tickets`);
+    const response = await ticketApi.getAllTickets();
     return response.data;
 });
 

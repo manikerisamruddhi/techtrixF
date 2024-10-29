@@ -33,7 +33,7 @@ const EditInvoice = () => {
 
     const handleProductChange = (productId, quantity) => {
         const updatedProducts = formData.products.map((product) =>
-            product.id === productId ? { ...product, quantity } : product
+            product.productId === productId ? { ...product, quantity } : product
         );
         setFormData({ ...formData, products: updatedProducts });
     };
@@ -51,13 +51,13 @@ const EditInvoice = () => {
                 <div>
                     <h2>Edit Products</h2>
                     {products.map((product) => (
-                        <div key={product.id}>
+                        <div key={product.productId}>
                             <label>{product.name}</label>
                             <input
                                 type="number"
                                 placeholder="Quantity"
-                                value={formData.products.find((p) => p.id === product.id)?.quantity || ''}
-                                onChange={(e) => handleProductChange(product.id, e.target.value)}
+                                value={formData.products.find((p) => p.id === product.productId)?.quantity || ''}
+                                onChange={(e) => handleProductChange(product.productId, e.target.value)}
                             />
                         </div>
                     ))}

@@ -4,10 +4,6 @@ const userApi = {
     getAllusers: () => {
         return axiosInstance.get('/users/all');
     },
-
-    loginUser: (userData) => {
-        return axiosInstance.post(`/users/login-user/`, userData);
-    },
     // rem
     getuserById: (id) => {
         return axiosInstance.get(`/users/get/${id}`);

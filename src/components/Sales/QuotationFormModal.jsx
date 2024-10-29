@@ -148,7 +148,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId, onSubmit }) => {
                         onChange={handleProductSelection}
                     >
                         {products.map(product => (
-                            <Option key={product.id} value={product.id}>
+                            <Option key={product.productId} value={product.productId}>
                                 {product.brand} : {product.modelNo} = ₹{product.price}
                             </Option>
                         ))}

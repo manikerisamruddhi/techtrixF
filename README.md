@@ -180,7 +180,7 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
          
             </tr>
             <tr>
-                <td style="border: 1px solid #000; padding: 8px;"><strong>Created By:</strong> ${quotation.createdBy}</td>
+                <td style="border: 1px solid #000; padding: 8px;"><strong>Created By:</strong> ${quotation.createdById}</td>
                 <td style="border: 1px solid #000; padding: 8px;"><strong>status:</strong> <span style="color:${quotation.status === 'Approved' ? 'green' : quotation.status === 'Rejected' ? 'red' : 'orange'};">${quotation.status}</span></td>
           
                </tr>

@@ -44,15 +44,15 @@ const EditQuotation = () => {
                 <div>
                     <h2>Edit Products</h2>
                     {products.map((product) => (
-                        <div key={product.id}>
+                        <div key={product.productId}>
                             <label>{product.name}</label>
                             <input
                                 type="number"
                                 placeholder="Quantity"
-                                defaultValue={formData.products.find((p) => p.id === product.id)?.quantity || 0}
+                                defaultValue={formData.products.find((p) => p.id === product.productId)?.quantity || 0}
                                 onChange={(e) => {
                                     const updatedProducts = formData.products.map((p) =>
-                                        p.id === product.id ? { ...p, quantity: e.target.value } : p
+                                        p.id === product.productId ? { ...p, quantity: e.target.value } : p
                                     );
                                     setFormData({ ...formData, products: updatedProducts });
                                 }}

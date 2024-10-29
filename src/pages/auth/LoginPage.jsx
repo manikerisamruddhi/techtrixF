@@ -13,25 +13,25 @@ const LoginPage = () => {
     const handleLogin = async (values) => {
         try {
             const resultAction = await dispatch(loginUser(values));
-            console.log(resultAction);
+            // console.log(resultAction);
             if (loginUser.fulfilled.match(resultAction)) {
                 const userRole = resultAction.payload.role;
-    console.log(userRole);
+                // console.log(userRole);
                 // Navigate based on the role
                 if (userRole === 'Admin') {
                     navigate('/');  // Redirect to Admin
                 } else if (userRole === 'Sales') {
-                    navigate('/Sales');  // Redirect to Sales page
+                    navigate('/');  // Redirect to Sales page
                 } else if (userRole === 'Logistics') {
-                    navigate('/Logistics');  // Redirect to Logistics page
+                    navigate('/');  // Redirect to Logistics page
                 } else {
                     navigate('/');  // Default redirect to home page
                 }
             } else {
-                setError('Invalid credentials');
+                setError(resultAction.payload);
             }
         } catch (err) {
-            setError('Invalid credentials');
+            setError('Error: '+err);
         }
     };
     

@@ -111,23 +111,23 @@ const Quotations = () => {
     const columns = [
         {
             title: 'Quotation ID',
-            dataIndex: 'id',
-            key: 'QuotationID',
+            dataIndex: 'quotationId',
+            key: 'quotationId',
             // render: (text) => <Link to={`/quotation/${text}`}>Quotation #{text}</Link>,
             // ...getColumnSearchProps('id'), // Search filter for Quotation ID
         },
        
         {
             title: 'Comments',
-            dataIndex: 'Comments',
-            key: 'Comments',
+            dataIndex: 'comments',
+            key: 'comments',
             ...getColumnSearchProps('Comments'), // Search filter for Final Amount
         },
         
         {
             title: 'Final Amount',
-            dataIndex: 'FinalAmount',
-            key: 'FinalAmount',
+            dataIndex: 'finalAmount',
+            key: 'finalAmount',
             // ...getColumnSearchProps('FinalAmount'), // Search filter for Final Amount
         },
         {

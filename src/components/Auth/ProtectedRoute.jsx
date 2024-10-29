@@ -4,7 +4,7 @@ import { Navigate } from 'react-router-dom';
 import { message } from 'antd';
 
 const ProtectedRoute = ({ children }) => {
-    const user = JSON.parse(localStorage.getItem('user')); // Get user from local storage
+    const user = localStorage.getItem('user'); // Get user from local storage
    
     // Check if the user is authenticated
     if (!user) {

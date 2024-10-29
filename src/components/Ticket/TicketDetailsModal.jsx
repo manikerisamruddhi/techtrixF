@@ -12,26 +12,27 @@ const TicketDetailsModal = ({ visible, ticket, onClose, onCreateQuotation, users
     const [isUpdateModalVisible, setUpdateModalVisible] = useState(false); // State to manage update ticket modal visibility
     
     const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
-    const [createdBy, setCreatedBy] = useState(''); // State variable to store createdBy
+    const [createdById, setCreatedBy] = useState(''); // State variable to store createdById
 
     // Effect to run when the ticket is available
     useEffect(() => {
         if (ticket) {
-            setCreatedBy(ticket.createdBy); // Set createdBy from ticket
+            setCreatedBy(ticket.createdById); // Set createdById from ticket
         }
     }, [ticket]);
 
-    // Function to update createdBy field of the ticket
+    // Function to update createdById field of the ticket
     const updateCreatedBy = () => {
         if (ticket) {
-            // Update createdBy variable
-            setCreatedBy('new'); // Set createdBy to 'new'
-            message.success('Ticket createdBy updated successfully!'); // Notify user
+            // Update createdById variable
+            setCreatedBy('new'); // Set createdById to 'new'
+            message.success('Ticket createdById updated successfully!'); // Notify user
         }
     };
     
-    const user = users.find((user) => user.userId === createdBy); // Adjust based on your user object structure
-    const createdByName = user ? `${user.firstName} ${user.lastName}` : createdBy; // Display user name or fallback text
+    console.log(users);
+    const user = users.find((user) => user.userId === createdById); // Adjust based on your user object structure
+    const createdByName = user ? `${user.firstName} ${user.lastName}` : createdById; // Display user name or fallback text
 
 
     // Function to open the create quotation modal

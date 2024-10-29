@@ -24,11 +24,11 @@ const UpdateTicketModal = ({ ticketData, isVisible, onCancel, onClose }) => {
       form.setFieldsValue({
         title: ticketData.title,
         customerId: ticketData.customerId,
-        productID: ticketData.productID,
+        productId: ticketData.productId,
         priority: ticketData.Priority,
         isChargeable: ticketData.isChargeable,
         status: ticketData.status,
-        createdBy: ticketData.createdBy,
+        createdById: ticketData.createdById,
         description: ticketData.description,
         assignedTo: ticketData.assignedTo || null,
       });
@@ -43,7 +43,7 @@ const UpdateTicketModal = ({ ticketData, isVisible, onCancel, onClose }) => {
   ); // Adjust according to your state shape
   const loading = useSelector((state) => state.users.loading);
 
-  console.log(serviceTechnicians);
+  // console.log(serviceTechnicians);
 
   const handleUpdate = (close = false) => {
     form
@@ -54,7 +54,7 @@ const UpdateTicketModal = ({ ticketData, isVisible, onCancel, onClose }) => {
         const updatedTicketData = {
           ...ticketData, // Spread the existing ticket data
           ...values, // Then spread the new values from the form
-          createdBy: "admin", // Ensure createdBy is set correctly
+          createdById: "admin", // Ensure createdById is set correctly
           status: close ? "InProgress" : "closed",
         };
 
@@ -123,7 +123,7 @@ const UpdateTicketModal = ({ ticketData, isVisible, onCancel, onClose }) => {
             </Form.Item>
           </Col>
           <Col span={12}>
-            <Form.Item name="createdBy" label="Created By">
+            <Form.Item name="createdById" label="Created By">
               <Input disabled />
             </Form.Item>
           </Col>

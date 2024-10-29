@@ -1,26 +1,29 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import userApi from '../../api/userApi'; // Import userApi
+import authApi from '../../api/authApi'; // Import authApi
 
 // Async Thunks
 
-// Fetch user login using userApi
+// Fetch user login using authApi
 export const loginUser = createAsyncThunk(
     'users/loginUser',
     async (credentials, { rejectWithValue }) => {
         try {
             // Assuming API call for login user, you might need to adapt based on your actual login endpoint
-            const response = await userApi.getAllusers(); // Fetch all users from the API
-
-            const user = response.data.find(
-                (user) => user.email === credentials.email && user.passwordHash === credentials.password
-            );
-
-            if (user) {
+            const response = await authApi.login(credentials); // Authenticate user from authApi
+            const loginUserResponse = response.data;
+            
+            if (loginUserResponse.httpStatus === "OK") {
                 // Save user info to local storage
-                localStorage.setItem('user', JSON.stringify(user));
-                return user;
+                console.log(loginUserResponse.userContent);
+                //user = JSON.stringify(loginUserResponse.userContent);
+                console.log(loginUserResponse.userContent);
+               // Stringify and store the user object in localStorage
+               localStorage.setItem('user', JSON.stringify(loginUserResponse.userContent));
+               
+               console.log(loginUserResponse.user);
+                return loginUserResponse.userContent;
             } else {
-                return rejectWithValue('Invalid credentials');
+                return rejectWithValue(loginUserResponse.message);
             }
         } catch (error) {
             return rejectWithValue(error.message || 'Failed to login');
@@ -39,7 +42,7 @@ export const logoutUser = createAsyncThunk('users/logoutUser', async () => {
 const userSlice = createSlice({
     name: 'users',
     initialState: {
-        user: JSON.parse(localStorage.getItem('user')) || null, // Load user from local storage
+        user: localStorage.getItem('user') || null, // Load user from local storage
         isAuthenticated: !!localStorage.getItem('user'), // Check if user is authenticated based on local storage
         loading: false,
         error: null,
@@ -57,7 +60,7 @@ const userSlice = createSlice({
             })
             .addCase(loginUser.fulfilled, (state, action) => {
                 state.user = action.payload;
-                state.isAuthenticated = action.payload.isAuthenticated; // This will be true
+                state.isAuthenticated = true; // This will be true
                 state.loading = false;
             })
             .addCase(loginUser.rejected, (state, action) => {

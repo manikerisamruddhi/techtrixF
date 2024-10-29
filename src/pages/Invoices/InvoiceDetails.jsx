@@ -32,7 +32,7 @@ const InvoiceDetails = () => {
             <h2>Products:</h2>
             <ul>
                 {invoice.products.map((product) => (
-                    <li key={product.id}>
+                    <li key={product.productId}>
                         {product.name} - {product.quantity} x {product.unitPrice} = {product.totalPrice}
                     </li>
                 ))}

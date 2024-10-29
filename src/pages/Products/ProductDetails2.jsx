@@ -12,7 +12,7 @@ const ProductDetailModal = ({ visible, product, onClose }) => {
             footer={null}
         >
             <Title level={2}>{product.brand} - {product.modelNo}</Title>
-            <Paragraph><strong>Product ID:</strong> {product.id}</Paragraph>
+            <Paragraph><strong>Product ID:</strong> {product.productId}</Paragraph>
             {/* Add more product details here */}
             <Paragraph><strong>Brand:</strong> {product.brand}</Paragraph>
             <Paragraph><strong>description:</strong> {product.description}</Paragraph>

@@ -135,7 +135,7 @@ const SalesTickets = () => {
 
             if (ticket) {
                 await axios.post('http://localhost:4000/quotations', quotationData);
-                await axios.patch(`http://localhost:4000/tickets/${ticket.id}`, { status: 'InProgress', createdBy: 'Sales' });
+                await axios.patch(`http://localhost:4000/tickets/${ticket.id}`, { status: 'InProgress', createdById: 'Sales' });
               
                 // Update tickets state to reflect new status
                 setTickets(prevTickets => prevTickets.map(t =>

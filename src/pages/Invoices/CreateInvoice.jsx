@@ -105,12 +105,12 @@ const CreateInvoice = () => {
                     {quotations
                         .find((q) => q.id === formData.quotationId)
                         ?.products.map((product) => (
-                            <div key={product.id}>
+                            <div key={product.productId}>
                                 <label>{product.name}</label>
                                 <input
                                     type="number"
                                     placeholder="Quantity"
-                                    onChange={(e) => handleProductChange(product.id, e.target.value)}
+                                    onChange={(e) => handleProductChange(product.productId, e.target.value)}
                                 />
                             </div>
                         ))}

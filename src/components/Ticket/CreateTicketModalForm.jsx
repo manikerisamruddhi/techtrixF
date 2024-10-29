@@ -87,25 +87,24 @@
         
             // Prepare the ticket data according to the specified structure
             const ticketData = {
-                createdBy: looggedInUserId,
+                createdById: looggedInUserId,
                 title: values.title,
                 description: values.description,
                 status: 'Open',
                 category: 'issue', // You can modify this if you have a different category
                 assignedTo: null, // Assuming you have logic to assign users if needed
-                customer: {
-                    customerId: values.customerId , // new customer id also asigned by modal(handleCustomerAdded)
-                },
+                customerId: values.customerId , // new customer id also asigned by modal(handleCustomerAdded)
                 isChargeable: values.isChargeable !== undefined ? values.isChargeable : true,
                 isQuotationCreated: false, // Set to false as per the requirement
                 ticketType: 'Issue', // You can modify this if you have a different ticket type
-                products: [], // Initialize products array
+                productIds: [], // Initialize products array
                 createdDate: currentDate,
+                
             };
         
             // Add selected product(s) to the products array
             if (values.productId) {
-                ticketData.products.push({ productId: values.productId });
+                ticketData.productIds.push(values.productId);
             }
             // if (newProduct) {
             //     ticketData.products.push({ productId: newProduct.id });
