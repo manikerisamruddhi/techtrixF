@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { fetchTickets, fetchQuotations, fetchInvoices } from '../../redux/slices/adminDash';
+import { fetchTickets, fetchQuotations } from '../../redux/slices/adminDash';
 import useTicketCounts from '../../hooks/useTicketCount';
 import useQuotationCounts from '../../hooks/useQuotationCount';
 import CreateTicketModal from '../../components/Ticket/CreateTicketModalForm';
@@ -76,7 +76,7 @@ const Dashboard = () => {
     useEffect(() => {
         dispatch(fetchTickets());
         dispatch(fetchQuotations());
-        dispatch(fetchInvoices());
+        // dispatch(fetchInvoices());
         // dispatch(fetchProducts()); // Fetch products data
     }, [dispatch]);
 
