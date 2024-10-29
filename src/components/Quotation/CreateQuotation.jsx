@@ -1,25 +1,28 @@
-import React, { useEffect, useState , useRef} from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Modal, Form, Row, Col, Input, Button, Table, notification, Radio, Select, Switch } from 'antd';
 import { CloseCircleOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { addQuotation, resetError } from '../../redux/slices/quotationSlice';
+import { addQuotation, resetError, getQuotationByUserIdAndInitiatedStatus, getQuotationByTicketId, updateQuotation } from '../../redux/slices/quotationSlice';
 import { fetchCustomers, addCustomer } from '../../redux/slices/customerSlice'; // Assuming a customer slice exists to fetch customers
 import { addProduct, fetchProducts } from '../../redux/slices/productSlice';
+import { createTicket, updateTicket } from '../../redux/slices/ticketSlice'
 import moment from 'moment';
 import CreateCustomerForm from '../Customer/CreateCustomerForm';
+import { Category } from '@mui/icons-material';
 
 const currentDate = moment();
 
-const QuotationFormModal = ({ visible, onClose, ticketId, defaultCustomer }) => {
+const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) => {
     const dispatch = useDispatch();
     const { quotations, loading, error } = useSelector(state => state.quotations);
     const { customers } = useSelector(state => state.customers); // Assuming customer data is fetched through Redux
     const [customer, setCustomer] = useState(null);
     const { items: products } = useSelector(state => state.products); // Assuming you have products in your Redux store
-    
-    const loggedInUser = JSON.parse(localStorage.getItem('user')); // Get user from local storage
+
+    const loggedInUser = JSON.parse(localStorage.getItem('user'));; // Get user from local storage
     // const loggedInUserName = `${loggedInUser.firstName} ${loggedInUser.lastName}`
-    const looggedInUserId = loggedInUser.id;
+    const loggedInUserId = loggedInUser.userId;
+    console.log(`loggedInUser ${loggedInUserId}`);
 
     // console.log('Fetched Products:', products);
     const addProductFormRef = useRef(null);
@@ -56,8 +59,12 @@ const QuotationFormModal = ({ visible, onClose, ticketId, defaultCustomer }) => 
         pinCode: '',
         isPremium: false,
     });
-    const [finalAmount , setFinalAmount] = useState(0); // Track final amount
+    const [finalAmount, setFinalAmount] = useState(0); // Track final amount
     const [comment, setComment] = useState(''); // Track comment
+
+    const [NticketId, setNticketId] = useState(null); 
+    const [Quote, SetQuote] = useState(null); 
+
 
     useEffect(() => {
         if (visible) {
@@ -79,8 +86,135 @@ const QuotationFormModal = ({ visible, onClose, ticketId, defaultCustomer }) => 
         setExistingCustomer(selectedCust);
     };
 
+    useEffect(() => {
+        if (visible) {
+            const fetchData = async () => {
+                if (!defaultCustomer) {
+                    try {
+                      SetQuote(await dispatch(getQuotationByUserIdAndInitiatedStatus(loggedInUserId)).unwrap())
+                      console.log(Quote);
+                    } catch (error) {
+                        console.log(error);
+                        if (error) {
+                            console.log('No quotation found, creating a new ticket...');
+                            const ticketData = {
+                                title: 'Order',
+                                createdById: loggedInUserId,
+                                description: 'Ticket for quotation',
+                                category: 'Quotation',
+                                ticketType: 'Order',
+                            };
+                            const T = await dispatch(createTicket(ticketData)).unwrap();
+                            setNticketId(T?.ticketId); // Update NticketId state
+                            console.log(`Ticket ID: ${NticketId}`);
+                        }
+                    }
+                } else {
+                    if (defticketId) {
+                        console.log(`Using existing ticket ID: ${defticketId}`);
+                        SetQuote(await dispatch(getQuotationByTicketId(defticketId)).unwrap());
+                    }
+                }
+                console.log(Quote);
+                if (!Quote) {
+                    const quotationData = {
+                        ticketId: defticketId || NticketId,
+                        createdBy: loggedInUserId,
+                    };
+                    console.log(quotationData);
+                   SetQuote(await dispatch(addQuotation(quotationData)).unwrap());
+
+                }
+            };
+            fetchData();
+        }
+    }, [visible]);
+
+
+    const handleFinish = async () => {
+        try {
+            // Create a new customer
+            if (customerType === 'new') {
+                const newCustomerData = {
+                    firstName: newCustomer.firstName,
+                    lastName: newCustomer.lastName,
+                    email: newCustomer.email,
+                    phoneNumber: newCustomer.phoneNumber,
+                    address: newCustomer.address,
+                    PinCode: newCustomer.pinCode,
+                    isPremium: newCustomer.isPremium,
+                    createdDate: currentDate.format('YYYY-MM-DD HH:mm:ss'),
+                };
+
+                console.log('Adding new customer:', newCustomerData);
+                const customerResponse = dispatch(addCustomer(newCustomerData));
+                console.log('Customer added:', customerResponse);
+
+               const values = {
+                    customerId: customerResponse.customerId
+                }
+
+                console.log(`updating ticket with ${NticketId} and ${values}`)
+                dispatch(updateTicket({ ticketId: defticketId || NticketId, updatedTicket: values }))
+
+              
+            }
+
+            // Create new products
+            const productPromises = addedProducts.map(async (product) => {
+                const newProductData = {
+                    brand: product.brand,
+                    modelNo: product.modelNo,
+                    price: product.price,
+                    quantity: product.quantity,
+                    description: product.description,
+                    hasSerialNumber: product.hasSerialNumber,
+                    warrenty: product.warrenty,
+                };
+
+                console.log('Adding new product:', newProductData);
+                const productResponse = dispatch(addProduct(newProductData));
+                console.log('Product added:', productResponse);
+            });
+            await Promise.all(productPromises);
+
+            // Create a new quotation
+            const quotationData = {
+                ticketID: defticketId || NticketId,
+                customerId: customerType === 'existing' ? existingCustomer.id : newCustomer.customerId,
+                productId: addedProducts.map(product => product.productId),
+                FinalAmount: addedProducts.reduce((total, prod) => total + prod.price * prod.quantity, 0),
+                status: 'Pending',
+                createdById: loggedInUserId,
+                isQuotationCreated: true,
+                // finalAmount,
+                createdDate: currentDate.format('YYYY-MM-DD HH:mm:ss'),
+                Comments: comment,
+            };
+
+            //console.log('Adding new quotation:', quotationData);
+            const quotationResponse = await dispatch(updateQuotation({ quotationId: Quote.quotationId, updatedQuotation: quotationData }));
+            console.log('Quotation added:', quotationResponse,
+                'sent this data:', quotationData
+            );
+
+            notification.success({ message: 'Quotation added successfully!' });
+            form.resetFields();
+            setAddedProducts([]);
+            setCustomerType('existing'); // Reset customer type
+            setNewCustomer({ firstName: '', lastName: '', email: '', phoneNumber: '', address: '', pinCode: '', isPremium: false }); // Reset new customer data
+            setFinalAmount(0); // Reset final amount
+            setComment(''); // Reset comment
+            onClose(); // Close modal after submission
+        } catch (err) {
+            console.error(err);
+            notification.error({ message: 'Error adding quotation' });
+        }
+    };
+
+
     const handleProductSelect = (value) => {
-        const selectedProduct = products.find(product => product.id === value);
+        const selectedProduct = products.find(product => product.productId === value);
         if (selectedProduct) {
             const productWithKey = { ...selectedProduct, key: Date.now() }; // Add a unique key for rendering
             setAddedProducts(prev => [...prev, productWithKey]); // Add the selected product to addedProducts
@@ -133,75 +267,6 @@ const QuotationFormModal = ({ visible, onClose, ticketId, defaultCustomer }) => 
         });
     };
 
-    const handleFinish = async () => {
-        try {
-            // Create a new customer
-            if (customerType === 'new') {
-                const newCustomerData = {
-                    firstName: newCustomer.firstName,
-                    lastName: newCustomer.lastName,
-                    email: newCustomer.email,
-                    phoneNumber: newCustomer.phoneNumber,
-                    address: newCustomer.address,
-                    PinCode: newCustomer.pinCode,
-                    isPremium: newCustomer.isPremium,
-                    createdDate: currentDate.format('YYYY-MM-DD HH:mm:ss'),
-                };
-                //console.log('Adding new customer:', newCustomerData);
-                const customerResponse = await dispatch(addCustomer(newCustomerData));
-                //console.log('Customer added:', customerResponse);
-            }
-
-            // Create new products
-            const productPromises = addedProducts.map(async (product) => {
-                const newProductData = {
-                    brand: product.brand,
-                    modelNo: product.modelNo,
-                    price: product.price,
-                    quantity: product.quantity,
-                    description: product.description,
-                    hasSerialNumber: product.hasSerialNumber,
-                    warrenty: product.warrenty,
-                };
-                //console.log('Adding new product:', newProductData);
-                const productResponse = await dispatch(addProduct(newProductData));
-                //console.log('Product added:', productResponse);
-            });
-            await Promise.all(productPromises);
-
-            // Create a new quotation
-            const quotationData = {
-                TicketID: ticketId,
-                customerId: customerType === 'existing' ? existingCustomer.id : newCustomer.customerId,
-                ProductId: addedProducts.map(product => product.id),
-                FinalAmount: addedProducts.reduce((total, prod) => total + prod.price * prod.quantity, 0),
-                status: 'Pending',
-                createdBy: looggedInUserId,
-                isQuotationCreated: true,
-                // finalAmount,
-                createdDate: currentDate.format('YYYY-MM-DD HH:mm:ss'),
-                Comments: comment,
-            };
-
-            //console.log('Adding new quotation:', quotationData);
-            const quotationResponse = await dispatch(addQuotation(quotationData));
-            console.log('Quotation added:', quotationResponse,
-                'sent this data:', quotationData
-            );
-
-            notification.success({ message: 'Quotation added successfully!' });
-            form.resetFields();
-            setAddedProducts([]);
-            setCustomerType('existing'); // Reset customer type
-            setNewCustomer({ firstName: '', lastName: '', email: '', phoneNumber: '', address: '', pinCode: '', isPremium: false }); // Reset new customer data
-            setFinalAmount(0); // Reset final amount
-            setComment(''); // Reset comment
-            onClose(); // Close modal after submission
-        } catch (err) {
-            console.error(err);
-            notification.error({ message: 'Error adding quotation' });
-        }
-    };
 
     const handleExistingCustomerChange = value => {
         setExistingCustomer(customers.find(cust => cust.id === value));
@@ -210,14 +275,14 @@ const QuotationFormModal = ({ visible, onClose, ticketId, defaultCustomer }) => 
     const calculateTotalAmount = () => {
         // Check if any product has a null, undefined, or invalid quantity
         const hasInvalidQuantity = addedProducts.some(prod => prod.quantity == null || prod.quantity <= 0);
-        
+
         if (hasInvalidQuantity) {
-            const Quant = <span style={{color:'lightred'}}>
-            Please update quantity
+            const Quant = <span style={{ color: 'lightred' }}>
+                Please update quantity
             </span>
             return Quant; // Return the message if any quantity is invalid
         }
-        
+
         // Calculate total amount if all quantities are valid
         return addedProducts.reduce((total, prod) => total + (prod.price * prod.quantity), 0);
     };
@@ -227,7 +292,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId, defaultCustomer }) => 
         if (showNewProductForm && addProductFormRef.current) {
             addProductFormRef.current.scrollIntoView({ behavior: 'smooth' });
         }
-    }, [showNewProductForm]); 
+    }, [showNewProductForm]);
 
     const handleAddProductClick = () => {
         setShowNewProductForm(true);
@@ -251,9 +316,9 @@ const QuotationFormModal = ({ visible, onClose, ticketId, defaultCustomer }) => 
                 {/* Customer Selection */}
                 <div style={{ marginBottom: '20px' }}>
                     <h3>Select Customer</h3>
-                    <Radio.Group value={customerType} 
-                    disabled={!!defaultCustomer} 
-                    onChange={e => setCustomerType(e.target.value)}>
+                    <Radio.Group value={customerType}
+                        disabled={!!defaultCustomer}
+                        onChange={e => setCustomerType(e.target.value)}>
                         <Radio value="new">New Customer</Radio>
                         <Radio value="existing">Existing Customer</Radio>
                     </Radio.Group>
@@ -265,13 +330,13 @@ const QuotationFormModal = ({ visible, onClose, ticketId, defaultCustomer }) => 
                         rules={[{ required: true, message: 'Please select an existing customer' }]}
                     >
                         <Select
-                           value={defaultCustomer ? customer : undefined}
+                            value={defaultCustomer ? customer : undefined}
                             showSearch
                             placeholder="Select a customer"
                             optionFilterProp="label"
                             onChange={handleExistingCustomerChange}
-                            disabled={!!defaultCustomer} 
-                            
+                            disabled={!!defaultCustomer}
+
                         >
                             {customers && customers.length > 0 ? (
                                 customers.map(customer => (
@@ -335,44 +400,44 @@ const QuotationFormModal = ({ visible, onClose, ticketId, defaultCustomer }) => 
                         <p>No products added yet. Please add a product to continue.</p>
                     </div>
                 )}
-                
+
                 <Form.Item label="Select Existing Product">
-    <Select
-        showSearch
-         optionFilterProp="label"
-        placeholder="Select a product"
-        onChange={handleProductSelect}
-        style={{ width: '100%' }}
-        dropdownStyle={{ maxHeight: 500, overflowY: 'auto' }} // Control dropdown height
-      
-    >
-        {products && products.length > 0 ? (
-            products.map(product => (
-                <Select.Option 
-                style={{ width: '100%', color: 'black', border: '1px', padding:'10px', }}
-                key={product.id} value={product.id} label={`${product.brand} || ${product.modelNo} || ₹${product.description}`}>
-                    {product.brand} || {product.modelNo} || ₹{product.description}
-                </Select.Option>
-            ))
-        ) : (
-            <Select.Option value="">No products found</Select.Option>
-        )}
-    </Select>
-</Form.Item>
-<div  style={{display:'flex',justifyContent:'right'}}>
+                    <Select
+                        showSearch
+                        optionFilterProp="label"
+                        placeholder="Select a product"
+                        onChange={handleProductSelect}
+                        style={{ width: '100%' }}
+                        dropdownStyle={{ maxHeight: 500, overflowY: 'auto' }} // Control dropdown height
+
+                    >
+                        {products && products.length > 0 ? (
+                            products.map(product => (
+                                <Select.Option
+                                    style={{ width: '100%', color: 'black', border: '1px', padding: '10px', }}
+                                    key={product.productId} value={product.productId} label={`${product.brand} || ${product.modelNo} || ₹${product.description}`}>
+                                    {product.brand} || {product.modelNo} || ₹{product.description}
+                                </Select.Option>
+                            ))
+                        ) : (
+                            <Select.Option value="">No products found</Select.Option>
+                        )}
+                    </Select>
+                </Form.Item>
+                <div style={{ display: 'flex', justifyContent: 'right' }}>
 
 
 
-    {/* Add New Product Button */}
-                <Button type=""  style={{ marginBottom: '20px', color:'green' }} onClick={handleAddProductClick  }>
-                    Add New Product
-                </Button>
-</div>
-                
+                    {/* Add New Product Button */}
+                    <Button type="" style={{ marginBottom: '20px', color: 'green' }} onClick={handleAddProductClick}>
+                        Add New Product
+                    </Button>
+                </div>
+
 
                 {showNewProductForm && (
                     <div
-                    ref={addProductFormRef} 
+                        ref={addProductFormRef}
                         style={{
                             border: '2px solid #d9d9d9',
                             padding: '20px',
@@ -479,19 +544,6 @@ const QuotationFormModal = ({ visible, onClose, ticketId, defaultCustomer }) => 
                         </div>
                     </div>
                 )}
-
-                {/* Final Amount & Comment */}
-                {/* <Row gutter={16}> */}
-                {/* <Col span={12}>
-                        <Form.Item label="Final Amount" rules={[{ required: true }]}>
-                            <Input
-                                type="number"
-                                value={finalAmount}
-                                onChange={e => setFinalAmount(parseFloat(e.target.value))}
-                            />
-                        </Form.Item>
-                    </Col> */}
-                {/* <Col span={12}> */}
                 <Form.Item label="Comment">
                     <Input.TextArea
                         rows={2}
@@ -499,8 +551,7 @@ const QuotationFormModal = ({ visible, onClose, ticketId, defaultCustomer }) => 
                         onChange={e => setComment(e.target.value)}
                     />
                 </Form.Item>
-                {/* </Col> */}
-                {/* </Row> */}
+
 
                 <div style={{ marginTop: '20px', textAlign: 'right' }}>
                     <Button onClick={onClose} style={{ marginRight: '10px' }}>

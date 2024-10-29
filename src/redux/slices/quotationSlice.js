@@ -21,9 +21,32 @@ export const getQuotationById = createAsyncThunk('quotations/getQuotationById', 
     return response.data; // Return the fetched quotation
 });
 
-export const getQuotationByUserIdAndInitiatedStatus = createAsyncThunk('quotations/getByUserIdAndStatus', async (userId) => {
-    const response = await quotationApi.getQuotationByUserIdAndInitiatedStatus(userId);
-    return response.data; // Return the fetched quotation
+// export const getQuotationByUserIdAndInitiatedStatus = createAsyncThunk('quotations/getByUserIdAndStatus', async (userId) => {
+//     const response = await quotationApi.getQuotationByUserIdAndInitiatedStatus(userId);
+//     // console.log(response);
+//     return response.data; // Return the fetched quotation
+// });
+
+
+export const getQuotationByUserIdAndInitiatedStatus = createAsyncThunk(
+    'quotations/getByUserIdAndStatus',
+    async (userId, { rejectWithValue }) => {
+        try {
+            const response = await quotationApi.getQuotationByUserIdAndInitiatedStatus(userId);
+            if (!response.ok) {
+                if (response.status !== 200) {
+                    return 404; // Handle 404 specifically
+                }
+            }
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+export const getQuotationByTicketId = createAsyncThunk('quotations/getQuoatationByTicketId', async (ticketId) => {
+    const response = await quotationApi.getQuotationByTicketId(ticketId);
+    return response.data;
 });
 
 // New AsyncThunk for updating quotation status
@@ -102,14 +125,26 @@ const quotationSlice = createSlice({
             })
             .addCase(getQuotationByUserIdAndInitiatedStatus.fulfilled, (state, action) => {
                 state.loading = false;
-                state.quotations = action.payload; // Replace existing quotations with fetched ones
+                state.quotations = Array.isArray(action.payload) ? action.payload : []; // Ensure it's an array
             })
             .addCase(getQuotationByUserIdAndInitiatedStatus.rejected, (state, action) => {
+                state.loading = false;
+                // state.error = action.error.message;
+            })
+
+           .addCase(getQuotationByTicketId.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(getQuotationByTicketId.fulfilled, (state, action) => {
+                state.loading = false;
+                state.quotations = action.payload; // Replace existing quotations with fetched ones
+            })
+            .addCase(getQuotationByTicketId.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
             })
 
-            // Update Quotation
+           // Update Quotation
             .addCase(updateQuotation.pending, (state) => {
                 state.loading = true; // Set loading to true when update is in progress
             })
