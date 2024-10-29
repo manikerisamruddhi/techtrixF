@@ -1,10 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+// import axios from 'axios';
 import ticketApi from '../../api/ticketApi';
+import quotationApi from '../../api/quotationApi';
 
 
 // Define the base URL of your JSON server
-const BASE_URL = 'http://localhost:4000';
+// const BASE_URL = 'http://localhost:4000';
 
 // Async thunk to fetch tickets
 export const fetchTickets = createAsyncThunk('dashboard/fetchTickets', async () => {
@@ -14,15 +15,15 @@ export const fetchTickets = createAsyncThunk('dashboard/fetchTickets', async () 
 
 // Async thunk to fetch quotations
 export const fetchQuotations = createAsyncThunk('dashboard/fetchQuotations', async () => {
-    const response = await axios.get(`${BASE_URL}/quotations`);
+    const response = await quotationApi.getAllQuotations();
     return response.data;
 });
 
 // Async thunk to fetch invoices
-export const fetchInvoices = createAsyncThunk('dashboard/fetchInvoices', async () => {
-    const response = await axios.get(`${BASE_URL}/invoices`);
-    return response.data;
-});
+// export const fetchInvoices = createAsyncThunk('dashboard/fetchInvoices', async () => {
+//     const response = await axios.get(`${BASE_URL}/invoices`);
+//     return response.data;
+// });
 
 // Create the slice
 const dashboardSlice = createSlice({
@@ -76,18 +77,18 @@ const dashboardSlice = createSlice({
             });
 
         // Handle fetching invoices
-        builder
-            .addCase(fetchInvoices.pending, (state) => {
-                state.loading = true;
-            })
-            .addCase(fetchInvoices.fulfilled, (state, action) => {
-                state.invoices = action.payload; // Assuming payload structure matches your state
-                state.loading = false;
-            })
-            .addCase(fetchInvoices.rejected, (state, action) => {
-                state.loading = false;
-                state.error = action.error.message;
-            });
+        // builder
+        //     .addCase(fetchInvoices.pending, (state) => {
+        //         state.loading = true;
+        //     })
+        //     .addCase(fetchInvoices.fulfilled, (state, action) => {
+        //         state.invoices = action.payload; // Assuming payload structure matches your state
+        //         state.loading = false;
+        //     })
+        //     .addCase(fetchInvoices.rejected, (state, action) => {
+        //         state.loading = false;
+        //         state.error = action.error.message;
+        //     });
     },
 });
 
