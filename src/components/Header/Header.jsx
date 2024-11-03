@@ -16,7 +16,7 @@ const CustomHeader = () => {
     // Retrieve and parse user data from localStorage
     const user = JSON.parse(localStorage.getItem('user')); // Get user from local storage
     const userName = user ? user.firstName : ''; // Adjust based on the actual field name in your user object
-    console.log(user); // Log the user object for debugging
+    // console.log(user); // Log the user object for debugging
 
     const [isHovered, setIsHovered] = useState(false);
 

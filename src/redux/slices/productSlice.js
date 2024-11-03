@@ -8,7 +8,7 @@ import productApi from '../../api/productApi';
 export const fetchProducts = createAsyncThunk('products/fetchProducts', async (_, { rejectWithValue }) => {
   try {
     const response = await productApi.getAllProducts();
-    console.log(response);
+    // console.log(response);
     return response.data;
     
   } catch (error) {

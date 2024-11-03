@@ -109,6 +109,13 @@ const Tickets = () => {
                 const customer = customers.find(customer => customer.customerId === customerId);
                 return customer ? `${customer.firstName} ${customer.lastName}` : 'Unknown Customer';
             },
+            filters: customers.map(customer => ({
+                text: `${customer.firstName} ${customer.lastName}`, // Display customer name as filter option
+                value: customer.customerId, // Use customerId as filter value
+            })),
+            onFilter: (value, record) => {
+                return record.customerId === value; // Filter by customerId
+            },
         },
         {
             title: 'title',
@@ -125,11 +132,16 @@ const Tickets = () => {
             dataIndex: 'createdById',
             key: 'createdById',
             render: (text) => {
-                const user = users.find((user) => user.userId === text); // Adjust based on your user object structure
-                return user ? `${user.firstName} ${user.lastName}` : text; // Display user name or fallback text
+                const user = users.find((user) => user.userId === text); // Find user by ID
+                return user ? `${user.firstName} ${user.lastName}` : text; // Display user's name or fallback to ID
             },
-            filters: get_unique_filters(tickets, 'createdById'),
-            onFilter: (value, record) => record.createdById === value,
+            filters: users.map(user => ({
+                text: `${user.firstName} ${user.lastName}`, // Display user name as filter option
+                value: user.userId, // Use userId as filter value
+            })),
+            onFilter: (value, record) => {
+                return record.createdById === value; // Filter by userId
+            },
         },
         {
             title: 'status',

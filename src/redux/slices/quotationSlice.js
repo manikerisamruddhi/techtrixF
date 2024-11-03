@@ -27,19 +27,26 @@ export const getQuotationById = createAsyncThunk('quotations/getQuotationById', 
 //     return response.data; // Return the fetched quotation
 // });
 
-
 export const getQuotationByUserIdAndInitiatedStatus = createAsyncThunk(
-    'quotations/getByUserIdAndStatus',
+    'quotations/getByUser IdAndStatus',
     async (userId, { rejectWithValue }) => {
         try {
             const response = await quotationApi.getQuotationByUserIdAndInitiatedStatus(userId);
-            if (!response.ok) {
-                if (response.status !== 200) {
-                    return 404; // Handle 404 specifically
-                }
-            }
+            console.log(response);
+            // Check if the response is okay
+                // if (!response.ok) {
+                //     // Handle non-200 responses
+                //     // console.log('error');
+                //     const errorMessage = `Error: ${response.status} ${response.statusText}`;
+                //     return response.data; // Return the error message //to---------------------be change
+                // }
+
+            // Return the data from the response if the request was successful
+            // const data = await response.json(); // Assuming the response is in JSON format
+            return response.data; // Return the fetched quotation data
         } catch (error) {
-            return rejectWithValue(error.message);
+            // Handle any network errors or exceptions
+            return rejectWithValue(error.message); // Return the error message
         }
     }
 );
@@ -50,9 +57,10 @@ export const getQuotationByTicketId = createAsyncThunk('quotations/getQuoatation
 });
 
 // New AsyncThunk for updating quotation status
-export const updateQuotation = createAsyncThunk('quotations/updateQuotation', async ({ id, data }) => {
+export const updateQuotation = createAsyncThunk('quotations/updateQuotation', async ({ quotationId, data }) => {
     try {
-        const response = await quotationApi.updateQuotation(id, data); // Adjust to your API method
+        console.log(quotationId);
+        const response = await quotationApi.updateQuotation(quotationId, data); // Adjust to your API method
         return response.data; // Return the updated quotation
     } catch (error) {
         throw error; // Rethrow the error to be caught by the extraReducers

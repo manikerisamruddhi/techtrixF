@@ -1,26 +1,21 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import authApi from '../../api/authApi'; // Import authApi
+import authApi from '../../api/authApi';
+import store from '../store'; // Assuming your store is in '../store' to dispatch logout
+
+// Time (in milliseconds) to automatically log out after tab is closed
+const LOGOUT_TIME_LIMIT = 10 * 60 * 1000; // 10 minutes in milliseconds
 
 // Async Thunks
-
-// Fetch user login using authApi
 export const loginUser = createAsyncThunk(
     'users/loginUser',
     async (credentials, { rejectWithValue }) => {
         try {
-            // Assuming API call for login user, you might need to adapt based on your actual login endpoint
-            const response = await authApi.login(credentials); // Authenticate user from authApi
+            const response = await authApi.login(credentials);
             const loginUserResponse = response.data;
             
             if (loginUserResponse.httpStatus === "OK") {
-                // Save user info to local storage
-                console.log(loginUserResponse.userContent);
-                //user = JSON.stringify(loginUserResponse.userContent);
-                console.log(loginUserResponse.userContent);
-               // Stringify and store the user object in localStorage
-               localStorage.setItem('user', JSON.stringify(loginUserResponse.userContent));
-               
-               console.log(loginUserResponse.user);
+                localStorage.setItem('user', JSON.stringify(loginUserResponse.userContent));
+                localStorage.setItem('lastActive', Date.now()); // Set initial activity time
                 return loginUserResponse.userContent;
             } else {
                 return rejectWithValue(loginUserResponse.message);
@@ -31,19 +26,26 @@ export const loginUser = createAsyncThunk(
     }
 );
 
-// Logout user using userApi
 export const logoutUser = createAsyncThunk('users/logoutUser', async () => {
-    // Clear user from local storage
     localStorage.removeItem('user');
-    return {}; // Return an empty object
+    localStorage.removeItem('lastActive');
+    return {};
 });
+
+// Check last activity and log out if 5 minutes have passed
+export const checkForAutoLogout = () => {
+    const lastActive = localStorage.getItem('lastActive');
+    if (lastActive && Date.now() - parseInt(lastActive, 10) > LOGOUT_TIME_LIMIT) {
+        store.dispatch(logoutUser());
+    }
+};
 
 // User Slice
 const userSlice = createSlice({
     name: 'users',
     initialState: {
-        user: localStorage.getItem('user') || null, // Load user from local storage
-        isAuthenticated: !!localStorage.getItem('user'), // Check if user is authenticated based on local storage
+        user: JSON.parse(localStorage.getItem('user')) || null,
+        isAuthenticated: !!localStorage.getItem('user'),
         loading: false,
         error: null,
     },
@@ -60,7 +62,7 @@ const userSlice = createSlice({
             })
             .addCase(loginUser.fulfilled, (state, action) => {
                 state.user = action.payload;
-                state.isAuthenticated = true; // This will be true
+                state.isAuthenticated = true;
                 state.loading = false;
             })
             .addCase(loginUser.rejected, (state, action) => {
@@ -77,3 +79,11 @@ const userSlice = createSlice({
 export const { clearError } = userSlice.actions;
 
 export default userSlice.reducer;
+
+// Set last active time on tab close
+window.addEventListener('beforeunload', () => {
+    localStorage.setItem('lastActive', Date.now());
+});
+
+// Check for auto-logout on load
+checkForAutoLogout();

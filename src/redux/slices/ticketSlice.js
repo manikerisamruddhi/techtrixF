@@ -53,9 +53,9 @@ export const createTicket = createAsyncThunk('tickets/addTicket', async (newTick
 // });
 
 // Add the updateTicket async thunk
-export const updateTicket = createAsyncThunk('tickets/updateTicket', async ({ id, data }) => {
-    console.log(data);
-    const response = await ticketApi.updateTicket(id, data);
+export const updateTicket = createAsyncThunk('tickets/updateTicket', async ({ ticketId, data }) => {
+    console.log(`data recived in update ticket  id = ${ticketId} and data = ${data}`);
+    const response = await ticketApi.updateTicket(ticketId, data);
     return response.data;
 });
 

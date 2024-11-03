@@ -37,6 +37,7 @@ const Quotations = () => {
 
     const handleCreateModalClose = () => {
         setIsCreateModalVisible(false);
+        dispatch(fetchQuotations());
     };
 
     const handleDetailsModalClose = () => {
@@ -44,10 +45,11 @@ const Quotations = () => {
         setSelectedQuotation(null); // Clear the selected quotation
     };
 
-    const handleCreateQuotation = (quotationData) => {
-        message.success('Quotation created successfully!');
-        setIsCreateModalVisible(false); // Close the modal after creation
+    const handleCreateQuotationSuccess = () => {
+        // Optionally refetch quotations if needed
+        dispatch(fetchQuotations());
     };
+
 
     // Search filter functions for columns
     const getColumnSearchProps = (dataIndex) => ({
@@ -193,8 +195,8 @@ const Quotations = () => {
                     {/* Create Quotation Form Modal */}
                     <CreateQuotationFormModal
                         visible={isCreateModalVisible}
-                        onCreate={handleCreateQuotation}
                         onClose={handleCreateModalClose}
+                        onSuccess={handleCreateQuotationSuccess} // Pass success handler
                     />
                 </div>
             </Content>
