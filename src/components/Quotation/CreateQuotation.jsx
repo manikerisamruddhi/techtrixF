@@ -26,6 +26,8 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
     const { items: products } = useSelector(state => state.products); // Assuming you have products in your Redux store
     const [loggedInUserId, setLoggedInUserId] = useState(null);
 
+    console.log(`defticket : ${defticketId}`);
+
     useEffect(() => {
         // Get user from local storage
         const loggedInUser = JSON.parse(localStorage.getItem('user'));
@@ -160,7 +162,7 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                                 SetQuote(addedQuote); // Store the newly added quotation in state
                                 console.log(`Added quotation: ${addedQuote}`);
                     }
-                } catch (error) {
+                } catch (error ) {
                     // Log any errors that occur during the fetching or creating process
                     console.error('Error fetching or creating quotation:', error);
                 }

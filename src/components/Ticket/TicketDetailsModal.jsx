@@ -147,7 +147,7 @@ const TicketDetailsModal = ({ visible, ticket, onClose, onCreateQuotation, users
 
             {/* Create Quotation Modal */}
             <QuotationFormModal 
-                ticketId={ticket && ticket.ticketId} 
+                defticketId={ticket && ticket.ticketId} 
                 defaultCustomer={ticket && ticket.customerId} 
                 title="Create Quotation"
                 visible={isCreateModalVisible}

@@ -28,32 +28,40 @@ export const getQuotationById = createAsyncThunk('quotations/getQuotationById', 
 // });
 
 export const getQuotationByUserIdAndInitiatedStatus = createAsyncThunk(
-    'quotations/getByUser IdAndStatus',
+    'quotations/getByUserIdAndStatus',
     async (userId, { rejectWithValue }) => {
         try {
             const response = await quotationApi.getQuotationByUserIdAndInitiatedStatus(userId);
-            console.log(response);
-            // Check if the response is okay
-                // if (!response.ok) {
-                //     // Handle non-200 responses
-                //     // console.log('error');
-                //     const errorMessage = `Error: ${response.status} ${response.statusText}`;
-                //     return response.data; // Return the error message //to---------------------be change
-                // }
 
-            // Return the data from the response if the request was successful
-            // const data = await response.json(); // Assuming the response is in JSON format
-            return response.data; // Return the fetched quotation data
+            // Return the data if the request was successful
+            return response.data;
         } catch (error) {
-            // Handle any network errors or exceptions
-            return rejectWithValue(error.message); // Return the error message
+            // Check if the error has a response and if the status is 404
+            if (error.response && error.response.status === 404) {
+                return null;
+            }
+
+            // For other errors, return the default error message
+            return rejectWithValue(error.message);
         }
     }
 );
 
+
 export const getQuotationByTicketId = createAsyncThunk('quotations/getQuoatationByTicketId', async (ticketId) => {
+    try{
     const response = await quotationApi.getQuotationByTicketId(ticketId);
     return response.data;
+
+    }catch (error) {
+        // Check if the error has a response and if the status is 404
+        if (error.response && error.response.status === 404) {
+            return null;
+        }
+
+        // For other errors, return the default error message
+        return rejectWithValue(error.message);
+    }
 });
 
 // New AsyncThunk for updating quotation status
