@@ -100,6 +100,11 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
         setExistingCustomer(selectedCust);
     };
 
+useEffect(() => {
+    console.log(`Updated NticketId: ${NticketId}`);
+}, [NticketId]);
+
+
     useEffect(() => {
         // Check if the component is visible
         if (visible) {
