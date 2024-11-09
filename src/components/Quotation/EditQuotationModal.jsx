@@ -108,14 +108,14 @@ const EditQuotationModal = ({ visible, products, terms, onSave, onClose }) => {
                 <Col span={12}>
                     <strong>Customer will be billed:</strong>
                     <Input
-                        value={editableTerms.billing}
+                        // value={editableTerms.billing}
                         onChange={(e) => handleTermsChange('billing', e.target.value)}
                     />
                 </Col>
                 <Col span={12}>
                     <strong>Taxes:</strong>
                     <Input
-                        value={editableTerms.taxes}
+                        // value={editableTerms.taxes}
                         onChange={(e) => handleTermsChange('taxes', e.target.value)}
                     />
                 </Col>
@@ -124,14 +124,14 @@ const EditQuotationModal = ({ visible, products, terms, onSave, onClose }) => {
                 <Col span={12}>
                     <strong>Delivery:</strong>
                     <Input
-                        value={editableTerms.delivery}
+                        // value={editableTerms.delivery}
                         onChange={(e) => handleTermsChange('delivery', e.target.value)}
                     />
                 </Col>
                 <Col span={12}>
                     <strong>Payment:</strong>
                     <Input
-                        value={editableTerms.payment}
+                        // value={editableTerms.payment}
                         onChange={(e) => handleTermsChange('payment', e.target.value)}
                     />
                 </Col>
@@ -140,14 +140,14 @@ const EditQuotationModal = ({ visible, products, terms, onSave, onClose }) => {
                 <Col span={12}>
                     <strong>Warranty / Support:</strong>
                     <Input
-                        value={editableTerms.warranty}
+                        // value={editableTerms.warranty}
                         onChange={(e) => handleTermsChange('warranty', e.target.value)}
                     />
                 </Col>
                 <Col span={12}>
                     <strong>Transport:</strong>
                     <Input
-                        value={editableTerms.transport}
+                        // value={editableTerms.transport}
                         onChange={(e) => handleTermsChange('transport', e.target.value)}
                     />
                 </Col>

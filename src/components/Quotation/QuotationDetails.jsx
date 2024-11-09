@@ -2,9 +2,16 @@ import React, { useRef, useState, useEffect } from 'react';
 import { Modal, Button, Space ,message} from 'antd';
 import html2pdf from 'html2pdf.js';
 import EditQuotationModal from './EditQuotationModal';
-import { updateQuotation } from "../../redux/slices/quotationSlice"; 
+import { updateQuotation ,
+    fetchQuotations,
+    getQuotationById,
+} from "../../redux/slices/quotationSlice"; 
+import { fetchCustomerByID } from '../../redux/slices/customerSlice';
+import {fetchTicketDetails} from '../../redux/slices/ticketSlice';
+import { fetchProductById } from '../../redux/slices/productSlice';
 import { useDispatch } from "react-redux";
 import moment from 'moment/moment';
+
 
 const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
     const dispatch = useDispatch();
@@ -12,21 +19,70 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
     const [pdfContent, setPdfContent] = useState(null); // State for PDF content
     const [isEditModalVisible, setIsEditModalVisible] = useState(false); // State for Edit modal visibility
     const [editedQuotation, setEditedQuotation] = useState(quotation); // State to store the edited quotation
+    const [customer, setCustomer] = useState(null); // State for customer data
+    const [loadingCustomer, setLoadingCustomer] = useState(true); // Loading state for customer
+    const [loadingQuotation, setLoadingQuotation] = useState(true); // Loading state for quotation
+    const [products, setProducts] = useState([]);
    
     const handleEditQuotation = (updatedQuotation) => {
         setEditedQuotation(updatedQuotation);
     };
     const [editableProducts, setEditableProducts] = useState(quotation?.products || []); // Editable products
 
+   
 
-    const [quotationTerms, setQuotationTerms] = useState({
-        billing: 'after indicating acceptance of this quote.',
-        taxes: 'Inclusive in quotation',
-        delivery: '3 to 4 Days',
-        payment: '100% Advance',
-        warranty: 'As per Principal',
-        transport: 'Ex Pune'
-    });
+    const [QuotationData, setQuotationData] = useState(null);
+
+  useEffect(() => {
+    setQuotationData(quotation);
+  }, [quotation, visible]);
+
+
+
+  const quotationProducts = quotation.quotationProducts;
+  console.log(`wwwwwwww ${quotationProducts}`)
+
+    useEffect(() => {
+        setEditedQuotation(quotation);
+        setLoadingQuotation(false); // Set loading to false when quotation is available
+    }, [quotation, visible]);
+
+    const [ticketData, setTicketData] = useState(null);
+
+    useEffect(() => {
+        if (visible && quotation?.ticketId) {
+            dispatch(fetchTicketDetails(quotation.ticketId))
+                .then((ticketResponse) => {
+                    const fetchedTicketData = ticketResponse.payload;
+                    setTicketData(fetchedTicketData); // Set ticketData state
+                    if (fetchedTicketData?.customerId) {
+                        setLoadingCustomer(true); // Set loading to true before fetching customer
+                        dispatch(fetchCustomerByID(fetchedTicketData.customerId))
+                            .then((customerResponse) => {
+                                if (customerResponse) {
+                                    setCustomer(customerResponse.payload); // Set customer data
+                                    setLoadingCustomer(false); // Set loading to false when customer data is available
+                                } else {
+                                    message.error("Failed to fetch customer details.");
+                                    setLoadingCustomer(false); // Set loading to false if there's an error
+                                }
+                            });
+                    } else {
+                        message.error("Customer ID not found in ticket details.");
+                    }
+                })
+                .catch(() => {
+                    message.error("Failed to fetch ticket details.");
+                });
+                
+        }
+    }, [dispatch, visible, quotation?.ticketId]);
+
+
+    quotationProducts.map((product, index) => {
+        console.log(`Product ${index + 1}:`, product);
+      });
+    
 
     // useEffect(() => {
     //     if (visible) {
@@ -62,7 +118,7 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
         html2pdf().from(pdfElement).set(options).save();
     };
 
-    const formattedDate = moment(quotation?.QuotationDate || '2024-10-18').format('YYYY-MM-DD');
+    const formattedDate = moment(QuotationData?.quotationDate || '').format('DD/MM/YYYY');
 
    
 
@@ -144,6 +200,18 @@ const handleProceed = () => {
 
     
     const createPdfContent = () => {
+        
+         // Check if customer data is available
+        //  if (isLoadingCustomer) {
+        //     console.error("Customer data is still loading.");
+        //     return document.createElement('div'); // Return an empty div or handle it as needed
+        // }
+
+        // if (!customer || !customer.customer) {
+        //     console.error("Customer data is not available.");
+        //     return document.createElement('div'); // Return an empty div or handle it as needed
+        // }
+
         const pdfContent = document.createElement('div');
         let products = quotation?.products || []; // Assuming quotation has a products array
 
@@ -156,38 +224,6 @@ const handleProceed = () => {
                     amount: 1000,
                     gstAmount: 180, // Example GST
                     TotalAmount: 1180, // Amount + GST
-                    partCode: 'sample'
-                },
-                {
-                    description: 'Sample Product 2Sample Product 2Sample Product 2Sample Product 2Sample Product 2Sample Product 2',
-                    quantity: 1,
-                    unitPrice: 800,
-                    amount: 800, gstAmount: 144, // Example GST
-                    TotalAmount: 944, // Amount + GST
-                    partCode: 'sample'
-                },
-                {
-                    description: 'Sample Product 2Sample Product 2Sample Product 2Sample Product 2Sample Product 2Sample Product 2',
-                    quantity: 1,
-                    unitPrice: 800,
-                    amount: 800, gstAmount: 144, // Example GST
-                    TotalAmount: 944, // Amount + GST
-                    partCode: 'sample'
-                },
-                {
-                    description: 'Sample Product 2Sample Product 2Sample Product 2Sample Product 2Sample Product 2Sample Product 2',
-                    quantity: 1,
-                    unitPrice: 800,
-                    amount: 800, gstAmount: 144, // Example GST
-                    TotalAmount: 944, // Amount + GST
-                    partCode: 'sample'
-                },
-                {
-                    description: 'Sample Product 2Sample Product 2Sample Product 2Sample Product 2Sample Product 2Sample Product 2',
-                    quantity: 1,
-                    unitPrice: 800,
-                    amount: 800, gstAmount: 144, // Example GST
-                    TotalAmount: 944, // Amount + GST
                     partCode: 'sample'
                 },
                 {
@@ -217,8 +253,6 @@ const handleProceed = () => {
 
             
         `).join('');
-
-        const totalFinalAmount = products.reduce((accumulator, product) => accumulator + product.TotalAmount, 0);
 
         pdfContent.innerHTML = `
             <body style="font-family: 'Arial',  sans-serif; font-size: 10px; background-color: #fff; margin: 0; padding: 0.5in; color: #333;">
@@ -250,19 +284,19 @@ const handleProceed = () => {
                     <table style="border-collapse: collapse; font-size: 8px; margin-bottom: 5%; border: 1px solid black; width: auto;">
     <tr>
         <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;"><strong>Date</strong></td>
-        <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;">${quotation?.formattedDate || '18/10/2024'}</td>
+        <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;">${formattedDate}</td>
     </tr>
     <tr>
         <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;"><strong>Customer ID</strong></td>
-        <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;">'custid'</td>
+        <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;"> ${customer ? (customer.customerId ? customer.customerId : 'N/A') : 'N/A'}</td>
     </tr>
     <tr>
         <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;"><strong>Q ID</strong></td>
-        <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;">'qid'</td>
+        <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;">${quotation ? (quotation.quotationId ? quotation.quotationId: 'N/A') : 'N/A'}</td>
     </tr>
     <tr>
         <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;"><strong>Validity</strong></td>
-        <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;">'validity'</td>
+        <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;">10 days</td>
     </tr>
 </table>
 
@@ -273,8 +307,8 @@ const handleProceed = () => {
 <div  style="font-family: 'Arial', sans-serif; font-size: 10px; ">
                     <div style="     background-color: #838282; color:white;
     font-weight: bolder;">  <strong  style=" margin-left:0.5%;">Customer:</strong></br>  </div>
-                               ${quotation?.customer || 'company name will be displayed'}</br>
-                               ${quotation?.customer || 'address will Be displayed'} </br>
+                              ${customer ? (customer.companyName ? customer.companyName : 'N/A') : 'N/A'}</br>
+                              ${customer ? (customer.address ? customer.address : 'N/A') : 'N/A'} </br>
                            
 </div>
                         <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;     margin-top: 2%;">
@@ -307,7 +341,7 @@ const handleProceed = () => {
              <table style="border-collapse: collapse; font-size: 10px; margin-bottom: 5%; border: 1px solid black; width: 100%;">
     <tr>
         <td style="border: 1px solid black; padding: 2px 3px; white-space: nowrap;"><strong>Subtotal</strong></td>
-        <td style="border: 1px solid black; padding: 2px 3px; white-space: nowrap; text-align: right;">₹ ${totalFinalAmount} </td>
+        <td style="border: 1px solid black; padding: 2px 3px; white-space: nowrap; text-align: right;">₹ ${QuotationData?.totalAmount|| ''} </td>
     </tr>
     <tr>
         <td style="border: 1px solid black; padding: 2px 3px; white-space: nowrap;"><strong>Tax Rate 18 %</strong></td>
@@ -340,12 +374,12 @@ const handleProceed = () => {
     
                        <div  >
                         <p style=" margin-bottom:-2%; border: 1px solid #000; padding: 2px; background-color: #17A0CC; color:white; font-size: 10px;"><strong>Terms and conditions:</strong><p>
-                        <span><strong>Customer will be billed:</strong> ${quotationTerms.billing}</span></br>
-                        <span><strong>Taxes:</strong> ${quotationTerms.taxes}</span></br>
-                        <span><strong>Delivery:</strong> ${quotationTerms.delivery}</span></br>
-                        <span><strong>Payment:</strong> ${quotationTerms.payment}</span></br>
-                        <span><strong>Warranty / Support:</strong> ${quotationTerms.warranty}</span></br>
-                        <span><strong>Transport:</strong> ${quotationTerms.transport}</span></br>
+                        <span><strong>Customer will be billed:</strong> after indicating acceptance of this quote.</span></br>
+                        <span><strong>Taxes:</strong> Inclusive in quotation</span></br>
+                        <span><strong>Delivery:</strong> ${quotation ? (quotation.delivery ? quotation.delivery: 'N/A') : 'N/A'}</span></br>
+                        <span><strong>Payment:</strong> ${quotation ? (quotation.payment ? quotation.payment: 'N/A') : 'N/A'}</span></br>
+                        <span><strong>Warranty / Support:</strong>  ${quotation ? (quotation.warrantyOrSupport ? quotation.warrantyOrSupport: 'N/A') : 'N/A'}</span></br>
+                        <span><strong>Transport:</strong> ${quotation ? (quotation.transport ? quotation.transport: 'N/A') : 'N/A'}</span></br>
                         </div>
 
                          <div style="text-align: center; font-size: 10px;     margin-top: 10%;">
@@ -396,6 +430,8 @@ const handleProceed = () => {
                 border: '1px solid #ccc', // Example of adding a border
                 boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // Example of adding shadow
             }}
+
+            
              
             footer={[
                 <Space key="actions" style={{ float: 'right' }}>
@@ -462,7 +498,6 @@ const handleProceed = () => {
         <EditQuotationModal
                     visible={isEditModalVisible}
                     products={editableProducts}
-                    terms={quotationTerms}
                     onSave={handleSaveEdit}
                     onClose={() => setIsEditModalVisible(false)}
                 />

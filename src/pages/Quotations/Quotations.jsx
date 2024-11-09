@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchQuotations } from '../../redux/slices/quotationSlice';
+import { fetchQuotations, getQuotationById } from '../../redux/slices/quotationSlice';
 import { Layout, Table, Button, Empty, message, Spin, Typography, Input, Space } from 'antd';
 import CreateQuotationFormModal from '../../components/Quotation/CreateQuotation';
 import QuotationDetailsModal from '../../components/Quotation/QuotationDetails';
@@ -30,10 +30,26 @@ const Quotations = () => {
         }
     }, [error]);
 
-    const handleViewClick = (record) => {
-        setSelectedQuotation(record); // Set selected quotation data
-        setIsDetailsModalVisible(true); // Show the details modal
+    const handleViewClick = async (record) => {
+        try {
+            // Wait for the action to complete and unwrap the result
+            const { payload } = await dispatch(getQuotationById(record.quotationId));
+    
+            console.log(payload); // Log the payload (the data you need)
+            setSelectedQuotation(payload); // Set selected quotation data
+            setIsDetailsModalVisible(true); // Show the details modal
+        } catch (error) {
+            console.error('Error fetching quotation:', error); // Handle any errors
+        }
     };
+    
+
+    useEffect(() => {
+        if (selectedQuotation) {
+            // When the quotation state changes, update the selectedQuotation state
+            setSelectedQuotation(selectedQuotation); 
+        }
+    }, [selectedQuotation]); 
 
     const handleCreateModalClose = () => {
         setIsCreateModalVisible(false);

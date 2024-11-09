@@ -107,8 +107,16 @@ const customerSlice = createSlice({
                     state.customers = state.customers.filter(customer => customer.customerId !== customerId);
                 }
             })
-           .addCase(fetchCustomerByID.fulfilled, (state, action) => {
+            .addCase(fetchCustomerByID.pending, (state) => {
+                state.status = 'loading'; // Set loading status
+            })
+            .addCase(fetchCustomerByID.fulfilled, (state, action) => {
+                state.status = 'succeeded'; // Set succeeded status
                 state.selectedCustomer = action.payload; // Set the selected customer
+            })
+            .addCase(fetchCustomerByID.rejected, (state, action) => {
+                state.status = 'failed'; // Set failed status state.selectedCustomer = null; // Reset selected customer on failure
+                state.error = action.error.message; // Capture error message
             });
     },
 });
