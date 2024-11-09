@@ -6,7 +6,8 @@ import {
     addQuotation, resetError, getQuotationByUserIdAndInitiatedStatus,
     getQuotationByTicketId,
     fetchQuotations,
-    updateQuotation
+    updateQuotation,
+    addQuotaionProduct
 } from '../../redux/slices/quotationSlice';
 import { fetchCustomers, addCustomer } from '../../redux/slices/customerSlice'; // Assuming a customer slice exists to fetch customers
 import { addProduct, fetchProducts } from '../../redux/slices/productSlice';
@@ -26,7 +27,12 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
     const { items: products } = useSelector(state => state.products); // Assuming you have products in your Redux store
     const [loggedInUserId, setLoggedInUserId] = useState(null);
 
-    console.log(`defticket : ${defticketId}`);
+
+
+    useEffect(() => {
+        console.log(`defticket : ${defticketId}`);
+    }, [defticketId]);
+    
 
     useEffect(() => {
         // Get user from local storage
@@ -103,6 +109,11 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
 useEffect(() => {
     console.log(`Updated NticketId: ${NticketId}`);
 }, [NticketId]);
+
+
+useEffect(() => {
+    console.log(`Updated customer: ${customer}`, JSON.stringify(customer, null, 2));
+}, [customer]);
 
 
     useEffect(() => {
@@ -215,7 +226,7 @@ useEffect(() => {
                 };
 
                 console.log(`Updating ticket with ${NticketId} and ${values}`);
-                await dispatch(updateTicket({ ticketId: defticketId || NticketId, updatedTicket: values }));
+                await dispatch(updateTicket({ ticketId:defticketId || NticketId, updatedTicket: values }));
             } else {
                 const values = {
                     customerId: existingCustomer.customerId,
@@ -257,9 +268,17 @@ useEffect(() => {
                 comments: comment,
             };
 
+            const quotationProductsData = {
+                quotationId: Quote.quotationId,
+                productId:  quotationData.productId
+            }
+
             console.log(`updation time cheaking quote ${Quote}`, JSON.stringify(Quote, null, 2))
             const quotationResponse = await dispatch(updateQuotation({ quotationId: Quote.quotationId, data: quotationData })).unwrap();
             console.log('Quotation added:', quotationResponse, 'sent this data:', quotationData);
+
+            const quotaionProductResponse =  await dispatch(addQuotaionProduct(quotationProductsData)).unwrap();
+            console.log(quotaionProductResponse);
 
             notification.success({ message: 'Quotation added successfully!' });
             form.resetFields();

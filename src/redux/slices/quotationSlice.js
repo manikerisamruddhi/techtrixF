@@ -16,6 +16,12 @@ export const addQuotation = createAsyncThunk('quotations/addQuotation', async (n
     }
 });
 
+export const addQuotaionProduct = createAsyncThunk('quotaionProduct/addQuotaionProduct', async (quotationProductsData) =>{
+   const response = await quotationApi.addQuotationProduct(quotationProductsData);
+   return response.data;
+});
+
+
 export const getQuotationById = createAsyncThunk('quotations/getQuotationById', async (quotationId) => {
     const response = await quotationApi.getQuotationById(quotationId);
     return response.data; // Return the fetched quotation

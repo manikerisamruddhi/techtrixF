@@ -23,6 +23,13 @@ const quotationApi = {
     // addProductToQuotation: (quotationId, productData) => {
     //     return axiosInstance.post(`/quotations/${quotationId}/products`, productData);
     // },
+
+    addQuotationProduct : (quotationProductsData) =>{
+        return axiosInstance.post(`/quotation-products/add`, quotationProductsData);
+    },
+
+
+
     getQuotationByUserIdAndInitiatedStatus : (userId) =>{
         return axiosInstance.get(`/quotations/get/user/${userId}`);
     },
