@@ -151,7 +151,7 @@ useEffect(() => {
                                         const T = await dispatch(createTicket(ticketData)).unwrap();
                                         NticketId.current = T.ticketId;
                                         console.log(`Ticket ID: ${T.ticketId}`);
-                                        console.log(`Ticket ID N: ${NticketId}`);
+                                        console.log(`Ticket ID N: ${NticketId.current}`);
                                     }
                     } else if (defticketId) {
                             // If a default customer and ticket ID exist, fetch the quotation by ticket ID
@@ -169,9 +169,9 @@ useEffect(() => {
                   
                     // If no quotation was found or created, add a new quotation
                     if (!fetchedQuote) {
-                                console.log(`hhhhhhh ${NticketId.current.value}`)
+                                console.log(`hhhhhhh ${NticketId.current}`)
                                 const quotationData = {
-                                    ticketId : NticketId !== null ? NticketId.current.value : defticketId, // Use the existing ticket ID or the new ticket ID
+                                    ticketId : NticketId !== null ? NticketId.current : defticketId, // Use the existing ticket ID or the new ticket ID
                                     createdBy: loggedInUserId, // ID of the user creating the quotation
                                 };
                                 console.log(`Quotation data to add: ${quotationData}`,JSON.stringify(fetchedQuote, null, 2));
