@@ -82,7 +82,8 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
     const [finalAmount, setFinalAmount] = useState(0); // Track final amount
     const [comment, setComment] = useState(''); // Track comment
 
-    const [NticketId, setNticketId] = useState(null);
+    // const [NticketId, setNticketId] = useState(null);
+    const NticketId = useRef(null);
     const [Quote, SetQuote] = useState(null);
 
 
@@ -122,7 +123,6 @@ useEffect(() => {
             const fetchData = async () => {
                 try {
                     let fetchedQuote = null; // Initialize a variable to hold the fetched quotation
-
                     // If no default customer is set, attempt to fetch the quotation by user ID
                     if (!defaultCustomer) {
                                 // Dispatch the thunk action to fetch the quotation
@@ -132,7 +132,8 @@ useEffect(() => {
                                 if (fetchedQuote) {
                                         SetQuote(fetchedQuote); // Store the fetched quotation in state
                                         console.log(`Quotation fetched: ${fetchedQuote}`, JSON.stringify(fetchedQuote, null, 2));
-                                        setNticketId(fetchedQuote.ticketId);
+                                       
+                                        NticketId.current = fetchedQuote.ticketId
                                         console.log(`Quotation fetched ticketId ${NticketId}`);
                                 } 
                                 else {
@@ -148,8 +149,9 @@ useEffect(() => {
 
                                         // Dispatch the thunk action to create a new ticket
                                         const T = await dispatch(createTicket(ticketData)).unwrap();
-                                        setNticketId(T?.ticketId); // Store the created ticket ID in state
-                                        console.log(`Ticket ID: ${T?.ticketId}`);
+                                        NticketId.current = T.ticketId;
+                                        console.log(`Ticket ID: ${T.ticketId}`);
+                                        console.log(`Ticket ID N: ${NticketId}`);
                                     }
                     } else if (defticketId) {
                             // If a default customer and ticket ID exist, fetch the quotation by ticket ID
@@ -159,20 +161,20 @@ useEffect(() => {
                             // Check if a quotation was successfully fetched
                             if (fetchedQuote) {
                                     SetQuote(fetchedQuote); // Store the fetched quotation in state
-                                    console.log(`Quotation fetched for ticket ID ${defticketId}: ${fetchedQuote}`);
-                                    setNticketId(fetchedQuote.ticketId); // Set NticketId from fetchedQuote
+                                    NticketId.current = fetchedQuote.ticketId;
                                     console.log(`Quotation fetched for ticket ID ${defticketId}:`, JSON.stringify(fetchedQuote, null, 2));
                             
                             }
                     }
-
+                  
                     // If no quotation was found or created, add a new quotation
                     if (!fetchedQuote) {
+                                console.log(`hhhhhhh ${NticketId.current.value}`)
                                 const quotationData = {
-                                    ticketId: defticketId || NticketId, // Use the existing ticket ID or the new ticket ID
+                                    ticketId : NticketId !== null ? NticketId.current.value : defticketId, // Use the existing ticket ID or the new ticket ID
                                     createdBy: loggedInUserId, // ID of the user creating the quotation
                                 };
-                                console.log(`Quotation data to add: ${quotationData}`);
+                                console.log(`Quotation data to add: ${quotationData}`,JSON.stringify(fetchedQuote, null, 2));
                                 // Dispatch the thunk action to add a new quotation
                                 const addedQuote = await dispatch(addQuotation(quotationData)).unwrap();
                                 SetQuote(addedQuote); // Store the newly added quotation in state
@@ -184,7 +186,7 @@ useEffect(() => {
                 }
             };
                 if(Quote){
-                    setNticketId(Quote.ticketId);
+                    NticketId.current = Quote.ticketId;
             console.log(`Quotation fetched ticketId ${NticketId}`);
                 }
             
@@ -203,8 +205,9 @@ useEffect(() => {
                 notification.error({ message: 'Please select an existing customer.' });
                 return;
             }
-
+    
             // Create a new customer if necessary
+            let customerId;
             if (customerType === 'new') {
                 const newCustomerData = {
                     firstName: newCustomer.firstName,
@@ -216,26 +219,28 @@ useEffect(() => {
                     isPremium: newCustomer.isPremium,
                     createdDate: currentDate.format('YYYY-MM-DD HH:mm:ss'),
                 };
-
+    
                 console.log('Adding new customer:', newCustomerData);
                 const customerResponse = await dispatch(addCustomer(newCustomerData)).unwrap();
                 console.log('Customer added:', customerResponse);
-
+                customerId = customerResponse.customerId;
+    
                 const values = {
-                    customerId: customerResponse.customerId,
+                    customerId: customerId,
                 };
-
+    
                 console.log(`Updating ticket with ${NticketId} and ${values}`);
-                await dispatch(updateTicket({ ticketId:defticketId || NticketId, updatedTicket: values }));
+                await dispatch(updateTicket({ ticketId: defticketId || NticketId, updatedTicket: values }));
             } else {
+                customerId = existingCustomer.customerId;
                 const values = {
-                    customerId: existingCustomer.customerId,
+                    customerId: customerId,
                 };
-
+    
                 console.log(`Updating ticket with ${NticketId} and existing ${values.data}`);
-                await dispatch(updateTicket({ ticketId:NticketId, data: values }));
+                await dispatch(updateTicket({ ticketId: NticketId, data: values }));
             }
-
+    
             // Create new products
             const productPromises = addedProducts.map(async (product) => {
                 const newProductData = {
@@ -247,39 +252,47 @@ useEffect(() => {
                     hasSerialNumber: product.hasSerialNumber,
                     warrenty: product.warrenty,
                     productType: 'Hardware',
-                    customerId: customerType === 'existing' ? existingCustomer.customerId : newCustomer.customerId,
+                    customerId: customerId,
                 };
-
+    
                 console.log('Adding new product:', newProductData);
-                return await dispatch(addProduct(newProductData)).unwrap();
+                const addedProduct = await dispatch(addProduct(newProductData)).unwrap();
+                return addedProduct;
             });
-            await Promise.all(productPromises);
-
+            const addedProductsResponse = await Promise.all(productPromises);
+            const addedProductIds = addedProductsResponse.map((product) => product.productId); // Assuming each `addedProduct` has a `productId` field
+    
             // Create a new quotation
             const quotationData = {
-                ticketId: defticketId || NticketId,
-                customerId: customerType === 'existing' ? existingCustomer.customerId : newCustomer.customerId,
-                productId: addedProducts.map(product => product.productId),
-                FinalAmount: addedProducts.reduce((total, prod) => total + prod.price * prod.quantity, 0),
+                ticketId: NticketId !== null ? NticketId.current.value : defticketId,
+                customerId: customerId,
+                productId: addedProductIds,
+                FinalAmount: addedProductsResponse.reduce((total, prod) => total + prod.price * prod.quantity, 0),
                 status: 'Pending',
                 createdBy: loggedInUserId,
                 isQuotationCreated: true,
                 createdDate: currentDate.format('YYYY-MM-DD HH:mm:ss'),
                 comments: comment,
             };
-
-            const quotationProductsData = {
-                quotationId: Quote.quotationId,
-                productId:  quotationData.productId
-            }
-
-            console.log(`updation time cheaking quote ${Quote}`, JSON.stringify(Quote, null, 2))
+    
+            console.log(`Updating quotation with data: ${JSON.stringify(quotationData, null, 2)}`);
             const quotationResponse = await dispatch(updateQuotation({ quotationId: Quote.quotationId, data: quotationData })).unwrap();
-            console.log('Quotation added:', quotationResponse, 'sent this data:', quotationData);
-
-            const quotaionProductResponse =  await dispatch(addQuotaionProduct(quotationProductsData)).unwrap();
-            console.log(quotaionProductResponse);
-
+            console.log('Quotation updated:', quotationResponse);
+    
+            // Create entries in quotationProducts table for each product
+            const quotationProductPromises = addedProductIds.map(async (productId) => {
+                const quotationProductsData = {
+                    quotationId: quotationResponse.quotationId,
+                    productId: productId,
+                };
+    
+                console.log('Adding quotation product:', quotationProductsData);
+                const quotationProductResponse = await dispatch(addQuotaionProduct(quotationProductsData)).unwrap();
+                return quotationProductResponse;
+            });
+            const quotationProductsResponses = await Promise.all(quotationProductPromises);
+            console.log('Quotation products added:', quotationProductsResponses);
+    
             notification.success({ message: 'Quotation added successfully!' });
             form.resetFields();
             setAddedProducts([]);
@@ -287,7 +300,7 @@ useEffect(() => {
             setNewCustomer({ firstName: '', lastName: '', email: '', phoneNumber: '', address: '', pinCode: '', isPremium: false }); // Reset new customer data
             setFinalAmount(0); // Reset final amount
             setComment(''); // Reset comment
-
+    
             onClose(); // Close modal after submission
         } catch (err) {
             console.error(err);

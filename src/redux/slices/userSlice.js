@@ -14,6 +14,11 @@ export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
     return response.data;
 });
 
+export const fetchUserById = createAsyncThunk('users/fetchUser', async (id) =>{
+    const response = await userApi.getUserById(id);
+    return response;
+})
+
 // export const fetchUsersByIds = createAsyncThunk('users/fetchByIds', async (userIds) => {
 //     const response = await userApi.getuserById(userIds);
 //     return response.data; // Assuming the API returns an array of users
@@ -127,6 +132,17 @@ const userSlice = createSlice({
                 const userId = action.payload;
                 state.users = state.users.filter(user => user.userId !== userId);
             })
+            .addCase(fetchUserById.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(fetchUserById.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.user = action.payload; // Store the fetched user by ID
+            })
+            .addCase(fetchUserById.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.error.message;
+            });
             // .addCase(fetchUsersByIds.pending, (state) => {
             //     state.loading = true;
             // })
@@ -138,7 +154,6 @@ const userSlice = createSlice({
             //     state.loading = false;
             //     state.error = action.error.message;
             // })
-            ;
     },
 });
 
