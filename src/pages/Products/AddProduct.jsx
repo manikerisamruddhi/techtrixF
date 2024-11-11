@@ -127,7 +127,7 @@ const ProductFormModal = ({ visible, onCancel, product, customerId, onAddProduct
                     <Row gutter={16}>
 
                         
-                        <Col span={12}>
+                        <Col span={8}>
                             <Form.Item
                                 name="hsnCode"
                                 label="HSN Code :"
@@ -136,9 +136,19 @@ const ProductFormModal = ({ visible, onCancel, product, customerId, onAddProduct
                                 <Input />
                             </Form.Item>
                         </Col>
+                       
+                        <Col span={8}>
+                            <Form.Item
+                                name="unitOfMeasurement"
+                                label="Unit of measurement :"
+                                // rules={[{ required: true, message: 'Please input the HSN code!' }]}
+                            >
+                                <Input />
+                            </Form.Item>
+                        </Col>
 
 
-                        <Col span={12}>
+                        <Col span={8}>
                             <Form.Item
                                 name="partCode"
                                 label="Part Code :"

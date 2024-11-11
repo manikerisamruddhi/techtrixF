@@ -32,7 +32,7 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
     useEffect(() => {
         console.log(`defticket : ${defticketId}`);
     }, [defticketId]);
-    
+
 
     useEffect(() => {
         // Get user from local storage
@@ -108,14 +108,14 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
         setExistingCustomer(selectedCust);
     };
 
-useEffect(() => {
-    console.log(`Updated NticketId: ${NticketId}`);
-}, [NticketId]);
+    useEffect(() => {
+        console.log(`Updated NticketId: ${NticketId}`);
+    }, [NticketId]);
 
 
-useEffect(() => {
-    console.log(`Updated customer: ${customer}`, JSON.stringify(customer, null, 2));
-}, [customer]);
+    useEffect(() => {
+        console.log(`Updated customer: ${customer}`, JSON.stringify(customer, null, 2));
+    }, [customer]);
 
 
     useEffect(() => {
@@ -126,75 +126,75 @@ useEffect(() => {
                     let fetchedQuote = null; // Initialize a variable to hold the fetched quotation
                     // If no default customer is set, attempt to fetch the quotation by user ID
                     if (!defaultCustomer) {
-                                // Dispatch the thunk action to fetch the quotation
-                                fetchedQuote = await dispatch(getQuotationByUserIdAndInitiatedStatus(loggedInUserId)).unwrap();
+                        // Dispatch the thunk action to fetch the quotation
+                        fetchedQuote = await dispatch(getQuotationByUserIdAndInitiatedStatus(loggedInUserId)).unwrap();
 
-                                // Check if a quotation was successfully fetched
-                                if (fetchedQuote) {
-                                        // SetQuote(fetchedQuote); // Store the fetched quotation in state
-                                        Quote.current = fetchedQuote;
-                                        console.log(`Quotation fetched: ${fetchedQuote}`, JSON.stringify(fetchedQuote, null, 2));
-                                       
-                                        NticketId.current = fetchedQuote.ticketId
-                                        console.log(`Quotation fetched ticketId ${NticketId}`);
-                                } 
-                                else {
-                                        // If no quotation was found, create a new ticket
-                                        console.log('No quotation found, creating a new ticket...');
-                                        const ticketData = {
-                                            title: 'Order', // Title of the ticket
-                                            createdById: loggedInUserId, // ID of the user creating the ticket
-                                            description: 'Ticket for quotation', // Description of the ticket
-                                            category: 'Quotation', // Category of the ticket
-                                            ticketType: 'Order', // Type of the ticket
-                                        };
+                        // Check if a quotation was successfully fetched
+                        if (fetchedQuote) {
+                            // SetQuote(fetchedQuote); // Store the fetched quotation in state
+                            Quote.current = fetchedQuote;
+                            console.log(`Quotation fetched: ${fetchedQuote}`, JSON.stringify(fetchedQuote, null, 2));
 
-                                        // Dispatch the thunk action to create a new ticket
-                                        const T = await dispatch(createTicket(ticketData)).unwrap();
-                                        NticketId.current = T.ticketId;
-                                        console.log(`Ticket ID: ${T.ticketId}`);
-                                        console.log(`Ticket ID N: ${NticketId.current}`);
-                                    }
+                            NticketId.current = fetchedQuote.ticketId
+                            console.log(`Quotation fetched ticketId ${NticketId}`);
+                        }
+                        else {
+                            // If no quotation was found, create a new ticket
+                            console.log('No quotation found, creating a new ticket...');
+                            const ticketData = {
+                                title: 'Order', // Title of the ticket
+                                createdById: loggedInUserId, // ID of the user creating the ticket
+                                description: 'Ticket for quotation', // Description of the ticket
+                                category: 'Quotation', // Category of the ticket
+                                ticketType: 'Order', // Type of the ticket
+                            };
+
+                            // Dispatch the thunk action to create a new ticket
+                            const T = await dispatch(createTicket(ticketData)).unwrap();
+                            NticketId.current = T.ticketId;
+                            console.log(`Ticket ID: ${T.ticketId}`);
+                            console.log(`Ticket ID N: ${NticketId.current}`);
+                        }
                     } else if (defticketId) {
-                            // If a default customer and ticket ID exist, fetch the quotation by ticket ID
-                            console.log(`Using existing ticket ID: ${defticketId}`);
-                            fetchedQuote = await dispatch(getQuotationByTicketId(defticketId)).unwrap();
-                            NticketId.current = defticketId;
+                        // If a default customer and ticket ID exist, fetch the quotation by ticket ID
+                        console.log(`Using existing ticket ID: ${defticketId}`);
+                        fetchedQuote = await dispatch(getQuotationByTicketId(defticketId)).unwrap();
+                        NticketId.current = defticketId;
 
-                            // Check if a quotation was successfully fetched
-                            if (fetchedQuote) {
-                                    // SetQuote(fetchedQuote); // Store the fetched quotation in state
-                                    Quote.current = fetchedQuote;
-                                    NticketId.current = fetchedQuote.ticketId;
-                                    console.log(`Quotation fetched for ticket ID ${defticketId}:`, JSON.stringify(fetchedQuote, null, 2));
-                            
-                            }
+                        // Check if a quotation was successfully fetched
+                        if (fetchedQuote) {
+                            // SetQuote(fetchedQuote); // Store the fetched quotation in state
+                            Quote.current = fetchedQuote;
+                            NticketId.current = fetchedQuote.ticketId;
+                            console.log(`Quotation fetched for ticket ID ${defticketId}:`, JSON.stringify(fetchedQuote, null, 2));
+
+                        }
                     }
-                  
+
                     // If no quotation was found or created, add a new quotation
                     if (!fetchedQuote) {
-                                console.log(`hhhhhhh ${NticketId.current}`)
-                                const quotationData = {
-                                    ticketId : NticketId !== null ? NticketId.current : 'NA', // Use the existing ticket ID or the new ticket ID
-                                    createdBy: loggedInUserId, // ID of the user creating the quotation
-                                };
-                                console.log(`Quotation data to add: ${quotationData}`,JSON.stringify(fetchedQuote, null, 2));
-                                // Dispatch the thunk action to add a new quotation
-                                const addedQuote = await dispatch(addQuotation(quotationData)).unwrap();
-                                // SetQuote(addedQuote); // Store the newly added quotation in state
-                                Quote.current = addedQuote;
-                                console.log(`Added quotation: ${addedQuote}`);
+                        console.log(`hhhhhhh ${NticketId.current}`)
+                        const quotationData = {
+                            ticketId: NticketId !== null ? NticketId.current : 'NA', // Use the existing ticket ID or the new ticket ID
+                            createdBy: loggedInUserId, // ID of the user creating the quotation
+                        };
+                        console.log(`Quotation data to add: ${quotationData}`, JSON.stringify(fetchedQuote, null, 2));
+                        // Dispatch the thunk action to add a new quotation
+                        const addedQuote = await dispatch(addQuotation(quotationData)).unwrap();
+                        // SetQuote(addedQuote); // Store the newly added quotation in state
+                        Quote.current = addedQuote;
+                        console.log(`Added quotation: ${addedQuote}`);
                     }
-                } catch (error ) {
+                } catch (error) {
                     // Log any errors that occur during the fetching or creating process
                     console.error('Error fetching or creating quotation:', error);
                 }
             };
-                if(Quote.current){
-                    NticketId.current = Quote.current.ticketId;
-            console.log(`Quotation fetched ticketId ${NticketId}`);
-                }
-            
+            if (Quote.current) {
+                NticketId.current = Quote.current.ticketId;
+                console.log(`Quotation fetched ticketId ${NticketId}`);
+            }
+
             // Call the fetchData function to execute the logic
             fetchData();
 
@@ -206,11 +206,11 @@ useEffect(() => {
     const handleFinish = async () => {
         try {
             // Validate customer selection
-            if (customerType === 'existing' && !defaultCustomer) {
+            if (customerType === 'existing' && !existingCustomer) {
                 notification.error({ message: 'Please select an existing customer.' });
                 return;
             }
-    
+
             // Create a new customer if necessary
             let customerId;
             console.log(`jjjjjjjjjjjjjjjjjjj ${customerType}`);
@@ -225,30 +225,30 @@ useEffect(() => {
                     isPremium: newCustomer.isPremium,
                     createdDate: currentDate.format('YYYY-MM-DD HH:mm:ss'),
                 };
-    
+
                 console.log('Adding new customer:', newCustomerData);
                 const customerResponse = await dispatch(addCustomer(newCustomerData)).unwrap();
                 console.log('Customer added:', customerResponse);
                 customerId = customerResponse.customerId;
-    
+
                 const values = {
                     customerId: customerId,
                 };
-    
+
                 console.log(`Updating ticket with ${NticketId.current} and ${values.data}`);
                 await dispatch(updateTicket({ ticketId: defticketId || NticketId.current, updatedTicket: values }));
             } else {
                 customerId = defaultCustomer;
                 console.log(`existjjjjjjjjjjjjjjjjjjjjjjjjjing ${defaultCustomer} and ${defaultCustomer}`)
                 const values = {
-                    customerId: customerId,
+                    customerId: customerId || customer.customerId,
                     isQuotationCreated: true
                 };
-                
+
                 console.log(`Updating ticket with ${NticketId.current} and existing ${values.data}`);
                 await dispatch(updateTicket({ ticketId: NticketId.current, data: values }));
             }
-    
+
             // Create new products
             const productPromises = addedProducts.map(async (product) => {
                 const newProductData = {
@@ -260,16 +260,16 @@ useEffect(() => {
                     hasSerialNumber: product.hasSerialNumber,
                     warrenty: product.warrenty,
                     productType: 'Hardware',
-                    customerId: customerId || defaultCustomer,
+                    customerId: customerId || defaultCustomer || customer.customerId,
                 };
-    
+
                 console.log('Adding new product:', newProductData);
                 const addedProduct = await dispatch(addProduct(newProductData)).unwrap();
                 return addedProduct;
             });
             const addedProductsResponse = await Promise.all(productPromises);
             const addedProductIds = addedProductsResponse.map((product) => product.productId); // Assuming each `addedProduct` has a `productId` field
-    
+
             // Create a new quotation
             const quotationData = {
                 ticketId: NticketId !== null ? NticketId.current.value : defticketId,
@@ -282,26 +282,26 @@ useEffect(() => {
                 createdDate: currentDate.format('YYYY-MM-DD HH:mm:ss'),
                 comments: comment,
             };
-    
+
             console.log(`Updating quotation with data: ${JSON.stringify(quotationData, null, 2)}`);
             const quotationResponse = await dispatch(updateQuotation({ quotationId: Quote.current.quotationId, data: quotationData })).unwrap();
             console.log('Quotation updated:', quotationResponse);
 
-    
+
             // Create entries in quotationProducts table for each product
             const quotationProductPromises = addedProductIds.map(async (productId) => {
                 const quotationProductsData = {
                     quotationId: quotationResponse.quotationId,
                     productId: productId,
                 };
-    
+
                 console.log('Adding quotation product:', quotationProductsData);
                 const quotationProductResponse = await dispatch(addQuotaionProduct(quotationProductsData)).unwrap();
                 return quotationProductResponse;
             });
             const quotationProductsResponses = await Promise.all(quotationProductPromises);
             console.log('Quotation products added:', quotationProductsResponses);
-    
+
             notification.success({ message: 'Quotation added successfully!' });
             form.resetFields();
             setAddedProducts([]);
@@ -309,7 +309,7 @@ useEffect(() => {
             setNewCustomer({ firstName: '', lastName: '', email: '', phoneNumber: '', address: '', pinCode: '', isPremium: false }); // Reset new customer data
             setFinalAmount(0); // Reset final amount
             setComment(''); // Reset comment
-    
+
             onClose(); // Close modal after submission
         } catch (err) {
             console.error(err);
@@ -589,8 +589,49 @@ useEffect(() => {
                             </Col>
                         </Row>
 
-                        <Row gutter={20}>
+                        <Row gutter={16}>
                             <Col span={8}>
+                                <Form.Item
+                                    label="HSN Code :"
+                                // Add required rule if necessary
+                                // rules={[{ required: true, message: 'Please input the HSN code!' }]}
+                                >
+                                    <Input
+                                        value={newProduct.hsnCode}
+                                        onChange={e => setNewProduct({ ...newProduct, hsnCode: e.target.value })}
+                                    />
+                                </Form.Item>
+                            </Col>
+
+                            <Col span={8}>
+                                <Form.Item
+                                    label="Unit of Measurement :"
+                                // Add required rule if necessary
+                                // rules={[{ required: true, message: 'Please input the unit of measurement!' }]}
+                                >
+                                    <Input
+                                        value={newProduct.unitOfMeasurement}
+                                        onChange={e => setNewProduct({ ...newProduct, unitOfMeasurement: e.target.value })}
+                                    />
+                                </Form.Item>
+                            </Col>
+
+                            <Col span={8}>
+                                <Form.Item
+                                    label="Part Code :"
+                                // Add required rule if necessary
+                                // rules={[{ required: true, message: 'Please input the part code!' }]}
+                                >
+                                    <Input
+                                        value={newProduct.partCode}
+                                        onChange={e => setNewProduct({ ...newProduct, partCode: e.target.value })}
+                                    />
+                                </Form.Item>
+                            </Col>
+                        </Row>
+
+                        <Row gutter={20}>
+                            <Col span={7}>
                                 <Form.Item
                                     label="is Serial No."
                                     labelCol={{ span: 12 }}
@@ -619,10 +660,10 @@ useEffect(() => {
                                 </Form.Item>
                             </Col>
 
-                            <Col span={8}>
+                            <Col span={6}>
                                 <Form.Item label="Quantity" rules={[{ required: true }]}
                                     labelCol={{ span: 7 }}
-                                    wrapperCol={{ span: 8 }}>
+                                    wrapperCol={{ span: 10}}>
                                     <Input
                                         type="number"
                                         value={newProduct.quantity}
@@ -630,6 +671,25 @@ useEffect(() => {
                                     />
                                 </Form.Item>
                             </Col>
+
+                            <Col span={4}>
+        <Form.Item
+            label="GST :"
+            labelCol={{ span: 8 }}
+            wrapperCol={{ span: 16}}
+            rules={[{ required: true, message: 'Please select GST!' }]}
+        >
+            <Select
+                placeholder="Select GST"
+                value={newProduct.gst}
+                onChange={value => setNewProduct({ ...newProduct, gst: value })}
+            >
+                <Option value="18">18%</Option>
+                <Option value="28">28%</Option>
+                <Option value="0">None</Option>
+            </Select>
+        </Form.Item>
+    </Col>
 
                         </Row>
 
@@ -652,6 +712,7 @@ useEffect(() => {
                         </div>
                     </div>
                 )}
+
                 <Form.Item label="Comment">
                     <Input.TextArea
                         rows={2}
