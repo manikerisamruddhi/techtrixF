@@ -1,15 +1,16 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Modal, Button, Space ,message} from 'antd';
+import { Modal, Button, Space, message } from 'antd';
 import html2pdf from 'html2pdf.js';
 import EditQuotationModal from './EditQuotationModal';
-import { updateQuotation ,
+import {
+    updateQuotation,
     fetchQuotations,
     getQuotationById,
-} from "../../redux/slices/quotationSlice"; 
+} from "../../redux/slices/quotationSlice";
 import { fetchCustomerByID } from '../../redux/slices/customerSlice';
-import {fetchTicketDetails} from '../../redux/slices/ticketSlice';
-import { fetchProductById } from '../../redux/slices/productSlice';
-import { useDispatch } from "react-redux";
+import { fetchTicketDetails } from '../../redux/slices/ticketSlice';
+import { fetchProducts, selectProductsByIds } from '../../redux/slices/productSlice';
+import { useDispatch, useSelector } from "react-redux";
 import moment from 'moment/moment';
 
 
@@ -23,24 +24,25 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
     const [loadingCustomer, setLoadingCustomer] = useState(true); // Loading state for customer
     const [loadingQuotation, setLoadingQuotation] = useState(true); // Loading state for quotation
     const [products, setProducts] = useState([]);
-   
+    // const allProducts = useSelector(selectProducts); // All products from Redux
+
     const handleEditQuotation = (updatedQuotation) => {
         setEditedQuotation(updatedQuotation);
     };
     const [editableProducts, setEditableProducts] = useState(quotation?.products || []); // Editable products
 
-   
+
 
     const [QuotationData, setQuotationData] = useState(null);
 
-  useEffect(() => {
-    setQuotationData(quotation);
-  }, [quotation, visible]);
+    useEffect(() => {
+        setQuotationData(quotation);
+        dispatch(fetchProducts());
+    }, [quotation, visible, dispatch]);
 
 
-
-  const quotationProducts = quotation.quotationProducts;
-  console.log(`wwwwwwww ${quotationProducts}`)
+    const quotationProducts = quotation ? quotation.quotationProducts : [];
+    console.log(`wwwwwwww ${quotationProducts}`)
 
     useEffect(() => {
         setEditedQuotation(quotation);
@@ -74,28 +76,15 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
                 .catch(() => {
                     message.error("Failed to fetch ticket details.");
                 });
-                
+
         }
     }, [dispatch, visible, quotation?.ticketId]);
 
 
     quotationProducts.map((product, index) => {
         console.log(`Product ${index + 1}:`, product);
-      });
-    
+    });
 
-    // useEffect(() => {
-    //     if (visible) {
-    //         fetchQuotationTerms();
-    //     }
-    // }, [visible]);
-
-    // const fetchQuotationTerms = async () => {
-    //     // Replace with real API call
-    //     const response = await fetch('/api/quotationTerms'); // Assuming the endpoint exists
-    //     const data = await response.json();
-    //     setQuotationTerms(data);
-    // };
     const handleSaveEdit = (updatedProducts, updatedTerms) => {
         setEditableProducts(updatedProducts); // Update products
         setQuotationTerms(updatedTerms); // Update terms
@@ -120,139 +109,150 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
 
     const formattedDate = moment(QuotationData?.quotationDate || '').format('DD/MM/YYYY');
 
-   
 
-// ...
-const handleRejectQuotation = () => {
-    // Logic to update the status to 'Rejected'
-    // This could be an API call or state update
-    
-    Modal.confirm({
-        title: 'Are you sure you want to proceed?',
-        content: 'This will approve the quotation and update its status.',
-        okText: 'Yes',
-        cancelText: 'No',
-        onOk: () => {
-            // If the user confirms, proceed with updating the quotation
-            const updatedQuotationData = { ...quotation, status: 'Rejected' };
 
-            // Dispatch the action to update the quotation
-            dispatch(updateQuotation({ id: quotation.id, data: updatedQuotationData }))
-            .then(response => {
-                // Handle success (e.g., update local state, show a message)
-                // console.log('Quotation rejected successfully:', response);
-                message.warning("Quotation Rejected!");
-            })
-            .catch(error => {
-                // Handle error (e.g., show an error message)
-                console.error('Error rejecting quotation:', error);
-                message.error("Error approving quotation");
-            });
-            onClose();
-        },
-        onCancel() {
-            console.log('User canceled rejecting the quotation.');
-            message.warning('User canceled rejecting the quotation.');
+    // ...
+    const handleRejectQuotation = () => {
+        // Logic to update the status to 'Rejected'
+        // This could be an API call or state update
+
+        Modal.confirm({
+            title: 'Are you sure you want to proceed?',
+            content: 'This will approve the quotation and update its status.',
+            okText: 'Yes',
+            cancelText: 'No',
+            onOk: () => {
+                // If the user confirms, proceed with updating the quotation
+                const updatedQuotationData = { ...quotation, status: 'Rejected' };
+
+                // Dispatch the action to update the quotation
+                dispatch(updateQuotation({ id: quotation.id, data: updatedQuotationData }))
+                    .then(response => {
+                        // Handle success (e.g., update local state, show a message)
+                        // console.log('Quotation rejected successfully:', response);
+                        message.warning("Quotation Rejected!");
+                    })
+                    .catch(error => {
+                        // Handle error (e.g., show an error message)
+                        console.error('Error rejecting quotation:', error);
+                        message.error("Error approving quotation");
+                    });
+                onClose();
+            },
+            onCancel() {
+                console.log('User canceled rejecting the quotation.');
+                message.warning('User canceled rejecting the quotation.');
+            }
+        });
+
+    };
+
+    const handleProceed = () => {
+        if (!quotation || !quotation.id) {
+            console.error("Quotation ID is missing.");
+            return;
         }
-    });
-      
-};
 
-const handleProceed = () => {
-    if (!quotation || !quotation.id) {
-        console.error("Quotation ID is missing.");
-        return;
-    }
+        // Show confirmation modal
+        Modal.confirm({
+            title: 'Are you sure you want to proceed?',
+            content: 'This will approve the quotation and update its status.',
+            okText: 'Yes',
+            cancelText: 'No',
+            onOk: () => {
+                // If the user confirms, proceed with updating the quotation
+                const updatedQuotationData = {
+                    status: "Approved", // Assuming you want to update the status
+                    // You can add other fields here if needed
+                };
 
-    // Show confirmation modal
-    Modal.confirm({
-        title: 'Are you sure you want to proceed?',
-        content: 'This will approve the quotation and update its status.',
-        okText: 'Yes',
-        cancelText: 'No',
-        onOk: () => {
-            // If the user confirms, proceed with updating the quotation
-            const updatedQuotationData = {
-                status: "Approved", // Assuming you want to update the status
-                // You can add other fields here if needed
-            };
+                // Dispatch the action to update the quotation
+                dispatch(updateQuotation({ id: quotation.id, data: updatedQuotationData }))
+                    .then(() => {
+                        // Handle success
+                        console.log(`Quotation ID ${quotation.id} has been approved.`);
+                        message.success("Quotation approved successfully!");
 
-            // Dispatch the action to update the quotation
-            dispatch(updateQuotation({ id: quotation.id, data: updatedQuotationData }))
-                .then(() => {
-                    // Handle success
-                    console.log(`Quotation ID ${quotation.id} has been approved.`);
-                    message.success("Quotation approved successfully!");
+                        // Optional: Perform additional actions, like redirecting
+                    })
+                    .catch((error) => {
+                        // Handle error
+                        console.error("Failed to approve the quotation:", error);
+                        message.error("Failed to approve the quotation.");
+                    });
+            },
+            onCancel() {
+                console.log('User canceled proceeding with the quotation.');
+            }
+        });
+    };
 
-                    // Optional: Perform additional actions, like redirecting
-                })
-                .catch((error) => {
-                    // Handle error
-                    console.error("Failed to approve the quotation:", error);
-                    message.error("Failed to approve the quotation.");
-                });
-        },
-        onCancel() {
-            console.log('User canceled proceeding with the quotation.');
-        }
-    });
-};
-
-    
+    console.log(`${quotationProducts}`, JSON.stringify(quotationProducts, null, 2));
     const createPdfContent = () => {
-        
-         // Check if customer data is available
-        //  if (isLoadingCustomer) {
-        //     console.error("Customer data is still loading.");
-        //     return document.createElement('div'); // Return an empty div or handle it as needed
-        // }
 
-        // if (!customer || !customer.customer) {
-        //     console.error("Customer data is not available.");
-        //     return document.createElement('div'); // Return an empty div or handle it as needed
-        // }
 
         const pdfContent = document.createElement('div');
-        let products = quotation?.products || []; // Assuming quotation has a products array
+        const products = quotationProducts ? quotationProducts : []; // Assuming quotation has a products array
 
-        if (products.length === 0) {
-            products = [
-                {
-                    description: 'Sample Product 1',
-                    quantity: 2,
-                    unitPrice: 500,
-                    amount: 1000,
-                    gstAmount: 180, // Example GST
-                    TotalAmount: 1180, // Amount + GST
-                    partCode: 'sample'
-                },
-                {
-                    description: 'Sample Product 2Sample Product 2Sample Product 2Sample Product 2Sample Product 2Sample Product 2',
-                    quantity: 1,
-                    unitPrice: 800,
-                    amount: 800, gstAmount: 144, // Example GST
-                    TotalAmount: 944, // Amount + GST
-                    partCode: 'sample'
-                },
-            ];
-        }
 
-        const productsRows = products.map((product, index) => `
-            <tr>
-                <td style="border: 1px solid #000;   padding: 5px; font-size: 10px;">${index + 1}</td>
+        console.log(`${products}`, JSON.stringify(products, null, 2));
 
-                <td style="border: 1px solid #000;   padding: 5px; font-size: 10px;">${product.partCode}</td>
-                <td style="border: 1px solid #000;   padding: 5px; font-size: 10px;">${product.description}brand modal</td>
-                <td style="border: 1px solid #000;  text-align: right;  padding: 5px; font-size: 10px;">${product.quantity}</td>
-                <td style="border: 1px solid #000;  text-align: right;  padding: 5px; font-size: 10px;"> Nos</td>
-                <td style="border: 1px solid #000;  text-align: right;  padding: 5px; font-size: 10px;">₹${product.unitPrice}</td>
-                <td style="border: 1px solid #000;  text-align: right;  padding: 5px; font-size: 10px;">₹${product.amount}</td>
-            
-      
-            </tr>
+        products.forEach((product, index) => {
+            console.log(`Product ${index + 1} ID: ${product.productId}`);
+        });
 
-            
-        `).join('');
+        const arrayOfProductIds = products.map(product => product.productId);
+        console.log("Array of Product IDs:", arrayOfProductIds);
+
+        const filteredProducts = useSelector(state => selectProductsByIds(state, arrayOfProductIds));
+        console.log(filteredProducts);
+
+        const productsRows = filteredProducts.map((filteredProduct, index) => {
+            // Calculate the amount
+            const amount = (filteredProduct.quantity && filteredProduct.price)
+                ? (filteredProduct.quantity * filteredProduct.price).toFixed(2)
+                : 'NA';
+
+
+                let gstAmount = 'NA';
+                if (filteredProduct.gst === 18 && amount !== 'NA') {
+                    gstAmount = (amount * 0.18).toFixed(2);
+                }
+                
+            // Return the updated row
+            return `
+      <tr>
+        <td style="border: 1px solid #000; padding: 5px; font-size: 10px;">${index + 1}</td>
+  
+        <td style="border: 1px solid #000; padding: 5px; font-size: 10px;">
+          ${filteredProduct.partCode ? filteredProduct.partCode : 'NA'}
+        </td>
+        
+        <td style="border: 1px solid #000; padding: 5px; font-size: 10px;">
+          ${filteredProduct.brand && filteredProduct.modelNo ? `${filteredProduct.brand} -- ${filteredProduct.modelNo}` : 'NA'} 
+          <br />
+          ${filteredProduct.description ? `${filteredProduct.description} brand modal` : 'NA'}
+        </td>
+        
+        <td style="border: 1px solid #000; text-align: right; padding: 5px; font-size: 10px;">
+          ${filteredProduct.quantity ? filteredProduct.quantity : 'NA'}
+        </td>
+        
+        <td style="border: 1px solid #000; text-align: right; padding: 5px; font-size: 10px;">
+          ${filteredProduct.unitOfMeasurement ? filteredProduct.unitOfMeasurement : 'NA'}
+        </td>
+        
+        <td style="border: 1px solid #000; text-align: right; padding: 5px; font-size: 10px;">
+          ${filteredProduct.price ? `₹${filteredProduct.price}` : 'NA'}
+        </td>
+        
+        <td style="border: 1px solid #000; text-align: right; padding: 5px; font-size: 10px;">
+          ${amount === 'NA' ? 'NA' : `₹${amount}`}
+        </td>
+      </tr>
+    `;
+        }).join('');
+
 
         pdfContent.innerHTML = `
             <body style="font-family: 'Arial',  sans-serif; font-size: 10px; background-color: #fff; margin: 0; padding: 0.5in; color: #333;">
@@ -292,7 +292,7 @@ const handleProceed = () => {
     </tr>
     <tr>
         <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;"><strong>Q ID</strong></td>
-        <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;">${quotation ? (quotation.quotationId ? quotation.quotationId: 'N/A') : 'N/A'}</td>
+        <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;">${quotation ? (quotation.quotationId ? quotation.quotationId : 'N/A') : 'N/A'}</td>
     </tr>
     <tr>
         <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;"><strong>Validity</strong></td>
@@ -341,7 +341,7 @@ const handleProceed = () => {
              <table style="border-collapse: collapse; font-size: 10px; margin-bottom: 5%; border: 1px solid black; width: 100%;">
     <tr>
         <td style="border: 1px solid black; padding: 2px 3px; white-space: nowrap;"><strong>Subtotal</strong></td>
-        <td style="border: 1px solid black; padding: 2px 3px; white-space: nowrap; text-align: right;">₹ ${QuotationData?.totalAmount|| ''} </td>
+        <td style="border: 1px solid black; padding: 2px 3px; white-space: nowrap; text-align: right;">₹ ${QuotationData?.totalAmount || ''} </td>
     </tr>
     <tr>
         <td style="border: 1px solid black; padding: 2px 3px; white-space: nowrap;"><strong>Tax Rate 18 %</strong></td>
@@ -353,7 +353,7 @@ const handleProceed = () => {
     </tr>
     <tr>
         <td style="border: 1px solid black; padding: 2px 3px; white-space: nowrap;"><strong>Total Amount</strong></td>
-        <td style="border: 1px solid black; padding: 2px 3px; white-space: nowrap; text-align: right;">898989</td>
+        <td style="border: 1px solid black; padding: 2px 3px; white-space: nowrap; text-align: right;">₹ ${QuotationData?.finalAmount || ''}</td>
     </tr>
 </table>
             
@@ -376,10 +376,10 @@ const handleProceed = () => {
                         <p style=" margin-bottom:-2%; border: 1px solid #000; padding: 2px; background-color: #17A0CC; color:white; font-size: 10px;"><strong>Terms and conditions:</strong><p>
                         <span><strong>Customer will be billed:</strong> after indicating acceptance of this quote.</span></br>
                         <span><strong>Taxes:</strong> Inclusive in quotation</span></br>
-                        <span><strong>Delivery:</strong> ${quotation ? (quotation.delivery ? quotation.delivery: 'N/A') : 'N/A'}</span></br>
-                        <span><strong>Payment:</strong> ${quotation ? (quotation.payment ? quotation.payment: 'N/A') : 'N/A'}</span></br>
-                        <span><strong>Warranty / Support:</strong>  ${quotation ? (quotation.warrantyOrSupport ? quotation.warrantyOrSupport: 'N/A') : 'N/A'}</span></br>
-                        <span><strong>Transport:</strong> ${quotation ? (quotation.transport ? quotation.transport: 'N/A') : 'N/A'}</span></br>
+                        <span><strong>Delivery:</strong> ${quotation ? (quotation.delivery ? quotation.delivery : 'N/A') : 'N/A'}</span></br>
+                        <span><strong>Payment:</strong> ${quotation ? (quotation.payment ? quotation.payment : 'N/A') : 'N/A'}</span></br>
+                        <span><strong>Warranty / Support:</strong>  ${quotation ? (quotation.warrantyOrSupport ? quotation.warrantyOrSupport : 'N/A') : 'N/A'}</span></br>
+                        <span><strong>Transport:</strong> ${quotation ? (quotation.transport ? quotation.transport : 'N/A') : 'N/A'}</span></br>
                         </div>
 
                          <div style="text-align: center; font-size: 10px;     margin-top: 10%;">
@@ -417,92 +417,92 @@ const handleProceed = () => {
 
     return (
         <>
-        <Modal
-            title="Quotation Details"
-            visible={visible}
-            onCancel={onClose}
-            centered
-            width={800}
-            style={{
-              
-                padding: '5px',
-                // Add additional styles here
-                border: '1px solid #ccc', // Example of adding a border
-                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // Example of adding shadow
-            }}
+            <Modal
+                title="Quotation Details"
+                visible={visible}
+                onCancel={onClose}
+                centered
+                width={800}
+                style={{
 
-            
-             
-            footer={[
-                <Space key="actions" style={{ float: 'right' }}>
-                    {quotation?.status === 'Pending' && (
+                    padding: '5px',
+                    // Add additional styles here
+                    border: '1px solid #ccc', // Example of adding a border
+                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // Example of adding shadow
+                }}
+
+
+
+                footer={[
+                    <Space key="actions" style={{ float: 'right' }}>
+                        {quotation?.status === 'Pending' && (
+                            <Button
+                                key="edit"
+                                onClick={() => setIsEditModalVisible(true)}
+                                style={{ float: 'right', border: "solid lightblue", borderRadius: '9px' }}
+                            >
+                                Edit Quotation
+                            </Button>
+                        )}
+
                         <Button
-                            key="edit"
-                            onClick={() => setIsEditModalVisible(true)}
+                            key="print"
+                            onClick={handlePrintQuotation}
                             style={{ float: 'right', border: "solid lightblue", borderRadius: '9px' }}
                         >
-                            Edit Quotation
+                            Download Quotation
                         </Button>
-                    )}
-            
-                    <Button
-                        key="print"
-                        onClick={handlePrintQuotation}
-                        style={{ float: 'right', border: "solid lightblue", borderRadius: '9px' }}
-                    >
-                        Download Quotation
-                    </Button>
-            
-            
-                    {/* Add Reject button to update status to 'Rejected' */}
-                    {quotation?.status === 'Pending' && (
-                        <Button
-                            key="reject"
-                            type="danger"
-                            onClick={() => handleRejectQuotation()}
-                            style={{ float: 'right', border: "solid lightblue", borderRadius: '9px', color:'red', background:'white'}}
-                        >
-                            Reject
-                        </Button>
-                    )}
 
-                    {/* Conditionally render Proceed button only if status is not 'Approved' */}
-                    {quotation?.status === 'Pending' && (
-                        <Button
-                            key="proceed"
-                            type="primary"
-                            onClick={handleProceed}
-                        >
-                            Proceed
-                        </Button>
-                    )}
-            
-                </Space>,
-            ]}
 
-        >
-            <div
-                ref={modalContentRef}
-                style={{
-                    maxHeight: '600px',
-                    overflowY: 'auto',
-                    padding: '5px',
-                }}
+                        {/* Add Reject button to update status to 'Rejected' */}
+                        {quotation?.status === 'Pending' && (
+                            <Button
+                                key="reject"
+                                type="danger"
+                                onClick={() => handleRejectQuotation()}
+                                style={{ float: 'right', border: "solid lightblue", borderRadius: '9px', color: 'red', background: 'white' }}
+                            >
+                                Reject
+                            </Button>
+                        )}
+
+                        {/* Conditionally render Proceed button only if status is not 'Approved' */}
+                        {quotation?.status === 'Pending' && (
+                            <Button
+                                key="proceed"
+                                type="primary"
+                                onClick={handleProceed}
+                            >
+                                Proceed
+                            </Button>
+                        )}
+
+                    </Space>,
+                ]}
+
             >
-                <div dangerouslySetInnerHTML={{ __html: createPdfContent().innerHTML }} />
-            </div>
+                <div
+                    ref={modalContentRef}
+                    style={{
+                        maxHeight: '600px',
+                        overflowY: 'auto',
+                        padding: '5px',
+                    }}
+                >
+                    <div dangerouslySetInnerHTML={{ __html: createPdfContent().innerHTML }} />
+                </div>
 
-        </Modal>
+            </Modal>
 
-        {/* Edit Quotation Modal */}
-        <EditQuotationModal
-                    visible={isEditModalVisible}
-                    products={editableProducts}
-                    onSave={handleSaveEdit}
-                    onClose={() => setIsEditModalVisible(false)}
-                />
+            {/* Edit Quotation Modal */}
+            <EditQuotationModal
+                visible={isEditModalVisible}
+                products={editableProducts}
+                onSave={handleSaveEdit}
+                onClose={() => setIsEditModalVisible(false)}
+            />
 
-    </>
+        </>
     );
 };
 
