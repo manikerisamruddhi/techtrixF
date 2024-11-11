@@ -31,8 +31,6 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
     };
     const [editableProducts, setEditableProducts] = useState(quotation?.products || []); // Editable products
 
-
-
     const [QuotationData, setQuotationData] = useState(null);
 
     useEffect(() => {
@@ -49,14 +47,12 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
         setLoadingQuotation(false); // Set loading to false when quotation is available
     }, [quotation, visible]);
 
-    const [ticketData, setTicketData] = useState(null);
-
     useEffect(() => {
         if (visible && quotation?.ticketId) {
             dispatch(fetchTicketDetails(quotation.ticketId))
                 .then((ticketResponse) => {
                     const fetchedTicketData = ticketResponse.payload;
-                    setTicketData(fetchedTicketData); // Set ticketData state
+                    console.log(fetchedTicketData);
                     if (fetchedTicketData?.customerId) {
                         setLoadingCustomer(true); // Set loading to true before fetching customer
                         dispatch(fetchCustomerByID(fetchedTicketData.customerId))
@@ -108,8 +104,6 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
     };
 
     const formattedDate = moment(QuotationData?.quotationDate || '').format('DD/MM/YYYY');
-
-
 
     // ...
     const handleRejectQuotation = () => {
@@ -292,7 +286,7 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
     </tr>
     <tr>
         <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;"><strong>Q ID</strong></td>
-        <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;">${quotation ? (quotation.quotationId ? quotation.quotationId : 'N/A') : 'N/A'}</td>
+        <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;">${quotation ? (quotation.quot_ID ? quotation.quot_ID : 'N/A') : 'N/Aa'}</td>
     </tr>
     <tr>
         <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;"><strong>Validity</strong></td>

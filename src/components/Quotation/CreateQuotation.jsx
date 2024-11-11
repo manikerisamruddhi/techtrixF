@@ -84,7 +84,8 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
 
     // const [NticketId, setNticketId] = useState(null);
     const NticketId = useRef(null);
-    const [Quote, SetQuote] = useState(null);
+    const Quote = useRef(null);
+    // const [Quote, SetQuote] = useState(null);
 
 
     useEffect(() => {
@@ -130,7 +131,8 @@ useEffect(() => {
 
                                 // Check if a quotation was successfully fetched
                                 if (fetchedQuote) {
-                                        SetQuote(fetchedQuote); // Store the fetched quotation in state
+                                        // SetQuote(fetchedQuote); // Store the fetched quotation in state
+                                        Quote.current = fetchedQuote;
                                         console.log(`Quotation fetched: ${fetchedQuote}`, JSON.stringify(fetchedQuote, null, 2));
                                        
                                         NticketId.current = fetchedQuote.ticketId
@@ -157,10 +159,12 @@ useEffect(() => {
                             // If a default customer and ticket ID exist, fetch the quotation by ticket ID
                             console.log(`Using existing ticket ID: ${defticketId}`);
                             fetchedQuote = await dispatch(getQuotationByTicketId(defticketId)).unwrap();
+                            NticketId.current = defticketId;
 
                             // Check if a quotation was successfully fetched
                             if (fetchedQuote) {
-                                    SetQuote(fetchedQuote); // Store the fetched quotation in state
+                                    // SetQuote(fetchedQuote); // Store the fetched quotation in state
+                                    Quote.current = fetchedQuote;
                                     NticketId.current = fetchedQuote.ticketId;
                                     console.log(`Quotation fetched for ticket ID ${defticketId}:`, JSON.stringify(fetchedQuote, null, 2));
                             
@@ -171,13 +175,14 @@ useEffect(() => {
                     if (!fetchedQuote) {
                                 console.log(`hhhhhhh ${NticketId.current}`)
                                 const quotationData = {
-                                    ticketId : NticketId !== null ? NticketId.current : defticketId, // Use the existing ticket ID or the new ticket ID
+                                    ticketId : NticketId !== null ? NticketId.current : 'NA', // Use the existing ticket ID or the new ticket ID
                                     createdBy: loggedInUserId, // ID of the user creating the quotation
                                 };
                                 console.log(`Quotation data to add: ${quotationData}`,JSON.stringify(fetchedQuote, null, 2));
                                 // Dispatch the thunk action to add a new quotation
                                 const addedQuote = await dispatch(addQuotation(quotationData)).unwrap();
-                                SetQuote(addedQuote); // Store the newly added quotation in state
+                                // SetQuote(addedQuote); // Store the newly added quotation in state
+                                Quote.current = addedQuote;
                                 console.log(`Added quotation: ${addedQuote}`);
                     }
                 } catch (error ) {
@@ -185,8 +190,8 @@ useEffect(() => {
                     console.error('Error fetching or creating quotation:', error);
                 }
             };
-                if(Quote){
-                    NticketId.current = Quote.ticketId;
+                if(Quote.current){
+                    NticketId.current = Quote.current.ticketId;
             console.log(`Quotation fetched ticketId ${NticketId}`);
                 }
             
@@ -201,13 +206,14 @@ useEffect(() => {
     const handleFinish = async () => {
         try {
             // Validate customer selection
-            if (customerType === 'existing' && !existingCustomer) {
+            if (customerType === 'existing' && !defaultCustomer) {
                 notification.error({ message: 'Please select an existing customer.' });
                 return;
             }
     
             // Create a new customer if necessary
             let customerId;
+            console.log(`jjjjjjjjjjjjjjjjjjj ${customerType}`);
             if (customerType === 'new') {
                 const newCustomerData = {
                     firstName: newCustomer.firstName,
@@ -229,16 +235,18 @@ useEffect(() => {
                     customerId: customerId,
                 };
     
-                console.log(`Updating ticket with ${NticketId} and ${values}`);
-                await dispatch(updateTicket({ ticketId: defticketId || NticketId, updatedTicket: values }));
+                console.log(`Updating ticket with ${NticketId.current} and ${values.data}`);
+                await dispatch(updateTicket({ ticketId: defticketId || NticketId.current, updatedTicket: values }));
             } else {
-                customerId = existingCustomer.customerId;
+                customerId = defaultCustomer;
+                console.log(`existjjjjjjjjjjjjjjjjjjjjjjjjjing ${defaultCustomer} and ${defaultCustomer}`)
                 const values = {
                     customerId: customerId,
+                    isQuotationCreated: true
                 };
-    
-                console.log(`Updating ticket with ${NticketId} and existing ${values.data}`);
-                await dispatch(updateTicket({ ticketId: NticketId, data: values }));
+                
+                console.log(`Updating ticket with ${NticketId.current} and existing ${values.data}`);
+                await dispatch(updateTicket({ ticketId: NticketId.current, data: values }));
             }
     
             // Create new products
@@ -252,7 +260,7 @@ useEffect(() => {
                     hasSerialNumber: product.hasSerialNumber,
                     warrenty: product.warrenty,
                     productType: 'Hardware',
-                    customerId: customerId,
+                    customerId: customerId || defaultCustomer,
                 };
     
                 console.log('Adding new product:', newProductData);
@@ -276,8 +284,9 @@ useEffect(() => {
             };
     
             console.log(`Updating quotation with data: ${JSON.stringify(quotationData, null, 2)}`);
-            const quotationResponse = await dispatch(updateQuotation({ quotationId: Quote.quotationId, data: quotationData })).unwrap();
+            const quotationResponse = await dispatch(updateQuotation({ quotationId: Quote.current.quotationId, data: quotationData })).unwrap();
             console.log('Quotation updated:', quotationResponse);
+
     
             // Create entries in quotationProducts table for each product
             const quotationProductPromises = addedProductIds.map(async (productId) => {
