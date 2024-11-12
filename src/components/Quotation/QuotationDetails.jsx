@@ -19,6 +19,7 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
     const dispatch = useDispatch();
     const modalContentRef = useRef();
     const quoteProducts = useRef();
+    const preparedBy = useRef();
     const [isEditModalVisible, setIsEditModalVisible] = useState(false); // State for Edit modal visibility
     const [customer, setCustomer] = useState(null); // State for customer data
    // const allProducts = useSelector(selectProducts); // All products from Redux
@@ -39,15 +40,13 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
     const quotationProducts = quotation ? quotation.quotationProducts : [];
     // console.log(`wwwwwwww ${quotationProducts}`)
 
-    const [preparedBy, setPreparedBy] = useState(null);
-
     useEffect(()=>{
         if(quotation && visible){
-            console.log(quotation.createdBy);
+            // console.log(quotation.createdBy);
             dispatch(fetchUserById(quotation.createdBy))
             .then((res) => {
-                setPreparedBy(res.payload.data);
-                // console.log(preparedBy); 
+                preparedBy.current = res.payload.data;
+                // console.log(preparedBy.current); 
             })
         }
       
@@ -198,9 +197,9 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
 
         // console.log(`${products}`, JSON.stringify(products, null, 2));
 
-        products.forEach((product, index) => {
-            console.log(`Product ${index + 1} ID: ${product.productId}`);
-        });
+        // products.forEach((product, index) => {
+        //     console.log(`Product ${index + 1} ID: ${product.productId}`);
+        // });
 
         const arrayOfProductIds = products.map(product => product.productId);
         // console.log("Array of Product IDs:", arrayOfProductIds);
@@ -395,7 +394,8 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
                         <span style="margin-bottom: -12%">Your’s sincerely,</span></br>
                         <span style="margin-bottom: -12%">For Techtrix Solutions Pvt. Ltd., </span></br>
                         <span style="margin-bottom: -12%">  Pune</span></br>
-                        <span style="margin-bottom: -12%"> ${preparedBy.firstName} ${preparedBy.lastName} ${preparedBy.phoneNumber}</span></br>
+                        <span style="margin-bottom: -12%"> ${preparedBy ? (preparedBy.current ?  `${preparedBy.current.firstName} ${preparedBy.current.lastName} ${preparedBy.current.phoneNumber}` : 'N/A') : 'N/A'}
+                       </span></br>
                         
                         </div>
                        

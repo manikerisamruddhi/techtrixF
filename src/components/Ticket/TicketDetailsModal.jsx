@@ -30,7 +30,7 @@ const TicketDetailsModal = ({ visible, ticket, onClose, onCreateQuotation, users
         }
     };
     
-    console.log(users);
+    // console.log(users);
     const user = users.find((user) => user.userId === createdById); // Adjust based on your user object structure
     const createdByName = user ? `${user.firstName} ${user.lastName}` : createdById; // Display user name or fallback text
 

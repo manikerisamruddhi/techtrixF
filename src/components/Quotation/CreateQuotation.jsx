@@ -29,9 +29,9 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
 
 
 
-    useEffect(() => {
-        console.log(`defticket : ${defticketId}`);
-    }, [defticketId]);
+    // useEffect(() => {
+    //     console.log(`defticket : ${defticketId}`);
+    // }, [defticketId]);
 
 
     useEffect(() => {
@@ -39,7 +39,7 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
         const loggedInUser = JSON.parse(localStorage.getItem('user'));
         if (loggedInUser) {
             setLoggedInUserId(loggedInUser.userId);
-            console.log(`loggedInUser  ${loggedInUserId}`);
+            // console.log(`loggedInUser  ${loggedInUserId}`);
         }
     }, []); // Empty dependency array to run only once on mount
 
@@ -185,22 +185,22 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                         const addedQuote = await dispatch(addQuotation(quotationData)).unwrap();
                         // SetQuote(addedQuote); // Store the newly added quotation in state
                         Quote.current = addedQuote;
-                        console.log(`Added quotation: ${addedQuote}`);
+                        // console.log(`Added quotation: ${addedQuote}`);
                     }
                 } catch (error) {
                     // Log any errors that occur during the fetching or creating process
-                    console.error('Error fetching or creating quotation:', error);
+                    // console.error('Error fetching or creating quotation:', error);
                 }
             };
             if (Quote.current) {
                 NticketId.current = Quote.current.ticketId;
-                console.log(`Quotation fetched ticketId ${NticketId}`);
+                // console.log(`Quotation fetched ticketId ${NticketId}`);
             }
 
             // Call the fetchData function to execute the logic
             fetchData();
 
-            console.log('Current quotation state:', JSON.stringify(Quote, null, 2)); // Log the current state of the quotation
+            // console.log('Current quotation state:', JSON.stringify(Quote, null, 2)); // Log the current state of the quotation
         }
     }, [visible, defaultCustomer, defticketId, loggedInUserId]); // Dependencies for the useEffect hook
 
@@ -215,7 +215,7 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
 
             // Create a new customer if necessary
             let customerId;
-            console.log(`jjjjjjjjjjjjjjjjjjj ${customerType}`);
+            // console.log(`jjjjjjjjjjjjjjjjjjj ${customerType}`);
             if (customerType === 'new') {
                 const newCustomerData = {
                     firstName: newCustomer.firstName,
@@ -228,9 +228,9 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                     createdDate: currentDate.format('YYYY-MM-DD HH:mm:ss'),
                 };
 
-                console.log('Adding new customer:', newCustomerData);
+                // console.log('Adding new customer:', newCustomerData);
                 const customerResponse = await dispatch(addCustomer(newCustomerData)).unwrap();
-                console.log('Customer added:', customerResponse);
+                // console.log('Customer added:', customerResponse);
                 customerId = customerResponse.customerId;
 
                 const values = {
@@ -270,7 +270,7 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                     customerId: customerId || defaultCustomer || customer.customerId,
                 };
 
-                console.log('Adding new product:', newProductData);
+                // console.log('Adding new product:', newProductData);
                 const addedProduct = await dispatch(addProduct(newProductData)).unwrap();
                 return addedProduct;
             });
@@ -290,9 +290,9 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                 comments: comment,
             };
 
-            console.log(`Updating quotation with data: ${JSON.stringify(quotationData, null, 2)}`);
+            // console.log(`Updating quotation with data: ${JSON.stringify(quotationData, null, 2)}`);
             const quotationResponse = await dispatch(updateQuotation({ quotationId: Quote.current.quotationId, data: quotationData })).unwrap();
-            console.log('Quotation updated:', quotationResponse);
+            // console.log('Quotation updated:', quotationResponse);
 
 
             // Create entries in quotationProducts table for each product
@@ -302,12 +302,12 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                     productId: productId,
                 };
 
-                console.log('Adding quotation product:', quotationProductsData);
+                // console.log('Adding quotation product:', quotationProductsData);
                 const quotationProductResponse = await dispatch(addQuotaionProduct(quotationProductsData)).unwrap();
                 return quotationProductResponse;
             });
             const quotationProductsResponses = await Promise.all(quotationProductPromises);
-            console.log('Quotation products added:', quotationProductsResponses);
+            // console.log('Quotation products added:', quotationProductsResponses);
 
             notification.success({ message: 'Quotation added successfully!' });
             form.resetFields();
@@ -319,7 +319,7 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
 
             onClose(); // Close modal after submission
         } catch (err) {
-            console.error(err);
+            // console.error(err);
             notification.error({ message: 'Error adding quotation' });
         }
     };

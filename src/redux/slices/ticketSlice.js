@@ -5,7 +5,7 @@ import ticketApi from '../../api/ticketApi';
 // Async Thunks
 export const fetchTickets = createAsyncThunk('tickets/fetchTickets', async () => {
     const response = await ticketApi.getAllTickets(); // Adjusted endpoint
-    console.log(response);
+    // console.log(response);
     return response.data;
 });
 
@@ -25,7 +25,7 @@ export const fetchTicketDetails = createAsyncThunk('tickets/fetchTicketDetails',
 
         return ticket;
     } catch (error) {
-        console.error(error.message);
+        // console.error(error.message);
         throw error; // Rethrow error to be caught by createAsyncThunk
     }
 });
@@ -54,7 +54,7 @@ export const createTicket = createAsyncThunk('tickets/addTicket', async (newTick
 
 // Add the updateTicket async thunk
 export const updateTicket = createAsyncThunk('tickets/updateTicket', async ({ ticketId, data }) => {
-    console.log(`data recived in update ticket  id = ${ticketId} and data = ${data}`);
+    // console.log(`data recived in update ticket  id = ${ticketId} and data = ${data}`);
     const response = await ticketApi.updateTicket(ticketId, data);
     return response.data;
 });

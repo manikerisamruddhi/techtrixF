@@ -86,11 +86,19 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
         // Exit if form is in the process of submission
         if (isSubmitting) return;
 
+        // console.log(values);
+       
         // Check for valid customer ID
         if (!values.customerId) {
+            values.customerId = newCustomer.customerId;
+       
+        }
+
+        if(!values.customerId && !newCustomer){
             message.warning('Please add a valid customer.');
             return; // Exit the function if there's no customer ID
         }
+
 
         setIsSubmitting(true); // Set submitting state to true
         const currentDate = new Date().toISOString();
@@ -110,7 +118,7 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
             createdDate: currentDate,
         };
 
-        console.log(ticketData);
+        // console.log(ticketData);
 
         try {
             const resultAction = await dispatch(createTicket(ticketData));
@@ -149,12 +157,17 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
 
     const handleCustomerAdded = (newCustomer) => {
         setSelectedCustomer(newCustomer);
-        form.setFieldsValue({ customerId: newCustomer.customerId });
+        form.setFieldsValue({ 
+            customerId: newCustomer.customerId, // Set the customerId in the form
+            customerName: `${newCustomer.firstName} ${newCustomer.lastName}` // Optional: Set customer name if needed
+        });
         setisPremiumCustomer(newCustomer.isPremium);
         setCustomerModalVisible(false);
-        form.setFieldsValue({ customerName: `${newCustomer.firstName} ${newCustomer.lastName}` });
         setNewCustomer(newCustomer); // Update the new customer state
-        // console.log(`newCustomer ${newCustomer}`);
+         // Log the form values after setting them
+    // const formValues = form.getFieldsValue();
+    // console.log('Form Values:', formValues ,newCustomer.customerId ); // This will log all the current form values
+
     };
 
     const openProductForm = () => {

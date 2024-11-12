@@ -2,7 +2,7 @@ import axiosInstance from './axiosInstance';
 
 const productApi = {
     getAllProducts: () => {
-        console.log(axiosInstance.get(`/products/all`));
+        // console.log(axiosInstance.get(`/products/all`));
         return axiosInstance.get(`/products/all`);
     },
     getProductById: (id) => {

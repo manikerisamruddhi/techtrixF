@@ -35,7 +35,7 @@ const Quotations = () => {
             // Wait for the action to complete and unwrap the result
             const { payload } = await dispatch(getQuotationById(record.quotationId));
     
-            console.log(payload); // Log the payload (the data you need)
+            // console.log(payload); // Log the payload (the data you need)
             setSelectedQuotation(payload); // Set selected quotation data
             setIsDetailsModalVisible(true); // Show the details modal
         } catch (error) {
