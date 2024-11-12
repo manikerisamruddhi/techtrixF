@@ -45,7 +45,7 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
     useEffect(() => {
         setEditedQuotation(quotation);
         setLoadingQuotation(false); // Set loading to false when quotation is available
-    }, [quotation, visible]);
+    }, [quotation, visible, dispatch]);
 
     useEffect(() => {
         if (visible && quotation?.ticketId) {
@@ -119,8 +119,10 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
                 // If the user confirms, proceed with updating the quotation
                 const updatedQuotationData = { ...quotation, status: 'Rejected' };
 
+                const quotationId = quotation.quotationId;
+
                 // Dispatch the action to update the quotation
-                dispatch(updateQuotation({ id: quotation.id, data: updatedQuotationData }))
+                dispatch(updateQuotation({ quotationId, data: updatedQuotationData }))
                     .then(response => {
                         // Handle success (e.g., update local state, show a message)
                         // console.log('Quotation rejected successfully:', response);
@@ -142,7 +144,7 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
     };
 
     const handleProceed = () => {
-        if (!quotation || !quotation.id) {
+        if (!quotation) {
             console.error("Quotation ID is missing.");
             return;
         }
@@ -159,14 +161,15 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
                     status: "Approved", // Assuming you want to update the status
                     // You can add other fields here if needed
                 };
-
+                const quotationId = quotation.quotationId;
                 // Dispatch the action to update the quotation
-                dispatch(updateQuotation({ id: quotation.id, data: updatedQuotationData }))
+                dispatch(updateQuotation({ quotationId, data: updatedQuotationData }))
                     .then(() => {
                         // Handle success
-                        console.log(`Quotation ID ${quotation.id} has been approved.`);
+                        console.log(`Quotation ID ${quotation.quotationId} has been approved.`);
                         message.success("Quotation approved successfully!");
-
+                        onClose();
+                    
                         // Optional: Perform additional actions, like redirecting
                     })
                     .catch((error) => {
