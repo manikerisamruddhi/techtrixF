@@ -59,6 +59,7 @@ const Quotations = () => {
     const handleDetailsModalClose = () => {
         setIsDetailsModalVisible(false);
         setSelectedQuotation(null); // Clear the selected quotation
+        dispatch(fetchQuotations());
     };
 
     const handleCreateQuotationSuccess = () => {

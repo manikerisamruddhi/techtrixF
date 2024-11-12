@@ -64,6 +64,8 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
         quantity: 1,
         description: '',
         hasSerialNumber: 'no',
+        partCode: '',
+
     });
     const [showNewProductForm, setShowNewProductForm] = useState(false);
     const [addedProducts, setAddedProducts] = useState([]);
@@ -258,6 +260,11 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                     quantity: product.quantity,
                     description: product.description,
                     hasSerialNumber: product.hasSerialNumber,
+                    partCode: product.partCode,
+                    isSerialNoAllowed: product.isSerialNoAllowed,
+                    hsnCode: product.hsnCode,
+                    unitOfMeasurement: product.unitOfMeasurement,
+                    gst: product.gst,
                     warrenty: product.warrenty,
                     productType: 'Hardware',
                     customerId: customerId || defaultCustomer || customer.customerId,

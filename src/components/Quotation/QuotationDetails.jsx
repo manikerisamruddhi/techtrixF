@@ -17,19 +17,15 @@ import moment from 'moment/moment';
 const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
     const dispatch = useDispatch();
     const modalContentRef = useRef();
-    const [pdfContent, setPdfContent] = useState(null); // State for PDF content
+    const quoteProducts = useRef();
     const [isEditModalVisible, setIsEditModalVisible] = useState(false); // State for Edit modal visibility
-    const [editedQuotation, setEditedQuotation] = useState(quotation); // State to store the edited quotation
     const [customer, setCustomer] = useState(null); // State for customer data
-    const [loadingCustomer, setLoadingCustomer] = useState(true); // Loading state for customer
-    const [loadingQuotation, setLoadingQuotation] = useState(true); // Loading state for quotation
-    const [products, setProducts] = useState([]);
-    // const allProducts = useSelector(selectProducts); // All products from Redux
+   // const allProducts = useSelector(selectProducts); // All products from Redux
 
     const handleEditQuotation = (updatedQuotation) => {
         setEditedQuotation(updatedQuotation);
     };
-    const [editableProducts, setEditableProducts] = useState(quotation?.products || []); // Editable products
+    const [editableProducts, setEditableProducts] = useState(null); // Editable products
 
     const [QuotationData, setQuotationData] = useState(null);
 
@@ -43,26 +39,18 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
     console.log(`wwwwwwww ${quotationProducts}`)
 
     useEffect(() => {
-        setEditedQuotation(quotation);
-        setLoadingQuotation(false); // Set loading to false when quotation is available
-    }, [quotation, visible, dispatch]);
-
-    useEffect(() => {
         if (visible && quotation?.ticketId) {
             dispatch(fetchTicketDetails(quotation.ticketId))
                 .then((ticketResponse) => {
                     const fetchedTicketData = ticketResponse.payload;
                     console.log(fetchedTicketData);
                     if (fetchedTicketData?.customerId) {
-                        setLoadingCustomer(true); // Set loading to true before fetching customer
                         dispatch(fetchCustomerByID(fetchedTicketData.customerId))
                             .then((customerResponse) => {
                                 if (customerResponse) {
                                     setCustomer(customerResponse.payload); // Set customer data
-                                    setLoadingCustomer(false); // Set loading to false when customer data is available
                                 } else {
                                     message.error("Failed to fetch customer details.");
-                                    setLoadingCustomer(false); // Set loading to false if there's an error
                                 }
                             });
                     } else {
@@ -81,9 +69,10 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
         console.log(`Product ${index + 1}:`, product);
     });
 
-    const handleSaveEdit = (updatedProducts, updatedTerms) => {
-        setEditableProducts(updatedProducts); // Update products
-        setQuotationTerms(updatedTerms); // Update terms
+    const handleSaveEdit = (updatedQuotation) => {
+        setQuotationData(updatedQuotation);
+        onClose();
+        
         setIsEditModalVisible(false); // Close the modal
     };
 
@@ -203,6 +192,8 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
 
         const filteredProducts = useSelector(state => selectProductsByIds(state, arrayOfProductIds));
         console.log(filteredProducts);
+
+        quoteProducts.current = filteredProducts;
 
         const productsRows = filteredProducts.map((filteredProduct, index) => {
             // Calculate the amount
@@ -494,9 +485,13 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
             {/* Edit Quotation Modal */}
             <EditQuotationModal
                 visible={isEditModalVisible}
-                products={editableProducts}
+                products={quoteProducts.current}
+                quotation={quotation}
                 onSave={handleSaveEdit}
-                onClose={() => setIsEditModalVisible(false)}
+                onClose={() => {
+                    setIsEditModalVisible(false);
+                    dispatch(fetchProducts()); // Refresh products if needed
+                }}
             />
 
         </>
