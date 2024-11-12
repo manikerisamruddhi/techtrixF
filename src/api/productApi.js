@@ -13,7 +13,7 @@ const productApi = {
         return axiosInstance.post('/products/add', productData);
     },
     updateProduct: (id, productData) => {
-        return axiosInstance.put(`/products/${id}`, productData);
+        return axiosInstance.put(`/products/update/${id}`, productData);
     },
     deleteProduct: (id) => {
         return axiosInstance.delete(`/products/${id}`);
