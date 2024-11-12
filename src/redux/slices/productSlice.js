@@ -175,15 +175,15 @@ export const selectProductsByCustomer = (state) => state.products.products; // F
 export const selectProductsLoading = (state) => state.products.loading;
 
 export const selectProductsByIds = (state, arrayOfProductIds) => {
-  console.log('Array of Product IDs:', arrayOfProductIds); // Log the incoming product IDs
-  console.log('State Products:', state.products.items); // Log the products in the state
+  // console.log('Array of Product IDs:', arrayOfProductIds); // Log the incoming product IDs
+  // console.log('State Products:', state.products.items); // Log the products in the state
 
   // Filter the products by matching productId
   const data = state.products.items.filter(product =>
     arrayOfProductIds.includes(product.productId)
   );
 
-  console.log('Filtered Products:', data); // Log the filtered products
+  // console.log('Filtered Products:', data); // Log the filtered products
   return data;
 };
 

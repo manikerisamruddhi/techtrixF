@@ -9,6 +9,7 @@ import {
 } from "../../redux/slices/quotationSlice";
 import { fetchCustomerByID } from '../../redux/slices/customerSlice';
 import { fetchTicketDetails } from '../../redux/slices/ticketSlice';
+import { fetchUserById } from '../../redux/slices/userSlice';
 import { fetchProducts, selectProductsByIds } from '../../redux/slices/productSlice';
 import { useDispatch, useSelector } from "react-redux";
 import moment from 'moment/moment';
@@ -36,14 +37,28 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
 
 
     const quotationProducts = quotation ? quotation.quotationProducts : [];
-    console.log(`wwwwwwww ${quotationProducts}`)
+    // console.log(`wwwwwwww ${quotationProducts}`)
+
+    const [preparedBy, setPreparedBy] = useState(null);
+
+    useEffect(()=>{
+        if(quotation && visible){
+            console.log(quotation.createdBy);
+            dispatch(fetchUserById(quotation.createdBy))
+            .then((res) => {
+                setPreparedBy(res.payload.data);
+                // console.log(preparedBy); 
+            })
+        }
+      
+    }, [dispatch, visible]);
 
     useEffect(() => {
         if (visible && quotation?.ticketId) {
             dispatch(fetchTicketDetails(quotation.ticketId))
                 .then((ticketResponse) => {
                     const fetchedTicketData = ticketResponse.payload;
-                    console.log(fetchedTicketData);
+                    // console.log(fetchedTicketData);
                     if (fetchedTicketData?.customerId) {
                         dispatch(fetchCustomerByID(fetchedTicketData.customerId))
                             .then((customerResponse) => {
@@ -66,7 +81,7 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
 
 
     quotationProducts.map((product, index) => {
-        console.log(`Product ${index + 1}:`, product);
+        // console.log(`Product ${index + 1}:`, product);
     });
 
     const handleSaveEdit = (updatedQuotation) => {
@@ -119,13 +134,13 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
                     })
                     .catch(error => {
                         // Handle error (e.g., show an error message)
-                        console.error('Error rejecting quotation:', error);
+                        // console.error('Error rejecting quotation:', error);
                         message.error("Error approving quotation");
                     });
                 onClose();
             },
             onCancel() {
-                console.log('User canceled rejecting the quotation.');
+                // console.log('User canceled rejecting the quotation.');
                 message.warning('User canceled rejecting the quotation.');
             }
         });
@@ -155,7 +170,7 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
                 dispatch(updateQuotation({ quotationId, data: updatedQuotationData }))
                     .then(() => {
                         // Handle success
-                        console.log(`Quotation ID ${quotation.quotationId} has been approved.`);
+                        // console.log(`Quotation ID ${quotation.quotationId} has been approved.`);
                         message.success("Quotation approved successfully!");
                         onClose();
                     
@@ -163,7 +178,7 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
                     })
                     .catch((error) => {
                         // Handle error
-                        console.error("Failed to approve the quotation:", error);
+                        // console.error("Failed to approve the quotation:", error);
                         message.error("Failed to approve the quotation.");
                     });
             },
@@ -173,7 +188,7 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
         });
     };
 
-    console.log(`${quotationProducts}`, JSON.stringify(quotationProducts, null, 2));
+    // console.log(`${quotationProducts}`, JSON.stringify(quotationProducts, null, 2));
     const createPdfContent = () => {
 
 
@@ -181,17 +196,17 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
         const products = quotationProducts ? quotationProducts : []; // Assuming quotation has a products array
 
 
-        console.log(`${products}`, JSON.stringify(products, null, 2));
+        // console.log(`${products}`, JSON.stringify(products, null, 2));
 
         products.forEach((product, index) => {
             console.log(`Product ${index + 1} ID: ${product.productId}`);
         });
 
         const arrayOfProductIds = products.map(product => product.productId);
-        console.log("Array of Product IDs:", arrayOfProductIds);
+        // console.log("Array of Product IDs:", arrayOfProductIds);
 
         const filteredProducts = useSelector(state => selectProductsByIds(state, arrayOfProductIds));
-        console.log(filteredProducts);
+        // console.log(filteredProducts);
 
         quoteProducts.current = filteredProducts;
 
@@ -380,7 +395,7 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
                         <span style="margin-bottom: -12%">Your’s sincerely,</span></br>
                         <span style="margin-bottom: -12%">For Techtrix Solutions Pvt. Ltd., </span></br>
                         <span style="margin-bottom: -12%">  Pune</span></br>
-                        <span style="margin-bottom: -12%"> prepared By name and phone no.</span></br>
+                        <span style="margin-bottom: -12%"> ${preparedBy.firstName} ${preparedBy.lastName} ${preparedBy.phoneNumber}</span></br>
                         
                         </div>
                        

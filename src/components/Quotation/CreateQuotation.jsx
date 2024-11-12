@@ -111,12 +111,12 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
     };
 
     useEffect(() => {
-        console.log(`Updated NticketId: ${NticketId}`);
+        // console.log(`Updated NticketId: ${NticketId}`);
     }, [NticketId]);
 
 
     useEffect(() => {
-        console.log(`Updated customer: ${customer}`, JSON.stringify(customer, null, 2));
+        // console.log(`Updated customer: ${customer}`, JSON.stringify(customer, null, 2));
     }, [customer]);
 
 
@@ -135,14 +135,14 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                         if (fetchedQuote) {
                             // SetQuote(fetchedQuote); // Store the fetched quotation in state
                             Quote.current = fetchedQuote;
-                            console.log(`Quotation fetched: ${fetchedQuote}`, JSON.stringify(fetchedQuote, null, 2));
+                            // console.log(`Quotation fetched: ${fetchedQuote}`, JSON.stringify(fetchedQuote, null, 2));
 
                             NticketId.current = fetchedQuote.ticketId
-                            console.log(`Quotation fetched ticketId ${NticketId}`);
+                            // console.log(`Quotation fetched ticketId ${NticketId}`);
                         }
                         else {
                             // If no quotation was found, create a new ticket
-                            console.log('No quotation found, creating a new ticket...');
+                            // console.log('No quotation found, creating a new ticket...');
                             const ticketData = {
                                 title: 'Order', // Title of the ticket
                                 createdById: loggedInUserId, // ID of the user creating the ticket
@@ -154,12 +154,12 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                             // Dispatch the thunk action to create a new ticket
                             const T = await dispatch(createTicket(ticketData)).unwrap();
                             NticketId.current = T.ticketId;
-                            console.log(`Ticket ID: ${T.ticketId}`);
-                            console.log(`Ticket ID N: ${NticketId.current}`);
+                            // console.log(`Ticket ID: ${T.ticketId}`);
+                            // console.log(`Ticket ID N: ${NticketId.current}`);
                         }
                     } else if (defticketId) {
                         // If a default customer and ticket ID exist, fetch the quotation by ticket ID
-                        console.log(`Using existing ticket ID: ${defticketId}`);
+                        // console.log(`Using existing ticket ID: ${defticketId}`);
                         fetchedQuote = await dispatch(getQuotationByTicketId(defticketId)).unwrap();
                         NticketId.current = defticketId;
 
@@ -168,19 +168,19 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                             // SetQuote(fetchedQuote); // Store the fetched quotation in state
                             Quote.current = fetchedQuote;
                             NticketId.current = fetchedQuote.ticketId;
-                            console.log(`Quotation fetched for ticket ID ${defticketId}:`, JSON.stringify(fetchedQuote, null, 2));
+                            // console.log(`Quotation fetched for ticket ID ${defticketId}:`, JSON.stringify(fetchedQuote, null, 2));
 
                         }
                     }
 
                     // If no quotation was found or created, add a new quotation
                     if (!fetchedQuote) {
-                        console.log(`hhhhhhh ${NticketId.current}`)
+                        // console.log(`hhhhhhh ${NticketId.current}`)
                         const quotationData = {
                             ticketId: NticketId !== null ? NticketId.current : 'NA', // Use the existing ticket ID or the new ticket ID
                             createdBy: loggedInUserId, // ID of the user creating the quotation
                         };
-                        console.log(`Quotation data to add: ${quotationData}`, JSON.stringify(fetchedQuote, null, 2));
+                        // console.log(`Quotation data to add: ${quotationData}`, JSON.stringify(fetchedQuote, null, 2));
                         // Dispatch the thunk action to add a new quotation
                         const addedQuote = await dispatch(addQuotation(quotationData)).unwrap();
                         // SetQuote(addedQuote); // Store the newly added quotation in state
@@ -237,17 +237,17 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                     customerId: customerId,
                 };
 
-                console.log(`Updating ticket with ${NticketId.current} and ${values.data}`);
+                // console.log(`Updating ticket with ${NticketId.current} and ${values.data}`);
                 await dispatch(updateTicket({ ticketId: defticketId || NticketId.current, updatedTicket: values }));
             } else {
                 customerId = defaultCustomer;
-                console.log(`existjjjjjjjjjjjjjjjjjjjjjjjjjing ${defaultCustomer} and ${defaultCustomer}`)
+                // console.log(`existjjjjjjjjjjjjjjjjjjjjjjjjjing ${defaultCustomer} and ${defaultCustomer}`)
                 const values = {
                     customerId: customerId || customer.customerId,
                     isQuotationCreated: true
                 };
 
-                console.log(`Updating ticket with ${NticketId.current} and existing ${values.data}`);
+                // console.log(`Updating ticket with ${NticketId.current} and existing ${values.data}`);
                 await dispatch(updateTicket({ ticketId: NticketId.current, data: values }));
             }
 
