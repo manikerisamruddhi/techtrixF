@@ -29,9 +29,9 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
 
 
 
-    // useEffect(() => {
-    //     console.log(`defticket : ${defticketId}`);
-    // }, [defticketId]);
+    useEffect(() => {
+        console.log(`defticket : ${defticketId} and ${defaultCustomer}`);
+    }, [defticketId]);
 
 
     useEffect(() => {

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Button, Empty, message, Layout, Typography, Spin, Card, Row, Col } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import { fetchTickets } from '../../redux/slices/ticketSlice';
 import { fetchUsers} from '../../redux/slices/userSlice';
 import { fetchCustomers } from '../../redux/slices/customerSlice';
@@ -36,7 +37,7 @@ const Tickets = () => {
             await dispatch(fetchUsers());
         };
         fetch_data();
-    }, [dispatch]);
+    }, [dispatch, useLocation()]);
 
     useEffect(() => {
         const fetch_customers = async () => {

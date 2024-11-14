@@ -13,11 +13,13 @@ const TicketDetailsModal = ({ visible, ticket, onClose, onCreateQuotation, users
     
     const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
     const [createdById, setCreatedBy] = useState(''); // State variable to store createdById
+    const [assighnedToId, setAssighnedToId] = useState(''); // State variable to store createdById
 
     // Effect to run when the ticket is available
     useEffect(() => {
         if (ticket) {
             setCreatedBy(ticket.createdById); // Set createdById from ticket
+            setAssighnedToId(ticket.assignedTo); // Set createdById from ticket
         }
     }, [ticket]);
 
@@ -33,6 +35,8 @@ const TicketDetailsModal = ({ visible, ticket, onClose, onCreateQuotation, users
     // console.log(users);
     const user = users.find((user) => user.userId === createdById); // Adjust based on your user object structure
     const createdByName = user ? `${user.firstName} ${user.lastName}` : createdById; // Display user name or fallback text
+    const assighnedUser = users.find((assighnedUser) => assighnedUser.userId === assighnedToId); // Adjust based on your user object structure
+    const assighnedByName = assighnedUser ? `${assighnedUser.firstName} ${assighnedUser.lastName}` : 'Not Assigned'; // Display user name or fallback text
 
 
     // Function to open the create quotation modal
@@ -104,7 +108,7 @@ const TicketDetailsModal = ({ visible, ticket, onClose, onCreateQuotation, users
                             <Descriptions.Item label="Resolved" span={1}>{ticket.isResolved ? 'Yes' : 'No'}</Descriptions.Item>
                             <Descriptions.Item label="Is Chargeable" span={1}>{ticket.isChargeable ? 'Yes' : 'No'}</Descriptions.Item>
                       {/* <Descriptions.Item label="Isqqq" span={1}>{ticket.isQuotationCreated ? 'Yes' : 'No'}</Descriptions.Item> */}
-                            <Descriptions.Item label="Assigned To" span={1}>{ticket.assignedTo ? ticket.assignedTo : 'Not Assigned'}</Descriptions.Item>
+                            <Descriptions.Item label="Assigned To" span={1}>{assighnedByName ? assighnedByName : 'Not Assigned'}</Descriptions.Item>
                            
                            {ticket.isChargeable && (
                             <Descriptions.Item label="is Quoatation Created" span={1}>{ticket.isQuotationCreated ? 'Created' : 'Not created'}</Descriptions.Item>

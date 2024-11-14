@@ -402,9 +402,9 @@ const Dashboard = () => {
                                     <Typography variant="h5" sx={{ color: '#333' }}>closed: {closed}</Typography>
                                     <Grid container spacing={2} sx={{ marginTop: '20px' }}>
                                         <Grid item xs={6} sm={6} md={6} marginBottom={1}>
-                                            <Typography variant="h6" sx={{ color: '' }}>test:{open}</Typography>
+                                            {/* <Typography variant="h6" sx={{ color: '' }}>test:{open}</Typography>
                                             <Typography variant="h6" sx={{ color: '' }}>test:{resolved}</Typography>
-                                            <Typography variant="h6" sx={{ color: '' }}>test:{total}</Typography>
+                                            <Typography variant="h6" sx={{ color: '' }}>test:{total}</Typography> */}
                                         </Grid>
                                     </Grid>
                                 </Card>
@@ -417,9 +417,9 @@ const Dashboard = () => {
                                     <Typography variant="h5" sx={{ color: 'orangered' }}>Open: {open}</Typography>
                                     <Grid container spacing={2} sx={{ marginTop: '20px' }}>
                                         <Grid item xs={6} sm={6} md={6} marginBottom={1}>
-                                            <Typography variant="h6" sx={{ color: '' }}>test:{open}</Typography>
+                                            {/* <Typography variant="h6" sx={{ color: '' }}>test:{open}</Typography>
                                             <Typography variant="h6" sx={{ color: '' }}>test:{resolved}</Typography>
-                                            <Typography variant="h6" sx={{ color: '' }}>test:{total}</Typography>
+                                            <Typography variant="h6" sx={{ color: '' }}>test:{total}</Typography> */}
                                         </Grid>
                                     </Grid>
                                 </Card>
@@ -433,9 +433,9 @@ const Dashboard = () => {
                                     <Typography variant="h5" sx={{ color: 'green' }}>In Progress: {inProgress}</Typography>
                                     <Grid container spacing={2} sx={{ marginTop: '20px' }}>
                                         <Grid item xs={6} sm={6} md={6} marginBottom={1}>
-                                            <Typography variant="h6" sx={{ color: '' }}>test:{open}</Typography>
+                                            {/* <Typography variant="h6" sx={{ color: '' }}>test:{open}</Typography>
                                             <Typography variant="h6" sx={{ color: '' }}>test:{resolved}</Typography>
-                                            <Typography variant="h6" sx={{ color: '' }}>test:{total}</Typography>
+                                            <Typography variant="h6" sx={{ color: '' }}>test:{total}</Typography> */}
                                         </Grid>
                                     </Grid>
                                 </Card>
@@ -448,9 +448,9 @@ const Dashboard = () => {
                                     <Typography variant="h5" sx={{ color: 'blue' }}>Total: {total}</Typography>
                                     <Grid container spacing={2} sx={{ marginTop: '20px' }}>
                                         <Grid item xs={6} sm={6} md={6} marginBottom={1}>
-                                            <Typography variant="h6" sx={{ color: '' }}>test:{open}</Typography>
+                                            {/* <Typography variant="h6" sx={{ color: '' }}>test:{open}</Typography>
                                             <Typography variant="h6" sx={{ color: '' }}>test:{resolved}</Typography>
-                                            <Typography variant="h6" sx={{ color: '' }}>test:{total}</Typography>
+                                            <Typography variant="h6" sx={{ color: '' }}>test:{total}</Typography> */}
                                         </Grid>
                                     </Grid>
 
