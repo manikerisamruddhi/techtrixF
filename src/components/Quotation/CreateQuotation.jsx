@@ -158,11 +158,15 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                             // console.log(`Ticket ID N: ${NticketId.current}`);
                         }
                     } else if (defticketId) {
+
+                        handleCustomerChange(defaultCustomer);
                         // If a default customer and ticket ID exist, fetch the quotation by ticket ID
                         // console.log(`Using existing ticket ID: ${defticketId}`);
                         fetchedQuote = await dispatch(getQuotationByTicketId(defticketId)).unwrap();
                         NticketId.current = defticketId;
 
+                    
+                        console.log(existingCustomer);
                         // Check if a quotation was successfully fetched
                         if (fetchedQuote) {
                             // SetQuote(fetchedQuote); // Store the fetched quotation in state
@@ -440,19 +444,17 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                 </div>
 
                 {customerType === 'existing' && (
-                    <Form.Item
-                        label="Select Existing Customer"
-                        rules={[{ required: true, message: 'Please select an existing customer' }]}
-                    >
-                        <Select
-                            value={defaultCustomer ? customer?.customerId : undefined}
-                            showSearch
-                            placeholder="Select a customer"
-                            optionFilterProp="label"
-                            onChange={handleExistingCustomerChange}
-                            disabled={!!defaultCustomer}
-
-                        >
+                <Form.Item
+                label="Select Existing Customer"
+                rules={[{ required: true, message: 'Please select an existing customer' }]}>
+                <Select
+                    value={defaultCustomer ? defaultCustomer : undefined}
+                    showSearch
+                    placeholder="Select a customer"
+                    optionFilterProp="label"
+                    onChange={handleExistingCustomerChange}
+                    disabled={!!defaultCustomer}
+                >
                             {customers && customers.length > 0 ? (
                                 customers.map(customer => (
                                     <Option key={customer.customerId} value={customer.customerId} label={`${customer.firstName} ${customer.lastName} ${customer.email} ${customer.phoneNumber}`}>

@@ -34,7 +34,7 @@ const Quotations = () => {
         try {
             // Wait for the action to complete and unwrap the result
             const { payload } = await dispatch(getQuotationById(record.quotationId));
-    
+
             // console.log(payload); // Log the payload (the data you need)
             setSelectedQuotation(payload); // Set selected quotation data
             setIsDetailsModalVisible(true); // Show the details modal
@@ -42,14 +42,14 @@ const Quotations = () => {
             console.error('Error fetching quotation:', error); // Handle any errors
         }
     };
-    
+
 
     useEffect(() => {
         if (selectedQuotation) {
             // When the quotation state changes, update the selectedQuotation state
-            setSelectedQuotation(selectedQuotation); 
+            setSelectedQuotation(selectedQuotation);
         }
-    }, [selectedQuotation]); 
+    }, [selectedQuotation]);
 
     const handleCreateModalClose = () => {
         setIsCreateModalVisible(false);
@@ -135,14 +135,14 @@ const Quotations = () => {
             // render: (text) => <Link to={`/quotation/${text}`}>Quotation #{text}</Link>,
             // ...getColumnSearchProps('id'), // Search filter for Quotation ID
         },
-       
+
         {
             title: 'Comments',
             dataIndex: 'comments',
             key: 'comments',
             ...getColumnSearchProps('Comments'), // Search filter for Final Amount
         },
-        
+
         {
             title: 'Final Amount',
             dataIndex: 'finalAmount',
@@ -166,7 +166,7 @@ const Quotations = () => {
             key: 'createdDate',
             render: (text) => moment(text).format('YYYY-MM-DD'),
         },
-        
+
         {
             title: 'Actions',
             key: 'actions',
@@ -191,13 +191,13 @@ const Quotations = () => {
 
                     {loading === 'loading' ? (
                         <Spin tip="Loading..." />
-                    ) : quotations.length === 0 ? (
+                    ) : !quotations || quotations.length === 0 ? (
                         <Empty description="No Quotations Available" />
                     ) : (
                         <Table
                             dataSource={quotations}
                             columns={columns}
-                            rowKey="QuotationID"
+                            rowKey="quotationId"
                             pagination={false}
                         />
                     )}
