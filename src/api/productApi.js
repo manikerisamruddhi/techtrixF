@@ -16,10 +16,13 @@ const productApi = {
         return axiosInstance.put(`/products/update/${id}`, productData);
     },
     deleteProduct: (id) => {
-        return axiosInstance.delete(`/products/${id}`);
+        return axiosInstance.delete(`/products/delete/${id}`);
     },
     getProductByCustomer: (id) => {
-         return axiosInstance.get(`/products/get/customer/${id}`);
+        return axiosInstance.get(`/products/get/customer/${id}`);
+    },
+    getNonCustomerProducts: () => {
+        return axiosInstance.get(`/products/all-non-customer-products`);
     },
     // Warranty tracking
     getWarrantyInfo: (productId) => {
