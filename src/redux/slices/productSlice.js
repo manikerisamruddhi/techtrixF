@@ -16,6 +16,17 @@ export const fetchProducts = createAsyncThunk('products/fetchProducts', async (_
   }
 });
 
+export const fetchNonCustProducts = createAsyncThunk('products/fetchNonCustProducts', async (_, { rejectWithValue }) => {
+  try {
+    const response = await productApi.getNonCustomerProducts();
+    // console.log(response);
+    return response.data;
+    
+  } catch (error) {
+    return rejectWithValue(error.response.data);
+  }
+});
+
 export const fetchProductById = createAsyncThunk('products/fetchProductById', async (productId, { rejectWithValue }) => {
   try {
     const response = await productApi.getProductById(productId);
@@ -48,11 +59,15 @@ export const updateProduct = createAsyncThunk('products/updateProduct', async ({
   }
 });
 
-export const deleteProduct = createAsyncThunk('products/deleteProduct', async (productId, { rejectWithValue }) => {
+export const deleteProduct = createAsyncThunk('products/deleteProduct', async (productId, { dispatch, rejectWithValue }) => {
   try {
     await productApi.deleteProduct(productId);
     toast.success('Product deleted successfully!');
-    return productId;
+    
+    // Dispatch the fetchProducts action to refresh the product list
+    dispatch(fetchProducts());
+    
+    return productId; // Return the productId for the fulfilled case
   } catch (error) {
     toast.error('Failed to delete product');
     return rejectWithValue(error.response.data);
@@ -91,6 +106,20 @@ const productSlice = createSlice({
         state.loading = false;
       })
       .addCase(fetchProducts.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || 'Failed to fetch products';
+      })
+    
+      // Fetch Non cust Products
+      .addCase(fetchNonCustProducts.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchNonCustProducts.fulfilled, (state, action) => {
+        state.items = action.payload;
+        state.loading = false;
+      })
+      .addCase(fetchNonCustProducts.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || 'Failed to fetch products';
       })

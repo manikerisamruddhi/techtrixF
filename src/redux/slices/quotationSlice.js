@@ -7,9 +7,10 @@ export const fetchQuotations = createAsyncThunk('quotations/fetchQuotations', as
     return response.data; // Return the fetched data
 });
 
-export const addQuotation = createAsyncThunk('quotations/addQuotation', async (newQuotation) => {
+export const addQuotation = createAsyncThunk('quotations/addQuotation', async (quotationData) => {
     try {
-        const response = await quotationApi.createQuotation(newQuotation);
+        const response = await quotationApi.createQuotation(quotationData);
+        console.log(response.data);
         return response.data; // Return the added quotation
     } catch (error) {
         throw error; // Rethrow the error to be caught by the extraReducers
@@ -119,7 +120,7 @@ const quotationSlice = createSlice({
             })
             .addCase(addQuotation.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.error.message;
+                state.error = action.payload;
             })
 
             // Get Quotation by ID
