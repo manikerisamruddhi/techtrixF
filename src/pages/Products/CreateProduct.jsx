@@ -33,7 +33,7 @@ const CreateProduct = () => {
             <h1>Create New Product</h1>
             <form onSubmit={handleSubmit}>
                 <div>
-                    <label>Brand</label>
+                    <label>Brankkkkjkjd</label>
                     <input
                         type="text"
                         name="brand"

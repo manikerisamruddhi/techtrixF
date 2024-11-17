@@ -3,25 +3,40 @@ import { Modal, Descriptions, Badge, Button } from 'antd';
 import { useDispatch } from 'react-redux';
 import { DollarOutlined, ReloadOutlined } from '@ant-design/icons';
 import UpdateTicketModal from './UpdateTicketModal'; // Importing the update ticket modal
+import { fetchCustomerByID } from '../../redux/slices/customerSlice';
 import QuotationFormModal from '../Quotation/CreateQuotation';
 import { useEffect } from 'react';
 import { updateTicket } from '../../redux/slices/ticketSlice';
 
 const TicketDetailsModal = ({ visible, ticket, onClose, onCreateQuotation, users }) => {
+    const dispatch = useDispatch();
     const [isQuotationModalVisible, setQuotationModalVisible] = useState(false); // State to manage quotation modal visibility
     const [isUpdateModalVisible, setUpdateModalVisible] = useState(false); // State to manage update ticket modal visibility
     
     const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
     const [createdById, setCreatedBy] = useState(''); // State variable to store createdById
     const [assighnedToId, setAssighnedToId] = useState(''); // State variable to store createdById
+    const [customer, setCustomer] = useState(''); // State variable to store createdById
 
-    // Effect to run when the ticket is available
-    useEffect(() => {
-        if (ticket) {
-            setCreatedBy(ticket.createdById); // Set createdById from ticket
-            setAssighnedToId(ticket.assignedTo); // Set createdById from ticket
-        }
-    }, [ticket]);
+
+// Effect to run when the ticket is available
+useEffect(() => {
+    if (ticket) {
+        dispatch(fetchCustomerByID(ticket.customerId))
+            .unwrap() // Unwrap the promise to get the resolved response
+            .then((response) => {
+                setCustomer(response); // Set the customer data from the response
+                console.log(response); // Log the resolved response
+            })
+            .catch((error) => {
+                console.error("Error fetching customer:", error); // Handle error if the API call fails
+            });
+
+        setCreatedBy(ticket.createdById); // Set createdById from ticket
+        setAssighnedToId(ticket.assignedTo); // Set assignedToId from ticket
+    }
+}, [ticket, dispatch]);
+
 
     // Function to update createdById field of the ticket
     const updateCreatedBy = () => {
@@ -97,7 +112,7 @@ const TicketDetailsModal = ({ visible, ticket, onClose, onCreateQuotation, users
                             <Descriptions.Item label="Ticket ID" span={1}>{ticket.ticketId}</Descriptions.Item>
                             <Descriptions.Item label="title" span={1}>{ticket.title}</Descriptions.Item>
                             {ticket.customerId && (
-                                <Descriptions.Item label="Customer ID" span={1}>{ticket.customerId}</Descriptions.Item>
+                                <Descriptions.Item label="Customer" span={1}>{customer.firstName + ' '+ customer.lastName}</Descriptions.Item>
                             )}
                             <Descriptions.Item label="Created By" span={1}>{createdByName}</Descriptions.Item>
                             <Descriptions.Item label="Remark" span={2}>{ticket.description}</Descriptions.Item>
@@ -164,6 +179,7 @@ const TicketDetailsModal = ({ visible, ticket, onClose, onCreateQuotation, users
             {/* Update Ticket Modal */}
             <UpdateTicketModal
                 ticketData={ticket} // Pass the current ticket data for updating
+                customer
                 isVisible={isUpdateModalVisible}
                 onUpdate={(updatedTicket) => {
                     onUpdateTicket(updatedTicket);

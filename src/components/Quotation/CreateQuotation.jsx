@@ -10,11 +10,10 @@ import {
     addQuotaionProduct
 } from '../../redux/slices/quotationSlice';
 import { fetchCustomers, addCustomer } from '../../redux/slices/customerSlice'; // Assuming a customer slice exists to fetch customers
-import { addProduct, fetchProducts } from '../../redux/slices/productSlice';
+import { addProduct, fetchNonCustProducts } from '../../redux/slices/productSlice';
 import { createTicket, updateTicket } from '../../redux/slices/ticketSlice'
 import moment from 'moment';
 import CreateCustomerForm from '../Customer/CreateCustomerForm';
-import { Category } from '@mui/icons-material';
 
 const currentDate = moment();
 const { Option } = Select; // Destructure Option from Select
@@ -72,6 +71,8 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
     const [editIndex, setEditIndex] = useState(null); // To track which product is being edited
     const [customerType, setCustomerType] = useState('existing'); // Track customer type
     const [existingCustomer, setExistingCustomer] = useState(undefined); // Track selected existing customer
+    
+    const [productType, setProductType] = useState('Hardware'); // Default selection is Hardware    
     const [newCustomer, setNewCustomer] = useState({
         firstName: '',
         lastName: '',
@@ -94,7 +95,7 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
         if (visible) {
             dispatch(fetchQuotations());
             dispatch(fetchCustomers()); // Fetch customers when the modal is visible
-            dispatch(fetchProducts()); // Fetch products when the modal is visible
+            dispatch(fetchNonCustProducts()); // Fetch products when the modal is visible
         }
     }, [dispatch, visible]);
 
@@ -165,7 +166,7 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                         fetchedQuote = await dispatch(getQuotationByTicketId(defticketId)).unwrap();
                         NticketId.current = defticketId;
 
-                    
+
                         console.log(existingCustomer);
                         // Check if a quotation was successfully fetched
                         if (fetchedQuote) {
@@ -285,11 +286,11 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
             const quotationData = {
                 ticketId: NticketId !== null ? NticketId.current.value : defticketId,
                 customerId: customerId,
-                productId: addedProductIds,
-                FinalAmount: addedProductsResponse.reduce((total, prod) => total + prod.price * prod.quantity, 0),
+                // productId: addedProductIds,
+                // FinalAmount: addedProductsResponse.reduce((total, prod) => total + prod.price * prod.quantity, 0),
                 status: 'Pending',
                 createdBy: loggedInUserId,
-                isQuotationCreated: true,
+                // isQuotationCreated: true,
                 createdDate: currentDate.format('YYYY-MM-DD HH:mm:ss'),
                 comments: comment,
             };
@@ -323,7 +324,7 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
 
             onClose(); // Close modal after submission
         } catch (err) {
-            // console.error(err);
+            console.error(err);
             notification.error({ message: 'Error adding quotation' });
         }
     };
@@ -402,8 +403,11 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
             return Quant; // Return the message if any quantity is invalid
         }
 
-        // Calculate total amount if all quantities are valid
-        return addedProducts.reduce((total, prod) => total + (prod.price * prod.quantity), 0);
+        // Calculate total amount including GST
+        return addedProducts.reduce((total, prod) => {
+            const gstAmount = (prod.price * (prod.gst / 100)) * prod.quantity; // Calculate GST for the product
+            return total + (prod.price * prod.quantity) + gstAmount; // Add base price and GST to total
+        }, 0);
     };
 
     useEffect(() => {
@@ -444,17 +448,17 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                 </div>
 
                 {customerType === 'existing' && (
-                <Form.Item
-                label="Select Existing Customer"
-                rules={[{ required: true, message: 'Please select an existing customer' }]}>
-                <Select
-                    value={defaultCustomer ? defaultCustomer : undefined}
-                    showSearch
-                    placeholder="Select a customer"
-                    optionFilterProp="label"
-                    onChange={handleExistingCustomerChange}
-                    disabled={!!defaultCustomer}
-                >
+                    <Form.Item
+                        label="Select Existing Customer"
+                        rules={[{ required: true, message: 'Please select an existing customer' }]}>
+                        <Select
+                            value={defaultCustomer ? defaultCustomer : undefined}
+                            showSearch
+                            placeholder="Select a customer"
+                            optionFilterProp="label"
+                            onChange={handleExistingCustomerChange}
+                            disabled={!!defaultCustomer}
+                        >
                             {customers && customers.length > 0 ? (
                                 customers.map(customer => (
                                     <Option key={customer.customerId} value={customer.customerId} label={`${customer.firstName} ${customer.lastName} ${customer.email} ${customer.phoneNumber}`}>
@@ -482,11 +486,10 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                         columns={[
                             { title: 'Brand', dataIndex: 'brand', key: 'brand' },
                             { title: 'Model No', dataIndex: 'modelNo', key: 'modelNo' },
-                            { title: 'description', dataIndex: 'description', key: 'description' },
+                            { title: 'Description', dataIndex: 'description', key: 'description' },
                             { title: 'Price', dataIndex: 'price', key: 'price' },
                             { title: 'Quantity', dataIndex: 'quantity', key: 'quantity' },
-                            // { title: 'Serial Number?', dataIndex: 'hasSerialNumber', key: 'hasSerialNumber',
-                            //      render: text => (text === 'yes' ? 'Yes' : 'No') },
+                            { title: 'GST (%)', dataIndex: 'gst', key: 'gst' }, // Update to show GST percentage
                             {
                                 title: 'Actions',
                                 key: 'actions',
@@ -506,7 +509,7 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                                     <strong>Total Amount:</strong>
                                 </Table.Summary.Cell>
                                 <Table.Summary.Cell>
-                                    <strong>₹ {calculateTotalAmount()}</strong>
+                                    <strong>₹ {calculateTotalAmount()} </strong>
                                 </Table.Summary.Cell>
                             </Table.Summary.Row>
                         )}
@@ -576,27 +579,43 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                             />
                         </div>
 
+                        {/* Product Type Selection */}
+                    <Form.Item label="Product Type">
+                        <Radio.Group value={productType} onChange={e => setProductType(e.target.value)}>
+                            <Radio value="Hardware">Hardware</Radio>
+                            <Radio value="Software">Software</Radio>
+                        </Radio.Group>
+                    </Form.Item>
+
+                    {productType === 'Hardware' && (
                         <Row gutter={16}>
-                            <Col span={7}>
+                            <Col span={12}>
                                 <Form.Item label="Brand" rules={[{ required: true }]}>
                                     <Input value={newProduct.brand} onChange={e => setNewProduct({ ...newProduct, brand: e.target.value })} />
                                 </Form.Item>
                             </Col>
-                            <Col span={8}>
+                            <Col span={12}>
                                 <Form.Item label="Model No" rules={[{ required: true }]}>
                                     <Input value={newProduct.modelNo} onChange={e => setNewProduct({ ...newProduct, modelNo: e.target.value })} />
                                 </Form.Item>
                             </Col>
-                            <Col span={6}>
-                                <Form.Item label="Price" rules={[{ required: true }]}>
-                                    <Input
-                                        type="number"
-                                        value={newProduct.price}
-                                        onChange={e => setNewProduct({ ...newProduct, price: parseFloat(e.target.value) })}
+                           
+                        </Row>
+
+                    )}
+                        <Row>
+                            <Col span={24}>
+                                <Form.Item label="Description">
+                                    <Input.TextArea
+                                        rows={3}
+                                        value={newProduct.description}
+                                        onChange={e => setNewProduct({ ...newProduct, description: e.target.value })}
                                     />
                                 </Form.Item>
                             </Col>
                         </Row>
+
+                     {productType === 'Hardware' && (
 
                         <Row gutter={16}>
                             <Col span={8}>
@@ -638,13 +657,61 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                                 </Form.Item>
                             </Col>
                         </Row>
+                     )}
 
-                        <Row gutter={20}>
-                            <Col span={7}>
+                        <Row gutter={16}>
+                        <Col span={8}>
+                                <Form.Item label="Price" rules={[{ required: true }]}>
+                                    <Input
+                                        type="number"
+                                        value={newProduct.price}
+                                        onChange={e => setNewProduct({ ...newProduct, price: parseFloat(e.target.value) })}
+                                    />
+                                </Form.Item>
+                            </Col>
+                            <Col span={8}>
+                                <Form.Item
+                                    label="GST :"
+                                    // labelCol={{ span: 8 }}
+                                    // wrapperCol={{ span: 16 }}
+                                    rules={[{ required: true, message: 'Please select GST!' }]}
+                                >
+                                    <Select
+                                        placeholder="Select GST"
+                                        value={newProduct.gst}
+                                        onChange={value => setNewProduct({ ...newProduct, gst: value })}
+                                    >
+                                        <Option value="18">18%</Option>
+                                        <Option value="28">28%</Option>
+                                        <Option value="0">None</Option>
+                                    </Select>
+                                </Form.Item>
+                            </Col>
+
+                            <Col span={8}>
+                                <Form.Item label="Quantity" 
+                                rules={[{ required: true }]}
+                                    // labelCol={{ span: 10 }}
+                                    // wrapperCol={{ span: 14 }}
+                                    >
+                                    <Input
+                                        type="number"
+                                        value={newProduct.quantity}
+                                        onChange={e => setNewProduct({ ...newProduct, quantity: parseInt(e.target.value) })}
+                                    />
+                                </Form.Item>
+                            </Col>
+
+                           
+                           
+                        </Row>
+                        {productType === 'Hardware' && ( 
+                            <Row gutter={16}>
+                            <Col span={12}>
                                 <Form.Item
                                     label="is Serial No."
-                                    labelCol={{ span: 12 }}
-                                    wrapperCol={{ span: 12 }}
+                                    // labelCol={{ span: 12 }}
+                                    // wrapperCol={{ span: 12 }}
                                 >
                                     <Radio.Group
                                         value={newProduct.hasSerialNumber}
@@ -657,10 +724,11 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                                 </Form.Item>
                             </Col>
 
-                            <Col span={7}>
+                            <Col span={12}>
                                 <Form.Item label="Warrenty months:" rules={[{ required: true }]}
-                                    labelCol={{ span: 16 }}
-                                    wrapperCol={{ span: 8 }}>
+                                    // labelCol={{ span: 16 }}
+                                    // wrapperCol={{ span: 8 }}
+                                    >
                                     <Input
                                         type="number"
                                         value={newProduct.warrenty}
@@ -668,52 +736,11 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                                     />
                                 </Form.Item>
                             </Col>
-
-                            <Col span={6}>
-                                <Form.Item label="Quantity" rules={[{ required: true }]}
-                                    labelCol={{ span: 7 }}
-                                    wrapperCol={{ span: 10}}>
-                                    <Input
-                                        type="number"
-                                        value={newProduct.quantity}
-                                        onChange={e => setNewProduct({ ...newProduct, quantity: parseInt(e.target.value) })}
-                                    />
-                                </Form.Item>
-                            </Col>
-
-                            <Col span={4}>
-        <Form.Item
-            label="GST :"
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 16}}
-            rules={[{ required: true, message: 'Please select GST!' }]}
-        >
-            <Select
-                placeholder="Select GST"
-                value={newProduct.gst}
-                onChange={value => setNewProduct({ ...newProduct, gst: value })}
-            >
-                <Option value="18">18%</Option>
-                <Option value="28">28%</Option>
-                <Option value="0">None</Option>
-            </Select>
-        </Form.Item>
-    </Col>
-
+                           
                         </Row>
 
-                        <Row>
-                            <Col span={24}>
-                                <Form.Item label="Description">
-                                    <Input.TextArea
-                                        rows={3}
-                                        value={newProduct.description}
-                                        onChange={e => setNewProduct({ ...newProduct, description: e.target.value })}
-                                    />
-                                </Form.Item>
-                            </Col>
-                        </Row>
-
+                       
+                            )}
                         <div style={{ textAlign: 'right' }}>
                             <Button type="primary" onClick={handleAddOrEditProduct}>
                                 {editIndex !== null ? 'Update Product' : 'Add Product'}

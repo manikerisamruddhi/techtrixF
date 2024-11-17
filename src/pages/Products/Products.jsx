@@ -34,6 +34,7 @@ const Products = () => {
             content: 'Are you sure you want to delete this product?',
             onOk: () => {
                 dispatch(deleteProduct(productId));
+                
             },
         });
     };
@@ -99,7 +100,7 @@ const Products = () => {
                 <span>
                     <Button type="primary" onClick={() => handleViewDetails(record)}>View</Button>
                     <Button type="link" onClick={() => handleOpenEditModal(record)}>Edit</Button>
-                    <Button type="danger" onClick={() => handleDelete(record.id)}>Delete</Button>
+                    <Button type="danger" onClick={() => handleDelete(record.productId)}>Delete</Button>
                 </span>
             ),
         },

@@ -6,6 +6,7 @@ import CreateQuotationFormModal from '../../components/Quotation/CreateQuotation
 import QuotationDetailsModal from '../../components/Quotation/QuotationDetails';
 import { SearchOutlined } from '@ant-design/icons';
 import moment from 'moment';
+import { useLocation } from 'react-router-dom';
 
 const { Content } = Layout;
 const { Title } = Typography;
@@ -22,7 +23,7 @@ const Quotations = () => {
 
     useEffect(() => {
         dispatch(fetchQuotations());
-    }, [dispatch]);
+    }, [dispatch, useLocation()]);
 
     useEffect(() => {
         if (error) {
