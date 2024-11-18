@@ -60,7 +60,7 @@ const Quotations = () => {
     const handleDetailsModalClose = () => {
         setIsDetailsModalVisible(false);
         setSelectedQuotation(null); // Clear the selected quotation
-        dispatch(fetchQuotations());
+        // dispatch(fetchQuotations()); 
     };
 
     const handleCreateQuotationSuccess = () => {

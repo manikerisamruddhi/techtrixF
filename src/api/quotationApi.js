@@ -11,7 +11,7 @@ const quotationApi = {
         return axiosInstance.post('/quotations/add', quotationData);
     },
     updateQuotation: (quotationId, quotationData) => {
-        return axiosInstance.put(`/quotations/update/ ${quotationId}`, quotationData);
+        return axiosInstance.put(`/quotations/update/${quotationId}`, quotationData);
     },
     deleteQuotation: (id) => {
         return axiosInstance.delete(`/quotations/${id}`);

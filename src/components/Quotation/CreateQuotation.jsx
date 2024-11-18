@@ -62,8 +62,9 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
         price: 0,
         quantity: 1,
         description: '',
-        hasSerialNumber: 'no',
+        isSerialNoAllowed: false,
         partCode: '',
+        productType: 'Hardware'
 
     });
     const [showNewProductForm, setShowNewProductForm] = useState(false);
@@ -71,7 +72,7 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
     const [editIndex, setEditIndex] = useState(null); // To track which product is being edited
     const [customerType, setCustomerType] = useState('existing'); // Track customer type
     const [existingCustomer, setExistingCustomer] = useState(undefined); // Track selected existing customer
-    
+
     const [productType, setProductType] = useState('Hardware'); // Default selection is Hardware    
     const [newCustomer, setNewCustomer] = useState({
         firstName: '',
@@ -207,7 +208,7 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
 
             // console.log('Current quotation state:', JSON.stringify(Quote, null, 2)); // Log the current state of the quotation
         }
-    }, [visible, defaultCustomer, defticketId, loggedInUserId]); // Dependencies for the useEffect hook
+    }, [visible]); // Dependencies for the useEffect hook
 
 
     const handleFinish = async () => {
@@ -264,18 +265,17 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                     price: product.price,
                     quantity: product.quantity,
                     description: product.description,
-                    hasSerialNumber: product.hasSerialNumber,
-                    partCode: product.partCode,
                     isSerialNoAllowed: product.isSerialNoAllowed,
+                    partCode: product.partCode,
                     hsnCode: product.hsnCode,
                     unitOfMeasurement: product.unitOfMeasurement,
                     gst: product.gst,
                     warrenty: product.warrenty,
-                    productType: 'Hardware',
+                    productType: product.productType,
                     customerId: customerId || defaultCustomer || customer.customerId,
                 };
 
-                // console.log('Adding new product:', newProductData);
+                console.log('Adding new product:', newProductData);
                 const addedProduct = await dispatch(addProduct(newProductData)).unwrap();
                 return addedProduct;
             });
@@ -295,15 +295,12 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                 comments: comment,
             };
 
-            // console.log(`Updating quotation with data: ${JSON.stringify(quotationData, null, 2)}`);
-            const quotationResponse = await dispatch(updateQuotation({ quotationId: Quote.current.quotationId, data: quotationData })).unwrap();
-            // console.log('Quotation updated:', quotationResponse);
-
+          
 
             // Create entries in quotationProducts table for each product
             const quotationProductPromises = addedProductIds.map(async (productId) => {
                 const quotationProductsData = {
-                    quotationId: quotationResponse.quotationId,
+                    quotationId: Quote.current.quotationId,
                     productId: productId,
                 };
 
@@ -312,7 +309,12 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                 return quotationProductResponse;
             });
             const quotationProductsResponses = await Promise.all(quotationProductPromises);
-            // console.log('Quotation products added:', quotationProductsResponses);
+            console.log('Quotation products added:', quotationProductsResponses);
+
+  // console.log(`Updating quotation with data: ${JSON.stringify(quotationData, null, 2)}  ${Quote.current.quotationId}`);
+  const quotationResponse = await dispatch(updateQuotation({ quotationId: Quote.current.quotationId, data: quotationData })).unwrap();
+  // console.log('Quotation updated:', quotationResponse);
+
 
             notification.success({ message: 'Quotation added successfully!' });
             form.resetFields();
@@ -341,8 +343,8 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
 
     const handleAddOrEditProduct = () => {
         // Validation Logic
-        if (!newProduct.brand || !newProduct.modelNo || newProduct.price <= 0 || newProduct.quantity <= 0) {
-            notification.error({ message: 'Please fill in all product fields correctly!' });
+        if (newProduct.price <= 0 || newProduct.quantity <= 0 ) {
+            notification.error({ message: 'Please fill price and quantity correctly!' });
             return;
         }
 
@@ -362,7 +364,7 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
         }
 
         // Reset form
-        setNewProduct({ brand: '', modelNo: '', price: 0, quantity: 1, description: '', hasSerialNumber: 'no' });
+        setNewProduct({ brand: '', modelNo: '', price: 0, quantity: 1, description: '', isSerialNoAllowed: false, productType: 'Hardware' });
         setShowNewProductForm(false);
     };
 
@@ -573,36 +575,39 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                                 icon={<CloseCircleOutlined />}
                                 onClick={() => {
                                     setShowNewProductForm(false);
-                                    setNewProduct({ brand: '', modelNo: '', price: 0, quantity: 1, description: '', hasSerialNumber: 'no' });
+                                    setNewProduct({ brand: '', modelNo: '', price: 0, quantity: 1, description: '', isSerialNoAllowed: false });
                                     setEditIndex(null);
                                 }}
                             />
                         </div>
 
                         {/* Product Type Selection */}
-                    <Form.Item label="Product Type">
-                        <Radio.Group value={productType} onChange={e => setProductType(e.target.value)}>
-                            <Radio value="Hardware">Hardware</Radio>
-                            <Radio value="Software">Software</Radio>
-                        </Radio.Group>
-                    </Form.Item>
+                        <Form.Item label="Product Type">
+                            <Radio.Group value={productType} onChange={e => {
+                                setProductType(e.target.value);
+                                setNewProduct(prev => ({ ...prev, productType: e.target.value })); // Update newProduct with selected productType
+                            }}>
+                                <Radio value="Hardware">Hardware</Radio>
+                                <Radio value="Service">Service</Radio>
+                            </Radio.Group>
+                        </Form.Item>
 
-                    {productType === 'Hardware' && (
-                        <Row gutter={16}>
-                            <Col span={12}>
-                                <Form.Item label="Brand" rules={[{ required: true }]}>
-                                    <Input value={newProduct.brand} onChange={e => setNewProduct({ ...newProduct, brand: e.target.value })} />
-                                </Form.Item>
-                            </Col>
-                            <Col span={12}>
-                                <Form.Item label="Model No" rules={[{ required: true }]}>
-                                    <Input value={newProduct.modelNo} onChange={e => setNewProduct({ ...newProduct, modelNo: e.target.value })} />
-                                </Form.Item>
-                            </Col>
-                           
-                        </Row>
+                        {productType === 'Hardware' && (
+                            <Row gutter={16}>
+                                <Col span={12}>
+                                    <Form.Item label="Brand" rules={[{ required: true }]}>
+                                        <Input value={newProduct.brand} onChange={e => setNewProduct({ ...newProduct, brand: e.target.value })} />
+                                    </Form.Item>
+                                </Col>
+                                <Col span={12}>
+                                    <Form.Item label="Model No" rules={[{ required: true }]}>
+                                        <Input value={newProduct.modelNo} onChange={e => setNewProduct({ ...newProduct, modelNo: e.target.value })} />
+                                    </Form.Item>
+                                </Col>
 
-                    )}
+                            </Row>
+
+                        )}
                         <Row>
                             <Col span={24}>
                                 <Form.Item label="Description">
@@ -615,56 +620,58 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                             </Col>
                         </Row>
 
-                     {productType === 'Hardware' && (
+                        {productType === 'Hardware' && (
+
+                            <Row gutter={16}>
+                                <Col span={8}>
+                                    <Form.Item
+                                        label="HSN Code :"
+                                    // Add required rule if necessary
+                                    // rules={[{ required: true, message: 'Please input the HSN code!' }]}
+                                    >
+                                        <Input
+                                            value={newProduct.hsnCode}
+                                            onChange={e => setNewProduct({ ...newProduct, hsnCode: e.target.value })}
+                                        />
+                                    </Form.Item>
+                                </Col>
+
+                                <Col span={8}>
+                                    <Form.Item
+                                        label="Unit of Measurement :"
+                                    // Add required rule if necessary
+                                    // rules={[{ required: true, message: 'Please input the unit of measurement!' }]}
+                                    >
+                                        <Input
+                                            value={newProduct.unitOfMeasurement}
+                                            onChange={e => setNewProduct({ ...newProduct, unitOfMeasurement: e.target.value })}
+                                        />
+                                    </Form.Item>
+                                </Col>
+
+                                <Col span={8}>
+                                    <Form.Item
+                                        label="Part Code :"
+                                    // Add required rule if necessary
+                                    // rules={[{ required: true, message: 'Please input the part code!' }]}
+                                    >
+                                        <Input
+                                            value={newProduct.partCode}
+                                            onChange={e => setNewProduct({ ...newProduct, partCode: e.target.value })}
+                                        />
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+                        )}
 
                         <Row gutter={16}>
                             <Col span={8}>
-                                <Form.Item
-                                    label="HSN Code :"
-                                // Add required rule if necessary
-                                // rules={[{ required: true, message: 'Please input the HSN code!' }]}
-                                >
-                                    <Input
-                                        value={newProduct.hsnCode}
-                                        onChange={e => setNewProduct({ ...newProduct, hsnCode: e.target.value })}
-                                    />
-                                </Form.Item>
-                            </Col>
-
-                            <Col span={8}>
-                                <Form.Item
-                                    label="Unit of Measurement :"
-                                // Add required rule if necessary
-                                // rules={[{ required: true, message: 'Please input the unit of measurement!' }]}
-                                >
-                                    <Input
-                                        value={newProduct.unitOfMeasurement}
-                                        onChange={e => setNewProduct({ ...newProduct, unitOfMeasurement: e.target.value })}
-                                    />
-                                </Form.Item>
-                            </Col>
-
-                            <Col span={8}>
-                                <Form.Item
-                                    label="Part Code :"
-                                // Add required rule if necessary
-                                // rules={[{ required: true, message: 'Please input the part code!' }]}
-                                >
-                                    <Input
-                                        value={newProduct.partCode}
-                                        onChange={e => setNewProduct({ ...newProduct, partCode: e.target.value })}
-                                    />
-                                </Form.Item>
-                            </Col>
-                        </Row>
-                     )}
-
-                        <Row gutter={16}>
-                        <Col span={8}>
                                 <Form.Item label="Price" rules={[{ required: true }]}>
                                     <Input
                                         type="number"
                                         value={newProduct.price}
+                                        
+                                    // rules={[{ required: true, message: 'Please input the part code!' }]}
                                         onChange={e => setNewProduct({ ...newProduct, price: parseFloat(e.target.value) })}
                                     />
                                 </Form.Item>
@@ -689,11 +696,11 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                             </Col>
 
                             <Col span={8}>
-                                <Form.Item label="Quantity" 
-                                rules={[{ required: true }]}
-                                    // labelCol={{ span: 10 }}
-                                    // wrapperCol={{ span: 14 }}
-                                    >
+                                <Form.Item label="Quantity"
+                                    rules={[{ required: true }]}
+                                // labelCol={{ span: 10 }}
+                                // wrapperCol={{ span: 14 }}
+                                >
                                     <Input
                                         type="number"
                                         value={newProduct.quantity}
@@ -702,45 +709,45 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                                 </Form.Item>
                             </Col>
 
-                           
-                           
+
+
                         </Row>
-                        {productType === 'Hardware' && ( 
+                        {productType === 'Hardware' && (
                             <Row gutter={16}>
-                            <Col span={12}>
-                                <Form.Item
-                                    label="is Serial No."
+                                <Col span={12}>
+                                    <Form.Item
+                                        label="is Serial No."
                                     // labelCol={{ span: 12 }}
                                     // wrapperCol={{ span: 12 }}
-                                >
-                                    <Radio.Group
-                                        value={newProduct.hasSerialNumber}
-                                        onChange={e => setNewProduct({ ...newProduct, hasSerialNumber: e.target.value })}
-                                        style={{ display: 'inline-block' }}
                                     >
-                                        <Radio value="yes">Yes</Radio>
-                                        <Radio value="no">No</Radio>
-                                    </Radio.Group>
-                                </Form.Item>
-                            </Col>
+                                        <Radio.Group
+                                            value={newProduct.isSerialNoAllowed}
+                                            onChange={e => setNewProduct({ ...newProduct, isSerialNoAllowed: e.target.value })}
+                                            style={{ display: 'inline-block' }}
+                                        >
+                                            <Radio value={true}>Yes</Radio>
+                                            <Radio value={false}>No</Radio>
+                                        </Radio.Group>
+                                    </Form.Item>
+                                </Col>
 
-                            <Col span={12}>
-                                <Form.Item label="Warrenty months:" rules={[{ required: true }]}
+                                <Col span={12}>
+                                    <Form.Item label="Warrenty months:" rules={[{ required: true }]}
                                     // labelCol={{ span: 16 }}
                                     // wrapperCol={{ span: 8 }}
                                     >
-                                    <Input
-                                        type="number"
-                                        value={newProduct.warrenty}
-                                        onChange={e => setNewProduct({ ...newProduct, warrenty: parseFloat(e.target.value) })}
-                                    />
-                                </Form.Item>
-                            </Col>
-                           
-                        </Row>
+                                        <Input
+                                            type="number"
+                                            value={newProduct.warrenty}
+                                            onChange={e => setNewProduct({ ...newProduct, warrenty: parseFloat(e.target.value) })}
+                                        />
+                                    </Form.Item>
+                                </Col>
 
-                       
-                            )}
+                            </Row>
+
+
+                        )}
                         <div style={{ textAlign: 'right' }}>
                             <Button type="primary" onClick={handleAddOrEditProduct}>
                                 {editIndex !== null ? 'Update Product' : 'Add Product'}
