@@ -116,7 +116,7 @@ const quotationSlice = createSlice({
             })
             .addCase(addQuotation.fulfilled, (state, action) => {
                 state.loading = false;
-                state.quotations.push(action.payload);
+                state.quotations = action.payload;
             })
             .addCase(addQuotation.rejected, (state, action) => {
                 state.loading = false;
@@ -129,13 +129,13 @@ const quotationSlice = createSlice({
             })
             .addCase(getQuotationById.fulfilled, (state, action) => {
                 state.loading = false;
-                const quotation = action.payload;
-                const index = state.quotations.findIndex(q => q.id === quotation.id);
-                if (index !== -1) {
-                    state.quotations[index] = quotation; // Update existing quotation if found
-                } else {
-                    state.quotations.push(quotation); // Otherwise, add it to the list
-                }
+                // const quotation = action.payload;
+                // const index = state.quotations.findIndex(q => q.id === quotation.id);
+                // if (index !== -1) {
+                //     state.quotations[index] = quotation; // Update existing quotation if found
+                // } else {
+                //     state.quotations.push(quotation); // Otherwise, add it to the list
+                // }
             })
             .addCase(getQuotationById.rejected, (state, action) => {
                 state.loading = false;
@@ -173,11 +173,11 @@ const quotationSlice = createSlice({
             })
             .addCase(updateQuotation.fulfilled, (state, action) => {
                 state.loading = false;
-                const updatedQuotation = action.payload;
-                const index = state.quotations.findIndex((q) => q.id === updatedQuotation.id);
-                if (index !== -1) {
-                    state.quotations[index] = updatedQuotation; // Update the quotation in the state
-                }
+                // const updatedQuotation = action.payload;
+                // const index = state.quotations.findIndex((q) => q.id === updatedQuotation.id);
+                // if (index !== -1) {
+                //     state.quotations[index] = updatedQuotation; // Update the quotation in the state
+                // }
             })
             .addCase(updateQuotation.rejected, (state, action) => {
                 state.loading = false;

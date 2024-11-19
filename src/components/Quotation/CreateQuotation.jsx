@@ -89,7 +89,7 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
     // const [NticketId, setNticketId] = useState(null);
     const NticketId = useRef(null);
     const Quote = useRef(null);
-    // const [Quote, SetQuote] = useState(null);
+    const [QuoteState, SetQuoteState] = useState(null);
 
 
     useEffect(() => {
@@ -122,6 +122,13 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
     }, [customer]);
 
 
+    useEffect(() => {
+        // Scroll to the Add Product form when showNewProductForm changes to true
+        if (showNewProductForm && addProductFormRef.current) {
+            addProductFormRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [showNewProductForm]);
+    
     useEffect(() => {
         // Check if the component is visible
         if (visible) {
@@ -159,7 +166,7 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                             // console.log(`Ticket ID: ${T.ticketId}`);
                             // console.log(`Ticket ID N: ${NticketId.current}`);
                         }
-                    } else if (defticketId) {
+                    } else if (defaultCustomer) {
 
                         handleCustomerChange(defaultCustomer);
                         // If a default customer and ticket ID exist, fetch the quotation by ticket ID
@@ -193,9 +200,11 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                         Quote.current = addedQuote;
                         // console.log(`Added quotation: ${addedQuote}`);
                     }
+                    console.log(Quote.current);
+                  SetQuoteState(Quote.current);
                 } catch (error) {
                     // Log any errors that occur during the fetching or creating process
-                    // console.error('Error fetching or creating quotation:', error);
+                    console.error('Error fetching or creating quotation:', error);
                 }
             };
             if (Quote.current) {
@@ -205,11 +214,94 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
 
             // Call the fetchData function to execute the logic
             fetchData();
+            
 
             // console.log('Current quotation state:', JSON.stringify(Quote, null, 2)); // Log the current state of the quotation
         }
     }, [visible]); // Dependencies for the useEffect hook
 
+
+    
+
+    const handleProductSelect = (value) => {
+        const selectedProduct = products.find(product => product.productId === value);
+        if (selectedProduct) {
+            const productWithKey = { ...selectedProduct, key: Date.now() }; // Add a unique key for rendering
+            setAddedProducts(prev => [...prev, productWithKey]); // Add the selected product to addedProducts
+            notification.success({ message: 'Product added successfully!' });
+        }
+    };
+
+    const handleAddOrEditProduct = () => {
+        // Validation Logic
+        if (newProduct.price <= 0 || newProduct.quantity <= 0 ) {
+            notification.error({ message: 'Please fill price and quantity correctly!' });
+            return;
+        }
+
+        if (editIndex !== null) {
+            // Edit existing product
+            const updatedProducts = addedProducts.map((product, index) =>
+                index === editIndex ? { ...newProduct, key: product.key } : product
+            );
+            setAddedProducts(updatedProducts);
+            notification.success({ message: 'Product updated successfully!' });
+            setEditIndex(null); // Reset edit index
+        } else {
+            // Add new product
+            const productWithKey = { ...newProduct, key: Date.now() };
+            setAddedProducts(prev => [...prev, productWithKey]);
+            notification.success({ message: 'Product added successfully!' });
+        }
+
+        // Reset form
+        setNewProduct({ brand: '', modelNo: '', price: 0, quantity: 1, description: '', isSerialNoAllowed: false, productType: 'Hardware' });
+        setShowNewProductForm(false);
+    };
+
+    const handleEditProduct = (index) => {
+        setNewProduct(addedProducts[index]);
+        setEditIndex(index); // Set the index of the product being edited
+        setShowNewProductForm(true); // Show the new product form for editing
+    };
+
+    const handleDeleteProduct = (index) => {
+        Modal.confirm({
+            title: 'Are you sure you want to delete this product?',
+            content: 'This action cannot be undone.',
+            onOk: () => {
+                const updatedProducts = addedProducts.filter((_, i) => i !== index);
+                setAddedProducts(updatedProducts);
+                notification.success({ message: 'Product deleted successfully!' });
+            },
+        });
+    };
+
+
+    const handleExistingCustomerChange = value => {
+        const selectedCustomer = customers.find(cust => cust.customerId === value);
+        setExistingCustomer(selectedCustomer);
+        setCustomer(selectedCustomer); // Update the customer state if needed
+
+    };
+
+    const calculateTotalAmount = () => {
+        // Check if any product has a null, undefined, or invalid quantity
+        const hasInvalidQuantity = addedProducts.some(prod => prod.quantity == null || prod.quantity <= 0);
+
+        if (hasInvalidQuantity) {
+            const Quant = <span style={{ color: 'lightred' }}>
+                Please update quantity
+            </span>
+            return Quant; // Return the message if any quantity is invalid
+        }
+
+        // Calculate total amount including GST
+        return addedProducts.reduce((total, prod) => {
+            const gstAmount = (prod.price * (prod.gst / 100)) * prod.quantity; // Calculate GST for the product
+            return total + (prod.price * prod.quantity) + gstAmount; // Add base price and GST to total
+        }, 0);
+    };
 
     const handleFinish = async () => {
         try {
@@ -296,14 +388,15 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
             };
 
           
-
+  console.log('----:', Quote.current, QuoteState);
             // Create entries in quotationProducts table for each product
             const quotationProductPromises = addedProductIds.map(async (productId) => {
                 const quotationProductsData = {
-                    quotationId: Quote.current.quotationId,
+                    quotationId: Quote.current ? Quote.current.quotationId : QuoteState.quotationId,
                     productId: productId,
                 };
 
+              
                 // console.log('Adding quotation product:', quotationProductsData);
                 const quotationProductResponse = await dispatch(addQuotaionProduct(quotationProductsData)).unwrap();
                 return quotationProductResponse;
@@ -332,92 +425,7 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
     };
 
 
-    const handleProductSelect = (value) => {
-        const selectedProduct = products.find(product => product.productId === value);
-        if (selectedProduct) {
-            const productWithKey = { ...selectedProduct, key: Date.now() }; // Add a unique key for rendering
-            setAddedProducts(prev => [...prev, productWithKey]); // Add the selected product to addedProducts
-            notification.success({ message: 'Product added successfully!' });
-        }
-    };
 
-    const handleAddOrEditProduct = () => {
-        // Validation Logic
-        if (newProduct.price <= 0 || newProduct.quantity <= 0 ) {
-            notification.error({ message: 'Please fill price and quantity correctly!' });
-            return;
-        }
-
-        if (editIndex !== null) {
-            // Edit existing product
-            const updatedProducts = addedProducts.map((product, index) =>
-                index === editIndex ? { ...newProduct, key: product.key } : product
-            );
-            setAddedProducts(updatedProducts);
-            notification.success({ message: 'Product updated successfully!' });
-            setEditIndex(null); // Reset edit index
-        } else {
-            // Add new product
-            const productWithKey = { ...newProduct, key: Date.now() };
-            setAddedProducts(prev => [...prev, productWithKey]);
-            notification.success({ message: 'Product added successfully!' });
-        }
-
-        // Reset form
-        setNewProduct({ brand: '', modelNo: '', price: 0, quantity: 1, description: '', isSerialNoAllowed: false, productType: 'Hardware' });
-        setShowNewProductForm(false);
-    };
-
-    const handleEditProduct = (index) => {
-        setNewProduct(addedProducts[index]);
-        setEditIndex(index); // Set the index of the product being edited
-        setShowNewProductForm(true); // Show the new product form for editing
-    };
-
-    const handleDeleteProduct = (index) => {
-        Modal.confirm({
-            title: 'Are you sure you want to delete this product?',
-            content: 'This action cannot be undone.',
-            onOk: () => {
-                const updatedProducts = addedProducts.filter((_, i) => i !== index);
-                setAddedProducts(updatedProducts);
-                notification.success({ message: 'Product deleted successfully!' });
-            },
-        });
-    };
-
-
-    const handleExistingCustomerChange = value => {
-        const selectedCustomer = customers.find(cust => cust.customerId === value);
-        setExistingCustomer(selectedCustomer);
-        setCustomer(selectedCustomer); // Update the customer state if needed
-
-    };
-
-    const calculateTotalAmount = () => {
-        // Check if any product has a null, undefined, or invalid quantity
-        const hasInvalidQuantity = addedProducts.some(prod => prod.quantity == null || prod.quantity <= 0);
-
-        if (hasInvalidQuantity) {
-            const Quant = <span style={{ color: 'lightred' }}>
-                Please update quantity
-            </span>
-            return Quant; // Return the message if any quantity is invalid
-        }
-
-        // Calculate total amount including GST
-        return addedProducts.reduce((total, prod) => {
-            const gstAmount = (prod.price * (prod.gst / 100)) * prod.quantity; // Calculate GST for the product
-            return total + (prod.price * prod.quantity) + gstAmount; // Add base price and GST to total
-        }, 0);
-    };
-
-    useEffect(() => {
-        // Scroll to the Add Product form when showNewProductForm changes to true
-        if (showNewProductForm && addProductFormRef.current) {
-            addProductFormRef.current.scrollIntoView({ behavior: 'smooth' });
-        }
-    }, [showNewProductForm]);
 
     const handleAddProductClick = () => {
         setShowNewProductForm(true);

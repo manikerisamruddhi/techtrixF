@@ -54,18 +54,17 @@ const Quotations = () => {
 
     const handleCreateModalClose = () => {
         setIsCreateModalVisible(false);
-        dispatch(fetchQuotations());
+        dispatch(fetchQuotations()); // Fetch quotations again to refresh the list
     };
 
     const handleDetailsModalClose = () => {
         setIsDetailsModalVisible(false);
         setSelectedQuotation(null); // Clear the selected quotation
-        // dispatch(fetchQuotations()); 
+        dispatch(fetchQuotations()); // Fetch quotations again to refresh the list
     };
 
     const handleCreateQuotationSuccess = () => {
-        // Optionally refetch quotations if needed
-        dispatch(fetchQuotations());
+        dispatch(fetchQuotations()); // Fetch quotations again to refresh the list
     };
 
 

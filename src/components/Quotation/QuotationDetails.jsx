@@ -4,8 +4,6 @@ import html2pdf from 'html2pdf.js';
 import EditQuotationModal from './EditQuotationModal';
 import {
     updateQuotation,
-    fetchQuotations,
-    getQuotationById,
 } from "../../redux/slices/quotationSlice";
 import { fetchCustomerByID } from '../../redux/slices/customerSlice';
 import { fetchTicketDetails } from '../../redux/slices/ticketSlice';
@@ -83,12 +81,12 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
         // console.log(`Product ${index + 1}:`, product);
     });
 
-    const handleSaveEdit = (updatedQuotation) => {
-        setQuotationData(updatedQuotation);
-        onClose();
+    // const handleSaveEdit = (updatedQuotation) => {
+    //     setQuotationData(updatedQuotation);
+    //     onClose();
         
-        setIsEditModalVisible(false); // Close the modal
-    };
+    //     setIsEditModalVisible(false); // Close the modal
+    // };
 
     const handlePrintQuotation = () => {
         const pdfElement = createPdfContent(); // Generate content for PDF
@@ -502,10 +500,11 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
                 visible={isEditModalVisible}
                 products={quoteProducts.current}
                 quotation={quotation}
-                onSave={handleSaveEdit}
+                // onSave={handleSaveEdit}
                 onClose={() => {
                     setIsEditModalVisible(false);
-                    dispatch(fetchProducts()); // Refresh products if needed
+                    onClose();
+                    // dispatch(fetchProducts()); // Refresh products if needed
                 }}
             />
 

@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Modal, Form, Input, Button, Select, Table, notification, Row, Col, Radio } from 'antd';
 import { useDispatch } from 'react-redux';
 import { updateQuotation } from '../../redux/slices/quotationSlice';
-import { updateProduct } from '../../redux/slices/productSlice';
+import { updateProduct, deleteProduct } from '../../redux/slices/productSlice';
 
 const { Option } = Select;
 
-const EditQuotationModal = ({ visible, quotation, onClose, products, onSave }) => {
+const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
     const dispatch = useDispatch();
     const [form] = Form.useForm();
-    const [productList, setProductList] = useState(products);
+    const [productList, setProductList] = useState([]);
     const [editingProduct, setEditingProduct] = useState(null); // Initialize as null
 
     useEffect(() => {
@@ -23,12 +23,9 @@ const EditQuotationModal = ({ visible, quotation, onClose, products, onSave }) =
                 transport: quotation.transport,
                 comments: quotation.comments
             });
+            setProductList(products); // Initialize product list from quotation
         }
     }, [quotation, form]);
-
-    useEffect(() => {
-        setProductList(products); // Update product list when products prop changes
-    }, [products]);
 
     const handleFinish = async (values) => {
         try {
@@ -41,12 +38,10 @@ const EditQuotationModal = ({ visible, quotation, onClose, products, onSave }) =
             await dispatch(updateQuotation({ quotationId: quotation.quotationId, data: updatedQuotationData }));
             notification.success({ message: 'Quotation updated successfully!' });
 
-              // Dispatch the updateProducts action to update the products
-              for (const product of productList) {
+            // Dispatch the updateProducts action to update the products
+            for (const product of productList) {
                 await dispatch(updateProduct({ productId: product.productId, updatedProduct: product }));
             }
-
-            onSave(updatedQuotationData); // Pass the updated quotation back
             onClose(); // Close the modal
         } catch (error) {
             console.error('Error updating quotation:', error);
@@ -60,9 +55,30 @@ const EditQuotationModal = ({ visible, quotation, onClose, products, onSave }) =
 
     const handleProductUpdate = () => {
         setProductList((prevProducts) =>
-            prevProducts.map((prod) => (prod.productId === editingProduct.productId ? editingProduct : prod))
+            prevProducts.map((prod) =>
+                prod.productId === editingProduct.productId ? { ...editingProduct } : prod
+            )
         );
         setEditingProduct(null); // Close the edit product modal
+        notification.success({ message: 'Product updated successfully!' });
+    };
+
+    const handleDeleteProduct = (productId) => {
+        Modal.confirm({
+            title: 'Are you sure you want to delete this product?',
+            content: 'This action cannot be undone.',
+            onOk: async () => {
+                try {
+                    // Make API call to delete the product
+                    await dispatch(deleteProduct(productId)); // Assuming deleteProduct is an action that handles the API call
+                    setProductList((prevProducts) => prevProducts.filter(prod => prod.productId !== productId));
+                    notification.success({ message: 'Product deleted successfully!' });
+                } catch (error) {
+                    console.error('Error deleting product:', error);
+                    notification.error({ message: 'Failed to delete product.' });
+                }
+            },
+        });
     };
 
     const calculateTotalAmount = () => {
@@ -103,9 +119,14 @@ const EditQuotationModal = ({ visible, quotation, onClose, products, onSave }) =
             title: 'Actions',
             key: 'actions',
             render: (_, product) => (
-                <Button type="link" onClick={() => handleEditProduct(product)}>
-                    Edit
-                </Button>
+                <>
+                    <Button type="link" onClick={() => handleEditProduct(product)}>
+                        Edit
+                    </Button>
+                    <Button type="link" danger onClick={() => handleDeleteProduct(product.productId)}>
+                        Delete
+                    </Button>
+                </>
             ),
         },
     ];
@@ -122,7 +143,7 @@ const EditQuotationModal = ({ visible, quotation, onClose, products, onSave }) =
             <Form form={form} onFinish={handleFinish} layout="vertical">
                 <Row gutter={16}>
                     <Col span={12}>
-                        < Form.Item label="Delivery" name="delivery">
+                        <Form.Item label="Delivery" name="delivery">
                             <Input placeholder="Enter delivery details" />
                         </Form.Item>
                     </Col>
@@ -260,7 +281,7 @@ const EditQuotationModal = ({ visible, quotation, onClose, products, onSave }) =
                             </Col>
                             <Col span={12}>
                                 <Form.Item name="warrantyMonths" label="Warranty Months">
-                                    <Input type ="number" />
+                                    <Input type="number" />
                                 </Form.Item>
                             </Col>
                         </Row>
