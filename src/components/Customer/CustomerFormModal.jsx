@@ -75,13 +75,25 @@ const CustomerFormModal = ({ visible, onCancel, initialValues, mode, customerId,
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item label="Address" name="address"
-                            rules={[{ required: true }]}>
+                            <Form.Item label="Premium Customer" name="isPremium" valuePropName="checked">
+                                <Switch />
+                            </Form.Item>
+                        </Col>
+                        
+                        <Col span={12}> {/* First column */}
+                            <Form.Item label="First Name" name="firstName" rules={[{ required: true }]}>
                                 <Input />
                             </Form.Item>
                         </Col>
-                        <Col span={12}> {/* First column */}
-                            <Form.Item label="First Name" name="firstName" rules={[{ required: true }]}>
+                        <Col span={12}> {/* Second column */}
+                            <Form.Item label="Last Name" name="lastName" rules={[{ required: true }]}>
+                                <Input />
+                            </Form.Item>
+                        </Col>
+                       
+                        <Col span={12}>
+                            <Form.Item label="Address" name="address"
+                            rules={[{ required: true }]}>
                                 <Input />
                             </Form.Item>
                         </Col>
@@ -95,16 +107,9 @@ const CustomerFormModal = ({ visible, onCancel, initialValues, mode, customerId,
                                 <Input />
                             </Form.Item>
                         </Col>
-                        <Col span={12}> {/* Second column */}
-                            <Form.Item label="Last Name" name="lastName" rules={[{ required: true }]}>
-                                <Input />
-                            </Form.Item>
-                        </Col>
-                        <Col span={12}>
-                            <Form.Item label="Email" name="email" rules={[{ required: true, type: 'email' }]}>
-                                <Input />
-                            </Form.Item>
-                        </Col>
+                       
+                       
+                       
                         <Col span={12}>
                             <Form.Item label="Phone" name="phoneNumber" 
                             rules={[
@@ -114,12 +119,12 @@ const CustomerFormModal = ({ visible, onCancel, initialValues, mode, customerId,
                                 <Input />
                             </Form.Item>
                         </Col>
-                       
                         <Col span={12}>
-                            <Form.Item label="Premium Customer" name="isPremium" valuePropName="checked">
-                                <Switch />
+                            <Form.Item label="Email" name="email" rules={[{ required: true, type: 'email' }]}>
+                                <Input />
                             </Form.Item>
                         </Col>
+                       
                     </Row>
                     <div style={{ textAlign: 'right' }}>
                         <Button type="primary" htmlType="submit">
