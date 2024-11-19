@@ -14,7 +14,7 @@ const customerApi = {
         return axiosInstance.put(`/customers/update/${id}`, customerData);
     },
     deleteCustomer: (id) => {
-        return axiosInstance.delete(`/customers/${id}`);
+        return axiosInstance.delete(`/customers/delete/${id}`);
     },
 };
 
