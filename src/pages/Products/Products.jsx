@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Table, Button, Spin, Empty, Layout, Typography, Card, Row, Col, Modal, notification } from 'antd';
-import { fetchProducts, deleteProduct, addProduct, updateProduct } from '../../redux/slices/productSlice';
+import { fetchProducts, deleteProduct, addProduct, updateProduct, fetchNonCustProducts } from '../../redux/slices/productSlice';
 import ProductDetailModal from './ProductDetails2';
 import ProductFormModal from './AddProduct';
 import EditModal from './EditProduct';
@@ -21,7 +21,7 @@ const Products = () => {
 
     // Fetch products on mount
     useEffect(() => {
-        dispatch(fetchProducts());
+        dispatch(fetchNonCustProducts());
     }, [dispatch]);
 
     useEffect(() => {
@@ -91,7 +91,12 @@ const Products = () => {
             title: 'Description',
             dataIndex: 'description',
             key: 'category',
-            width: 600,
+            width: 400,
+        },
+        {
+            title: 'Price',
+            dataIndex: 'price',
+            key: 'price',
         },
         {
             title: 'Actions',
@@ -100,7 +105,7 @@ const Products = () => {
                 <span>
                     <Button type="primary" onClick={() => handleViewDetails(record)}>View</Button>
                     <Button type="link" onClick={() => handleOpenEditModal(record)}>Edit</Button>
-                    <Button type="danger" onClick={() => handleDelete(record.productId)}>Delete</Button>
+                    <Button danger onClick={() => handleDelete(record.productId)}>Delete</Button>
                 </span>
             ),
         },

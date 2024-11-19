@@ -114,7 +114,7 @@ const ProductFormModal = ({ visible, onCancel, product, customerId, onAddProduct
                     <Form.Item label="Product Type">
                         <Radio.Group value={productType} onChange={e => setProductType(e.target.value)}>
                             <Radio value="Hardware">Hardware</Radio>
-                            <Radio value="Software">Software</Radio>
+                            <Radio value="Service">Service</Radio>
                         </Radio.Group>
                     </Form.Item>
                     <>
@@ -243,30 +243,6 @@ const ProductFormModal = ({ visible, onCancel, product, customerId, onAddProduct
                         </Row>
                         )}
                     </>
-
-                    {/* Fields specific to Hardware products can be added here if needed */}
-                    {productType === 'hardware' && (
-                        <Row gutter={16}>
-                            <Col span={12}>
-                                <Form.Item
-                                    name="softwareName"
-                                    label="Software Name :"
-                                    rules={[{ required: true, message: 'Please input the software name!' }]}
-                                >
-                                    <Input />
-                                </Form.Item>
-                            </Col>
-                            <Col span={12}>
-                                <Form.Item
-                                    name="licenseKey"
-                                    label="License Key :"
-                                    rules={[{ required: true, message: 'Please input the license key!' }]}
-                                >
-                                    <Input />
-                                </Form.Item>
-                            </Col>
-                        </Row>
-                    )}
 
                     <Row gutter={16}>
                         <Col span={24}>

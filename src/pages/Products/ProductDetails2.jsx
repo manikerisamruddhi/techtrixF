@@ -4,6 +4,14 @@ import { Modal, Typography } from 'antd';
 const { Title, Paragraph } = Typography;
 
 const ProductDetailModal = ({ visible, product, onClose }) => {
+    // Check if the product is defined
+    if (!product) {
+        return null; // or you can return a loading spinner or a message
+    }
+
+    const formattedDate = product.createdDate ? new Date(product.createdDate).toLocaleDateString() : 'N/A';
+
+
     return (
         <Modal
             title="Product Details"
@@ -13,15 +21,15 @@ const ProductDetailModal = ({ visible, product, onClose }) => {
         >
             <Title level={2}>{product.brand} - {product.modelNo}</Title>
             <Paragraph><strong>Product ID:</strong> {product.productId}</Paragraph>
-            {/* Add more product details here */}
             <Paragraph><strong>Brand:</strong> {product.brand}</Paragraph>
-            <Paragraph><strong>description:</strong> {product.description}</Paragraph>
-            <Paragraph><strong>price:</strong> ₹ {product.price}</Paragraph>
-            <Paragraph><strong>quantity:</strong> {product.quantity}</Paragraph>
-            <Paragraph><strong>warrantyMonths:</strong> {product.warrantyMonths}</Paragraph>
-            <Paragraph><strong>Model No:</strong> {product.modelNo}</Paragraph>
-            <Paragraph><strong>hsnCode:</strong> {product.hsnCode}</Paragraph>
-            <Paragraph><strong>Created Date:</strong> {new Date(product.created_date).toLocaleDateString()}</Paragraph> 
+            <Paragraph><strong>Description:</strong> {product.description || 'N/A'}</Paragraph>
+            <Paragraph><strong>Price:</strong> ₹ {product.price?.toFixed(2) || 'N/A'}</Paragraph>
+            <Paragraph><strong>Quantity:</strong> {product.quantity || 'N/A'}</Paragraph>
+            <Paragraph><strong>Warranty (Months):</strong> {product.warrantyMonths || 'N/A'}</Paragraph>
+            <Paragraph><strong>Model No:</strong> {product.modelNo || 'N/A'}</Paragraph>
+            <Paragraph><strong>HSN Code:</strong> {product.hsnCode || 'N/A'}</Paragraph>
+            <Paragraph><strong>Part Code:</strong> {product.partCode || 'N/A'}</Paragraph>
+            <Paragraph><strong>Created Date:</strong> {formattedDate}</Paragraph>
             {/* Add additional fields as necessary */}
         </Modal>
     );

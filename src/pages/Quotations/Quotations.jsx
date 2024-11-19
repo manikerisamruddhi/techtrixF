@@ -130,8 +130,8 @@ const Quotations = () => {
     const columns = [
         {
             title: 'Quotation ID',
-            dataIndex: 'quotationId',
-            key: 'quotationId',
+            dataIndex: 'quot_ID',
+            key: 'quot_ID',
             // render: (text) => <Link to={`/quotation/${text}`}>Quotation #{text}</Link>,
             // ...getColumnSearchProps('id'), // Search filter for Quotation ID
         },
