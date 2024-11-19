@@ -195,7 +195,7 @@ const Quotations = () => {
                         <Empty description="No Quotations Available" />
                     ) : (
                         <Table
-                            dataSource={quotations}
+                            dataSource= {Array.isArray(quotations) ? quotations : []}
                             columns={columns}
                             rowKey="quotationId"
                             pagination={false}

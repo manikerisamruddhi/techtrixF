@@ -14,11 +14,13 @@ import { addProduct, fetchNonCustProducts } from '../../redux/slices/productSlic
 import { createTicket, updateTicket } from '../../redux/slices/ticketSlice'
 import moment from 'moment';
 import CreateCustomerForm from '../Customer/CreateCustomerForm';
+import { useNavigate } from 'react-router-dom';
 
 const currentDate = moment();
 const { Option } = Select; // Destructure Option from Select
 
 const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) => {
+    const navigate = useNavigate()
     const dispatch = useDispatch();
     const { quotations, loading, error } = useSelector(state => state.quotations);
     const { customers } = useSelector(state => state.customers); // Assuming customer data is fetched through Redux
@@ -388,7 +390,7 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
             };
 
           
-  console.log('----:', Quote.current, QuoteState);
+//   console.log('----:', Quote.current, QuoteState);
             // Create entries in quotationProducts table for each product
             const quotationProductPromises = addedProductIds.map(async (productId) => {
                 const quotationProductsData = {
@@ -408,7 +410,7 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
   const quotationResponse = await dispatch(updateQuotation({ quotationId: Quote.current.quotationId, data: quotationData })).unwrap();
   // console.log('Quotation updated:', quotationResponse);
 
-
+  navigate('/Quotations')
             notification.success({ message: 'Quotation added successfully!' });
             form.resetFields();
             setAddedProducts([]);
@@ -418,6 +420,7 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
             setComment(''); // Reset comment
 
             onClose(); // Close modal after submission
+          
         } catch (err) {
             console.error(err);
             notification.error({ message: 'Error adding quotation' });
