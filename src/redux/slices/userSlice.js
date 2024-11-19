@@ -44,7 +44,7 @@ export const fetchUsersByRole = createAsyncThunk('users/fetchUsersByRole', async
 });
 
 // Add a new user
-export const addUser = createAsyncThunk('users/addUser', async (newUser) => {
+export const createUser = createAsyncThunk('users/createUser', async (newUser) => {
     const response = await userApi.createuser(newUser);
     return response.data;
 });
@@ -118,7 +118,7 @@ const userSlice = createSlice({
                 state.status = 'failed'; // Handle error state for users by department
                 state.error = action.error.message;
             })
-            .addCase(addUser.fulfilled, (state, action) => {
+            .addCase(createUser.fulfilled, (state, action) => {
                 state.users.push(action.payload);
             })
             .addCase(updateUser.fulfilled, (state, action) => {

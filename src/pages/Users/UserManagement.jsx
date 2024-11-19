@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Layout, Card, Typography, Button, Table } from 'antd';
+import { Layout, Card, Typography, Button, Table, Modal } from 'antd';
 import { fetchUsers } from '../../redux/slices/userSlice';
+import CreateUserForm from '../../components/User/CreateUserForm';
 
 const { Content } = Layout;
 const { Title } = Typography;
@@ -11,15 +12,20 @@ const UserManagement = () => {
     const users = useSelector((state) => state.users.users);
     const status = useSelector((state) => state.users.status);
     const error = useSelector((state) => state.users.error);
+    
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [selectedUser , setSelectedUser ] = useState(null);
 
-    // Fetch users on mount or refresh
     useEffect(() => {
-        dispatch(fetchUsers()); // Fetch data every time component mounts
+        dispatch(fetchUsers());
     }, [dispatch]);
+
+     // Filter users to exclude those with the role of "Admin"
+     const filteredUsers = users.filter(user => user.role !== 'Admin');
 
     const columns = [
         {
-            title: 'User ID',
+            title: 'User  ID',
             dataIndex: 'userId',
             key: 'userid',
         },
@@ -36,12 +42,7 @@ const UserManagement = () => {
         {
             title: 'Phone Number',
             dataIndex: 'phoneNumber',
-            key: 'phone_number',
-        },
-        {
-            title: 'Address',
-            dataIndex: 'address',
-            key: 'address',
+            key: 'phoneNumber',
         },
         {
             title: 'Role',
@@ -54,34 +55,63 @@ const UserManagement = () => {
             key: 'isActive',
             render: (isActive) => (isActive ? 'Active' : 'Inactive'),
         },
+        {
+            title: 'Action',
+            key: 'action',
+            render: (text, record) => (
+                <Button onClick={() => handleEdit(record)}>Edit</Button>
+            ),
+        },
     ];
+
+    const showModal = () => {
+        setSelectedUser (null);
+        setIsModalVisible(true);
+    };
+
+    const handleEdit = (user) => {
+        setSelectedUser (user);
+        setIsModalVisible(true);
+    };
+
+    const handleCancel = () => {
+        setIsModalVisible(false);
+        setSelectedUser (null);
+    };
 
     return (
         <Layout style={{ minHeight: '100vh', background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)' }}>
-            <Content style={{ padding: '20px' }}>
-                <div
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        marginBottom: '20px',
-                    }}
-                >
-                    <Title level={4} style={{ margin: 0 }}>
-                        User Management
-                    </Title>
-                    <Button type="primary">Create User</Button>
-                </div>
-                <Card bordered={false}>
+        <Content style={{ padding: '20px' }}>
+            <div
+                style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginBottom: '20px',
+                }}
+            >
+                <Title level={4} style={{ margin: 0 }}>
+                    User Management
+                </Title>
+                <Button type="primary" onClick={showModal}>Create User</Button>
+            </div>
+            <Card bordered={false}>
                     <Table
-                        dataSource={users}
                         columns={columns}
+                        dataSource={filteredUsers}
                         rowKey="userId"
-                        pagination={false}
                         loading={status === 'loading'}
+                        pagination={{ pageSize: 10 }}
                     />
-                    {error && <p style={{ color: 'red' }}>{error}</p>}
                 </Card>
+                <Modal
+                    title={selectedUser  ? "Edit User" : "Create User"}
+                    visible={isModalVisible}
+                    onCancel={handleCancel}
+                    footer={null}
+                >
+                    <CreateUserForm user={selectedUser } onClose={handleCancel} />
+                </Modal>
             </Content>
         </Layout>
     );
