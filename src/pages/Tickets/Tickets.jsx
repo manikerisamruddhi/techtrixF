@@ -83,7 +83,7 @@ const Tickets = () => {
     const total_tickets = tickets.length;
     const open_tickets = tickets.filter(ticket => ticket.status === 'Open').length;
     const in_progress = tickets.filter(ticket => ticket.status === 'InProgress').length;
-    const closed_tickets = tickets.filter(ticket => ticket.status === 'closed').length;
+    const Closed_tickets = tickets.filter(ticket => ticket.status === 'Closed').length;
 
     // Filter tickets based on card click
     const handle_card_click = (status) => {
@@ -243,10 +243,10 @@ const Tickets = () => {
                             <Card 
                                 hoverable 
                                 bordered={false} 
-                                onClick={() => handle_card_click('closed')} 
+                                onClick={() => handle_card_click('Closed')} 
                                 style={{ cursor: 'pointer', backgroundColor:'#e9f5f7' }} // Add your desired background color
                             >
-                                Closed Tickets : {closed_tickets}
+                                Closed Tickets : {Closed_tickets}
                             </Card>
                         </Col>
                     </Row>
