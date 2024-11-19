@@ -9,6 +9,7 @@ const { Option } = Select;
 const CreateUserForm = ({ user, onClose }) => {
     const dispatch = useDispatch();
     const [form] = Form.useForm();
+    const isEditMode = Boolean(user); // Determine if it's edit mode
 
     useEffect(() => {
         if (user) {
@@ -22,13 +23,20 @@ const CreateUserForm = ({ user, onClose }) => {
                 await dispatch(updateUser ({ ...values, userId: user.userId })); // Update user
                 message.success('User  updated successfully!');
             } else {
-                await dispatch(createUser (values)); // Create new user
-                message.success('User  created successfully!');
+                await dispatch(createUser (values))
+                .then((resultAction) => {
+                    if (createUser.fulfilled.match(resultAction)) {
+                        message.success('User added successfully!');
+                        onClose();  // Close modal
+                    } else {
+                        message.error( error );
+                    }
+                    });
             }
             form.resetFields();
             onClose(); // Close the modal after successful creation or update
         } catch (error) {
-            message.error('Failed to save user. Please try again.');
+            message.error('Failed to save user. Please try again later or try another Email.');
         }
     };
 
@@ -114,13 +122,12 @@ const CreateUserForm = ({ user, onClose }) => {
                     </Form.Item>
                 </Col>
                 <Col span={12}>
-                <Form.Item
-    label="Password"
-    name="password"
-    rules={[{ required: true, message: 'Please input the password!' }]}
->
-    <Input.Password />
-</Form.Item>
+
+                {!isEditMode && (
+    <Form.Item label="Password" name="password" rules={[{ required: true, message: 'Please enter the password!' }]}>
+        <Input.Password />
+    </Form.Item>
+)}
 
                 </Col>
             </Row>

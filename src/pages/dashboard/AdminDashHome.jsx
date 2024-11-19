@@ -8,6 +8,7 @@ import CreateTicketModal from '../../components/Ticket/CreateTicketModalForm';
 import CreateQuotationModal from '../../components/Quotation/CreateQuotation';
 import CustomerFormModal from '../../components/Customer/CustomerFormModal';
 import AddProduct from '../Products/AddProduct'
+import CreateUserForm from '../../components/User/CreateUserForm'
 import {
     Grid,
     Card,
@@ -18,7 +19,7 @@ import {
     IconButton,
 } from '@mui/material';
 import { ArrowCircleLeft } from '@mui/icons-material';
-import { Button } from 'antd';
+import { Button, Modal} from 'antd';
 import '../../styles/Pages/Admin/Dashboard.css';
 
 // Shared card styles
@@ -58,6 +59,7 @@ const Dashboard = () => {
     const [showCreateTicketModal, setShowCreateTicketModal] = useState(false);
     const [showCustomerFormModal, setShowCustomerFormModal] = useState(false);
     const [showCreateProductModal, setShowCreateProductModal] = useState(false);
+    const [showCreateUserModal, setShowCreateUserModal] = useState(false);
 
 
     const [showTicketDetails, setShowTicketDetails] = useState(false);
@@ -72,6 +74,7 @@ const Dashboard = () => {
     const { tickets, quotations, invoices, loading, error } = useSelector(state => state.dashboard);
     const { total, inProgress, resolved, closed, open } = useTicketCounts(tickets);
     const { pending, approved} = useQuotationCounts(quotations);
+    const selectedUser = null;
 
     useEffect(() => {
         dispatch(fetchTickets());
@@ -158,6 +161,19 @@ const Dashboard = () => {
                     visible={showCreateProductModal}
                     onCancel={() => setShowCreateProductModal(false)}
                 />
+            )}
+
+            {showCreateUserModal && (
+               <Modal
+               title={selectedUser !== null && selectedUser !== undefined ? "Edit User" : "Create User"}
+               visible={showCreateUserModal}
+               onCancel={() => setShowCreateUserModal(false)}
+               footer={null}
+           >
+               <CreateUserForm user={selectedUser || undefined}  
+              onClose={() => setShowCreateUserModal(false)}
+               />
+           </Modal>
             )}
 
 
@@ -354,7 +370,10 @@ const Dashboard = () => {
                                     style={{
                                         ...ButtonStyle
                                     }}
-                                    onClick={() => navigate("/UserManagement")}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setShowCreateUserModal(true);
+                                    }}
                                 >
                                     Create User
                                 </Button>

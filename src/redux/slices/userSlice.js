@@ -44,13 +44,21 @@ export const fetchUsersByRole = createAsyncThunk('users/fetchUsersByRole', async
 });
 
 // Add a new user
-export const createUser = createAsyncThunk('users/createUser', async (newUser) => {
-    const response = await userApi.createuser(newUser);
-    return response.data;
+export const createUser = createAsyncThunk(
+    'users/createUser',
+    async (newUser, { rejectWithValue }) => {
+        try {
+            const response = await userApi.createuser(newUser);
+                // console.log(response);
+               return response.data;
+    } catch (error) {
+      
+        return rejectWithValue(error.response.data);  // Return the error response for rejection
+    }
 });
 
 // Update user
-export const updateUser = createAsyncThunk('users/updateUser', async ({ userId, userData }) => {
+export const updateUser = createAsyncThunk('users/updateUser', async ({ userId, ...userData }) => {
     const response = await userApi.updateuser(userId, userData);
     return response.data;
 });
@@ -118,8 +126,17 @@ const userSlice = createSlice({
                 state.status = 'failed'; // Handle error state for users by department
                 state.error = action.error.message;
             })
+            .addCase(createUser.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
             .addCase(createUser.fulfilled, (state, action) => {
-                state.users.push(action.payload);
+                state.loading = false;
+                state.users.push(action.payload); // Add the new user to the state
+            })
+            .addCase(createUser.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload; // Set the error message from the API
             })
             .addCase(updateUser.fulfilled, (state, action) => {
                 const updatedUser = action.payload;
