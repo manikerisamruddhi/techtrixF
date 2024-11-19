@@ -177,7 +177,7 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                         NticketId.current = defticketId;
 
 
-                        console.log(existingCustomer);
+                        // console.log(existingCustomer);
                         // Check if a quotation was successfully fetched
                         if (fetchedQuote) {
                             // SetQuote(fetchedQuote); // Store the fetched quotation in state
@@ -202,7 +202,7 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                         Quote.current = addedQuote;
                         // console.log(`Added quotation: ${addedQuote}`);
                     }
-                    console.log(Quote.current);
+                    // console.log(Quote.current);
                   SetQuoteState(Quote.current);
                 } catch (error) {
                     // Log any errors that occur during the fetching or creating process
@@ -369,7 +369,7 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                     customerId: customerId || defaultCustomer || customer.customerId,
                 };
 
-                console.log('Adding new product:', newProductData);
+                // console.log('Adding new product:', newProductData);
                 const addedProduct = await dispatch(addProduct(newProductData)).unwrap();
                 return addedProduct;
             });
@@ -404,7 +404,7 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                 return quotationProductResponse;
             });
             const quotationProductsResponses = await Promise.all(quotationProductPromises);
-            console.log('Quotation products added:', quotationProductsResponses);
+            // console.log('Quotation products added:', quotationProductsResponses);
 
   // console.log(`Updating quotation with data: ${JSON.stringify(quotationData, null, 2)}  ${Quote.current.quotationId}`);
   const quotationResponse = await dispatch(updateQuotation({ quotationId: Quote.current.quotationId, data: quotationData })).unwrap();

@@ -40,7 +40,7 @@ export const addProduct = createAsyncThunk('products/addProduct', async (newProd
   try {
     const response = await productApi.createProduct(newProduct);
     toast.success('Product added successfully!');
-    console.log(response.data);
+    // console.log(response.data);
     return response.data;
   } catch (error) {
     toast.error('Failed to add product');

@@ -10,7 +10,7 @@ export const fetchQuotations = createAsyncThunk('quotations/fetchQuotations', as
 export const addQuotation = createAsyncThunk('quotations/addQuotation', async (quotationData) => {
     try {
         const response = await quotationApi.createQuotation(quotationData);
-        console.log(response.data);
+        // console.log(response.data);
         return response.data; // Return the added quotation
     } catch (error) {
         throw error; // Rethrow the error to be caught by the extraReducers
@@ -30,7 +30,7 @@ export const getQuotationById = createAsyncThunk('quotations/getQuotationById', 
 
 // export const getQuotationByUserIdAndInitiatedStatus = createAsyncThunk('quotations/getByUserIdAndStatus', async (userId) => {
 //     const response = await quotationApi.getQuotationByUserIdAndInitiatedStatus(userId);
-//     // console.log(response);
+//      console.log(response);
 //     return response.data; // Return the fetched quotation
 // });
 
