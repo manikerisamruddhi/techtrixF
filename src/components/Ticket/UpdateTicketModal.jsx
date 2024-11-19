@@ -62,7 +62,7 @@ const UpdateTicketModal = ({ ticketData, isVisible, onCancel, onClose, customer 
           ...ticketData,
           ...values,
           createdById: loggedInUserId,
-          status: close ? "InProgress" : "closed",
+          status: close ? "InProgress" : "Closed",
         };
 
         if (!close) {
