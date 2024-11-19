@@ -2,6 +2,9 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 // import axios from 'axios';
 import ticketApi from '../../api/ticketApi';
 import quotationApi from '../../api/quotationApi';
+import userApi from '../../api/userApi';
+import customerApi from '../../api/customerApi';
+import productApi from '../../api/productApi';
 
 
 // Define the base URL of your JSON server
@@ -18,6 +21,25 @@ export const fetchQuotations = createAsyncThunk('dashboard/fetchQuotations', asy
     const response = await quotationApi.getAllQuotations();
     return response.data;
 });
+
+export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
+    const response = await userApi.getAllusers();
+    return response.data;
+});
+
+export const fetchCustomers = createAsyncThunk('users/fetchCustomers', async () => {
+    const response = await customerApi.getAllCustomers();
+    return response.data;
+});
+
+
+export const fetchProducts = createAsyncThunk('users/fetchProducts', async () => {
+    const response = await productApi.getAllProducts();
+    return response.data;
+});
+
+
+
 
 // Async thunk to fetch invoices
 // export const fetchInvoices = createAsyncThunk('dashboard/fetchInvoices', async () => {
@@ -42,6 +64,24 @@ const dashboardSlice = createSlice({
         invoices: {
             inWarranty: 0,
             outOfWarranty: 0,
+        },
+        users: {
+            totalUser: 0,
+            logistics: 0,
+            serviceTechnical: 0,
+            sales: 0,
+        },
+        customers: {
+            totalCustomers: 0,
+            // logistics: 0,
+            // serviceTechnical: 0,
+            // sales: 0,
+        },
+        products: {
+            totalProducts: 0,
+            // logistics: 0,
+            // serviceTechnical: 0,
+            // sales: 0,
         },
         loading: false,
         error: null,
@@ -74,8 +114,44 @@ const dashboardSlice = createSlice({
             .addCase(fetchQuotations.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
-            });
+            })
 
+            .addCase(fetchUsers.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(fetchUsers.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.users = action.payload;
+            })
+            .addCase(fetchUsers.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.error.message;
+            })
+
+
+            .addCase(fetchCustomers.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(fetchCustomers.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.customers = action.payload;
+            })
+            .addCase(fetchCustomers.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.error.message;
+            })
+
+            .addCase(fetchProducts.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(fetchProducts.fulfilled, (state, action) => {
+                state.status = 'succeeded';
+                state.products = action.payload;
+            })
+            .addCase(fetchProducts.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.error.message;
+            })
         // Handle fetching invoices
         // builder
         //     .addCase(fetchInvoices.pending, (state) => {

@@ -4,6 +4,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { fetchTickets, fetchQuotations } from '../../redux/slices/adminDash';
 import useTicketCounts from '../../hooks/useTicketCount';
 import useQuotationCounts from '../../hooks/useQuotationCount';
+import useUserCounts from '../../hooks/useUserCount';
+import useCustomerCounts from '../../hooks/useCustomerCount';
+import useProductCounts from '../../hooks/useProductCount';
 import CreateTicketModal from '../../components/Ticket/CreateTicketModalForm';
 import CreateQuotationModal from '../../components/Quotation/CreateQuotation';
 import CustomerFormModal from '../../components/Customer/CustomerFormModal';
@@ -21,6 +24,9 @@ import {
 import { ArrowCircleLeft } from '@mui/icons-material';
 import { Button, Modal} from 'antd';
 import '../../styles/Pages/Admin/Dashboard.css';
+import { fetchUsers } from '../../redux/slices/adminDash';
+import { fetchCustomers } from '../../redux/slices/adminDash';
+import { fetchProducts } from '../../redux/slices/adminDash';
 
 // Shared card styles
 const cardStyle = {
@@ -71,18 +77,24 @@ const Dashboard = () => {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { tickets, quotations, invoices, loading, error } = useSelector(state => state.dashboard);
-    const { total, inProgress, resolved, closed, open } = useTicketCounts(tickets);
+    const { tickets, quotations, users, customers, products, invoices, loading, error } = useSelector(state => state.dashboard);
+    const { total, inProgress, closed, open } = useTicketCounts(tickets);
     const { pending, approved} = useQuotationCounts(quotations);
+    const { totalUser, logistics, serviceTechnical, sales } = useUserCounts(users);
+    const { totalCustomers } = useCustomerCounts(customers);
+    const { totalProduct } = useProductCounts(products);
     const selectedUser = null;
 
     useEffect(() => {
         dispatch(fetchTickets());
         dispatch(fetchQuotations());
+        dispatch(fetchUsers());
+        dispatch(fetchCustomers());
         // dispatch(fetchInvoices());
-        // dispatch(fetchProducts()); // Fetch products data
+        dispatch(fetchProducts()); 
     }, [dispatch]);
 
+    console.log(products);
 
     const handleCustomerFormFinish = (values) => {
         // console.log(values); // Handle the form submission logic here
@@ -300,7 +312,7 @@ const Dashboard = () => {
                                 <Typography variant="h5" sx={{ color: '#000' }}> Products</Typography>
                                 <Grid container spacing={2} sx={{ marginTop: '20px' }}>
                                     <Grid item xs={6} sm={6} md={6} marginBottom={1}>
-                                        <Typography variant="h6" sx={{ color: '' }}>Total Products: </Typography>
+                                        <Typography variant="h6" sx={{ color: '' }}>Total Products: {totalProduct}</Typography>
                                     </Grid>
                                 </Grid>
                                 <Button
@@ -326,8 +338,8 @@ const Dashboard = () => {
                                 <Typography variant="h5" sx={{ color: '#000' }}> Customers</Typography>
                                 <Grid container spacing={2} sx={{ marginTop: '20px' }}>
                                     <Grid item xs={6} sm={6} md={6} marginBottom={1}>
-                                        {/* <Typography variant="h6" sx={{ color: '' }}>test:{open}</Typography>
-                                        <Typography variant="h6" sx={{ color: '' }}>test:{resolved}</Typography>
+                                        <Typography variant="h6" sx={{ color: '' }}>Total:{totalCustomers}</Typography>
+                                        {/* <Typography variant="h6" sx={{ color: '' }}>test:{resolved}</Typography>
                                         <Typography variant="h6" sx={{ color: '' }}>test:{total}</Typography> */}
                                     </Grid>
                                 </Grid>
@@ -358,9 +370,10 @@ const Dashboard = () => {
                                 <Typography variant="h5" sx={{ color: '#000' }}> Users</Typography>
                                 <Grid container spacing={2} sx={{ marginTop: '20px' }}>
                                     <Grid item xs={6} sm={6} md={6} marginBottom={1}>
-                                        {/* <Typography variant="h6" sx={{ color: '' }}>test:{open}</Typography>
-                                        <Typography variant="h6" sx={{ color: '' }}>test:{resolved}</Typography>
-                                        <Typography variant="h6" sx={{ color: '' }}>test:{total}</Typography> */}
+                                        <Typography variant="h6" sx={{ color: '' }}>total Users: {totalUser}</Typography>
+                                        <Typography variant="h6" sx={{ color: '' }}>Logistics users: {logistics}</Typography>
+                                        <Typography variant="h6" sx={{ color: '' }}>Service techs: {serviceTechnical}</Typography>
+                                        <Typography variant="h6" sx={{ color: '' }}>Sales users: {sales}</Typography>
                                     </Grid>
                                 </Grid>
 
