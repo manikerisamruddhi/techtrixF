@@ -20,7 +20,7 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
     const preparedBy = useRef();
     const [isEditModalVisible, setIsEditModalVisible] = useState(false); // State for Edit modal visibility
     const [customer, setCustomer] = useState(null); // State for customer data
-   // const allProducts = useSelector(selectProducts); // All products from Redux
+    // const allProducts = useSelector(selectProducts); // All products from Redux
 
     const handleEditQuotation = (updatedQuotation) => {
         setEditedQuotation(updatedQuotation);
@@ -38,16 +38,16 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
     const quotationProducts = quotation ? quotation.quotationProducts : [];
     // console.log(`wwwwwwww ${quotationProducts}`)
 
-    useEffect(()=>{
-        if(quotation && visible){
+    useEffect(() => {
+        if (quotation && visible) {
             // console.log(quotation.createdBy);
             dispatch(fetchUserById(quotation.createdBy))
-            .then((res) => {
-                preparedBy.current = res.payload.data;
-                // console.log(preparedBy.current); 
-            })
+                .then((res) => {
+                    preparedBy.current = res.payload.data;
+                    // console.log(preparedBy.current); 
+                })
         }
-      
+
     }, [dispatch, visible]);
 
     useEffect(() => {
@@ -84,7 +84,7 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
     // const handleSaveEdit = (updatedQuotation) => {
     //     setQuotationData(updatedQuotation);
     //     onClose();
-        
+
     //     setIsEditModalVisible(false); // Close the modal
     // };
 
@@ -132,7 +132,7 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
                     .catch(error => {
                         // Handle error (e.g., show an error message)
                         // console.error('Error rejecting quotation:', error);
-                        message.error("Error approving quotation");
+                        message.error("Error approving quotation", error);
                     });
                 onClose();
             },
@@ -170,7 +170,7 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
                         // console.log(`Quotation ID ${quotation.quotationId} has been approved.`);
                         message.success("Quotation approved successfully!");
                         onClose();
-                    
+
                         // Optional: Perform additional actions, like redirecting
                     })
                     .catch((error) => {
@@ -214,11 +214,11 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
                 : 'NA';
 
 
-                let gstAmount = 'NA';
-                if (filteredProduct.gst === 18 && amount !== 'NA') {
-                    gstAmount = (amount * 0.18).toFixed(2);
-                }
-                
+            let gstAmount = 'NA';
+            if (filteredProduct.gst === 18 && amount !== 'NA') {
+                gstAmount = (amount * 0.18).toFixed(2);
+            }
+
             // Return the updated row
             return `
       <tr>
@@ -307,7 +307,7 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
 <div  style="font-family: 'Arial', sans-serif; font-size: 10px; ">
                     <div style="     background-color: #838282; color:white;
     font-weight: bolder;">  <strong  style=" margin-left:0.5%;">Customer:</strong></br>  </div>
-                              ${customer ? (customer.companyName ? customer.companyName : 'N/A') : 'N/A'}</br>
+                              ${customer ? (customer.companyName ? customer.companyName : 'N/A') : 'N/A'},</br>
                               ${customer ? (customer.address ? customer.address : 'N/A') : 'N/A'} </br>
                            
 </div>
@@ -392,7 +392,7 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
                         <span style="margin-bottom: -12%">Your’s sincerely,</span></br>
                         <span style="margin-bottom: -12%">For Techtrix Solutions Pvt. Ltd., </span></br>
                         <span style="margin-bottom: -12%">  Pune</span></br>
-                        <span style="margin-bottom: -12%"> ${preparedBy ? (preparedBy.current ?  `${preparedBy.current.firstName} ${preparedBy.current.lastName} ${preparedBy.current.phoneNumber}` : 'N/A') : 'N/A'}
+                        <span style="margin-bottom: -12%"> ${preparedBy ? (preparedBy.current ? `${preparedBy.current.firstName} ${preparedBy.current.lastName} ${preparedBy.current.phoneNumber}` : 'N/A') : 'N/A'}
                        </span></br>
                         
                         </div>
