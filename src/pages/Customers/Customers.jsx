@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCustomers, addCustomer, updateCustomer, deleteCustomer } from '../../redux/slices/customerSlice';
-import { Button, Table, Layout, Typography, Empty, Spin, message } from 'antd';
+import { Button, Table, Layout, Typography, Empty, Spin, message, Modal} from 'antd';
 import { toast } from 'react-toastify';
 import CustomerFormModal from '../../components/Customer/CustomerFormModal'; // Import the new form component
 
@@ -51,13 +51,27 @@ const Customers = () => {
     };
 
     const handleDelete = (customerId) => {
-        dispatch(deleteCustomer(customerId)).then(() => {
-            toast.success('Customer deleted successfully!');
+        Modal.confirm({
+            title: 'Are you sure you want to delete this customer?',
+            content: 'This action cannot be undone.',
+            okText: 'Yes, Delete',
+            okType: 'danger',
+            cancelText: 'Cancel',
+            onOk: () => {
+                dispatch(deleteCustomer(customerId)).then(() => {
+                    toast.success('Customer deleted successfully!');
+                    dispatch(fetchCustomers()); // Refresh customer list
+                });
+            },
+            onCancel: () => {
+                toast.info('Customer deletion canceled.');
+            },
         });
     };
 
     const columns = [
-        { title: 'ID', dataIndex: 'customerId', key: 'customerId' },
+        { title: 'ID', dataIndex: 'cust_ID', key: 'cust_ID' },
+        { title: 'Company name', dataIndex: 'companyName', key: 'companyName' },
         { title: 'First Name', dataIndex: 'firstName', key: 'firstName' },
         { title: 'Last Name', dataIndex: 'lastName', key: 'lastName' },
         { title: 'email', dataIndex: 'email', key: 'email' },
@@ -70,7 +84,7 @@ const Customers = () => {
                     <Button type="link" onClick={() => handleEdit(record)}>
                         Edit
                     </Button>
-                    <Button type="link" danger onClick={() => handleDelete(record.id)}>
+                    <Button type="link" danger onClick={() => handleDelete(record.customerId)}>
                         Delete
                     </Button>
                 </>
