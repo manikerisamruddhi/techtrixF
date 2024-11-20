@@ -74,7 +74,7 @@ export const getQuotationByTicketId = createAsyncThunk('quotations/getQuoatation
 // New AsyncThunk for updating quotation status
 export const updateQuotation = createAsyncThunk('quotations/updateQuotation', async ({ quotationId, data }) => {
     try {
-        console.log(quotationId);
+        // console.log(quotationId);
         const response = await quotationApi.updateQuotation(quotationId, data); // Adjust to your API method
         return response.data; // Return the updated quotation
     } catch (error) {

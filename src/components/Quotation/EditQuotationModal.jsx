@@ -8,9 +8,11 @@ const { Option } = Select;
 
 const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
     const dispatch = useDispatch();
+    const [productForm] = Form.useForm(); // Form for editing product
     const [form] = Form.useForm();
     const [productList, setProductList] = useState([]);
     const [editingProduct, setEditingProduct] = useState(null); // Initialize as null
+    const [isAddingProduct, setIsAddingProduct] = useState(false); // State to check if adding a new product
 
     useEffect(() => {
         if (quotation) {
@@ -25,7 +27,7 @@ const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
             });
             setProductList(products); // Initialize product list from quotation
         }
-    }, [quotation, form]);
+    }, [quotation, form, products]);
 
     const handleFinish = async (values) => {
         try {
@@ -51,16 +53,53 @@ const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
 
     const handleEditProduct = (product) => {
         setEditingProduct(product);
+        setIsAddingProduct(false); // Set to false since we are editing
     };
 
-    const handleProductUpdate = () => {
-        setProductList((prevProducts) =>
-            prevProducts.map((prod) =>
-                prod.productId === editingProduct.productId ? { ...editingProduct } : prod
-            )
-        );
-        setEditingProduct(null); // Close the edit product modal
-        notification.success({ message: 'Product updated successfully!' });
+    const handleAddProduct = () => {
+        setEditingProduct(null); // Reset editing product
+        setIsAddingProduct(true); // Set to true since we are adding
+        productForm.resetFields(); // Reset the form fields for a new product
+    };
+
+    const handleProductUpdate = async () => {
+        try {
+            const values = await productForm.validateFields(); // Validate the product form fields
+
+            // Check if quantity is less than 1
+            if (values.quantity < 1) {
+                notification.error({ message: 'Quantity must be at least 1!' });
+                return; // Stop further execution
+            }
+
+            if (values.price < 1) {
+                notification.error({ message: 'Price must be at least 1!' });
+                return; // Stop further execution
+            }
+
+            if (isAddingProduct) {
+                // If adding a new product, add to the product list
+                setProductList((prevProducts) => [
+                    ...prevProducts,
+                    { ...values, productId: Date.now() } // Assign a unique ID for the new product
+                ]);
+                notification.success({ message: 'Product added successfully!' });
+            } else {
+                // Update the product list with the edited product
+                setProductList((prevProducts) =>
+                    prevProducts.map((prod) =>
+                        prod.productId === editingProduct.productId ? { ...editingProduct, ...values } : prod
+                    )
+                );
+                notification.success({ message: 'Product updated successfully!' });
+            }
+
+            setEditingProduct(null); // Close the edit product modal
+            setIsAddingProduct(false); // Reset adding state
+        } catch (error) {
+            // Handle validation errors
+            console.error('Validation failed:', error);
+        }
     };
 
     const handleDeleteProduct = (productId) => {
@@ -70,7 +109,7 @@ const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
             onOk: async () => {
                 try {
                     // Make API call to delete the product
-                    await dispatch(deleteProduct(productId)); // Assuming deleteProduct is an action that handles the API call
+                    await dispatch(deleteProduct(productId)); // Assuming delete Product is an action that handles the API call
                     setProductList((prevProducts) => prevProducts.filter(prod => prod.productId !== productId));
                     notification.success({ message: 'Product deleted successfully!' });
                 } catch (error) {
@@ -83,8 +122,9 @@ const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
 
     const calculateTotalAmount = () => {
         return productList.reduce((total, product) => {
-            const gstAmount = (product.price * product.quantity * (product.gst / 100));
-            const totalAmount = (product.price * product.quantity) + gstAmount;
+            const quantity = product.quantity ? product.quantity : 1;
+            const gstAmount = (product.price * quantity * (product.gst / 100));
+            const totalAmount = (product.price * quantity) + gstAmount;
             return total + totalAmount;
         }, 0).toFixed(2); // Return as a string with two decimal places
     };
@@ -173,6 +213,9 @@ const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
                     </Col>
                 </Row>
                 <h3>Products</h3>
+                <Button type="primary" onClick={handleAddProduct} style={{ marginBottom: 16 }}>
+                    Add New Product
+                </Button>
                 <Table
                     columns={productColumns}
                     dataSource={productList}
@@ -198,22 +241,26 @@ const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
                 </Form.Item>
             </Form>
 
-            {editingProduct && (
+            {(editingProduct || isAddingProduct) && (
                 <Modal
-                    title="Edit Product"
-                    visible={!!editingProduct}
-                    onCancel={() => setEditingProduct(null)}
+                    title={isAddingProduct ? "Add New Product" : "Edit Product"}
+                    visible={!!(editingProduct || isAddingProduct)}
+                    onCancel={() => {
+                        setEditingProduct(null);
+                        setIsAddingProduct(false);
+                    }}
                     onOk={handleProductUpdate}
                     width={700}
                 >
                     <Form
+                        form={productForm}
                         layout="vertical"
                         initialValues={editingProduct}
                         onValuesChange={(changedValues) => {
                             setEditingProduct((prev) => ({ ...prev, ...changedValues }));
                         }}
                     >
-                        <Row gutter={16}>
+                        <Row gutter={ 16}>
                             <Col span={12}>
                                 <Form.Item name="brand" label="Brand">
                                     <Input />
@@ -275,7 +322,24 @@ const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
                         </Row>
                         <Row gutter={16}>
                             <Col span={12}>
-                                <Form.Item name="quantity" label="Quantity">
+                                <Form.Item
+                                    name="quantity"
+                                    label="Quantity"
+                                    rules={[
+                                        { required: true, message: 'Please input the quantity!' },
+                                        {
+                                            validator: (_, value) => {
+                                                if (value === undefined || value === null || value === '') {
+                                                    return Promise.reject(new Error('Please input the quantity!'));
+                                                }
+                                                if (value < 1) {
+                                                    return Promise.reject(new Error('Quantity must be at least 1!'));
+                                                }
+                                                return Promise.resolve();
+                                            },
+                                        },
+                                    ]}
+                                >
                                     <Input type="number" />
                                 </Form.Item>
                             </Col>
