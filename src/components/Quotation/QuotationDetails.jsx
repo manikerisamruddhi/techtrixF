@@ -209,8 +209,9 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
 
         const productsRows = filteredProducts.map((filteredProduct, index) => {
             // Calculate the amount
-            const amount = (filteredProduct.quantity && filteredProduct.price)
-                ? (filteredProduct.quantity * filteredProduct.price).toFixed(2)
+            let quantity = filteredProduct.quantity ? filteredProduct.quantity : 1;
+            const amount = (quantity && filteredProduct.price)
+                ? (quantity * filteredProduct.price).toFixed(2)
                 : 'NA';
 
 
@@ -235,7 +236,7 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
         </td>
         
         <td style="border: 1px solid #000; text-align: right; padding: 5px; font-size: 10px;">
-          ${filteredProduct.quantity ? filteredProduct.quantity : 'NA'}
+         ${quantity}
         </td>
         
         <td style="border: 1px solid #000; text-align: right; padding: 5px; font-size: 10px;">
@@ -345,11 +346,11 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
     </tr>
     <tr>
         <td style="border: 1px solid black; padding: 2px 3px; white-space: nowrap;"><strong>Tax Rate 18 %</strong></td>
-        <td style="border: 1px solid black; padding: 2px 3px; white-space: nowrap; text-align: right;">8989</td>
+        <td style="border: 1px solid black; padding: 2px 3px; white-space: nowrap; text-align: right;">₹ ${QuotationData?.total18GstTax || '0'}</td>
     </tr>
     <tr>
         <td style="border: 1px solid black; padding: 2px 3px; white-space: nowrap;"><strong>Tax Rate 28 %</strong></td>
-        <td style="border: 1px solid black; padding: 2px 3px; white-space: nowrap; text-align: right;">8989</td>
+        <td style="border: 1px solid black; padding: 2px 3px; white-space: nowrap; text-align: right;">₹ ${QuotationData?.total28GstTax || '0'}</td>
     </tr>
     <tr>
         <td style="border: 1px solid black; padding: 2px 3px; white-space: nowrap;"><strong>Total Amount</strong></td>
