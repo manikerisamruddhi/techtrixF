@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Table, Button, Spin, Empty, Layout, Typography, Card, Row, Col, Modal, notification } from 'antd';
 import {  deleteProduct, addProduct, updateProduct, fetchNonCustProducts } from '../../redux/slices/productSlice';
-import ProductDetailModal from './ProductDetails2';
+import ProductDetailModal from '../../components/Product/ProductDetails';
 import ProductFormModal from '../../components/Product/AddProduct';
 
 const { Content } = Layout;
