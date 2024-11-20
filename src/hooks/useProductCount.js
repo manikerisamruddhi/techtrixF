@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 const useProductCounts = (products) => {
 
     return useMemo(() => {
-        console.log(products);
+        // console.log(products);
         // Ensure quotations is an array
         if (!Array.isArray(products) || products.length === 0) {
             return { totalProduct: 0};

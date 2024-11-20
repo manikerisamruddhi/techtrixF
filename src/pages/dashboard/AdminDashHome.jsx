@@ -94,7 +94,7 @@ const Dashboard = () => {
         dispatch(fetchProducts()); 
     }, [dispatch]);
 
-    console.log(products);
+    // console.log(products);
 
     const handleCustomerFormFinish = (values) => {
         // console.log(values); // Handle the form submission logic here

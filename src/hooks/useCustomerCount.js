@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 
 const useCustomerCounts = (customers) => {
     return useMemo(() => {
-        console.log(customers);
+        // console.log(customers);
         // Ensure quotations is an array
         if (!Array.isArray(customers) || customers.length === 0) return { totalCustomers: 0};
 
