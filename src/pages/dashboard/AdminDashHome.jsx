@@ -10,7 +10,7 @@ import useProductCounts from '../../hooks/useProductCount';
 import CreateTicketModal from '../../components/Ticket/CreateTicketModalForm';
 import CreateQuotationModal from '../../components/Quotation/CreateQuotation';
 import CustomerFormModal from '../../components/Customer/CustomerFormModal';
-import AddProduct from '../Products/AddProduct'
+import AddProduct from '../../components/Product/AddProduct'
 import CreateUserForm from '../../components/User/CreateUserForm'
 import {
     Grid,
@@ -368,7 +368,7 @@ const Dashboard = () => {
                                 onClick={() => navigate("/UserManagement")}
                             >
                                 <Typography variant="h5" sx={{ color: '#000' }}> Users</Typography>
-                                <Grid container spacing={2} sx={{ marginTop: '20px' }}>
+                                <Grid container spacing={1} sx={{ marginTop: '2px' , marginRight: '-10px'}}>
                                     <Grid item xs={6} sm={6} md={6} marginBottom={1}>
                                         <Typography variant="h6" sx={{ color: '' }}>total Users: {totalUser}</Typography>
                                         <Typography variant="h6" sx={{ color: '' }}>Logistics users: {logistics}</Typography>

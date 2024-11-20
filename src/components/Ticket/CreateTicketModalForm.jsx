@@ -6,7 +6,7 @@ import { createTicket } from '../../redux/slices/ticketSlice';
 import { fetchCustomers } from '../../redux/slices/customerSlice';
 import { fetchProducts } from '../../redux/slices/productSlice';
 import CustomerFormModal from '../Customer/CustomerFormModal';
-import ProductFormModal from '../../pages/Products/AddProduct';
+import ProductFormModal from '../Product/AddProduct'
 
 const { Option } = Select;
 
