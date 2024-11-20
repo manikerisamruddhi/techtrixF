@@ -28,7 +28,7 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
     const { items: products } = useSelector(state => state.products); // Assuming you have products in your Redux store
     const [loggedInUserId, setLoggedInUserId] = useState(null);
 
-
+    const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
     // useEffect(() => {
     //     console.log(`defticket : ${defticketId} and ${defaultCustomer}`);
@@ -338,7 +338,7 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                 };
 
                 // console.log(`Updating ticket with ${NticketId.current} and ${values.data}`);
-                await dispatch(updateTicket({ ticketId: defticketId || NticketId.current, updatedTicket: values }));
+                await dispatch(updateTicket({ ticketId: defticketId || NticketId.current, data: values }));
             } else {
                 customerId = defaultCustomer;
                 // console.log(`existjjjjjjjjjjjjjjjjjjjjjjjjjing ${defaultCustomer} and ${defaultCustomer}`)
@@ -391,24 +391,28 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
 
           
 //   console.log('----:', Quote.current, QuoteState);
-            // Create entries in quotationProducts table for each product
-            const quotationProductPromises = addedProductIds.map(async (productId) => {
-                const quotationProductsData = {
-                    quotationId: Quote.current ? Quote.current.quotationId : QuoteState.quotationId,
-                    productId: productId,
-                };
-
-              
-                // console.log('Adding quotation product:', quotationProductsData);
-                const quotationProductResponse = await dispatch(addQuotaionProduct(quotationProductsData)).unwrap();
-                return quotationProductResponse;
-            });
-            const quotationProductsResponses = await Promise.all(quotationProductPromises);
-            // console.log('Quotation products added:', quotationProductsResponses);
-
+            
   // console.log(`Updating quotation with data: ${JSON.stringify(quotationData, null, 2)}  ${Quote.current.quotationId}`);
   const quotationResponse = await dispatch(updateQuotation({ quotationId: Quote.current.quotationId, data: quotationData })).unwrap();
   // console.log('Quotation updated:', quotationResponse);
+
+  // Create entries in quotationProducts table for each product
+  const quotationProductPromises = addedProductIds.map(async (productId, index) => {
+    const quotationProductsData = {
+        quotationId: Quote.current ? Quote.current.quotationId : QuoteState.quotationId,
+        productId: productId,
+    };
+
+    // Adding a delay of 1 second before each API call
+    if (index > 0) await sleep(1000);
+
+    console.log('Adding quotation product:', quotationProductsData);
+    const quotationProductResponse = await dispatch(addQuotaionProduct(quotationProductsData)).unwrap();
+    return quotationProductResponse;
+});
+const quotationProductsResponses = await Promise.all(quotationProductPromises);
+// console.log('Quotation products added:', quotationProductsResponses);
+
 
   navigate('/Quotations')
             notification.success({ message: 'Quotation added successfully!' });
