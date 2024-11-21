@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Modal, Form, Input, Button, Select, Table, notification, Row, Col, Radio } from 'antd';
 import { useDispatch } from 'react-redux';
 import { updateQuotation } from '../../redux/slices/quotationSlice';
-import { updateProduct, deleteProduct } from '../../redux/slices/productSlice';
+import { updateQuotationProduct, deleteProduct, addProduct } from '../../redux/slices/productSlice'; // Import addProduct
+import { addQuotaionProduct } from '../../redux/slices/quotationSlice';
 
 const { Option } = Select;
 
@@ -34,7 +35,7 @@ const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
             const updatedQuotationData = {
                 ...quotation,
                 ...values,
-                products: productList // Include updated products array in quotation
+                // products: productList // Include updated products array in quotation
             };
 
             await dispatch(updateQuotation({ quotationId: quotation.quotationId, data: updatedQuotationData }));
@@ -42,8 +43,10 @@ const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
 
             // Dispatch the updateProducts action to update the products
             for (const product of productList) {
-                await dispatch(updateProduct({ productId: product.productId, updatedProduct: product }));
+                await dispatch(updateQuotationProduct({ quotationId:quotation.quotationId, productId: product.productId, updatedProduct: product }));
             }
+
+            setProductList(productList);
             onClose(); // Close the modal
         } catch (error) {
             console.error('Error updating quotation:', error);
@@ -79,11 +82,28 @@ const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
 
             if (isAddingProduct) {
                 // If adding a new product, add to the product list
-                setProductList((prevProducts) => [
-                    ...prevProducts,
-                    { ...values, productId: Date.now() } // Assign a unique ID for the new product
-                ]);
+                const newProduct = { ...values, productId: Date.now() }; // Assign a unique ID for the new product
+
+                // Dispatch the addProduct action to add the new product to the store
+               const newaddedProduct = await dispatch(addProduct(newProduct)).unwrap(); // Call the API to add the product
+
+                // setProductList((prevProducts) => [
+                //     ...prevProducts,
+                //     newProduct,
+                // ]);
+               
+                 // Introduce a delay of 0.2 seconds before calling the second API
+            await new Promise(resolve => setTimeout(resolve, 200));
+
+                const quotationProductsData = {
+                    quotationId: quotation.quotationId,
+                    productId: newaddedProduct.productId,
+                };
+                
+                await dispatch(addQuotaionProduct(quotationProductsData)).unwrap();
+
                 notification.success({ message: 'Product added successfully!' });
+                setIsAddingProduct(false); // Reset adding state
             } else {
                 // Update the product list with the edited product
                 setProductList((prevProducts) =>
@@ -109,7 +129,7 @@ const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
             onOk: async () => {
                 try {
                     // Make API call to delete the product
-                    await dispatch(deleteProduct(productId)); // Assuming delete Product is an action that handles the API call
+                    await dispatch(deleteProduct(productId)); // Assuming deleteProduct is an action that handles the API call
                     setProductList((prevProducts) => prevProducts.filter(prod => prod.productId !== productId));
                     notification.success({ message: 'Product deleted successfully!' });
                 } catch (error) {
@@ -260,7 +280,7 @@ const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
                             setEditingProduct((prev) => ({ ...prev, ...changedValues }));
                         }}
                     >
-                        <Row gutter={ 16}>
+                        <Row gutter={16}>
                             <Col span={12}>
                                 <Form.Item name="brand" label="Brand">
                                     <Input />

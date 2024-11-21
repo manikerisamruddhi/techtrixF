@@ -59,6 +59,17 @@ export const updateProduct = createAsyncThunk('products/updateProduct', async ({
   }
 });
 
+export const updateQuotationProduct = createAsyncThunk('products/updateQuotationProduct', async ({quotationId, productId, updatedProduct }, { rejectWithValue }) => {
+  try {
+    const response = await productApi.updateQuotationProduct(quotationId, productId, updatedProduct);
+    toast.success('Product updated successfully!');
+    return response.data;
+  } catch (error) {
+    toast.error('Failed to update product');
+    return rejectWithValue(error.response.data);
+  }
+});
+
 export const deleteProduct = createAsyncThunk('products/deleteProduct', async (productId, { dispatch, rejectWithValue }) => {
   try {
     await productApi.deleteProduct(productId);

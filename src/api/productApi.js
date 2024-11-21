@@ -31,6 +31,9 @@ const productApi = {
     updateWarrantyInfo: (productId, warrantyData) => {
         return axiosInstance.put(`/products/${productId}/warranty`, warrantyData);
     },
+    updateQuotationProduct: (quotationId, productId, Data) => {
+        return axiosInstance.put(`quotation-products/update/quotation/${quotationId}/product/${productId}`, Data);
+    },
 };
 
 export default productApi;
