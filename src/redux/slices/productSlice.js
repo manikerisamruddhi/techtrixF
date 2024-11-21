@@ -10,7 +10,7 @@ export const fetchProducts = createAsyncThunk('products/fetchProducts', async (_
     const response = await productApi.getAllProducts();
     // console.log(response);
     return response.data;
-    
+
   } catch (error) {
     return rejectWithValue(error.response.data);
   }
@@ -21,7 +21,7 @@ export const fetchNonCustProducts = createAsyncThunk('products/fetchNonCustProdu
     const response = await productApi.getNonCustomerProducts();
     // console.log(response);
     return response.data;
-    
+
   } catch (error) {
     return rejectWithValue(error.response.data);
   }
@@ -59,7 +59,7 @@ export const updateProduct = createAsyncThunk('products/updateProduct', async ({
   }
 });
 
-export const updateQuotationProduct = createAsyncThunk('products/updateQuotationProduct', async ({quotationId, productId, updatedProduct }, { rejectWithValue }) => {
+export const updateQuotationProduct = createAsyncThunk('products/updateQuotationProduct', async ({ quotationId, productId, updatedProduct }, { rejectWithValue }) => {
   try {
     const response = await productApi.updateQuotationProduct(quotationId, productId, updatedProduct);
     toast.success('Product updated successfully!');
@@ -74,16 +74,32 @@ export const deleteProduct = createAsyncThunk('products/deleteProduct', async (p
   try {
     await productApi.deleteProduct(productId);
     toast.success('Product deleted successfully!');
-    
+
     // Dispatch the fetchProducts action to refresh the product list
     dispatch(fetchProducts());
-    
+
     return productId; // Return the productId for the fulfilled case
   } catch (error) {
     toast.error('Failed to delete product');
     return rejectWithValue(error.response.data);
   }
 });
+
+export const deleteQuotationProduct = createAsyncThunk('products/deleteQuotationProduct', async (quotationProductId, { dispatch, rejectWithValue }) => {
+  try {
+    await productApi.deleteQuotationProduct(quotationProductId);
+    toast.success('Product deleted successfully!');
+
+    // Dispatch the fetchProducts action to refresh the product list
+    dispatch(fetchProducts());
+
+    return quotationId; // Return the productId for the fulfilled case
+  } catch (error) {
+    toast.error('Failed to delete product');
+    return rejectWithValue(error.response.data);
+  }
+});
+
 
 // Async thunk for fetching products by customer ID
 export const fetchProductsByCustomer = createAsyncThunk(
@@ -101,6 +117,7 @@ const productSlice = createSlice({
   initialState: {
     items: [],
     products: [],
+    product: null, // Add this for fetched product by ID
     loading: false,
     error: null,
   },
@@ -113,14 +130,14 @@ const productSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchProducts.fulfilled, (state, action) => {
-        state.items = action.payload;
+        state.items = Array.isArray(action.payload) ? action.payload : [];
         state.loading = false;
       })
       .addCase(fetchProducts.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || 'Failed to fetch products';
       })
-    
+
       // Fetch Non cust Products
       .addCase(fetchNonCustProducts.pending, (state) => {
         state.loading = true;
@@ -183,10 +200,11 @@ const productSlice = createSlice({
         state.error = null;
       })
       .addCase(updateProduct.fulfilled, (state, action) => {
-        const index = state.items.findIndex((item) => item.id === action.payload.id);
-        if (index !== -1) {
-          state.items[index] = action.payload;
-        }
+        // const index = state.items.findIndex((item) => item.id === action.payload.id);
+        // if (index !== -1) {
+        //   state.items[index] = action.payload;
+        // }
+        state.items = Array.isArray(action.payload) ? action.payload : state.items;
         state.loading = false;
       })
       .addCase(updateProduct.rejected, (state, action) => {
@@ -206,6 +224,41 @@ const productSlice = createSlice({
       .addCase(deleteProduct.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || 'Failed to delete product';
+      })
+      .addCase(deleteQuotationProduct.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+
+      .addCase(deleteQuotationProduct.fulfilled, (state, action) => {
+        // Remove the deleted product from the items array
+        state.items = state.items.filter(
+          (item) => item.id !== action.payload // Use appropriate ID field returned
+        );
+        state.loading = false;
+      })
+      .addCase(deleteQuotationProduct.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || 'Failed to delete quotation product';
+      })
+
+      // Update Quotation Product
+      .addCase(updateQuotationProduct.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateQuotationProduct.fulfilled, (state, action) => {
+        // Find the product and update it in the state
+        // const index = state.items.findIndex((item) => item.id === action.payload.id);
+        // if (index !== -1) {
+        //   state.items[index] = action.payload;
+        // }
+        state.items = Array.isArray(action.payload) ? action.payload : state.items;
+        state.loading = false;
+      })
+      .addCase(updateQuotationProduct.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || 'Failed to update quotation product';
       });
   },
 });

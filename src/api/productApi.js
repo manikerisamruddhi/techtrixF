@@ -32,8 +32,11 @@ const productApi = {
         return axiosInstance.put(`/products/${productId}/warranty`, warrantyData);
     },
     updateQuotationProduct: (quotationId, productId, Data) => {
-        return axiosInstance.put(`quotation-products/update/quotation/${quotationId}/product/${productId}`, Data);
+        return axiosInstance.put(`/quotation-products/update/quotation/${quotationId}/product/${productId}`, Data);
     },
+    deleteQuotationProduct: (quotationProductId) => {
+        return axiosInstance.delete(`/quotation-products/delete/${quotationProductId}`);
+    }
 };
 
 export default productApi;

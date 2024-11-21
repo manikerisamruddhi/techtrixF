@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Form, Input, Button, Select, Table, notification, Row, Col, Radio } from 'antd';
 import { useDispatch } from 'react-redux';
+
 import { updateQuotation } from '../../redux/slices/quotationSlice';
 import { updateQuotationProduct, deleteProduct, addProduct } from '../../redux/slices/productSlice'; // Import addProduct
 import { addQuotaionProduct } from '../../redux/slices/quotationSlice';
@@ -14,6 +15,7 @@ const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
     const [productList, setProductList] = useState([]);
     const [editingProduct, setEditingProduct] = useState(null); // Initialize as null
     const [isAddingProduct, setIsAddingProduct] = useState(false); // State to check if adding a new product
+    const [nextProductId, setNextProductId] = useState(1); // Initialize a counter for product IDs
 
     useEffect(() => {
         if (quotation) {
@@ -26,9 +28,19 @@ const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
                 transport: quotation.transport,
                 comments: quotation.comments
             });
-            setProductList(products); // Initialize product list from quotation
+            // setProductList(products); // Initialize product list from quotation
+            // Set the next product ID based on existing products
+            // const maxId = products.reduce((max, product) => Math.max(max, product.productId), 0);
+            // setNextProductId(maxId + 1); // Increment for the next product ID
+      
         }
     }, [quotation, form, products]);
+
+    useEffect(() => {
+        if (products) {
+          setProductList(products); // Initialize product list from quotation
+        }
+    }, [visible]);
 
     const handleFinish = async (values) => {
         try {
@@ -43,7 +55,7 @@ const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
 
             // Dispatch the updateProducts action to update the products
             for (const product of productList) {
-                await dispatch(updateQuotationProduct({ quotationId:quotation.quotationId, productId: product.productId, updatedProduct: product }));
+                await dispatch(updateQuotationProduct({ quotationId: quotation.quotationId, productId: product.productId, updatedProduct: product }));
             }
 
             setProductList(productList);
@@ -65,59 +77,73 @@ const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
         productForm.resetFields(); // Reset the form fields for a new product
     };
 
+ 
+
     const handleProductUpdate = async () => {
         try {
             const values = await productForm.validateFields(); // Validate the product form fields
-
-            // Check if quantity is less than 1
+    
+            // Check if quantity and price are valid
             if (values.quantity < 1) {
                 notification.error({ message: 'Quantity must be at least 1!' });
-                return; // Stop further execution
+                return;
             }
-
+    
             if (values.price < 1) {
                 notification.error({ message: 'Price must be at least 1!' });
-                return; // Stop further execution
+                return;
             }
-
+    
             if (isAddingProduct) {
-                // If adding a new product, add to the product list
-                const newProduct = { ...values, productId: Date.now() }; // Assign a unique ID for the new product
+                // If adding a new product, generate a new product object
+                const newProduct = { ...values, productId: nextProductId }; // Use the next available ID
 
                 // Dispatch the addProduct action to add the new product to the store
-               const newaddedProduct = await dispatch(addProduct(newProduct)).unwrap(); // Call the API to add the product
-
-                // setProductList((prevProducts) => [
-                //     ...prevProducts,
-                //     newProduct,
-                // ]);
+                const newAddedProduct = await dispatch(addProduct(newProduct)).unwrap(); // Call the API to add the product
+    
+                // Update the productList to include the new product
+              // Update the productList to include the new product
+            setProductList((prevProducts) => {
+                // Check if the product already exists
+                const existingProductIndex = prevProducts.findIndex(prod => prod.productId === newAddedProduct.productId);
+                if (existingProductIndex === -1) {
+                    // If it doesn't exist, append the new product
+                    return [...prevProducts, newAddedProduct];
+                } else {
+                    // If it exists, replace the existing product
+                    return prevProducts.map(prod =>
+                        prod.productId === newAddedProduct.productId ? newAddedProduct : prod
+                    );
+                }
+            });
+               setNextProductId(prevId => prevId + 1); // Increment the ID for the next product
                
-                 // Introduce a delay of 0.2 seconds before calling the second API
-            await new Promise(resolve => setTimeout(resolve, 200));
+                      // Introduce a delay of 0.2 seconds before calling the second API
+            // await new Promise(resolve => setTimeout(resolve, 200));
 
-                const quotationProductsData = {
-                    quotationId: quotation.quotationId,
-                    productId: newaddedProduct.productId,
-                };
-                
-                await dispatch(addQuotaionProduct(quotationProductsData)).unwrap();
+            const quotationProductsData = {
+                quotationId: quotation.quotationId,
+                productId: newAddedProduct.productId,
+            };
+            
+            await dispatch(addQuotaionProduct(quotationProductsData)).unwrap();
 
                 notification.success({ message: 'Product added successfully!' });
-                setIsAddingProduct(false); // Reset adding state
             } else {
-                // Update the product list with the edited product
-                setProductList((prevProducts) =>
+                // Update the existing product
+                setProductList((prevProducts) => 
                     prevProducts.map((prod) =>
-                        prod.productId === editingProduct.productId ? { ...editingProduct, ...values } : prod
+                        prod.productId === editingProduct.productId ? { ...prod, ...values } : prod
                     )
                 );
                 notification.success({ message: 'Product updated successfully!' });
             }
-
+    
+            // Reset states and form fields
             setEditingProduct(null); // Close the edit product modal
             setIsAddingProduct(false); // Reset adding state
+            productForm.resetFields(); // Reset the product form fields
         } catch (error) {
-            // Handle validation errors
             console.error('Validation failed:', error);
         }
     };
