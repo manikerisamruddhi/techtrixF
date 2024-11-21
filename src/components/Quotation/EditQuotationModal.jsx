@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Form, Input, Button, Select, Table, notification, Row, Col, Radio } from 'antd';
 import { useDispatch } from 'react-redux';
-
 import { updateQuotation } from '../../redux/slices/quotationSlice';
-import { updateQuotationProduct, deleteProduct, addProduct } from '../../redux/slices/productSlice'; // Import addProduct
+import { updateQuotationProduct, deleteProduct, addProduct } from '../../redux/slices/productSlice';
 import { addQuotaionProduct } from '../../redux/slices/quotationSlice';
 
 const { Option } = Select;
@@ -16,6 +15,8 @@ const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
     const [editingProduct, setEditingProduct] = useState(null); // Initialize as null
     const [isAddingProduct, setIsAddingProduct] = useState(false); // State to check if adding a new product
     const [nextProductId, setNextProductId] = useState(1); // Initialize a counter for product IDs
+    const [productType, setProductType] = useState('Hardware'); // State for product type
+    const [newProduct, setNewProduct] = useState({}); // State for new product details
 
     useEffect(() => {
         if (quotation) {
@@ -28,17 +29,12 @@ const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
                 transport: quotation.transport,
                 comments: quotation.comments
             });
-            // setProductList(products); // Initialize product list from quotation
-            // Set the next product ID based on existing products
-            // const maxId = products.reduce((max, product) => Math.max(max, product.productId), 0);
-            // setNextProductId(maxId + 1); // Increment for the next product ID
-      
         }
-    }, [quotation, form, products]);
+    }, [quotation, form]);
 
     useEffect(() => {
         if (products) {
-          setProductList(products); // Initialize product list from quotation
+            setProductList(products); // Initialize product list from quotation
         }
     }, [visible]);
 
@@ -47,7 +43,6 @@ const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
             const updatedQuotationData = {
                 ...quotation,
                 ...values,
-                // products: productList // Include updated products array in quotation
             };
 
             await dispatch(updateQuotation({ quotationId: quotation.quotationId, data: updatedQuotationData }));
@@ -69,76 +64,72 @@ const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
     const handleEditProduct = (product) => {
         setEditingProduct(product);
         setIsAddingProduct(false); // Set to false since we are editing
+        setNewProduct(product); // Set the new product state to the editing product
+        setProductType(product.productType || 'Hardware'); // Set product type based on editing product
+        productForm.setFieldsValue(product); // Set form values for editing
     };
 
     const handleAddProduct = () => {
         setEditingProduct(null); // Reset editing product
         setIsAddingProduct(true); // Set to true since we are adding
+        setNewProduct({}); // Reset the new product state
+        setProductType('Hardware'); // Default to Hardware
         productForm.resetFields(); // Reset the form fields for a new product
     };
 
- 
-
     const handleProductUpdate = async () => {
         try {
-            const values = await productForm.validateFields(); // Validate the product form fields
-    
+            const values = await productForm.validateFields(); // Validate the product form fields const productData = { ...values, productType }; // Include productType in the values
+
             // Check if quantity and price are valid
             if (values.quantity < 1) {
                 notification.error({ message: 'Quantity must be at least 1!' });
                 return;
             }
-    
+
             if (values.price < 1) {
                 notification.error({ message: 'Price must be at least 1!' });
                 return;
             }
-    
+
             if (isAddingProduct) {
                 // If adding a new product, generate a new product object
-                const newProduct = { ...values, productId: nextProductId }; // Use the next available ID
+                const newProductData = { ...values, productId: nextProductId }; // Use the next available ID
 
                 // Dispatch the addProduct action to add the new product to the store
-                const newAddedProduct = await dispatch(addProduct(newProduct)).unwrap(); // Call the API to add the product
-    
-                // Update the productList to include the new product
-              // Update the productList to include the new product
-            setProductList((prevProducts) => {
-                // Check if the product already exists
-                const existingProductIndex = prevProducts.findIndex(prod => prod.productId === newAddedProduct.productId);
-                if (existingProductIndex === -1) {
-                    // If it doesn't exist, append the new product
-                    return [...prevProducts, newAddedProduct];
-                } else {
-                    // If it exists, replace the existing product
-                    return prevProducts.map(prod =>
-                        prod.productId === newAddedProduct.productId ? newAddedProduct : prod
-                    );
-                }
-            });
-               setNextProductId(prevId => prevId + 1); // Increment the ID for the next product
-               
-                      // Introduce a delay of 0.2 seconds before calling the second API
-            // await new Promise(resolve => setTimeout(resolve, 200));
+                const newAddedProduct = await dispatch(addProduct(newProductData)).unwrap(); // Call the API to add the product
 
-            const quotationProductsData = {
-                quotationId: quotation.quotationId,
-                productId: newAddedProduct.productId,
-            };
-            
-            await dispatch(addQuotaionProduct(quotationProductsData)).unwrap();
+                // Update the productList to include the new product
+                setProductList((prevProducts) => {
+                    const existingProductIndex = prevProducts.findIndex(prod => prod.productId === newAddedProduct.productId);
+                    if (existingProductIndex === -1) {
+                        return [...prevProducts, newAddedProduct];
+                    } else {
+                        return prevProducts.map(prod =>
+                            prod.productId === newAddedProduct.productId ? newAddedProduct : prod
+                        );
+                    }
+                });
+                setNextProductId(prevId => prevId + 1); // Increment the ID for the next product
+
+                const quotationProductsData = {
+                    quotationId: quotation.quotationId,
+                    productId: newAddedProduct.productId,
+                };
+
+                await dispatch(addQuotaionProduct(quotationProductsData)).unwrap();
 
                 notification.success({ message: 'Product added successfully!' });
             } else {
                 // Update the existing product
-                setProductList((prevProducts) => 
+                setProductList((prevProducts) =>
                     prevProducts.map((prod) =>
-                        prod.productId === editingProduct.productId ? { ...prod, ...values } : prod
+                        prod.productId === editingProduct.productId ? { ...prod, ...productData } : prod
                     )
                 );
                 notification.success({ message: 'Product updated successfully!' });
             }
-    
+
             // Reset states and form fields
             setEditingProduct(null); // Close the edit product modal
             setIsAddingProduct(false); // Reset adding state
@@ -154,7 +145,6 @@ const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
             content: 'This action cannot be undone.',
             onOk: async () => {
                 try {
-                    // Make API call to delete the product
                     await dispatch(deleteProduct(productId)); // Assuming deleteProduct is an action that handles the API call
                     setProductList((prevProducts) => prevProducts.filter(prod => prod.productId !== productId));
                     notification.success({ message: 'Product deleted successfully!' });
@@ -227,7 +217,7 @@ const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
             width={700}
         >
             <Form form={form} onFinish={handleFinish} layout="vertical">
-                <Row gutter={16}>
+                <Row gutter={ 16}>
                     <Col span={12}>
                         <Form.Item label="Delivery" name="delivery">
                             <Input placeholder="Enter delivery details" />
@@ -301,100 +291,126 @@ const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
                     <Form
                         form={productForm}
                         layout="vertical"
-                        initialValues={editingProduct}
+                        initialValues={newProduct}
                         onValuesChange={(changedValues) => {
-                            setEditingProduct((prev) => ({ ...prev, ...changedValues }));
+                            setNewProduct((prev) => ({ ...prev, ...changedValues }));
                         }}
                     >
-                        <Row gutter={16}>
-                            <Col span={12}>
-                                <Form.Item name="brand" label="Brand">
-                                    <Input />
-                                </Form.Item>
-                            </Col>
-                            <Col span={12}>
-                                <Form.Item name="modelNo" label="Model No">
-                                    <Input />
-                                </Form.Item>
-                            </Col>
-                        </Row>
-                        <Row gutter={16}>
+                        {/* Product Type Selection */}
+                        <Form.Item label="Product Type">
+                            <Radio.Group value={productType} onChange={e => {
+                                setProductType(e.target.value);
+                                setNewProduct(prev => ({ ...prev, productType: e.target.value })); // Update newProduct with selected productType
+                            }}>
+                                <Radio value="Hardware">Hardware</Radio>
+                                <Radio value="Service">Service</Radio>
+                            </Radio.Group>
+                        </Form.Item>
+
+                        {productType === 'Hardware' && (
+                            <Row gutter={16}>
+                                <Col span={12}>
+                                    <Form.Item label="Brand" name="brand" rules={[{ required: true }]}>
+                                        <Input onChange={e => setNewProduct({ ...newProduct, brand: e.target.value })} />
+                                    </Form.Item>
+                                </Col>
+                                <Col span={12}>
+                                    <Form.Item label="Model No" name="modelNo" rules={[{ required: true }]}>
+                                        <Input onChange={e => setNewProduct({ ...newProduct, modelNo: e.target.value })} />
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+                        )}
+                        <Row>
                             <Col span={24}>
-                                <Form.Item name="description" label="Product description" rules={[{ required: true, message: 'Please input the description!' }]}>
-                                    <Input.TextArea rows={3} />
+                                <Form.Item label="Description" name="description">
+                                    <Input.TextArea
+                                        rows={3}
+                                        onChange={e => setNewProduct({ ...newProduct, description: e.target.value })}
+                                    />
                                 </Form.Item>
                             </Col>
                         </Row>
+
+                        {productType === 'Hardware' && (
+                            <Row gutter={16}>
+                                <Col span={8}>
+                                    <Form.Item label="HSN Code" name="hsnCode">
+                                        <Input
+                                            onChange={e => setNewProduct({ ...newProduct, hsnCode: e.target.value })}
+                                        />
+                                    </Form.Item>
+                                </Col>
+                                <Col span={8}>
+                                    <Form.Item label="Unit of Measurement" name="unitOfMeasurement">
+                                        <Input
+                                            onChange={e => setNewProduct({ ...newProduct, unitOfMeasurement: e.target.value })}
+                                        />
+                                    </Form.Item>
+                                </Col>
+                                <Col span={8}>
+                                    <Form.Item label="Part Code" name="partCode">
+                                        <Input
+                                            onChange={e => setNewProduct({ ...newProduct, partCode: e.target.value })}
+                                        />
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+                        )}
+
                         <Row gutter={16}>
                             <Col span={8}>
-                                <Form.Item name="hsnCode" label="HSN Code">
-                                    <Input />
+                                <Form.Item label="Price" name="price" rules={[{ required: true }]}>
+                                    <Input
+                                        type="number"
+                                        onChange={e => setNewProduct({ ...newProduct, price: parseFloat(e.target.value) })}
+                                    />
                                 </Form.Item>
                             </Col>
                             <Col span={8}>
-                                <Form.Item name="unitOfMeasurement" label="Unit of Measurement">
-                                    <Input />
-                                </Form.Item>
-                            </Col>
-                            <Col span={8}>
-                                <Form.Item name="partCode" label="Part Code">
-                                    <Input />
-                                </Form.Item>
-                            </Col>
-                        </Row>
-                        <Row gutter={16}>
-                            <Col span={8}>
-                                <Form.Item name="isSerialNoAllowed" label="Is Serial No Allowed">
-                                    <Radio.Group>
-                                        <Radio value={true}>Yes</Radio>
-                                        <Radio value={false}>No</Radio>
-                                    </Radio.Group>
-                                </Form.Item>
-                            </Col>
-                            <Col span={8}>
-                                <Form.Item name="price" label="Price">
-                                    <Input type="number" />
-                                </Form.Item>
-                            </Col>
-                            <Col span={8}>
-                                <Form.Item name="gst" label="GST" rules={[{ required: true, message: 'Please select GST!' }]}>
-                                    <Select placeholder="Select GST">
+                                <Form.Item label="GST" name="gst" rules={[{ required: true, message: 'Please select GST!' }]}>
+                                    <Select
+                                        placeholder="Select GST"
+                                        onChange={value => setNewProduct({ ...newProduct, gst: value })}
+                                    >
                                         <Option value="18">18%</Option>
                                         <Option value="28">28%</Option>
                                         <Option value="0">None</Option>
                                     </Select>
                                 </Form.Item>
                             </Col>
-                        </Row>
-                        <Row gutter={16}>
-                            <Col span={12}>
-                                <Form.Item
-                                    name="quantity"
-                                    label="Quantity"
-                                    rules={[
-                                        { required: true, message: 'Please input the quantity!' },
-                                        {
-                                            validator: (_, value) => {
-                                                if (value === undefined || value === null || value === '') {
-                                                    return Promise.reject(new Error('Please input the quantity!'));
-                                                }
-                                                if (value < 1) {
-                                                    return Promise.reject(new Error('Quantity must be at least 1!'));
-                                                }
-                                                return Promise.resolve();
-                                            },
-                                        },
-                                    ]}
-                                >
-                                    <Input type="number" />
-                                </Form.Item>
-                            </Col>
-                            <Col span={12}>
-                                <Form.Item name="warrantyMonths" label="Warranty Months">
-                                    <Input type="number" />
+                            <Col span={8}>
+                                <Form.Item label="Quantity" name="quantity" rules={[{ required: true }]}>
+                                    <Input
+                                        type="number"
+                                        onChange={e => setNewProduct({ ...newProduct, quantity: parseInt(e.target.value) })}
+                                    />
                                 </Form.Item>
                             </Col>
                         </Row>
+                        {productType === 'Hardware' && (
+                            <Row gutter={16}>
+                                <Col span={12}>
+                                    <Form.Item label="Is Serial No Allowed" name="isSerialNoAllowed">
+                                        <Radio.Group
+                                            onChange={e => setNewProduct({ ...newProduct, isSerialNoAllowed: e.target.value })}
+                                            style={{ display: 'inline-block' }}
+                                        >
+                                            <Radio value={true}>Yes</Radio>
+                                            <Radio value={false}>No</Radio>
+                                        </Radio.Group>
+                                    </Form.Item>
+                                </Col>
+                                <Col span={12}>
+                                    <Form.Item label="Warranty Months" name="warrantyMonths" rules={[{ required: true }]}>
+                                        <Input
+                                            type="number"
+                                            onChange={e => setNewProduct({ ...newProduct, warrantyMonths: parseInt(e.target.value) })}
+                                        />
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+                        )}
                     </Form>
                 </Modal>
             )}
