@@ -7,46 +7,71 @@ import { fetchCustomerByID } from '../../redux/slices/customerSlice';
 import QuotationFormModal from '../Quotation/CreateQuotation';
 import { useEffect } from 'react';
 import { updateTicket } from '../../redux/slices/ticketSlice';
+import { getQuotationByTicketId, getQuotationById, fetchQuotations } from '../../redux/slices/quotationSlice';
+import QuotationDetailsModal from '../Quotation/QuotationDetails';
 
 const TicketDetailsModal = ({ visible, ticket, onClose, onCreateQuotation, users }) => {
     const dispatch = useDispatch();
     const [isQuotationModalVisible, setQuotationModalVisible] = useState(false); // State to manage quotation modal visibility
     const [isUpdateModalVisible, setUpdateModalVisible] = useState(false); // State to manage update ticket modal visibility
-    
+    const [isDetailsModalVisible, setIsDetailsModalVisible] = useState(false);
+
+
     const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
     const [createdById, setCreatedBy] = useState(''); // State variable to store createdById
     const [assighnedToId, setAssighnedToId] = useState(''); // State variable to store createdById
     const [customer, setCustomer] = useState(''); // State variable to store createdById
+    const [quotation, setQuotation] = useState();
 
-
-// Effect to run when the ticket is available
-useEffect(() => {
-    if (ticket) {
-        dispatch(fetchCustomerByID(ticket.customerId))
-            .unwrap() // Unwrap the promise to get the resolved response
-            .then((response) => {
-                setCustomer(response); // Set the customer data from the response
-                // console.log(response); // Log the resolved response
-            })
-            .catch((error) => {
-                console.error("Error fetching customer:", error); // Handle error if the API call fails
-            });
-
-        setCreatedBy(ticket.createdById); // Set createdById from ticket
-        setAssighnedToId(ticket.assignedTo); // Set assignedToId from ticket
-    }
-}, [ticket, dispatch]);
-
-
-    // Function to update createdById field of the ticket
-    const updateCreatedBy = () => {
+    // Effect to run when the ticket is available
+    useEffect(() => {
         if (ticket) {
-            // Update createdById variable
-            setCreatedBy('new'); // Set createdById to 'new'
-            message.success('Ticket createdById updated successfully!'); // Notify user
+            dispatch(fetchCustomerByID(ticket.customerId))
+                .unwrap() // Unwrap the promise to get the resolved response
+                .then((response) => {
+                    setCustomer(response); // Set the customer data from the response
+                    // console.log(response); // Log the resolved response
+                })
+                .catch((error) => {
+                    console.error("Error fetching customer:", error); // Handle error if the API call fails
+                });
+
+
+            setCreatedBy(ticket.createdById); // Set createdById from ticket
+            setAssighnedToId(ticket.assignedTo); // Set assignedToId from ticket
         }
+    }, [ticket, dispatch]);
+
+  
+
+    useEffect(() => {
+        if (ticket) {
+            const ticketId = ticket.ticketId;
+            if (ticket.isQuotationCreated === true) {
+                dispatch(getQuotationByTicketId(ticketId))
+                    .unwrap() // Unwrap the promise to get the resolved response
+                    .then((response) => {
+                        const quotationId = response.quotationId;
+                        dispatch(getQuotationById(quotationId))
+                            .unwrap() // Unwrap the promise to get the resolved response
+                            .then((response) => {
+                                 setQuotation(response); // Set the customer data from the response
+                                 console.log(response); // Log the resolved response
+                            })
+                    })
+                    .catch((error) => {
+                        console.error("Error fetching quotation by ticket:", error); // Handle error if the API call fails
+                    });
+            }
+        }
+    }, [visible, dispatch, isDetailsModalVisible]);
+
+    const handleDetailsModalClose = () => {
+        setIsDetailsModalVisible(false);
+        // setSelectedQuotation(null); // Clear the selected quotation
+        dispatch(fetchQuotations()); // Fetch quotations again to refresh the list
     };
-    
+
     // console.log(users);
     const user = users.find((user) => user.userId === createdById); // Adjust based on your user object structure
     const createdByName = user ? `${user.firstName} ${user.lastName}` : createdById; // Display user name or fallback text
@@ -112,7 +137,7 @@ useEffect(() => {
                             <Descriptions.Item label="Ticket ID" span={1}>{ticket.ticketId}</Descriptions.Item>
                             <Descriptions.Item label="title" span={1}>{ticket.title}</Descriptions.Item>
                             {ticket.customerId && (
-                                <Descriptions.Item label="Customer" span={1}>{customer.firstName + ' '+ customer.lastName}</Descriptions.Item>
+                                <Descriptions.Item label="Customer" span={1}>{customer.firstName + ' ' + customer.lastName}</Descriptions.Item>
                             )}
                             <Descriptions.Item label="Created By" span={1}>{createdByName}</Descriptions.Item>
                             <Descriptions.Item label="Remark" span={2}>{ticket.description}</Descriptions.Item>
@@ -122,42 +147,52 @@ useEffect(() => {
                             <Descriptions.Item label="Created Date" span={1}>{new Date(ticket.createdDate).toLocaleString()}</Descriptions.Item>
                             <Descriptions.Item label="Resolved" span={1}>{ticket.isResolved ? 'Yes' : 'No'}</Descriptions.Item>
                             <Descriptions.Item label="Is Chargeable" span={1}>{ticket.isChargeable ? 'Yes' : 'No'}</Descriptions.Item>
-                      {/* <Descriptions.Item label="Isqqq" span={1}>{ticket.isQuotationCreated ? 'Yes' : 'No'}</Descriptions.Item> */}
+                            {/* <Descriptions.Item label="Isqqq" span={1}>{ticket.isQuotationCreated ? 'Yes' : 'No'}</Descriptions.Item> */}
                             <Descriptions.Item label="Assigned To" span={1}>{assighnedByName ? assighnedByName : 'Not Assigned'}</Descriptions.Item>
-                           
-                           {ticket.isChargeable && (
-                            <Descriptions.Item label="is Quoatation Created" span={1}>{ticket.isQuotationCreated ? 'Created' : 'Not created'}</Descriptions.Item>
-                           )}
-                            
+
+                            {ticket.isChargeable && (
+                                <Descriptions.Item label="is Quoatation Created" span={1}>{ticket.isQuotationCreated ? 'Created' : 'Not created'}</Descriptions.Item>
+                            )}
+
                         </Descriptions>
                         {ticket.status !== 'closed' && (
-                        <div style={{ marginTop: '20px', textAlign: 'right' }}>
-                            {/* Update Ticket Button */}
-                          
-                                <Button 
-                                    type="primary" 
-                                    onClick={handleUpdateTicketClick} 
+                            <div style={{ marginTop: '20px', textAlign: 'right' }}>
+                                {/* Update Ticket Button */}
+
+                                <Button
+                                    type="primary"
+                                    onClick={handleUpdateTicketClick}
                                     style={{ marginRight: '10px' }}
                                     icon={<ReloadOutlined />}
                                 >
                                     Update Ticket
                                 </Button>
-                                 {/* Render the Create Quotation button if isChargeable is true */}
-                            {!ticket.isQuotationCreated && ticket.isChargeable &&(
-                                <Button 
-                                    type="primary" 
-                                    onClick={() => setIsCreateModalVisible(true)}  // Open the Create Quotation modal
-                                    icon={<DollarOutlined />}
-                                >
-                                    Create Quotation
-                                </Button>
-                            )}
-                        </div>
+                                {/* Render the Create Quotation button if isChargeable is true */}
+                                {!ticket.isQuotationCreated && ticket.isChargeable && (
+                                    <Button
+                                        type="primary"
+                                        onClick={() => setIsCreateModalVisible(true)}  // Open the Create Quotation modal
+                                        icon={<DollarOutlined />}
+                                    >
+                                        Create Quotation
+                                    </Button>
+                                )}
+                                {ticket.isQuotationCreated && ticket.isChargeable && (
+                                    <Button
+                                        type="primary"
+                                        onClick={() => setIsDetailsModalVisible(true)}  // Open the Create Quotation modal
+                                        icon={<DollarOutlined />}
+                                    >
+                                        view Quotation
+                                    </Button>
+                                )}
+
+                            </div>
 
 
-                            )}
+                        )}
 
-                           
+
                     </>
                 ) : (
                     <p>No ticket details available</p>
@@ -165,13 +200,13 @@ useEffect(() => {
             </Modal>
 
             {/* Create Quotation Modal */}
-            <QuotationFormModal 
-                defticketId={ticket && ticket.ticketId} 
-                defaultCustomer={ticket && ticket.customerId} 
+            <QuotationFormModal
+                defticketId={ticket && ticket.ticketId}
+                defaultCustomer={ticket && ticket.customerId}
                 title="Create Quotation"
                 visible={isCreateModalVisible}
                 onCreate={handleCreateQuotation}
-                onClose={handleCreateModalClose} 
+                onClose={handleCreateModalClose}
                 footer={null}
                 centered
             />
@@ -188,6 +223,13 @@ useEffect(() => {
                 }}
                 onCancel={handleUpdateModalClose}
                 onClose={onClose}
+            />
+
+            {/* Quotation Details Modal */}
+            <QuotationDetailsModal
+                visible={isDetailsModalVisible}
+                onClose={handleDetailsModalClose}
+                quotation={quotation}
             />
         </>
     );

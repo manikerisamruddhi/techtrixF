@@ -22,11 +22,6 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
     const [customer, setCustomer] = useState(null); // State for customer data
     // const allProducts = useSelector(selectProducts); // All products from Redux
 
-    const handleEditQuotation = (updatedQuotation) => {
-        setEditedQuotation(updatedQuotation);
-    };
-    const [editableProducts, setEditableProducts] = useState(null); // Editable products
-
     const [QuotationData, setQuotationData] = useState(null);
 
     useEffect(() => {
@@ -75,18 +70,6 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
 
         }
     }, [dispatch, visible, quotation?.ticketId]);
-
-
-    quotationProducts.map((product, index) => {
-        // console.log(`Product ${index + 1}:`, product);
-    });
-
-    // const handleSaveEdit = (updatedQuotation) => {
-    //     setQuotationData(updatedQuotation);
-    //     onClose();
-
-    //     setIsEditModalVisible(false); // Close the modal
-    // };
 
     const handlePrintQuotation = () => {
         const pdfElement = createPdfContent(); // Generate content for PDF

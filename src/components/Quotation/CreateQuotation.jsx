@@ -66,7 +66,8 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
         description: '',
         isSerialNoAllowed: false,
         partCode: '',
-        productType: 'Hardware'
+        productType: 'Hardware',
+        productId: null // Add productId to newProduct state
 
     });
     const [showNewProductForm, setShowNewProductForm] = useState(false);
@@ -74,6 +75,7 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
     const [editIndex, setEditIndex] = useState(null); // To track which product is being edited
     const [customerType, setCustomerType] = useState('existing'); // Track customer type
     const [existingCustomer, setExistingCustomer] = useState(undefined); // Track selected existing customer
+    const [serviceProductIds, setServiceProductIds] = useState();
 
     const [productType, setProductType] = useState('Hardware'); // Default selection is Hardware    
     const [newCustomer, setNewCustomer] = useState({
@@ -130,7 +132,7 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
             addProductFormRef.current.scrollIntoView({ behavior: 'smooth' });
         }
     }, [showNewProductForm]);
-    
+
     useEffect(() => {
         // Check if the component is visible
         if (visible) {
@@ -203,7 +205,7 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                         // console.log(`Added quotation: ${addedQuote}`);
                     }
                     // console.log(Quote.current);
-                  SetQuoteState(Quote.current);
+                    SetQuoteState(Quote.current);
                 } catch (error) {
                     // Log any errors that occur during the fetching or creating process
                     console.error('Error fetching or creating quotation:', error);
@@ -216,27 +218,28 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
 
             // Call the fetchData function to execute the logic
             fetchData();
-            
+
 
             // console.log('Current quotation state:', JSON.stringify(Quote, null, 2)); // Log the current state of the quotation
         }
     }, [visible]); // Dependencies for the useEffect hook
 
 
-    
+
 
     const handleProductSelect = (value) => {
         const selectedProduct = products.find(product => product.productId === value);
         if (selectedProduct) {
             const productWithKey = { ...selectedProduct, key: Date.now() }; // Add a unique key for rendering
             setAddedProducts(prev => [...prev, productWithKey]); // Add the selected product to addedProducts
+            console.log(addedProducts);
             notification.success({ message: 'Product added successfully!' });
         }
     };
 
     const handleAddOrEditProduct = () => {
         // Validation Logic
-        if (newProduct.price <= 0 || newProduct.quantity <= 0 ) {
+        if (newProduct.price <= 0 || newProduct.quantity <= 0) {
             notification.error({ message: 'Please fill price and quantity correctly!' });
             return;
         }
@@ -257,7 +260,7 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
         }
 
         // Reset form
-        setNewProduct({ brand: '', modelNo: '', price: 0, quantity: 1, description: '', isSerialNoAllowed: false, productType: 'Hardware' });
+        setNewProduct({ brand: '', modelNo: '', price: 0, quantity: 1, description: '', isSerialNoAllowed: false, productType: 'Hardware', productId: null });
         setShowNewProductForm(false);
     };
 
@@ -315,7 +318,6 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
 
             // Create a new customer if necessary
             let customerId;
-            // console.log(`jjjjjjjjjjjjjjjjjjj ${customerType}`);
             if (customerType === 'new') {
                 const newCustomerData = {
                     firstName: newCustomer.firstName,
@@ -352,69 +354,74 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
             }
 
             // Create new products
+            const addedProductIds = []; // Array to hold product IDs to be added to quotationProducts
             const productPromises = addedProducts.map(async (product) => {
-                const newProductData = {
-                    brand: product.brand,
-                    modelNo: product.modelNo,
-                    price: product.price,
-                    quantity: product.quantity,
-                    description: product.description,
-                    isSerialNoAllowed: product.isSerialNoAllowed,
-                    partCode: product.partCode,
-                    hsnCode: product.hsnCode,
-                    unitOfMeasurement: product.unitOfMeasurement,
-                    gst: product.gst,
-                    warrenty: product.warrenty,
-                    productType: product.productType,
-                    customerId: customerId || defaultCustomer || customer.customerId,
-                };
+                if (product.productType === 'Service') {
+                    console.log(product);
+                    // If product is a service, just push its ID to the array
+                    addedProductIds.push(product.productId);
+                    return product;
+                } else {
+                    const newProductData = {
+                        brand: product.brand,
+                        modelNo: product.modelNo,
+                        price: product.price,
+                        quantity: product.quantity,
+                        description: product.description,
+                        isSerialNoAllowed: product.isSerialNoAllowed,
+                        partCode: product.partCode,
+                        hsnCode: product.hsnCode,
+                        unitOfMeasurement: product.unitOfMeasurement,
+                        gst: product.gst,
+                        warrenty: product.warrenty,
+                        productType: product.productType === 'ServiceF' ? 'Service' : product.productType,
+                        customerId: customerId || defaultCustomer || existingCustomer.customerId,
+                    };
 
-                // console.log('Adding new product:', newProductData);
-                const addedProduct = await dispatch(addProduct(newProductData)).unwrap();
-                return addedProduct;
+                    const addedProduct = await dispatch(addProduct(newProductData)).unwrap();
+                    addedProductIds.push(addedProduct.productId); // Push the newly added product's ID
+                    return addedProduct;
+                }
             });
+
             const addedProductsResponse = await Promise.all(productPromises);
-            const addedProductIds = addedProductsResponse.map((product) => product.productId); // Assuming each `addedProduct` has a `productId` field
+            console.log(addedProductsResponse);
+            console.log(addedProductIds);
 
             // Create a new quotation
             const quotationData = {
                 ticketId: NticketId !== null ? NticketId.current.value : defticketId,
                 customerId: customerId,
-                // productId: addedProductIds,
-                // FinalAmount: addedProductsResponse.reduce((total, prod) => total + prod.price * prod.quantity, 0),
                 status: 'Pending',
                 createdBy: loggedInUserId,
-                // isQuotationCreated: true,
                 createdDate: currentDate.format('YYYY-MM-DD HH:mm:ss'),
                 comments: comment,
             };
 
-          
-//   console.log('----:', Quote.current, QuoteState);
-            
-  // console.log(`Updating quotation with data: ${JSON.stringify(quotationData, null, 2)}  ${Quote.current.quotationId}`);
-  const quotationResponse = await dispatch(updateQuotation({ quotationId: Quote.current.quotationId, data: quotationData })).unwrap();
-  // console.log('Quotation updated:', quotationResponse);
 
-  // Create entries in quotationProducts table for each product
-  const quotationProductPromises = addedProductIds.map(async (productId, index) => {
-    const quotationProductsData = {
-        quotationId: Quote.current ? Quote.current.quotationId : QuoteState.quotationId,
-        productId: productId,
-    };
+            const quotationResponse = await dispatch(updateQuotation({ quotationId: Quote.current.quotationId, data: quotationData })).unwrap();
+            // console.log('Quotation updated:', quotationResponse);
 
-    // Adding a delay of 1 second before each API call
-    if (index > 0) await sleep(1000);
+            // Create entries in quotationProducts table for each product
+            const quotationProductPromises = addedProductIds.map(async (productId, index) => {
+                const quotationProductsData = {
+                    quotationId: quotationResponse.quotationId, // Use the ID from the created or updated quotation
+                    productId: productId,
+                };
 
-    console.log('Adding quotation product:', quotationProductsData);
-    const quotationProductResponse = await dispatch(addQuotaionProduct(quotationProductsData)).unwrap();
-    return quotationProductResponse;
-});
-const quotationProductsResponses = await Promise.all(quotationProductPromises);
-// console.log('Quotation products added:', quotationProductsResponses);
+                // Adding a delay of 1 second before each API call
+                if (index > 0) await sleep(1000);
+
+                console.log('Adding quotation product:', quotationProductsData);
+                const quotationProductResponse = await dispatch(addQuotaionProduct(quotationProductsData)).unwrap();
+                return quotationProductResponse;
+            });
+
+            const quotationProductsResponses = await Promise.all(quotationProductPromises);
+            // console.log('Quotation products added:', quotationProductsResponses);
 
 
-  navigate('/Quotations')
+            navigate('/Quotations')
             notification.success({ message: 'Quotation added successfully!' });
             form.resetFields();
             setAddedProducts([]);
@@ -424,7 +431,7 @@ const quotationProductsResponses = await Promise.all(quotationProductPromises);
             setComment(''); // Reset comment
 
             onClose(); // Close modal after submission
-          
+
         } catch (err) {
             console.error(err);
             notification.error({ message: 'Error adding quotation' });
@@ -552,7 +559,9 @@ const quotationProductsResponses = await Promise.all(quotationProductPromises);
                             products.map(product => (
                                 <Select.Option
                                     style={{ width: '100%', color: 'black', border: '1px', padding: '10px', }}
-                                    key={product.productId} value={product.productId} label={`${product.brand} || ${product.modelNo} || ₹${product.description}`}>
+                                    key={product.productId} 
+                                    value={product.productId} 
+                                    label={`${product.brand} || ${product.modelNo} || ₹${product.description}`}>
                                     {product.brand} || {product.modelNo} || ₹{product.description}
                                 </Select.Option>
                             ))
@@ -590,20 +599,32 @@ const quotationProductsResponses = await Promise.all(quotationProductPromises);
                                 icon={<CloseCircleOutlined />}
                                 onClick={() => {
                                     setShowNewProductForm(false);
-                                    setNewProduct({ brand: '', modelNo: '', price: 0, quantity: 1, description: '', isSerialNoAllowed: false });
-                                    setEditIndex(null);
+                                    setNewProduct({
+                                        brand: '',
+                                        modelNo: '',
+                                        price: 0,
+                                        quantity: 1,
+                                        description: '',
+                                        isSerialNoAllowed: false,
+                                        partCode: '',
+                                        productType: 'Hardware',
+                                        productId: null // Reset productId
+                                    });
+                                     setEditIndex(null);
                                 }}
                             />
                         </div>
 
                         {/* Product Type Selection */}
                         <Form.Item label="Product Type">
-                            <Radio.Group value={productType} onChange={e => {
-                                setProductType(e.target.value);
-                                setNewProduct(prev => ({ ...prev, productType: e.target.value })); // Update newProduct with selected productType
-                            }}>
+                            <Radio.Group value={productType} 
+                            onChange={e => {
+                            const selectedProductType = e.target.value;
+                            setProductType(selectedProductType); // Update local state if needed
+                            setNewProduct(prev => ({ ...prev, productType: selectedProductType })); // Update newProduct with selected productType
+                        }}>
                                 <Radio value="Hardware">Hardware</Radio>
-                                <Radio value="Service">Service</Radio>
+                                <Radio value="ServiceF">Service</Radio>
                             </Radio.Group>
                         </Form.Item>
 
@@ -685,8 +706,8 @@ const quotationProductsResponses = await Promise.all(quotationProductPromises);
                                     <Input
                                         type="number"
                                         value={newProduct.price}
-                                        
-                                    // rules={[{ required: true, message: 'Please input the part code!' }]}
+
+                                        // rules={[{ required: true, message: 'Please input the part code!' }]}
                                         onChange={e => setNewProduct({ ...newProduct, price: parseFloat(e.target.value) })}
                                     />
                                 </Form.Item>
