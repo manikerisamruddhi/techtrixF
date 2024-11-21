@@ -71,8 +71,14 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
         }
     }, [dispatch, visible, quotation?.ticketId]);
 
+    const products = quotationProducts ? quotationProducts : []; // Assuming quotation has a products array
+
+        const arrayOfProductIds = products.map(product => product.productId);
+        // console.log("Array of Product IDs:", arrayOfProductIds);
+        const filteredProducts = useSelector(state => selectProductsByIds(state, arrayOfProductIds));
+        
     const handlePrintQuotation = () => {
-        const pdfElement = createPdfContent(); // Generate content for PDF
+        const pdfElement = createPdfContent(filteredProducts); // Pass filtered products to createPdfContent
 
         // Set PDF options
         const options = {
@@ -169,29 +175,16 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
     };
 
     // console.log(`${quotationProducts}`, JSON.stringify(quotationProducts, null, 2));
-    const createPdfContent = () => {
+    const createPdfContent = (filteredProducts) => {
 
-
-        const pdfContent = document.createElement('div');
-        const products = quotationProducts ? quotationProducts : []; // Assuming quotation has a products array
-
-
-        // console.log(`${products}`, JSON.stringify(products, null, 2));
-
-        // products.forEach((product, index) => {
-        //     console.log(`Product ${index + 1} ID: ${product.productId}`);
-        // });
-
-        const arrayOfProductIds = products.map(product => product.productId);
-        // console.log("Array of Product IDs:", arrayOfProductIds);
-
-        const filteredProducts = useSelector(state => selectProductsByIds(state, arrayOfProductIds));
+  
         // console.log(filteredProducts);
 
         quoteProducts.current = filteredProducts;
 
+        const pdfContent = document.createElement('div');
         const productsRows = filteredProducts.map((filteredProduct, index) => {
-            // Calculate the amount
+           // Calculate the amount
             let quantity = filteredProduct.quantity ? filteredProduct.quantity : 1;
             const amount = (quantity && filteredProduct.price)
                 ? (quantity * filteredProduct.price).toFixed(2)
@@ -474,7 +467,7 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
                         padding: '5px',
                     }}
                 >
-                    <div dangerouslySetInnerHTML={{ __html: createPdfContent().innerHTML }} />
+                    <div dangerouslySetInnerHTML={{ __html: createPdfContent(filteredProducts).innerHTML }} />
                 </div>
 
             </Modal>
