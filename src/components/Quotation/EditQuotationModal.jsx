@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Modal, Form, Input, Button, Select, Table, notification, Row, Col, Radio } from 'antd';
 import { useDispatch } from 'react-redux';
 import { updateQuotation } from '../../redux/slices/quotationSlice';
-import { updateQuotationProduct, deleteProduct, addProduct } from '../../redux/slices/productSlice';
+import { updateQuotationProduct, deleteQuotationProduct, addProduct } from '../../redux/slices/productSlice';
 import { addQuotaionProduct } from '../../redux/slices/quotationSlice';
 
 const { Option } = Select;
@@ -18,6 +18,12 @@ const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
     const [productType, setProductType] = useState('Hardware'); // State for product type
     const [newProduct, setNewProduct] = useState({}); // State for new product details
 
+
+
+    const [quotationProducts, setQuotationProducts] = useState();
+
+ 
+
     useEffect(() => {
         if (quotation) {
             form.setFieldsValue({
@@ -29,14 +35,21 @@ const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
                 transport: quotation.transport,
                 comments: quotation.comments
             });
+            setQuotationProducts(quotation.quotationProducts);
         }
     }, [quotation, form]);
 
     useEffect(() => {
+        
         if (products) {
             setProductList(products); // Initialize product list from quotation
         }
+        if (quotation){
+            setQuotationProducts(quotation.quotationProducts);
+        }
     }, [visible]);
+
+    // console.log(quotationProducts);
 
     const handleFinish = async (values) => {
         try {
@@ -140,12 +153,15 @@ const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
     };
 
     const handleDeleteProduct = (productId) => {
+        const foundProduct = quotationProducts.find(item => item.productId === productId);
+        const quotationProductId = foundProduct.quotationProductId;
+
         Modal.confirm({
             title: 'Are you sure you want to delete this product?',
             content: 'This action cannot be undone.',
             onOk: async () => {
                 try {
-                    await dispatch(deleteProduct(productId)); // Assuming deleteProduct is an action that handles the API call
+                    await dispatch(deleteQuotationProduct(quotationProductId)); // Assuming deleteQuotationProduct is an action that handles the API call
                     setProductList((prevProducts) => prevProducts.filter(prod => prod.productId !== productId));
                     notification.success({ message: 'Product deleted successfully!' });
                 } catch (error) {
