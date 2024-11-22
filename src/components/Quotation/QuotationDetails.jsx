@@ -191,9 +191,9 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
                 : 'NA';
 
 
-            let gstAmount = 'NA';
+            let gstAmount18 = 'NA';
             if (filteredProduct.gst === 18 && amount !== 'NA') {
-                gstAmount = (amount * 0.18).toFixed(2);
+                gstAmount18 = (amount * 0.18).toFixed(2);
             }
 
             // Return the updated row
@@ -297,7 +297,7 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
                                 <th style="border: 1px solid #000; padding: 5px; background-color: #17A0CC; color:white; font-size: 10px;">Qty</th>
                                 <th style="border: 1px solid #000; padding: 5px; background-color: #17A0CC; color:white; font-size: 10px;">UoM</th>
                                 <th style="border: 1px solid #000; padding: 5px; background-color: #17A0CC; color:white; font-size: 10px; width: 9%;">Unit Price</th>
-                                <th style="border: 1px solid #000; padding: 5px; background-color: #17A0CC; color:white; font-size: 10px;">Amount</th>
+                                <th style="border: 1px solid #000; padding: 5px; background-color: #17A0CC; color:white; font-size: 10px; width: 20%">Amount</th>
                            
                             </tr>
                             
@@ -322,11 +322,11 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
     </tr>
     <tr>
         <td style="border: 1px solid black; padding: 2px 3px; white-space: nowrap;"><strong>Tax Rate 18 %</strong></td>
-        <td style="border: 1px solid black; padding: 2px 3px; white-space: nowrap; text-align: right;">₹ ${QuotationData?.total18GstTax || '0'}</td>
+        <td style="border: 1px solid black; padding: 2px 3px; white-space: nowrap; text-align: right;">₹ ${QuotationData?.total18GstTax?.toFixed(2) || '0'}</td>
     </tr>
     <tr>
         <td style="border: 1px solid black; padding: 2px 3px; white-space: nowrap;"><strong>Tax Rate 28 %</strong></td>
-        <td style="border: 1px solid black; padding: 2px 3px; white-space: nowrap; text-align: right;">₹ ${QuotationData?.total28GstTax || '0'}</td>
+        <td style="border: 1px solid black; padding: 2px 3px; white-space: nowrap; text-align: right;">₹ ${QuotationData?.total28GstTax.toFixed(2) || '0'}</td>
     </tr>
     <tr>
         <td style="border: 1px solid black; padding: 2px 3px; white-space: nowrap;"><strong>Total Amount</strong></td>

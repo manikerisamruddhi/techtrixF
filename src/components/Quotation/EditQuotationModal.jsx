@@ -22,7 +22,7 @@ const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
 
     const [quotationProducts, setQuotationProducts] = useState();
 
- 
+
 
     useEffect(() => {
         if (quotation) {
@@ -40,11 +40,11 @@ const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
     }, [quotation, form]);
 
     useEffect(() => {
-        
+
         if (products) {
             setProductList(products); // Initialize product list from quotation
         }
-        if (quotation){
+        if (quotation) {
             setQuotationProducts(quotation.quotationProducts);
         }
     }, [visible]);
@@ -92,7 +92,10 @@ const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
 
     const handleProductUpdate = async () => {
         try {
-            const values = await productForm.validateFields(); // Validate the product form fields const productData = { ...values, productType }; // Include productType in the values
+            const values = await productForm.validateFields(); // Validate the product form fields
+
+            // Create productData after validation
+            const productData = { ...values, productType }; // Include productType in the values
 
             // Check if quantity and price are valid
             if (values.quantity < 1) {
@@ -107,7 +110,7 @@ const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
 
             if (isAddingProduct) {
                 // If adding a new product, generate a new product object
-                const newProductData = { ...values, productId: nextProductId }; // Use the next available ID
+                const newProductData = { ...productData, productId: nextProductId }; // Use the next available ID
 
                 // Dispatch the addProduct action to add the new product to the store
                 const newAddedProduct = await dispatch(addProduct(newProductData)).unwrap(); // Call the API to add the product
@@ -151,6 +154,7 @@ const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
             console.error('Validation failed:', error);
         }
     };
+
 
     const handleDeleteProduct = (productId) => {
         const foundProduct = quotationProducts.find(item => item.productId === productId);
@@ -233,7 +237,7 @@ const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
             width={700}
         >
             <Form form={form} onFinish={handleFinish} layout="vertical">
-                <Row gutter={ 16}>
+                <Row gutter={16}>
                     <Col span={12}>
                         <Form.Item label="Delivery" name="delivery">
                             <Input placeholder="Enter delivery details" />
@@ -326,12 +330,16 @@ const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
                         {productType === 'Hardware' && (
                             <Row gutter={16}>
                                 <Col span={12}>
-                                    <Form.Item label="Brand" name="brand" rules={[{ required: true }]}>
+                                    <Form.Item label="Brand" name="brand" 
+                                    // rules={[{ required: true }]}
+                                    >
                                         <Input onChange={e => setNewProduct({ ...newProduct, brand: e.target.value })} />
                                     </Form.Item>
                                 </Col>
                                 <Col span={12}>
-                                    <Form.Item label="Model No" name="modelNo" rules={[{ required: true }]}>
+                                    <Form.Item label="Model No" name="modelNo" 
+                                    // rules={[{ required: true }]}
+                                    >
                                         <Input onChange={e => setNewProduct({ ...newProduct, modelNo: e.target.value })} />
                                     </Form.Item>
                                 </Col>
