@@ -1,6 +1,6 @@
 // src/components/Header/Header.js
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import { Layout, Typography, Space, Button } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '../../redux/slices/loginSlice'; // Adjust the path as necessary
@@ -20,17 +20,19 @@ const CustomHeader = () => {
 
     const [isHovered, setIsHovered] = useState(false);
 
-    const buttonStyle = {
-        backgroundColor: isHovered ? 'darkred' : 'orangered', // Change color on hover
-        borderColor: isHovered ? 'darkred' : 'red', // Change border color on hover
-        color: 'white', // Text color
-        borderRadius: '15px', // Optional: add border radius
-    };
+ 
 
     // Function to handle logout
     const handleLogout = () => {
         dispatch(logoutUser()); // Dispatch the logout action to Redux
         navigate('/login');
+    };
+
+   const buttonStyle = {
+        backgroundColor: isHovered ? 'darkred' : 'orangered', // Change color on hover
+        borderColor: isHovered ? 'darkred' : 'red', // Change border color on hover
+        color: 'white', // Text color
+        borderRadius: '15px', // Optional: add border radius
     };
 
     return (
@@ -49,7 +51,14 @@ const CustomHeader = () => {
             </Text>
             {user && ( // Conditionally render Space if user exists
                 <Space>
-                    Welcome, <strong>{userName}</strong> ji! {/* Display the logged-in user's name */}
+                    Welcome,
+                    <Link 
+                        to="/ProfilePage" // Link to the profile page
+                        style={{ textDecoration: 'none', color: '', fontWeight: 'bold' }} // Custom styling
+                    >
+                        {userName}
+                    </Link>
+                    ji! {/* Display the logged-in user's name */}
                     <Button 
                         type="danger" 
                         icon={<LogoutOutlined />} 
