@@ -6,6 +6,7 @@ import Quotations from './pages/Quotations/Quotations';
 import Dashboard from './pages/dashboard/AdminDashHome';
 import UserManagement from './pages/Users/UserManagement';
 import Login from './pages/auth/LoginPage';
+import ProfilePage from './pages/Profile/ProfilePage';
 // import ForgotPass from './pages/auth/ForgotPasswordPage';
 // import Register from './pages/auth/RegisterPage';
 import Customers from './pages/Customers/Customers';
@@ -33,6 +34,11 @@ const App = () => {
                         <Route path="/register" element={<Register />} /> */}
                         
                         {/* Protected Routes */}
+                        <Route path="/ProfilePage" element={
+                            <ProtectedRoute>
+                                <ProfilePage />
+                            </ProtectedRoute>
+                        } />
                         <Route path="/" element={
                             <ProtectedRoute>
                                 <Dashboard />
