@@ -1,12 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu } from 'antd';
-import { AppstoreOutlined, MailOutlined, SettingOutlined, SnippetsOutlined, DollarOutlined, TeamOutlined, DropboxOutlined} from '@ant-design/icons';
+import { AppstoreOutlined,UserOutlined,  ProfileOutlined, MailOutlined, SettingOutlined, SnippetsOutlined, DollarOutlined, TeamOutlined, DropboxOutlined} from '@ant-design/icons';
 import '../../styles/components/Navbar.css';
 
 const Navbar = () => {
     const location = useLocation();
     const [selectedKey, setSelectedKey] = useState(location.pathname);
+
+    const getMenuKey = () => {
+        const { pathname } = location;
+
+        // Map multiple paths or queries to the same key
+        if (pathname === '/tickets') {
+            return '/Tickets';
+        }
+        return pathname; // Default to the pathname
+    };
+
+    useEffect(() => {
+        setSelectedKey(getMenuKey());
+    }, [location]);
 
     const handleClick = (e) => {
         setSelectedKey(e.key);
@@ -33,7 +47,7 @@ const Navbar = () => {
                     <Link to="/">Home</Link>
                 </Menu.Item>
 
-                <Menu.Item key="/TicketList" icon={<MailOutlined />}>
+                <Menu.Item key="/Tickets" icon={<MailOutlined />}>
                     <Link to="/Tickets">Tickets</Link>
                 </Menu.Item>
 
@@ -54,6 +68,9 @@ const Navbar = () => {
                 </Menu.Item>
                 <Menu.Item key="/Products" icon={<DropboxOutlined />}>
                     <Link to="/Products">Products</Link>
+                </Menu.Item>
+                <Menu.Item key="/ProfilePage" icon={<UserOutlined/>}>
+                    <Link to="/ProfilePage">My profile</Link>
                 </Menu.Item>
             </Menu>
         </div>
