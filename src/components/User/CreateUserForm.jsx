@@ -80,7 +80,9 @@ const CreateUserForm = ({ user, onClose }) => {
                     <Form.Item
                         label="Phone Number"
                         name="phoneNumber"
-                        rules={[{ required: true, message: 'Please input the phone number!' }]}
+                        rules={[{ required: true, message: 'Please input the phone number!' },
+                            { pattern: /^[0-9]{10}$/, message: 'Phone number must be 10 digits' },
+                        ]}
                     >
                         <Input />
                     </Form.Item>
@@ -91,7 +93,7 @@ const CreateUserForm = ({ user, onClose }) => {
                     <Form.Item
                         label="Address"
                         name="address"
-                        rules={[{ required: true, message: 'Please input the address!' }]}
+                        rules={[{ required: true, message: 'Please input the address!' } ]}
                     >
                         <Input />
                     </Form.Item>
@@ -100,7 +102,9 @@ const CreateUserForm = ({ user, onClose }) => {
                     <Form.Item
                         label="Pin code"
                         name="zipCode"
-                        rules={[{ required: true, message: 'Please input the address!' }]}
+                        rules={[{ required: true, message: 'Please input the Pin code!' },
+                            { pattern: /^[1-9][0-9]{5}$/, message: 'Pin code must be 6 digits and cannot start with 0.' },
+                        ]}
                     >
                         <Input />
                     </Form.Item>
