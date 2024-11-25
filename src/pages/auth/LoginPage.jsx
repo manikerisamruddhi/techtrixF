@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Form, Input, Button, Alert } from 'antd';
+import { Form, Input, Button, Alert, message } from 'antd';
 import { useDispatch } from 'react-redux';  // Import useDispatch
 import { loginUser } from '../../redux/slices/loginSlice';  // Import loginUser thunk
 
@@ -21,11 +21,11 @@ const LoginPage = () => {
                 if (userRole === 'Admin') {
                     navigate('/');  // Redirect to Admin
                 } else if (userRole === 'Sales') {
-                    navigate('/');  // Redirect to Sales page
+                    message.error('You are not authorized to log in.', 3);  // Redirect to Sales page
                 } else if (userRole === 'Logistics') {
-                    navigate('/');  // Redirect to Logistics page
+                    message.error('You are not authorized to log in.', 3);  // Redirect to Sales page
                 } else {
-                    navigate('/');  // Default redirect to home page
+                    message.error('You are not authorized to log in.', 3);  // Default redirect to home page
                 }
             } else {
                 setError(resultAction.payload);
@@ -70,9 +70,9 @@ const LoginPage = () => {
                     </Button>
                 </Form.Item>
             </Form>
-            <div className="auth-links" style={{ textAlign: 'center' }}>
+            {/* <div className="auth-links" style={{ textAlign: 'center' }}>
                 <a href="/register">Register</a> | <a href="/forgot-password">Forgot Password?</a>
-            </div>
+            </div> */}
         </div>
     );
 };
