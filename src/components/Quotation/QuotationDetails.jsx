@@ -265,7 +265,7 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
     </tr>
     <tr>
         <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;"><strong>Customer ID</strong></td>
-        <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;"> ${customer ? (customer.customerId ? customer.customerId : 'N/A') : 'N/A'}</td>
+        <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;"> ${customer ? (customer.cust_ID ? customer.cust_ID : 'N/A') : 'N/A'}</td>
     </tr>
     <tr>
         <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;"><strong>Q ID</strong></td>
