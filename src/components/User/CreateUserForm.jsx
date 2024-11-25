@@ -98,6 +98,15 @@ const CreateUserForm = ({ user, onClose }) => {
                 </Col>
                 <Col span={12}>
                     <Form.Item
+                        label="Pin code"
+                        name="zipCode"
+                        rules={[{ required: true, message: 'Please input the address!' }]}
+                    >
+                        <Input />
+                    </Form.Item>
+                </Col>
+                <Col span={12}>
+                    <Form.Item
                         label="Role"
                         name="role"
                         rules={[{ required: true, message: 'Please select a role!' }]}
@@ -110,8 +119,6 @@ const CreateUserForm = ({ user, onClose }) => {
                         </Select>
                     </Form.Item>
                 </Col>
-            </Row>
-            <Row gutter={16}>
                 <Col span={12}>
                     <Form.Item
                         label="Status"
@@ -121,7 +128,10 @@ const CreateUserForm = ({ user, onClose }) => {
                         <Checkbox>Active</Checkbox>
                     </Form.Item>
                 </Col>
-                <Col span={12}>
+            </Row>
+            <Row gutter={16}>
+               
+                <Col span={24}>
 
                 {!isEditMode && (
     <Form.Item label="Password" name="password" rules={[{ required: true, message: 'Please enter the password!' }]}>
