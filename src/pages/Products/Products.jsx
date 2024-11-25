@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Table, Button, Spin, Empty, Layout, Typography, Card, Row, Col, Modal, notification } from 'antd';
-import {  deleteProduct, addProduct, updateProduct, fetchProducts } from '../../redux/slices/productSlice';
+import { deleteProduct, addProduct, updateProduct, fetchProducts } from '../../redux/slices/productSlice';
 import ProductDetailModal from '../../components/Product/ProductDetails';
 import ProductFormModal from '../../components/Product/AddProduct';
 
@@ -27,19 +27,23 @@ const Products = () => {
         setFilteredProducts(products); // Initially, show all products
     }, [products]);
 
+   const refresh = () => {
+        dispatch(fetchProducts());
+    }
     const handleDelete = (productId) => {
         Modal.confirm({
             title: 'Confirm Deletion',
             content: 'Are you sure you want to delete this product?',
             onOk: () => {
                 dispatch(deleteProduct(productId));
-                
+
             },
         });
     };
 
     const handleCreateProduct = (values) => {
         dispatch(addProduct(values));
+        dispatch(fetchProducts());
         setCreateModalVisible(false);
         notification.success({
             message: 'Success',
@@ -148,10 +152,10 @@ const Products = () => {
 
                     {/* Create Product Modal */}
                     <ProductFormModal
-    visible={isCreateModalVisible}
-    onCancel={() => setCreateModalVisible(false)}
-    onCreate={handleCreateProduct}
-/>
+                        visible={isCreateModalVisible}
+                        onCancel={() => setCreateModalVisible(false)}
+                        onCreate={handleCreateProduct}
+                    />
 
                     {/* Edit Product Modal
                     {isEditModalVisible && (
@@ -162,13 +166,14 @@ const Products = () => {
                             onSave={handleEditProduct}
                         />
                     )} */}
-                    
+
                     {/* Edit Product Modal */}
                     <ProductFormModal
                         visible={isEditModalVisible}
                         onCancel={() => setEditModalVisible(false)}
                         // onCreate={handleEditProduct}
                         product={selectedProduct}
+                        refresh={refresh}
                     />
                 </div>
             </Content>
