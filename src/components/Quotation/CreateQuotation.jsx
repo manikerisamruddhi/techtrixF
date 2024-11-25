@@ -559,8 +559,8 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                             products.map(product => (
                                 <Select.Option
                                     style={{ width: '100%', color: 'black', border: '1px', padding: '10px', }}
-                                    key={product.productId} 
-                                    value={product.productId} 
+                                    key={product.productId}
+                                    value={product.productId}
                                     label={`${product.brand} || ${product.modelNo} || ₹${product.description}`}>
                                     {product.brand} || {product.modelNo} || ₹{product.description}
                                 </Select.Option>
@@ -610,19 +610,19 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                                         productType: 'Hardware',
                                         productId: null // Reset productId
                                     });
-                                     setEditIndex(null);
+                                    setEditIndex(null);
                                 }}
                             />
                         </div>
 
                         {/* Product Type Selection */}
                         <Form.Item label="Product Type">
-                            <Radio.Group value={productType} 
-                            onChange={e => {
-                            const selectedProductType = e.target.value;
-                            setProductType(selectedProductType); // Update local state if needed
-                            setNewProduct(prev => ({ ...prev, productType: selectedProductType })); // Update newProduct with selected productType
-                        }}>
+                            <Radio.Group value={productType}
+                                onChange={e => {
+                                    const selectedProductType = e.target.value;
+                                    setProductType(selectedProductType); // Update local state if needed
+                                    setNewProduct(prev => ({ ...prev, productType: selectedProductType })); // Update newProduct with selected productType
+                                }}>
                                 <Radio value="Hardware">Hardware</Radio>
                                 <Radio value="ServiceF">Service</Radio>
                             </Radio.Group>
@@ -730,24 +730,41 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                                     </Select>
                                 </Form.Item>
                             </Col>
-
-                            <Col span={8}>
-                                <Form.Item label="Quantity"
-                                    rules={[{ required: true }]}
-                                // labelCol={{ span: 10 }}
-                                // wrapperCol={{ span: 14 }}
-                                >
-                                    <Input
-                                        type="number"
-                                        value={newProduct.quantity}
-                                        onChange={e => setNewProduct({ ...newProduct, quantity: parseInt(e.target.value) })}
-                                    />
-                                </Form.Item>
-                            </Col>
+                            {productType === 'Hardware' && (
+                                <Col span={8}>
+                                    <Form.Item label="Quantity"
+                                        rules={[{ required: true }]}
+                                    >
+                                        <Input
+                                            type="number"
+                                            value={newProduct.quantity}
+                                            onChange={e => setNewProduct({ ...newProduct, quantity: parseInt(e.target.value) })}
+                                        />
+                                    </Form.Item>
+                                </Col>
 
 
+
+                            )}
+                            {productType === 'ServiceF' && (
+                                <Col span={8}>
+                                    <Form.Item
+                                        label="Quantity"
+                                        name="quantity"
+                                        initialValue={1} // Set the default value
+                                        rules={[{ required: true }]}
+                                    >
+                                        <Input
+                                            type="number"
+                                            value={1} // Ensure the input always shows "1"
+                                            disabled // Disable the input
+                                        />
+                                    </Form.Item>
+                                </Col>
+                            )}
 
                         </Row>
+
                         {productType === 'Hardware' && (
                             <Row gutter={16}>
                                 <Col span={12}>

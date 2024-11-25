@@ -403,6 +403,7 @@ const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
                                     </Select>
                                 </Form.Item>
                             </Col>
+                            {productType === 'Hardware' && (
                             <Col span={8}>
                                 <Form.Item label="Quantity" name="quantity" rules={[{ required: true }]}>
                                     <Input
@@ -411,7 +412,27 @@ const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
                                     />
                                 </Form.Item>
                             </Col>
-                        </Row>
+                        )}
+
+                        {productType !== 'Hardware' && (
+                           <Col span={8}>
+                           <Form.Item 
+                               label="Quantity" 
+                               name="quantity" 
+                               initialValue={1} // Set the default value
+                               rules={[{ required: true }]}
+                           >
+                               <Input
+                                   type="number"
+                                   value={1} // Ensure the input always shows "1"
+                                   disabled // Disable the input
+                               />
+                           </Form.Item>
+                       </Col>
+                       
+                        )}
+                         </Row>
+                         
                         {productType === 'Hardware' && (
                             <Row gutter={16}>
                                 <Col span={12}>

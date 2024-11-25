@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 
 const { Option } = Select;
 
-const ProductFormModal = ({ visible, onCancel, product, customerId, onAddProduct }) => {
+const ProductFormModal = ({ visible, onCancel, product, customerId, refresh }) => {
     const [form] = Form.useForm();
     const dispatch = useDispatch();
     const [productType, setProductType] = useState('Hardware'); // Default selection is Hardware
@@ -32,28 +32,24 @@ const ProductFormModal = ({ visible, onCancel, product, customerId, onAddProduct
             createdDate: createdDate,
             productType: productType,
         };
-    
+
         // Only add customerId if it's defined
         if (customerId) {
             productData.customerId = customerId;
         }
-    
+
         // Check if we are updating an existing product or adding a new one
         if (product) {
             // Update product
             dispatch(updateProduct({ productId: product.productId, updatedProduct: productData }))
                 .then((resultAction) => {
                     if (updateProduct.fulfilled.match(resultAction)) {
-                        const updatedProduct = resultAction.payload;  // Get the updated product from the action payload
                         onCancel();  // Close modal
-    
+                        refresh();
+                        // Reset the form fields
+                        form.resetFields();
                         // Show success message
                         message.success("Product updated successfully!");
-    
-                        // Trigger the parent callback to inform about the updated product
-                        if (onAddProduct) {
-                            onAddProduct(updatedProduct);
-                        }
                     } else {
                         message.error('Failed to update product.');
                     }
@@ -63,24 +59,18 @@ const ProductFormModal = ({ visible, onCancel, product, customerId, onAddProduct
             dispatch(addProduct(productData))
                 .then((resultAction) => {
                     if (addProduct.fulfilled.match(resultAction)) {
-                        const newProduct = resultAction.payload;  // Get the newly added product from the action payload
+
                         onCancel();  // Close modal
-    
+                        refresh();
+                        // Reset the form fields
+                        form.resetFields();
                         // Show success message
                         message.success("Product added successfully!");
-    
-                        // Trigger the parent callback to inform about the new product
-                        if (onAddProduct) {
-                            onAddProduct(newProduct);
-                        }
                     } else {
                         message.error('Failed to add product.');
                     }
                 });
         }
-    
-        // Reset the form fields
-        form.resetFields();
     };
 
     return (
@@ -107,7 +97,7 @@ const ProductFormModal = ({ visible, onCancel, product, customerId, onAddProduct
                     initialValues={{
                         product,
                         isSerialNoAllowed: true, // Set the default value for isSerialNoAllowed to true
-                        quantity: 1 
+                        quantity: 1
                     }}
                 >
                     {/* Product Type Selection */}
@@ -217,30 +207,30 @@ const ProductFormModal = ({ visible, onCancel, product, customerId, onAddProduct
                         </Row>
 
                         {productType === 'Hardware' && (
-                        <Row gutter={16}>
+                            <Row gutter={16}>
 
-                            <Col span={12}>
-                                <Form.Item
-                                    name="isSerialNoAllowed"
-                                    label="Is Serial No Allowed :"
-                                    rules={[{ required: true, message: 'Please select if serial no is allowed' }]}
-                                >
-                                    <Radio.Group
+                                <Col span={12}>
+                                    <Form.Item
+                                        name="isSerialNoAllowed"
+                                        label="Is Serial No Allowed :"
+                                        rules={[{ required: true, message: 'Please select if serial no is allowed' }]}
                                     >
-                                        <Radio value={true}>Yes</Radio>
-                                        <Radio value={false}>No</Radio>
-                                    </Radio.Group>
-                                </Form.Item>
-                            </Col>
-                            <Col span={12}>
-                                <Form.Item
-                                    name="warrantyMonths"
-                                    label="Warranty Months :"
-                                >
-                                    <Input type="number" />
-                                </Form.Item>
-                            </Col>
-                        </Row>
+                                        <Radio.Group
+                                        >
+                                            <Radio value={true}>Yes</Radio>
+                                            <Radio value={false}>No</Radio>
+                                        </Radio.Group>
+                                    </Form.Item>
+                                </Col>
+                                <Col span={12}>
+                                    <Form.Item
+                                        name="warrantyMonths"
+                                        label="Warranty Months :"
+                                    >
+                                        <Input type="number" />
+                                    </Form.Item>
+                                </Col>
+                            </Row>
                         )}
                     </>
 
