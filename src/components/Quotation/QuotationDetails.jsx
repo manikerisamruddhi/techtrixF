@@ -19,6 +19,7 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
     const quoteProducts = useRef();
     const preparedBy = useRef();
     const [isEditModalVisible, setIsEditModalVisible] = useState(false); // State for Edit modal visibility
+    const [isCustomerLoading, setIsCustomerLoading] = useState(true); // Loading state for customer data
     const [customer, setCustomer] = useState(null); // State for customer data
     // const allProducts = useSelector(selectProducts); // All products from Redux
 
@@ -47,6 +48,7 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
 
     useEffect(() => {
         if (visible && quotation?.ticketId) {
+            setIsCustomerLoading(true); // Start loading
             dispatch(fetchTicketDetails(quotation.ticketId))
                 .then((ticketResponse) => {
                     const fetchedTicketData = ticketResponse.payload;
@@ -59,17 +61,29 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
                                 } else {
                                     message.error("Failed to fetch customer details.");
                                 }
-                            });
+                            })
+                            .finally(() => setIsCustomerLoading(false)); 
                     } else {
                         message.error("Customer ID not found in ticket details.");
+                        setIsCustomerLoading(false)
+                        
                     }
                 })
                 .catch(() => {
                     message.error("Failed to fetch ticket details.");
+                    setIsCustomerLoading(false); // End loading
                 });
 
         }
     }, [dispatch, visible, quotation?.ticketId]);
+
+    const handleEditQuotation = () => {
+        if (isCustomerLoading) {
+            message.warning("Please wait, customer data is being loaded.");
+            return;
+        }
+        setIsEditModalVisible(true);
+    };
 
     const products = quotationProducts ? quotationProducts : []; // Assuming quotation has a products array
 
@@ -415,10 +429,11 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
                     <Space key="actions" style={{ float: 'right' }}>
                         {quotation?.status === 'Pending' && (
                             <Button
-                                key="edit"
-                                onClick={() => setIsEditModalVisible(true)}
-                                style={{ float: 'right', border: "solid lightblue", borderRadius: '9px' }}
-                            >
+                            key="edit"
+                            onClick={handleEditQuotation}
+                            style={{ float: 'right', border: "solid lightblue", borderRadius: '9px' }}
+                            disabled={isCustomerLoading} // Disable the button while loading
+                        >
                                 Edit Quotation
                             </Button>
                         )}
@@ -477,6 +492,7 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
                 visible={isEditModalVisible}
                 products={quoteProducts.current}
                 quotation={quotation}
+                customer={customer}
                 // onSave={handleSaveEdit}
                 onClose={() => {
                     setIsEditModalVisible(false);

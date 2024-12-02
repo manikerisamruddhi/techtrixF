@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 
 const { Option } = Select;
 
-const ProductFormModal = ({ visible, onCancel, product, customerId, refresh }) => {
+const ProductFormModal = ({ visible, onCancel, product, customerId, onAddProduct }) => {
     const [form] = Form.useForm();
     const dispatch = useDispatch();
     const [productType, setProductType] = useState('Hardware'); // Default selection is Hardware
@@ -44,8 +44,9 @@ const ProductFormModal = ({ visible, onCancel, product, customerId, refresh }) =
             dispatch(updateProduct({ productId: product.productId, updatedProduct: productData }))
                 .then((resultAction) => {
                     if (updateProduct.fulfilled.match(resultAction)) {
+                        onAddProduct(productData);
                         onCancel();  // Close modal
-                        refresh();
+                        // refresh();
                         // Reset the form fields
                         form.resetFields();
                         // Show success message
@@ -59,9 +60,10 @@ const ProductFormModal = ({ visible, onCancel, product, customerId, refresh }) =
             dispatch(addProduct(productData))
                 .then((resultAction) => {
                     if (addProduct.fulfilled.match(resultAction)) {
+                        onAddProduct(resultAction.payload);
 
                         onCancel();  // Close modal
-                        refresh();
+                        // refresh();
                         // Reset the form fields
                         form.resetFields();
                         // Show success message

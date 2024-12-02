@@ -409,8 +409,8 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                     productId: productId,
                 };
 
-                // Adding a delay of 1 second before each API call
-                if (index > 0) await sleep(1000);
+                // Adding a delay of 0.5 second before each API call
+                if (index > 0) await sleep(500);
 
                 console.log('Adding quotation product:', quotationProductsData);
                 const quotationProductResponse = await dispatch(addQuotaionProduct(quotationProductsData)).unwrap();

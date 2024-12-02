@@ -2,26 +2,21 @@ import React, { useEffect, useState } from 'react';
 import { Modal, Form, Input, Button, Select, Table, notification, Row, Col, Radio } from 'antd';
 import { useDispatch } from 'react-redux';
 import { updateQuotation } from '../../redux/slices/quotationSlice';
-import { updateQuotationProduct, deleteQuotationProduct, addProduct } from '../../redux/slices/productSlice';
+import { updateQuotationProduct, deleteQuotationProduct } from '../../redux/slices/productSlice';
+import ProductFormModal from '../Product/AddProduct'
 import { addQuotaionProduct } from '../../redux/slices/quotationSlice';
+
 
 const { Option } = Select;
 
-const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
+const EditQuotationModal = ({ visible, quotation, onClose, products, customer }) => {
     const dispatch = useDispatch();
-    const [productForm] = Form.useForm(); // Form for editing product
     const [form] = Form.useForm();
     const [productList, setProductList] = useState([]);
-    const [editingProduct, setEditingProduct] = useState(null); // Initialize as null
-    const [isAddingProduct, setIsAddingProduct] = useState(false); // State to check if adding a new product
-    const [nextProductId, setNextProductId] = useState(1); // Initialize a counter for product IDs
+    const [editingProductId, setEditingProductId] = useState(null); // Track the product being edited
     const [productType, setProductType] = useState('Hardware'); // State for product type
-    const [newProduct, setNewProduct] = useState({}); // State for new product details
-
-
-
-    const [quotationProducts, setQuotationProducts] = useState();
-
+    const [tempProduct, setTempProduct] = useState({}); // State for the product being edited
+    const [addProductVisible, setAddProductVisible] = useState(false); // State for ProductFormModal visibility
 
 
     useEffect(() => {
@@ -35,21 +30,9 @@ const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
                 transport: quotation.transport,
                 comments: quotation.comments
             });
-            setQuotationProducts(quotation.quotationProducts);
+            setProductList(products);
         }
     }, [quotation, form]);
-
-    useEffect(() => {
-
-        if (products) {
-            setProductList(products); // Initialize product list from quotation
-        }
-        if (quotation) {
-            setQuotationProducts(quotation.quotationProducts);
-        }
-    }, [visible]);
-
-    // console.log(quotationProducts);
 
     const handleFinish = async (values) => {
         try {
@@ -66,7 +49,6 @@ const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
                 await dispatch(updateQuotationProduct({ quotationId: quotation.quotationId, productId: product.productId, updatedProduct: product }));
             }
 
-            setProductList(productList);
             onClose(); // Close the modal
         } catch (error) {
             console.error('Error updating quotation:', error);
@@ -75,89 +57,46 @@ const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
     };
 
     const handleEditProduct = (product) => {
-        setEditingProduct(product);
-        setIsAddingProduct(false); // Set to false since we are editing
-        setNewProduct(product); // Set the new product state to the editing product
+        setEditingProductId(product.productId);
+        setTempProduct({ ...product }); // Set the temporary product state
         setProductType(product.productType || 'Hardware'); // Set product type based on editing product
-        productForm.setFieldsValue(product); // Set form values for editing
     };
 
-    const handleAddProduct = () => {
-        setEditingProduct(null); // Reset editing product
-        setIsAddingProduct(true); // Set to true since we are adding
-        setNewProduct({}); // Reset the new product state
-        setProductType('Hardware'); // Default to Hardware
-        productForm.resetFields(); // Reset the form fields for a new product
-    };
-
-    const handleProductUpdate = async () => {
+    const handleSaveProduct = async () => {
         try {
-            const values = await productForm.validateFields(); // Validate the product form fields
-
-            // Create productData after validation
-            const productData = { ...values, productType }; // Include productType in the values
-
-            // Check if quantity and price are valid
-            if (values.quantity < 1) {
+            // Validate the product data
+            if (tempProduct.quantity < 1) {
                 notification.error({ message: 'Quantity must be at least 1!' });
                 return;
             }
 
-            if (values.price < 1) {
+            if (tempProduct.price < 1) {
                 notification.error({ message: 'Price must be at least 1!' });
                 return;
             }
 
-            if (isAddingProduct) {
-                // If adding a new product, generate a new product object
-                const newProductData = { ...productData, productId: nextProductId }; // Use the next available ID
+            // Update the product in the list
+            setProductList(prevProducts =>
+                prevProducts.map(prod =>
+                    prod.productId === tempProduct.productId ? { ...tempProduct } : prod
+                )
+            );
 
-                // Dispatch the addProduct action to add the new product to the store
-                const newAddedProduct = await dispatch(addProduct(newProductData)).unwrap(); // Call the API to add the product
+            // Dispatch the update action
+            await dispatch(updateQuotationProduct({ quotationId: quotation.quotationId, productId: tempProduct.productId, updatedProduct: tempProduct }));
+            notification.success({ message: 'Product updated successfully!' });
 
-                // Update the productList to include the new product
-                setProductList((prevProducts) => {
-                    const existingProductIndex = prevProducts.findIndex(prod => prod.productId === newAddedProduct.productId);
-                    if (existingProductIndex === -1) {
-                        return [...prevProducts, newAddedProduct];
-                    } else {
-                        return prevProducts.map(prod =>
-                            prod.productId === newAddedProduct.productId ? newAddedProduct : prod
-                        );
-                    }
-                });
-                setNextProductId(prevId => prevId + 1); // Increment the ID for the next product
-
-                const quotationProductsData = {
-                    quotationId: quotation.quotationId,
-                    productId: newAddedProduct.productId,
-                };
-
-                await dispatch(addQuotaionProduct(quotationProductsData)).unwrap();
-
-                notification.success({ message: 'Product added successfully!' });
-            } else {
-                // Update the existing product
-                setProductList((prevProducts) =>
-                    prevProducts.map((prod) =>
-                        prod.productId === editingProduct.productId ? { ...prod, ...productData } : prod
-                    )
-                );
-                notification.success({ message: 'Product updated successfully!' });
-            }
-
-            // Reset states and form fields
-            setEditingProduct(null); // Close the edit product modal
-            setIsAddingProduct(false); // Reset adding state
-            productForm.resetFields(); // Reset the product form fields
+            // Reset editing state
+            setEditingProductId(null);
+            setTempProduct({});
         } catch (error) {
-            console.error('Validation failed:', error);
+            console.error('Error updating product:', error);
+            notification.error({ message: 'Failed to update product.' });
         }
     };
 
-
     const handleDeleteProduct = (productId) => {
-        const foundProduct = quotationProducts.find(item => item.productId === productId);
+        const foundProduct = productList.find(item => item.productId === productId);
         const quotationProductId = foundProduct.quotationProductId;
 
         Modal.confirm({
@@ -165,9 +104,9 @@ const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
             content: 'This action cannot be undone.',
             onOk: async () => {
                 try {
-                    await dispatch(deleteQuotationProduct(quotationProductId)); // Assuming deleteQuotationProduct is an action that handles the API call
+                    await dispatch(deleteQuotationProduct(quotationProductId));
                     setProductList((prevProducts) => prevProducts.filter(prod => prod.productId !== productId));
-                    notification.success({ message: 'Product deleted successfully!' });
+                    notification.success ({ message: 'Product deleted successfully!' });
                 } catch (error) {
                     console.error('Error deleting product:', error);
                     notification.error({ message: 'Failed to delete product.' });
@@ -182,7 +121,7 @@ const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
             const gstAmount = (product.price * quantity * (product.gst / 100));
             const totalAmount = (product.price * quantity) + gstAmount;
             return total + totalAmount;
-        }, 0).toFixed(2); // Return as a string with two decimal places
+        }, 0).toFixed(2);
     };
 
     const productColumns = [
@@ -190,42 +129,105 @@ const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
             title: 'Brand',
             dataIndex: 'brand',
             key: 'brand',
+            render: (text, record) => (
+                editingProductId === record.productId ? (
+                    <Input
+                        value={tempProduct.brand}
+                        onChange={(e) => setTempProduct({ ...tempProduct, brand: e.target.value })}
+                    />
+                ) : text
+            ),
         },
         {
             title: 'Model No',
             dataIndex: 'modelNo',
             key: 'modelNo',
+            render: (text, record) => (
+                editingProductId === record.productId ? (
+                    <Input
+                        value={tempProduct.modelNo}
+                        onChange={(e) => setTempProduct({ ...tempProduct, modelNo: e.target.value })}
+                    />
+                ) : text
+            ),
         },
         {
             title: 'Quantity',
             dataIndex: 'quantity',
             key: 'quantity',
+            render: (text, record) => (
+                editingProductId === record.productId ? (
+                    <Input
+                        type="number"
+                        value={tempProduct.quantity}
+                        onChange={(e) => setTempProduct({ ...tempProduct, quantity: parseInt(e.target.value) })}
+                    />
+                ) : text
+            ),
         },
         {
             title: 'Price',
             dataIndex: 'price',
             key: 'price',
+            render: (text, record) => (
+                editingProductId === record.productId ? (
+                    <Input
+                        type="number"
+                        value={tempProduct.price}
+                        onChange={(e) => setTempProduct({ ...tempProduct, price: parseFloat(e.target.value) })}
+                    />
+                ) : text
+            ),
         },
         {
             title: 'GST (%)',
             dataIndex: 'gst',
             key: 'gst',
+            render: (text, record) => (
+                editingProductId === record.productId ? (
+                    <Select
+                        value={tempProduct.gst}
+                        onChange={(value) => setTempProduct({ ...tempProduct, gst: value })}
+                    >
+                        <Option value="0">None</Option>
+                        <Option value="18">18%</Option>
+                        <Option value="28">28%</Option>
+                    </Select>
+                ) : text
+            ),
         },
         {
             title: 'Actions',
             key: 'actions',
             render: (_, product) => (
                 <>
-                    <Button type="link" onClick={() => handleEditProduct(product)}>
-                        Edit
-                    </Button>
-                    <Button type="link" danger onClick={() => handleDeleteProduct(product.productId)}>
-                        Delete
-                    </Button>
+                    {editingProductId === product.productId ? (
+                        <>
+                            <Button type="link" onClick={handleSaveProduct}>
+                                Save
+                            </Button>
+                            <Button type="link" danger onClick={() => setEditingProductId(null)}>
+                                Cancel
+                            </Button>
+                        </>
+                    ) : (
+                        <>
+                            <Button type="link" onClick={() => handleEditProduct(product)}>
+                                Edit
+                            </Button>
+                            <Button type="link" danger onClick={() => handleDeleteProduct(product.productId)}>
+                                Delete
+                            </Button>
+                        </>
+                    )}
                 </>
             ),
         },
     ];
+
+    const handleAddProduct = () => {
+        setAddProductVisible(true);
+      };
 
     return (
         <Modal
@@ -259,7 +261,7 @@ const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
                         <Form.Item label="Transport" name="transport">
                             <Input placeholder="Enter transport details" />
                         </Form.Item>
-                    </Col>
+ </Col>
                 </Row>
                 <Row>
                     <Col span={24}>
@@ -269,9 +271,6 @@ const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
                     </Col>
                 </Row>
                 <h3>Products</h3>
-                <Button type="primary" onClick={handleAddProduct} style={{ marginBottom: 16 }}>
-                    Add New Product
-                </Button>
                 <Table
                     columns={productColumns}
                     dataSource={productList}
@@ -290,176 +289,32 @@ const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
                         </Table.Summary.Row>
                     )}
                 />
+                <Button 
+                type="primary" 
+                style={{ float: 'right', backgroundColor: '#08ba00', borderColor: 'blue', marginBottom: '16px' }} 
+                onClick={handleAddProduct} // Ensure you have this function defined
+            >
+                Add New Product
+            </Button>
                 <Form.Item>
                     <Button type="primary" htmlType="submit">
                         Update Quotation
                     </Button>
                 </Form.Item>
+
             </Form>
-
-            {(editingProduct || isAddingProduct) && (
-                <Modal
-                    title={isAddingProduct ? "Add New Product" : "Edit Product"}
-                    visible={!!(editingProduct || isAddingProduct)}
-                    onCancel={() => {
-                        setEditingProduct(null);
-                        setIsAddingProduct(false);
-                    }}
-                    onOk={handleProductUpdate}
-                    width={700}
-                >
-                    <Form
-                        form={productForm}
-                        layout="vertical"
-                        initialValues={newProduct}
-                        onValuesChange={(changedValues) => {
-                            setNewProduct((prev) => ({ ...prev, ...changedValues }));
-                        }}
-                    >
-                        {/* Product Type Selection */}
-                        <Form.Item label="Product Type">
-                            <Radio.Group value={productType} onChange={e => {
-                                setProductType(e.target.value);
-                                setNewProduct(prev => ({ ...prev, productType: e.target.value })); // Update newProduct with selected productType
-                            }}>
-                                <Radio value="Hardware">Hardware</Radio>
-                                <Radio value="Service">Service</Radio>
-                            </Radio.Group>
-                        </Form.Item>
-
-                        {productType === 'Hardware' && (
-                            <Row gutter={16}>
-                                <Col span={12}>
-                                    <Form.Item label="Brand" name="brand" 
-                                    // rules={[{ required: true }]}
-                                    >
-                                        <Input onChange={e => setNewProduct({ ...newProduct, brand: e.target.value })} />
-                                    </Form.Item>
-                                </Col>
-                                <Col span={12}>
-                                    <Form.Item label="Model No" name="modelNo" 
-                                    // rules={[{ required: true }]}
-                                    >
-                                        <Input onChange={e => setNewProduct({ ...newProduct, modelNo: e.target.value })} />
-                                    </Form.Item>
-                                </Col>
-                            </Row>
-                        )}
-                        <Row>
-                            <Col span={24}>
-                                <Form.Item label="Description" name="description">
-                                    <Input.TextArea
-                                        rows={3}
-                                        onChange={e => setNewProduct({ ...newProduct, description: e.target.value })}
-                                    />
-                                </Form.Item>
-                            </Col>
-                        </Row>
-
-                        {productType === 'Hardware' && (
-                            <Row gutter={16}>
-                                <Col span={8}>
-                                    <Form.Item label="HSN Code" name="hsnCode">
-                                        <Input
-                                            onChange={e => setNewProduct({ ...newProduct, hsnCode: e.target.value })}
-                                        />
-                                    </Form.Item>
-                                </Col>
-                                <Col span={8}>
-                                    <Form.Item label="Unit of Measurement" name="unitOfMeasurement">
-                                        <Input
-                                            onChange={e => setNewProduct({ ...newProduct, unitOfMeasurement: e.target.value })}
-                                        />
-                                    </Form.Item>
-                                </Col>
-                                <Col span={8}>
-                                    <Form.Item label="Part Code" name="partCode">
-                                        <Input
-                                            onChange={e => setNewProduct({ ...newProduct, partCode: e.target.value })}
-                                        />
-                                    </Form.Item>
-                                </Col>
-                            </Row>
-                        )}
-
-                        <Row gutter={16}>
-                            <Col span={8}>
-                                <Form.Item label="Price" name="price" rules={[{ required: true }]}>
-                                    <Input
-                                        type="number"
-                                        onChange={e => setNewProduct({ ...newProduct, price: parseFloat(e.target.value) })}
-                                    />
-                                </Form.Item>
-                            </Col>
-                            <Col span={8}>
-                                <Form.Item label="GST" name="gst" rules={[{ required: true, message: 'Please select GST!' }]}>
-                                    <Select
-                                        placeholder="Select GST"
-                                        onChange={value => setNewProduct({ ...newProduct, gst: value })}
-                                    >
-                                        <Option value="18">18%</Option>
-                                        <Option value="28">28%</Option>
-                                        <Option value="0">None</Option>
-                                    </Select>
-                                </Form.Item>
-                            </Col>
-                            {productType === 'Hardware' && (
-                            <Col span={8}>
-                                <Form.Item label="Quantity" name="quantity" rules={[{ required: true }]}>
-                                    <Input
-                                        type="number"
-                                        onChange={e => setNewProduct({ ...newProduct, quantity: parseInt(e.target.value) })}
-                                    />
-                                </Form.Item>
-                            </Col>
-                        )}
-
-                        {productType !== 'Hardware' && (
-                           <Col span={8}>
-                           <Form.Item 
-                               label="Quantity" 
-                               name="quantity" 
-                               initialValue={1} // Set the default value
-                               rules={[{ required: true }]}
-                           >
-                               <Input
-                                   type="number"
-                                   value={1} // Ensure the input always shows "1"
-                                   disabled // Disable the input
-                               />
-                           </Form.Item>
-                       </Col>
-                       
-                        )}
-                         </Row>
-                         
-                        {productType === 'Hardware' && (
-                            <Row gutter={16}>
-                                <Col span={12}>
-                                    <Form.Item label="Is Serial No Allowed" name="isSerialNoAllowed">
-                                        <Radio.Group
-                                            onChange={e => setNewProduct({ ...newProduct, isSerialNoAllowed: e.target.value })}
-                                            style={{ display: 'inline-block' }}
-                                        >
-                                            <Radio value={true}>Yes</Radio>
-                                            <Radio value={false}>No</Radio>
-                                        </Radio.Group>
-                                    </Form.Item>
-                                </Col>
-                                <Col span={12}>
-                                    <Form.Item label="Warranty Months" name="warrantyMonths" rules={[{ required: true }]}>
-                                        <Input
-                                            type="number"
-                                            onChange={e => setNewProduct({ ...newProduct, warrantyMonths: parseInt(e.target.value) })}
-                                        />
-                                    </Form.Item>
-                                </Col>
-                            </Row>
-                        )}
-                    </Form>
-                </Modal>
-            )}
+            <ProductFormModal
+    visible={addProductVisible}
+    onCancel={() => setAddProductVisible(false)}
+    product={null} // No pre-filled product for new product
+    customerId = { customer ? customer.customerId : null}
+    onAddProduct={(product) => {
+      setProductList((prevProducts) => [...prevProducts, product]);
+      setAddProductVisible(false);
+    }}
+  />
         </Modal>
+        
     );
 };
 
