@@ -2,8 +2,9 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import authApi from '../../api/authApi';
 import store from '../store'; // Assuming your store is in '../store' to dispatch logout
 
-// Time (in milliseconds) to automatically log out after tab is closed
-const LOGOUT_TIME_LIMIT = 10 * 60 * 1000; // 10 minutes in milliseconds
+// Constants
+const INACTIVITY_LOGOUT_LIMIT = 10 * 60 * 1000; // 10 minutes in milliseconds
+const MAX_SESSION_TIME = 30 * 60 * 1000; // 30 minutes in milliseconds
 
 // Async Thunks
 export const loginUser = createAsyncThunk(
@@ -12,10 +13,12 @@ export const loginUser = createAsyncThunk(
         try {
             const response = await authApi.login(credentials);
             const loginUserResponse = response.data;
-            
-            if (loginUserResponse.httpStatus === "OK") {
+
+            if (loginUserResponse.httpStatus === 'OK') {
+                const currentTime = Date.now();
                 localStorage.setItem('user', JSON.stringify(loginUserResponse.userContent));
-                localStorage.setItem('lastActive', Date.now()); // Set initial activity time
+                localStorage.setItem('lastActive', currentTime); // Set initial activity time
+                localStorage.setItem('sessionExpiry', currentTime + MAX_SESSION_TIME); // Set session expiry time
                 return loginUserResponse.userContent;
             } else {
                 return rejectWithValue(loginUserResponse.message);
@@ -29,13 +32,20 @@ export const loginUser = createAsyncThunk(
 export const logoutUser = createAsyncThunk('users/logoutUser', async () => {
     localStorage.removeItem('user');
     localStorage.removeItem('lastActive');
+    localStorage.removeItem('sessionExpiry');
     return {};
 });
 
-// Check last activity and log out if 5 minutes have passed
+// Check for auto-logout on inactivity or session expiry
 export const checkForAutoLogout = () => {
     const lastActive = localStorage.getItem('lastActive');
-    if (lastActive && Date.now() - parseInt(lastActive, 10) > LOGOUT_TIME_LIMIT) {
+    const sessionExpiry = localStorage.getItem('sessionExpiry');
+
+    const currentTime = Date.now();
+    if (
+        sessionExpiry && currentTime > parseInt(sessionExpiry, 10) || // Session expired
+        (lastActive && currentTime - parseInt(lastActive, 10) > INACTIVITY_LOGOUT_LIMIT) // Inactivity timeout
+    ) {
         store.dispatch(logoutUser());
     }
 };
@@ -80,10 +90,19 @@ export const { clearError } = userSlice.actions;
 
 export default userSlice.reducer;
 
+// Update last active time on any interaction
+window.addEventListener('mousemove', () => localStorage.setItem('lastActive', Date.now()));
+window.addEventListener('keydown', () => localStorage.setItem('lastActive', Date.now()));
+
 // Set last active time on tab close
-window.addEventListener('beforeunload', () => {
-    localStorage.setItem('lastActive', Date.now());
-});
+// window.addEventListener('beforeunload', () => {
+//     localStorage.setItem('lastActive', Date.now());
+// });
 
 // Check for auto-logout on load
 checkForAutoLogout();
+
+// Set a timeout to force logout after 10 minutes of tab closing
+setTimeout(() => {
+    checkForAutoLogout();
+}, INACTIVITY_LOGOUT_LIMIT);

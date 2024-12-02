@@ -1,8 +1,7 @@
-// CreateUserForm.js
 import React, { useEffect } from 'react';
-import { Form, Input, Select, Button, Checkbox, message, Row, Col } from 'antd';
+import { Form, Input, Select, Button, Switch, message, Row, Col } from 'antd';
 import { useDispatch } from 'react-redux';
-import { createUser , updateUser  } from '../../redux/slices/userSlice';
+import { createUser, updateUser } from '../../redux/slices/userSlice';
 
 const { Option } = Select;
 
@@ -13,30 +12,36 @@ const CreateUserForm = ({ user, onClose }) => {
 
     useEffect(() => {
         if (user) {
-            form.setFieldsValue(user); // Populate form with user data for editing
+            form.setFieldsValue({
+                ...user,
+                userType: user.userType === 'Admin_User', // Convert to boolean for the Switch
+            });
         }
     }, [user, form]);
 
     const handleSubmit = async (values) => {
         try {
-            if (user) {
-                await dispatch(updateUser ({ ...values, userId: user.userId })); // Update user
-                message.success('User  updated successfully!');
+            const userData = {
+                ...values,
+                userType: values.userType ? 'Admin_User' : 'Normal_User', // Map boolean to enum
+            };
+
+            if (isEditMode) {
+                await dispatch(updateUser({ ...userData, userId: user.userId }));
+                message.success('User updated successfully!');
             } else {
-                await dispatch(createUser (values))
-                .then((resultAction) => {
-                    if (createUser.fulfilled.match(resultAction)) {
-                        message.success('User added successfully!');
-                        onClose();  // Close modal
-                    } else {
-                        message.error( error );
-                    }
-                    });
+                const result = await dispatch(createUser(userData));
+                if (createUser.fulfilled.match(result)) {
+                    message.success('User added successfully!');
+                } else {
+                    throw new Error(result.error.message || 'Failed to add user');
+                }
             }
+
             form.resetFields();
-            onClose(); // Close the modal after successful creation or update
+            onClose(); // Close the modal after success
         } catch (error) {
-            message.error('Failed to save user. Please try again later or try another Email.');
+            message.error(error.message || 'Failed to save user. Please try again later.');
         }
     };
 
@@ -45,6 +50,9 @@ const CreateUserForm = ({ user, onClose }) => {
             form={form}
             layout="vertical"
             onFinish={handleSubmit}
+            initialValues={{
+                userType: false, // Default to Normal User
+            }}
         >
             <Row gutter={16}>
                 <Col span={12}>
@@ -71,7 +79,9 @@ const CreateUserForm = ({ user, onClose }) => {
                     <Form.Item
                         label="Email"
                         name="email"
-                        rules={[{ required: true, type: 'email', message: 'Please input a valid email!' }]}
+                        rules={[
+                            { required: true, type: 'email', message: 'Please input a valid email!' },
+                        ]}
                     >
                         <Input />
                     </Form.Item>
@@ -80,7 +90,8 @@ const CreateUserForm = ({ user, onClose }) => {
                     <Form.Item
                         label="Phone Number"
                         name="phoneNumber"
-                        rules={[{ required: true, message: 'Please input the phone number!' },
+                        rules={[
+                            { required: true, message: 'Please input the phone number!' },
                             { pattern: /^[0-9]{10}$/, message: 'Phone number must be 10 digits' },
                         ]}
                     >
@@ -91,33 +102,12 @@ const CreateUserForm = ({ user, onClose }) => {
             <Row gutter={16}>
                 <Col span={12}>
                     <Form.Item
-                        label="Address"
-                        name="address"
-                        rules={[{ required: true, message: 'Please input the address!' } ]}
-                    >
-                        <Input />
-                    </Form.Item>
-                </Col>
-                <Col span={12}>
-                    <Form.Item
-                        label="Pin code"
-                        name="zipCode"
-                        rules={[{ required: true, message: 'Please input the Pin code!' },
-                            { pattern: /^[1-9][0-9]{5}$/, message: 'Pin code must be 6 digits and cannot start with 0.' },
-                        ]}
-                    >
-                        <Input />
-                    </Form.Item>
-                </Col>
-                <Col span={12}>
-                    <Form.Item
                         label="Role"
                         name="role"
                         rules={[{ required: true, message: 'Please select a role!' }]}
                     >
                         <Select placeholder="Select a role">
-                            {/* <Option value="admin">Admin</Option> */}
-                            <Option value="Logistics">Logistics </Option>
+                            <Option value="Logistics">Logistics</Option>
                             <Option value="Sales">Sales</Option>
                             <Option value="Service_Technical">Service technical</Option>
                         </Select>
@@ -125,25 +115,30 @@ const CreateUserForm = ({ user, onClose }) => {
                 </Col>
                 <Col span={12}>
                     <Form.Item
-                        label="Status"
-                        name="isActive"
-                        valuePropName="checked"
+                        label="User Type"
+                        name="userType"
+                        valuePropName="checked" // Maps to boolean
+                        rules={[{ required: true, message: 'Please select the user type!' }]}
                     >
-                        <Checkbox>Active</Checkbox>
+                        <Switch
+                            checkedChildren="Admin"
+                            unCheckedChildren="Normal User"
+                        />
                     </Form.Item>
                 </Col>
             </Row>
             <Row gutter={16}>
-               
-                <Col span={24}>
-
                 {!isEditMode && (
-    <Form.Item label="Password" name="password" rules={[{ required: true, message: 'Please enter the password!' }]}>
-        <Input.Password />
-    </Form.Item>
-)}
-
-                </Col>
+                    <Col span={24}>
+                        <Form.Item
+                            label="Password"
+                            name="password"
+                            rules={[{ required: true, message: 'Please enter the password!' }]}
+                        >
+                            <Input.Password />
+                        </Form.Item>
+                    </Col>
+                )}
             </Row>
             <Form.Item>
                 <Button type="primary" htmlType="submit">

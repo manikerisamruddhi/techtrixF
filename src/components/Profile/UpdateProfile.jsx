@@ -82,12 +82,8 @@ const UpdateProfile = ({ visible, onClose, user, onUpdate }) => {
                         <Form.Item
                             label="Email"
                             name="email"
-                            rules={[
-                                { required: true, message: 'Please enter your email' },
-                                { type: 'email', message: 'Please enter a valid email' },
-                            ]}
                         >
-                            <Input />
+                            <Input disabled/>
                         </Form.Item>
                     </Col>
 
@@ -106,25 +102,6 @@ const UpdateProfile = ({ visible, onClose, user, onUpdate }) => {
 
                     <Col span={12}>
                         <Form.Item
-                            label="Zip Code"
-                            name="zipCode"
-                        >
-                            <Input />
-                        </Form.Item>
-                    </Col>
-
-                    <Col span={24}>
-                        <Form.Item
-                            label="Address"
-                            name="address"
-                            rules={[{ required: true, message: 'Please enter your address' }]}
-                        >
-                            <Input />
-                        </Form.Item>
-                    </Col>
-
-                    <Col span={12}>
-                        <Form.Item
                             label="Role"
                             name="role"
                         >
@@ -132,15 +109,6 @@ const UpdateProfile = ({ visible, onClose, user, onUpdate }) => {
                         </Form.Item>
                     </Col>
 
-                    <Col span={12}>
-                        <Form.Item
-                            label="Active"
-                            name="isActive"
-                            valuePropName="checked"
-                        >
-                            <Switch />
-                        </Form.Item>
-                    </Col>
                 </Row>
 
                 <Row justify="end">
