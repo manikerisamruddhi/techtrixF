@@ -45,9 +45,9 @@ const EditQuotationModal = ({ visible, quotation, onClose, products, customer })
             notification.success({ message: 'Quotation updated successfully!' });
 
             // Dispatch the updateProducts action to update the products
-            for (const product of productList) {
-                await dispatch(updateQuotationProduct({ quotationId: quotation.quotationId, productId: product.productId, updatedProduct: product }));
-            }
+            // for (const product of productList) {
+            //     await dispatch(updateQuotationProduct({ quotationId: quotation.quotationId, productId: product.productId, updatedProduct: product }));
+            // }
 
             onClose(); // Close the modal
         } catch (error) {
@@ -106,7 +106,7 @@ const EditQuotationModal = ({ visible, quotation, onClose, products, customer })
                 try {
                     await dispatch(deleteQuotationProduct(quotationProductId));
                     setProductList((prevProducts) => prevProducts.filter(prod => prod.productId !== productId));
-                    notification.success ({ message: 'Product deleted successfully!' });
+                    notification.success({ message: 'Product deleted successfully!' });
                 } catch (error) {
                     console.error('Error deleting product:', error);
                     notification.error({ message: 'Failed to delete product.' });
@@ -179,23 +179,23 @@ const EditQuotationModal = ({ visible, quotation, onClose, products, customer })
                 ) : text
             ),
         },
-        {
-            title: 'GST (%)',
-            dataIndex: 'gst',
-            key: 'gst',
-            render: (text, record) => (
-                editingProductId === record.productId ? (
-                    <Select
-                        value={tempProduct.gst}
-                        onChange={(value) => setTempProduct({ ...tempProduct, gst: value })}
-                    >
-                        <Option value="0">None</Option>
-                        <Option value="18">18%</Option>
-                        <Option value="28">28%</Option>
-                    </Select>
-                ) : text
-            ),
-        },
+        // {
+        //     title: 'GST (%)',
+        //     dataIndex: 'gst',
+        //     key: 'gst',
+        //     render: (text, record) => (
+        //         editingProductId === record.productId ? (
+        //             <Select
+        //                 value={tempProduct.gst}
+        //                 onChange={(value) => setTempProduct({ ...tempProduct, gst: value })}
+        //             >
+        //                 <Option value="0">None</Option>
+        //                 <Option value="18">18%</Option>
+        //                 <Option value="28">28%</Option>
+        //             </Select>
+        //         ) : text
+        //     ),
+        // },
         {
             title: 'Actions',
             key: 'actions',
@@ -227,7 +227,7 @@ const EditQuotationModal = ({ visible, quotation, onClose, products, customer })
 
     const handleAddProduct = () => {
         setAddProductVisible(true);
-      };
+    };
 
     return (
         <Modal
@@ -261,7 +261,7 @@ const EditQuotationModal = ({ visible, quotation, onClose, products, customer })
                         <Form.Item label="Transport" name="transport">
                             <Input placeholder="Enter transport details" />
                         </Form.Item>
- </Col>
+                    </Col>
                 </Row>
                 <Row>
                     <Col span={24}>
@@ -289,32 +289,35 @@ const EditQuotationModal = ({ visible, quotation, onClose, products, customer })
                         </Table.Summary.Row>
                     )}
                 />
-                <Button 
-                type="primary" 
-                style={{ float: 'right', backgroundColor: '#08ba00', borderColor: 'blue', marginBottom: '16px' }} 
-                onClick={handleAddProduct} // Ensure you have this function defined
-            >
-                Add New Product
-            </Button>
+                <Button
+                    type="primary"
+                    style={{  backgroundColor: '#08ba00', borderColor: 'blue', marginTop: '20px' }}
+                    onClick={handleAddProduct} // Ensure you have this function defined
+                >
+                    Add New Product
+                </Button>
                 <Form.Item>
-                    <Button type="primary" htmlType="submit">
+                    <Button type="primary" htmlType="submit"
+                       style={{ float: 'right'}}
+                    >
                         Update Quotation
                     </Button>
                 </Form.Item>
 
             </Form>
             <ProductFormModal
-    visible={addProductVisible}
-    onCancel={() => setAddProductVisible(false)}
-    product={null} // No pre-filled product for new product
-    customerId = { customer ? customer.customerId : null}
-    onAddProduct={(product) => {
-      setProductList((prevProducts) => [...prevProducts, product]);
-      setAddProductVisible(false);
-    }}
-  />
+                visible={addProductVisible}
+                onCancel={() => setAddProductVisible(false)}
+                product={null} // No pre-filled product for new product
+                customerId={customer ? customer.customerId : null}
+                onAddProduct={(product) => {
+                    setProductList((prevProducts) => [...prevProducts, product]);
+                    setAddProductVisible(false);
+                }}
+                quotation={quotation}
+            />
         </Modal>
-        
+
     );
 };
 
