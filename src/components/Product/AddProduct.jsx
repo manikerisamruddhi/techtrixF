@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Modal, Form, Input, Radio, Button, Row, Col, message, Select } from 'antd';
 import { addProduct, updateProduct } from '../../redux/slices/productSlice'; // Redux action
 import { useDispatch } from 'react-redux';
+import { addQuotaionProduct } from '../../redux/slices/quotationSlice';
 
 const { Option } = Select;
 
-const ProductFormModal = ({ visible, onCancel, product, customerId, onAddProduct }) => {
+const ProductFormModal = ({ visible, onCancel, product, customerId, onAddProduct, quotation }) => {
     const [form] = Form.useForm();
     const dispatch = useDispatch();
     const [productType, setProductType] = useState('Hardware'); // Default selection is Hardware
@@ -60,7 +61,16 @@ const ProductFormModal = ({ visible, onCancel, product, customerId, onAddProduct
             dispatch(addProduct(productData))
                 .then((resultAction) => {
                     if (addProduct.fulfilled.match(resultAction)) {
-                        onAddProduct(resultAction.payload);
+                        const addedProduct = resultAction.payload;
+                        onAddProduct(addedProduct);
+                        if (quotation) {
+                            const quotationProductsData = {
+                                quotationId: quotation.quotationId,
+                                productId: addedProduct.productId,
+                            }
+
+                            dispatch(addQuotaionProduct(quotationProductsData)).unwrap();
+                        }
 
                         onCancel();  // Close modal
                         // refresh();
