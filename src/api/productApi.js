@@ -8,6 +8,12 @@ const productApi = {
     getProductById: (id) => {
         return axiosInstance.get(`/products/get/${id}`);
     },
+    getAllProductsHardware: () => {
+        return axiosInstance.get(`/products/all-hardwares`);
+    },
+    getAllProductsService: () => {
+        return axiosInstance.get(`/products/all-services`);
+    },
     createProduct: (productData) => {
         // console.log(productData);
         return axiosInstance.post('/products/add', productData);
