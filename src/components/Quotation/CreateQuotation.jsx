@@ -356,7 +356,7 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
             // Create new products
             const addedProductIds = []; // Array to hold product IDs to be added to quotationProducts
             const productPromises = addedProducts.map(async (product) => {
-                if (product.productType === 'Service') {
+                if (product.productType === 'Serviceklklk') { //it was Service ut for going in else every time ..
                     // console.log(product);
                     // If product is a service, just push its ID to the array
                     addedProductIds.push(product.productId);

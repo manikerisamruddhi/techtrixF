@@ -19,6 +19,7 @@ export const loginUser = createAsyncThunk(
                 localStorage.setItem('user', JSON.stringify(loginUserResponse.userContent));
                 localStorage.setItem('lastActive', currentTime); // Set initial activity time
                 localStorage.setItem('sessionExpiry', currentTime + MAX_SESSION_TIME); // Set session expiry time
+                localStorage.setItem('authToken', loginUserResponse.token); // Save the token
                 return loginUserResponse.userContent;
             } else {
                 return rejectWithValue(loginUserResponse.message);

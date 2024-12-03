@@ -11,9 +11,6 @@ import ProfilePage from './pages/Profile/ProfilePage';
 // import Register from './pages/auth/RegisterPage';
 import Customers from './pages/Customers/Customers';
 import Invoices from './pages/Invoice';
-import SalesTickets from './components/Sales/SalesTickets';
-import SalesQuotations from './components/Sales/SalesQuotations';
-import SalesHome from './components/Sales/SalesHome';
 import ProductList from './pages/Products/Products';
 import { ThemeProvider } from '@mui/material/styles'; 
 import { CssBaseline } from '@mui/material'; 
@@ -69,24 +66,9 @@ const App = () => {
                                 <Invoices />
                             </ProtectedRoute>
                         } />
-                        <Route path="/Sales" element={
-                            <ProtectedRoute>
-                                <SalesHome />
-                            </ProtectedRoute>
-                        } />
-                        <Route path="/Sales-Tickets/:userId" element={
-                            <ProtectedRoute>
-                                <SalesTickets />
-                            </ProtectedRoute>
-                        } />
                         <Route path="/Products" element={
                             <ProtectedRoute>
                                 <ProductList />
-                            </ProtectedRoute>
-                        } />
-                        <Route path="/Sales-Quotations" element={
-                            <ProtectedRoute>
-                                <SalesQuotations />
                             </ProtectedRoute>
                         } />
                        
