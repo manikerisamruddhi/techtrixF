@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import userApi from '../../api/userApi';
-import axiosInstance from '../../api/axiosInstance';
 
 // Async Thunks
 
@@ -18,11 +17,6 @@ export const fetchUserById = createAsyncThunk('users/fetchUser', async (id) =>{
     const response = await userApi.getUserById(id);
     return response;
 })
-
-// export const fetchUsersByIds = createAsyncThunk('users/fetchByIds', async (userIds) => {
-//     const response = await userApi.getuserById(userIds);
-//     return response.data; // Assuming the API returns an array of users
-// });
 
 // Fetch unique departments based on users data
 export const fetchDepartments = createAsyncThunk('users/fetchDepartments', async () => {
@@ -160,17 +154,6 @@ const userSlice = createSlice({
                 state.status = 'failed';
                 state.error = action.error.message;
             });
-            // .addCase(fetchUsersByIds.pending, (state) => {
-            //     state.loading = true;
-            // })
-            // .addCase(fetchUsersByIds.fulfilled, (state, action) => {
-            //     state.loading = false;
-            //     state.users = action.payload;
-            // })
-            // .addCase(fetchUsersByIds.rejected, (state, action) => {
-            //     state.loading = false;
-            //     state.error = action.error.message;
-            // })
     },
 });
 

@@ -34,7 +34,7 @@ const CreateUserForm = ({ user, onClose }) => {
                 if (createUser.fulfilled.match(result)) {
                     message.success('User added successfully!');
                 } else {
-                    throw new Error(result.error.message || 'Failed to add user');
+                    throw new Error(result.error.message + ', try different email or try again later');
                 }
             }
 

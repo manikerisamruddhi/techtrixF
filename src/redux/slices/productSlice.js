@@ -16,6 +16,15 @@ export const fetchProducts = createAsyncThunk('products/fetchProducts', async (_
   }
 });
 
+export const fetchHardwareProducts = createAsyncThunk('products/HardwareProducts', async (_, {rejectWithValue }) => {
+  try {
+    const response = await productApi.getAllProductsHardware();
+    return response.data;
+  }catch (error){
+    return rejectWithValue(error.response.data);
+  }
+});
+
 export const fetchNonCustProducts = createAsyncThunk('products/fetchNonCustProducts', async (_, { rejectWithValue }) => {
   try {
     const response = await productApi.getNonCustomerProducts();

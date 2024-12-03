@@ -1,42 +1,44 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Table, Button, Spin, Empty, Layout, Typography, Card, Row, Col, Modal, notification } from 'antd';
-import { deleteProduct, addProduct, updateProduct, fetchProducts } from '../../redux/slices/productSlice';
+import { Table, Button, Spin, Empty, Layout, Typography, Input, Modal, notification } from 'antd';
+import { deleteProduct, addProduct, updateProduct, fetchProducts, fetchNonCustProducts } from '../../redux/slices/productSlice';
 import ProductDetailModal from '../../components/Product/ProductDetails';
 import ProductFormModal from '../../components/Product/AddProduct';
 
 const { Content } = Layout;
 const { Title } = Typography;
+const { Search } = Input;
 
 const Products = () => {
     const dispatch = useDispatch();
-    const { items: products, loading, error } = useSelector((state) => state.products);
+    const { items: products, loading } = useSelector((state) => state.products);
 
     const [isDetailModalVisible, setDetailModalVisible] = useState(false);
     const [isCreateModalVisible, setCreateModalVisible] = useState(false);
     const [isEditModalVisible, setEditModalVisible] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [filteredProducts, setFilteredProducts] = useState([]);
+    const [searchValue, setSearchValue] = useState('');
 
     // Fetch products on mount
     useEffect(() => {
-        dispatch(fetchProducts());
+        dispatch(fetchNonCustProducts());
     }, [dispatch]);
 
     useEffect(() => {
         setFilteredProducts(products); // Initially, show all products
     }, [products]);
 
-   const refresh = () => {
-        dispatch(fetchProducts());
-    }
+    const refresh = () => {
+        dispatch(fetchNonCustProducts());
+    };
+
     const handleDelete = (productId) => {
         Modal.confirm({
             title: 'Confirm Deletion',
             content: 'Are you sure you want to delete this product?',
             onOk: () => {
                 dispatch(deleteProduct(productId));
-
             },
         });
     };
@@ -77,6 +79,25 @@ const Products = () => {
     const handleViewDetails = (product) => {
         setSelectedProduct(product);
         setDetailModalVisible(true);
+    };
+
+    const handleSearch = (value) => {
+        setSearchValue(value);
+        if (value.trim() === '') {
+            setFilteredProducts(products);
+        } else {
+            const filtered = products.filter((product) => {
+                const brand = product.brand ? product.brand.toLowerCase() : '';
+                const modelNo = product.modelNo ? product.modelNo.toLowerCase() : '';
+                const description = product.description ? product.description.toLowerCase() : '';
+                return (
+                    brand.includes(value.toLowerCase()) ||
+                    modelNo.includes(value.toLowerCase()) ||
+                    description.includes(value.toLowerCase())
+                );
+            });
+            setFilteredProducts(filtered);
+        }
     };
 
     const columns = [
@@ -124,8 +145,15 @@ const Products = () => {
                             Create Product
                         </Button>
                     </div>
-
-
+                    <Search
+                        placeholder="Search products by brand, model, or description"
+                        allowClear
+                        enterButton="Search"
+                        size="large"
+                        value={searchValue}
+                        onChange={(e) => handleSearch(e.target.value)}
+                        style={{ marginBottom: '20px' }}
+                    />
 
                     {/* Products Table */}
                     {loading ? (
@@ -137,7 +165,10 @@ const Products = () => {
                             dataSource={filteredProducts}
                             columns={columns}
                             rowKey="id"
-                            pagination={false}
+                            pagination={{
+                                pageSize: 10, // Number of items per page
+                                showSizeChanger: false, // Disable size changer
+                            }}
                         />
                     )}
 
@@ -157,21 +188,10 @@ const Products = () => {
                         onCreate={handleCreateProduct}
                     />
 
-                    {/* Edit Product Modal
-                    {isEditModalVisible && (
-                        <EditModal
-                            visible={isEditModalVisible}
-                            product={selectedProduct}
-                            onCancel={() => setEditModalVisible(false)}
-                            onSave={handleEditProduct}
-                        />
-                    )} */}
-
                     {/* Edit Product Modal */}
                     <ProductFormModal
                         visible={isEditModalVisible}
                         onCancel={() => setEditModalVisible(false)}
-                        // onCreate={handleEditProduct}
                         product={selectedProduct}
                         refresh={refresh}
                     />
