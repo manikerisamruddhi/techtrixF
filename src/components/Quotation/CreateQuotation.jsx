@@ -357,7 +357,7 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
             const addedProductIds = []; // Array to hold product IDs to be added to quotationProducts
             const productPromises = addedProducts.map(async (product) => {
                 if (product.productType === 'Service') {
-                    console.log(product);
+                    // console.log(product);
                     // If product is a service, just push its ID to the array
                     addedProductIds.push(product.productId);
                     return product;
@@ -412,7 +412,7 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                 // Adding a delay of 0.5 second before each API call
                 if (index > 0) await sleep(500);
 
-                console.log('Adding quotation product:', quotationProductsData);
+                // console.log('Adding quotation product:', quotationProductsData);
                 const quotationProductResponse = await dispatch(addQuotaionProduct(quotationProductsData)).unwrap();
                 return quotationProductResponse;
             });
