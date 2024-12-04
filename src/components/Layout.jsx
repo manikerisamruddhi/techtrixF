@@ -21,13 +21,25 @@ const LayoutComponent = ({ children }) => {
     const [loading, setLoading] = useState(true); // Loading state
 
     useEffect(() => {
-        // Retrieve user data from localStorage and set the role
-        const user = JSON.parse(localStorage.getItem('user'));
-        if (user && user.role) {
-            setUserRole(user.role);
+        // Function to retrieve user data from localStorage and set the role
+        const fetchUserRole = () => {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (user && user.role) {
+                setUserRole(user.role);
+            } else {
+                setUserRole(null); // Reset role if user is not found
+            }
+            setLoading(false); // Set loading to false after retrieving the user role
+        };
+
+        // Check if the current path is not one of the hidden routes
+        if (!isSidebarHidden) {
+            fetchUserRole();
+            // console.log('jkjk');
+        } else {
+            setLoading(false); // If the path is hidden, set loading to false immediately
         }
-        setLoading(false); // Set loading to false after retrieving the user role
-    }, []);
+    }, [hideSidebarRoutes]); // Dependency on location.pathname
 
     // If loading, show a spinner
     if (loading) {
