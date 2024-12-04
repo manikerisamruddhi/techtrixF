@@ -25,6 +25,7 @@ const TicketsService = () => {
     const [is_modal_visible, set_is_modal_visible] = useState(false);
     const [selected_ticket, set_selected_ticket] = useState(null);
     const [filtered_tickets, set_filtered_tickets] = useState([]); // State for filtered tickets
+    const [Totalfiltered_tickets, set_Totalfiltered_tickets] = useState([]); // State for filtered tickets
 
     const [searchParams] = useSearchParams();
     const status = searchParams.get('status');
@@ -51,6 +52,7 @@ const TicketsService = () => {
         const userFilteredTickets = tickets.filter(ticket =>
             ticket.createdById === user.userId || ticket.assignedTo === user.userId
         );
+        set_Totalfiltered_tickets(userFilteredTickets);
 
         // Further filter by status if applicable
         if (status) {
@@ -86,22 +88,27 @@ const TicketsService = () => {
     };
 
     // Calculate card data
-    const total_tickets = filtered_tickets.length; // Use filtered tickets
-    const open_tickets = filtered_tickets.filter(ticket => ticket.status === 'Open').length;
-    const in_progress = filtered_tickets.filter(ticket => ticket.status === 'InProgress').length;
-    const Closed_tickets = filtered_tickets.filter(ticket => ticket.status === 'Closed').length;
+    const total_tickets = Totalfiltered_tickets.length; // Use filtered tickets
+    const open_tickets = Totalfiltered_tickets.filter(ticket => ticket.status === 'Open').length;
+    const in_progress = Totalfiltered_tickets.filter(ticket => ticket.status === 'InProgress').length;
+    const Closed_tickets = Totalfiltered_tickets.filter(ticket => ticket.status === 'Closed').length;
 
     // Filter tickets based on card click
     const handle_card_click = (status) => {
-        if (status === 'Total') {
-            set_filtered_tickets(tickets.filter(ticket =>
-                ticket.createdById === user.userId || ticket.assignedTo === user.userId
-            )); // Show all filtered tickets
-        } else {
-            const filtered = filtered_tickets.filter(ticket => ticket.status === status);
-            set_filtered_tickets(filtered);
-        }
+        // Filter tickets based on user roles (createdById or assignedTo)
+        const userFilteredTickets = tickets.filter(ticket =>
+            ticket.createdById === user.userId || ticket.assignedTo === user.userId
+        );
+    
+        // If status is not 'Total', further filter by status
+        const filtered = status !== 'Total' 
+            ? userFilteredTickets.filter(ticket => ticket.status === status)
+            : userFilteredTickets;
+    
+        // Set the filtered tickets
+        set_filtered_tickets(filtered);
     };
+    
 
     const columns = [
         {
