@@ -32,46 +32,52 @@ const App = () => {
                         
                         {/* Protected Routes */}
                         <Route path="/ProfilePage" element={
-                            <ProtectedRoute>
+                            <ProtectedRoute allowedRoles={['Admin', 'Sales', 'ServiceTech']}>
                                 <ProfilePage />
                             </ProtectedRoute>
                         } />
                         <Route path="/" element={
-                            <ProtectedRoute>
+                            <ProtectedRoute allowedRoles={['Admin', 'Sales', 'ServiceTech']}>
                                 <Dashboard />
                             </ProtectedRoute>
                         } />
                         <Route path="/Tickets" element={
-                            <ProtectedRoute>
+                            <ProtectedRoute allowedRoles={['Admin', 'Sales', 'ServiceTech']}>
                                 <Tickets />
                             </ProtectedRoute>
                         } />
                         <Route path="/Quotations" element={
-                            <ProtectedRoute>
+                            <ProtectedRoute allowedRoles={['Admin', 'Sales', 'ServiceTech']}>
                                 <Quotations />
                             </ProtectedRoute>
                         } />
                         <Route path="/UserManagement" element={
-                            <ProtectedRoute>
+                            <ProtectedRoute allowedRoles={['Admin']}>
                                 <UserManagement />
                             </ProtectedRoute>
                         } />
                         <Route path="/Customers" element={
-                            <ProtectedRoute>
+                            <ProtectedRoute allowedRoles={['Admin']}>
                                 <Customers />
                             </ProtectedRoute>
                         } />
                         <Route path="/Invoices" element={
-                            <ProtectedRoute>
+                            <ProtectedRoute allowedRoles={['Admin']}>
                                 <Invoices />
                             </ProtectedRoute>
                         } />
                         <Route path="/Products" element={
-                            <ProtectedRoute>
+                            <ProtectedRoute allowedRoles={['Admin']}>
                                 <ProductList />
                             </ProtectedRoute>
                         } />
-                       
+
+                        {/* Sales routes */}
+                        <Route path="/Sales" element={
+                            <ProtectedRoute allowedRoles={['Sales']}>
+                                <ProductList />
+                            </ProtectedRoute>
+                        } />
                     </Routes>
                 </Layout>
             </Router>

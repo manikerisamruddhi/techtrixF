@@ -22,7 +22,7 @@ import {
     IconButton,
 } from '@mui/material';
 import { ArrowCircleLeft } from '@mui/icons-material';
-import { Button, Modal} from 'antd';
+import { Button, Modal } from 'antd';
 import '../../styles/Pages/Admin/Dashboard.css';
 import { fetchUsers } from '../../redux/slices/adminDash';
 import { fetchCustomers } from '../../redux/slices/adminDash';
@@ -60,26 +60,21 @@ const ButtonStyle = {
 }
 
 const Dashboard = () => {
-
-
     const [showCreateTicketModal, setShowCreateTicketModal] = useState(false);
     const [showCustomerFormModal, setShowCustomerFormModal] = useState(false);
     const [showCreateProductModal, setShowCreateProductModal] = useState(false);
     const [showCreateUserModal, setShowCreateUserModal] = useState(false);
-
-
     const [showTicketDetails, setShowTicketDetails] = useState(false);
     const [showQuotationDetails, setShowQuotationDetails] = useState(false);
     const [showInvoiceDetails, setShowInvoiceDetails] = useState(false);
     const [showCustomerDetails, setShowCustomerDetails] = useState(false);
     const [showUserDetails, setShowUserDetails] = useState(false);
     const [showProductDetails, setShowProductDetails] = useState(false);
-
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { tickets, quotations, users, customers, products, invoices, loading, error } = useSelector(state => state.dashboard);
     const { total, inProgress, closed, open } = useTicketCounts(tickets);
-    const { pending, approved} = useQuotationCounts(quotations);
+    const { pending, approved } = useQuotationCounts(quotations);
     const { totalUser, logistics, serviceTechnical, sales } = useUserCounts(users);
     const { totalCustomers } = useCustomerCounts(customers);
     const { totalProduct } = useProductCounts(products);
@@ -91,8 +86,11 @@ const Dashboard = () => {
         dispatch(fetchUsers());
         dispatch(fetchCustomers());
         // dispatch(fetchInvoices());
-        dispatch(fetchProducts()); 
+        dispatch(fetchProducts());
     }, [dispatch]);
+
+    const user = JSON.parse(localStorage.getItem('user')); // Get user from local storage
+    const userRole = user.role;
 
     // console.log(products);
 
@@ -124,7 +122,7 @@ const Dashboard = () => {
     };
 
     const handleSubCardClick = (status) => {
-        if(!status)
+        if (!status)
             navigate(`/tickets`);
         else {
             navigate(`/tickets?status=${status}`);
@@ -176,16 +174,16 @@ const Dashboard = () => {
             )}
 
             {showCreateUserModal && (
-               <Modal
-               title={selectedUser !== null && selectedUser !== undefined ? "Edit User" : "Create User"}
-               visible={showCreateUserModal}
-               onCancel={() => setShowCreateUserModal(false)}
-               footer={null}
-           >
-               <CreateUserForm user={selectedUser || undefined}  
-              onClose={() => setShowCreateUserModal(false)}
-               />
-           </Modal>
+                <Modal
+                    title={selectedUser !== null && selectedUser !== undefined ? "Edit User" : "Create User"}
+                    visible={showCreateUserModal}
+                    onCancel={() => setShowCreateUserModal(false)}
+                    footer={null}
+                >
+                    <CreateUserForm user={selectedUser || undefined}
+                        onClose={() => setShowCreateUserModal(false)}
+                    />
+                </Modal>
             )}
 
 
@@ -206,38 +204,42 @@ const Dashboard = () => {
                 {showMainCards && (
                     <>
                         {/* Tickets Main Card */}
-                        <Grid item xs={12} sm={6} md={4}>
-                            <Card
-                                sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)', position: 'relative' }}
-                                onClick={() => handleMainCardClick(setShowTicketDetails)}
-                            >
-                                <Typography variant="h5" sx={{ color: '#000' }}> Tickets</Typography>
-
-                                <Grid container spacing={2} sx={{ marginTop: '20px' }}>
-                                    <Grid item xs={6} sm={6} md={6} marginBottom={1}>
-                                        <Typography variant="h6" sx={{ color: '' }}>Open :{open}</Typography>
-                                        <Typography variant="h6" sx={{ color: '' }}>InProgress :{inProgress}</Typography>
-                                        <Typography variant="h6" sx={{ color: '' }}>Total :{total}</Typography>
-                                    </Grid>
-                                </Grid>
-
-
-                                <Button
-                                    type="primary"
-                                    className='Button'
-                                    style={{
-                                        ...ButtonStyle
+                        
+                            <Grid item xs={12} sm={6} md={4}>
+                                <Card
+                                    sx={{
+                                        ...cardStyle,
+                                        background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)',
+                                        position: 'relative',
                                     }}
-
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        setShowCreateTicketModal(true);
-                                    }}
+                                    onClick={() => handleMainCardClick(setShowTicketDetails)}
                                 >
-                                    Create Ticket
-                                </Button>
-                            </Card>
-                        </Grid>
+                                    <Typography variant="h5" sx={{ color: '#000' }}> Tickets</Typography>
+
+                                    <Grid container spacing={2} sx={{ marginTop: '20px' }}>
+                                        <Grid item xs={6} sm={6} md={6} marginBottom={1}>
+                                            <Typography variant="h6" sx={{ color: '' }}>Open: {open}</Typography>
+                                            <Typography variant="h6" sx={{ color: '' }}>InProgress: {inProgress}</Typography>
+                                            <Typography variant="h6" sx={{ color: '' }}>Total: {total}</Typography>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Button
+                                        type="primary"
+                                        className="Button"
+                                        style={{
+                                            ...ButtonStyle,
+                                        }}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            setShowCreateTicketModal(true);
+                                        }}
+                                    >
+                                        Create Ticket
+                                    </Button>
+                                </Card>
+                            </Grid>
+                       
 
                         {/* Quotations Main Card */}
                         <Grid item xs={12} sm={6} md={4}>
@@ -278,7 +280,7 @@ const Dashboard = () => {
                         <Grid item xs={12} sm={6} md={4}>
                             <Card
                                 sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)', position: 'relative' }}
-                                onClick={() =>navigate("/Invoices")}
+                                onClick={() => navigate("/Invoices")}
                             >
                                 <Typography variant="h5" sx={{ color: '#000' }}> Invoices</Typography>
                                 <Grid container spacing={2} sx={{ marginTop: '20px' }}>
@@ -303,44 +305,47 @@ const Dashboard = () => {
                         </Grid>
 
 
- {/* Products Main Card */}
- <Grid item xs={12} sm={6} md={4}>
-                            <Card
-                                sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)', position: 'relative' }}
-                                onClick={() =>navigate("/Products")}
-                            >
-                                <Typography variant="h5" sx={{ color: '#000' }}> Products</Typography>
-                                <Grid container spacing={2} sx={{ marginTop: '20px' }}>
-                                    <Grid item xs={6} sm={6} md={6} marginBottom={1}>
-                                        <Typography variant="h6" sx={{ color: '' }}>Total Products: {totalProduct}</Typography>
-                                    </Grid>
-                                </Grid>
-                                <Button
-                                    type="primary"
-                                    className='Button'
-                                    style={{ ...ButtonStyle }}
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        setShowCreateProductModal(true);
-                                    }}
-                                >
-                                    Create Product
-                                </Button>
-                            </Card>
-                        </Grid>
+                        {(userRole === 'Admin') && (
+    <Grid item xs={12} sm={6} md={4}>
+        <Card
+            sx={{
+                ...cardStyle,
+                background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)',
+                position: 'relative',
+            }}
+            onClick={() => navigate("/Products")}
+        >
+            <Typography variant="h5" sx={{ color: '#000' }}> Products</Typography>
+            <Grid container spacing={2} sx={{ marginTop: '20px' }}>
+                <Grid item xs={6} sm={6} md={6} marginBottom={1}>
+                    <Typography variant="h6" sx={{ color: '' }}>Total Products: {totalProduct}</Typography>
+                </Grid>
+            </Grid>
+            <Button
+                type="primary"
+                className="Button"
+                style={{ ...ButtonStyle }}
+                onClick={(e) => {
+                    e.stopPropagation();
+                    setShowCreateProductModal(true);
+                }}
+            >
+                Create Product
+            </Button>
+        </Card>
+    </Grid>
+)}
 
-                        {/* Customers Main Card */}
+                      { (userRole === 'Admin' &&
                         <Grid item xs={12} sm={6} md={4}>
                             <Card
                                 sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)', position: 'relative' }}
                                 onClick={() => navigate("/Customers")}
-                            >
+                             >
                                 <Typography variant="h5" sx={{ color: '#000' }}> Customers</Typography>
                                 <Grid container spacing={2} sx={{ marginTop: '20px' }}>
                                     <Grid item xs={6} sm={6} md={6} marginBottom={1}>
                                         <Typography variant="h6" sx={{ color: '' }}>Total:{totalCustomers}</Typography>
-                                        {/* <Typography variant="h6" sx={{ color: '' }}>test:{resolved}</Typography>
-                                        <Typography variant="h6" sx={{ color: '' }}>test:{total}</Typography> */}
                                     </Grid>
                                 </Grid>
 
@@ -359,43 +364,50 @@ const Dashboard = () => {
                                 </Button>
                             </Card>
                         </Grid>
+)}
 
 
-                        {/* Users Main Card */}
-                        <Grid item xs={12} sm={6} md={4}>
-                            <Card
-                                sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)', position: 'relative' }}
-                                onClick={() => navigate("/UserManagement")}
-                            >
-                                <Typography variant="h5" sx={{ color: '#000' }}> Users</Typography>
-                                <Grid container spacing={1} sx={{ marginTop: '2px' , marginRight: '-10px'}}>
-                                    <Grid item xs={6} sm={6} md={6} marginBottom={1}>
-                                        <Typography variant="h6" sx={{ color: '' }}>total Users: {totalUser}</Typography>
-                                        <Typography variant="h6" sx={{ color: '' }}>Logistics users: {logistics}</Typography>
-                                        <Typography variant="h6" sx={{ color: '' }}>Service techs: {serviceTechnical}</Typography>
-                                        <Typography variant="h6" sx={{ color: '' }}>Sales users: {sales}</Typography>
-                                    </Grid>
-                                </Grid>
+{userRole === 'Admin' && (
+    <Grid item xs={12} sm={6} md={4}>
+        <Card
+            sx={{
+                ...cardStyle,
+                background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)',
+                position: 'relative',
+            }}
+            onClick={() => navigate("/UserManagement")}
+        >
+            <Typography variant="h5" sx={{ color: '#000' }}> Users</Typography>
+            <Grid container spacing={1} sx={{ marginTop: '2px', marginRight: '-10px' }}>
+                <Grid item xs={6} sm={6} md={6} marginBottom={1}>
+                    <Typography variant="h6" sx={{ color: '' }}>Total Users: {totalUser}</Typography>
+                    <Typography variant="h6" sx={{ color: '' }}>Logistics Users: {logistics}</Typography>
+                    <Typography variant="h6" sx={{ color: '' }}>Service Techs: {serviceTechnical}</Typography>
+                    <Typography variant="h6" sx={{ color: '' }}>Sales Users: {sales}</Typography>
+                </Grid>
+            </Grid>
 
-                                <Button
-                                    type="primary"
-                                    className='Button'
-                                    style={{
-                                        ...ButtonStyle
-                                    }}
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        setShowCreateUserModal(true);
-                                    }}
-                                >
-                                    Create User
-                                </Button>
-                            </Card>
-                        </Grid>
+            <Button
+                type="primary"
+                className="Button"
+                style={{
+                    ...ButtonStyle,
+                }}
+                onClick={(e) => {
+                    e.stopPropagation();
+                    setShowCreateUserModal(true);
+                }}
+            >
+                Create User
+            </Button>
+        </Card>
+    </Grid>
+)}
 
-                       
+
+
                     </>
-                )}
+            )}
 
 
                 {/* Show Ticket Subcards */}
@@ -407,26 +419,26 @@ const Dashboard = () => {
                             </IconButton>
                             <Typography variant="h4" gutterBottom style={{ marginTop: '12px' }}>Dashboard/Tickets:</Typography>
                             <Button
-                                    type="primary"
-                                    className='Button'
-                                    style={{
-                                        position: 'absolute',
-                                        right: '2%',
-                                   
-                                        // fontSize: '15px',
-                                        padding: '4px 8px',
-                                    }}
+                                type="primary"
+                                className='Button'
+                                style={{
+                                    position: 'absolute',
+                                    right: '2%',
 
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        setShowCreateTicketModal(true);
-                                    }}
-                                >
-                                    Create Ticket
-                                </Button>
+                                    // fontSize: '15px',
+                                    padding: '4px 8px',
+                                }}
+
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    setShowCreateTicketModal(true);
+                                }}
+                            >
+                                Create Ticket
+                            </Button>
                         </div>
                         <Grid container spacing={2} style={{ marginLeft: '3px' }}>
-                        <Grid item xs={6} sm={3} md={4}>
+                            <Grid item xs={6} sm={3} md={4}>
                                 <Card
                                     sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2fbe7)' }}
                                     onClick={() => handleSubCardClick('closed')}
@@ -488,7 +500,7 @@ const Dashboard = () => {
 
                                 </Card>
                             </Grid>
-                           
+
                         </Grid>
                     </>
                 )}
@@ -502,26 +514,26 @@ const Dashboard = () => {
                             </IconButton>
                             <Typography variant="h4" gutterBottom style={{ marginTop: '12px' }}>Dashboard/Quotations:</Typography>
                             <Button
-                                    type="primary"
-                                    className='Button'
-                                    style={{
-                                        position: 'absolute',
-                                        right: '2%',
-                                        padding: '4px 8px',
-                                    }}
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        handleCreateQuotationClick();
-                                    }}
-                                >
-                                    Create Quotation
-                                </Button>
+                                type="primary"
+                                className='Button'
+                                style={{
+                                    position: 'absolute',
+                                    right: '2%',
+                                    padding: '4px 8px',
+                                }}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleCreateQuotationClick();
+                                }}
+                            >
+                                Create Quotation
+                            </Button>
                         </div>
                         <Grid container spacing={2} style={{ marginLeft: '10px' }}>
-                        <Grid item xs={6} sm={3} md={4}>
+                            <Grid item xs={6} sm={3} md={4}>
                                 <Link to="/quotations" style={{ textDecoration: 'none' }}>
                                     <Card sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2fbe7)' }}>
-                                        <Typography variant="h5" sx={{ color: 'blue' }}>Total: {}</Typography>
+                                        <Typography variant="h5" sx={{ color: 'blue' }}>Total: { }</Typography>
                                         <Typography variant="h5" sx={{ color: 'blue' }}></Typography>
                                     </Card>
                                 </Link>
@@ -539,7 +551,7 @@ const Dashboard = () => {
                                     <Card sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2fbe7)' }}>
                                         <Typography variant="h5" sx={{ color: 'orangered' }}>Pending: {quotations.pending}</Typography>
                                         <Typography variant="h5" sx={{ color: 'orangered' }}>{pending}</Typography>
-                                   
+
                                     </Card>
                                 </Link>
                             </Grid>

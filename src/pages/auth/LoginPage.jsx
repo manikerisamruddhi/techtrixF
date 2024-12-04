@@ -21,7 +21,7 @@ const LoginPage = () => {
                 if (userRole === 'Admin') {
                     navigate('/');  // Redirect to Admin
                 } else if (userRole === 'Sales') {
-                    message.error('You are not authorized to log in.', 3);  // Redirect to Sales page
+                    navigate('/');  // Redirect to Sales
                 } else if (userRole === 'Logistics') {
                     message.error('You are not authorized to log in.', 3);  // Redirect to Sales page
                 } else {
