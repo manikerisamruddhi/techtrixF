@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Button, Empty, message, Layout, Typography, Spin, Card, Row, Col } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { fetchTickets } from '../../redux/slices/ticketSlice';
-import { fetchUsers} from '../../redux/slices/userSlice';
+import { fetchUsers } from '../../redux/slices/userSlice';
 import { fetchCustomers } from '../../redux/slices/customerSlice';
 import TicketDetailsModal from '../../components/Ticket/TicketDetailsModal';
 import CreateTicketModal from '../../components/Ticket/CreateTicketModalForm'; // Import the CreateTicketModal
@@ -13,9 +13,8 @@ import { useSearchParams } from 'react-router-dom';
 const { Content } = Layout;
 const { Title } = Typography;
 
-const Tickets = () => {
+const TicketsService = () => {
     const dispatch = useDispatch();
-    const navigate = useNavigate(); 
     const { customers } = useSelector((state) => state.customers);
     const { tickets, loading: tickets_loading, error: tickets_error } = useSelector((state) => state.tickets);
     const { users, loading: users_loading, error: users_error, departments, loading: departments_loading, error: departments_error } = useSelector((state) => state.users);
@@ -28,22 +27,13 @@ const Tickets = () => {
     const [filtered_tickets, set_filtered_tickets] = useState([]); // State for filtered tickets
 
     const [searchParams] = useSearchParams();
-  const status = searchParams.get('status');
-//   console.log(status);
+    const status = searchParams.get('status');
 
-const user = JSON.parse(localStorage.getItem('user')); // Get user from local storage
-// Redirect if user role is ServiceTechnical
-useEffect(() => {
-    if (user && user.role === 'Service_Technical') {
-        navigate('/ticketsService'); // Navigate to /ticketsService
-    }
-}, [user, navigate]);
-
+    const user = JSON.parse(localStorage.getItem('user')); // Get user from local storage
 
     useEffect(() => {
         const fetch_data = async () => {
             await dispatch(fetchTickets());
-            // await dispatch(fetchDepartments());
             await dispatch(fetchUsers());
         };
         fetch_data();
@@ -57,17 +47,23 @@ useEffect(() => {
     }, [dispatch]);
 
     useEffect(() => {
+        // Filter tickets based on user ID
+        const userFilteredTickets = tickets.filter(ticket =>
+            ticket.createdById === user.userId || ticket.assignedTo === user.userId
+        );
+
+        // Further filter by status if applicable
         if (status) {
-            const filtered = tickets.filter(ticket => ticket.status === status);
+            const filtered = userFilteredTickets.filter(ticket => ticket.status === status);
             set_filtered_tickets(filtered);
         } else {
-            set_filtered_tickets(tickets); // Initially, show all tickets
+            set_filtered_tickets(userFilteredTickets); // Show all tickets for the user
         }
-    }, [tickets, status]);
+    }, [tickets, status, user.userId]);
 
     // Handle backend error
     if (tickets_error || users_error || departments_error) {
-        message.error(`Failed to load data:Please check backend connectivity.`);
+        message.error(`Failed to load data: Please check backend connectivity.`);
     }
 
     // Filter users based on selected department
@@ -90,17 +86,19 @@ useEffect(() => {
     };
 
     // Calculate card data
-    const total_tickets = tickets.length;
-    const open_tickets = tickets.filter(ticket => ticket.status === 'Open').length;
-    const in_progress = tickets.filter(ticket => ticket.status === 'InProgress').length;
-    const Closed_tickets = tickets.filter(ticket => ticket.status === 'Closed').length;
+    const total_tickets = filtered_tickets.length; // Use filtered tickets
+    const open_tickets = filtered_tickets.filter(ticket => ticket.status === 'Open').length;
+    const in_progress = filtered_tickets.filter(ticket => ticket.status === 'InProgress').length;
+    const Closed_tickets = filtered_tickets.filter(ticket => ticket.status === 'Closed').length;
 
     // Filter tickets based on card click
     const handle_card_click = (status) => {
         if (status === 'Total') {
-            set_filtered_tickets(tickets); // Show all tickets
+            set_filtered_tickets(tickets.filter(ticket =>
+                ticket.createdById === user.userId || ticket.assignedTo === user.userId
+            )); // Show all filtered tickets
         } else {
-            const filtered = tickets.filter(ticket => ticket.status === status);
+            const filtered = filtered_tickets.filter(ticket => ticket.status === status);
             set_filtered_tickets(filtered);
         }
     };
@@ -111,7 +109,6 @@ useEffect(() => {
             dataIndex: 'ticketId',
             key: 'ticketId',
         },
-
         {
             title: 'Customer',
             dataIndex: 'customerId',
@@ -121,15 +118,13 @@ useEffect(() => {
                 return customer ? `${customer.firstName} ${customer.lastName}` : 'Unknown Customer';
             },
             filters: customers.map(customer => ({
-                text: `${customer.firstName} ${customer.lastName}`, // Display customer name as filter option
-                value: customer.customerId, // Use customerId as filter value
+                text: `${customer.firstName} ${customer.lastName}`,
+                value: customer.customerId,
             })),
-            onFilter: (value, record) => {
-                return record.customerId === value; // Filter by customerId
-            },
+            onFilter: (value, record) => record.customerId === value,
         },
         {
-            title: 'title',
+            title: 'Title',
             dataIndex: 'title',
             key: 'title',
             render: (text, record) => (
@@ -143,32 +138,30 @@ useEffect(() => {
             dataIndex: 'createdById',
             key: 'createdById',
             render: (text) => {
-                const user = users.find((user) => user.userId === text); // Find user by ID
-                return user ? `${user.firstName} ${user.lastName}` : text; // Display user's name or fallback to ID
+                const user = users.find((user) => user.userId === text);
+                return user ? `${user.firstName} ${user.lastName}` : text;
             },
             filters: users.map(user => ({
-                text: `${user.firstName} ${user.lastName}`, // Display user name as filter option
-                value: user.userId, // Use userId as filter value
+                text: `${user.firstName} ${user.lastName}`,
+                value: user.userId,
             })),
-            onFilter: (value, record) => {
-                return record.createdById === value; // Filter by userId
-            },
+            onFilter: (value, record) => record.createdById === value,
         },
         {
-            title: 'status',
+            title: 'Status',
             dataIndex: 'status',
             key: 'status',
-            filters: get_unique_filters(tickets, 'status'),
+            filters: get_unique_filters(filtered_tickets, 'status'),
             onFilter: (value, record) => record.status === value,
         },
         {
-            title: 'Assighned to',
+            title: 'Assigned To',
             dataIndex: 'assignedTo',
             render: (assignedTo) => {
                 const user = users.find(user => user.userId === assignedTo);
                 return user ? `${user.firstName} ${user.lastName}` : '-';
             },
-          },
+        },
         {
             title: 'Date Created',
             dataIndex: 'createdDate',
@@ -203,7 +196,7 @@ useEffect(() => {
             <Content style={{ padding: '20px' }}>
                 <div className="content-container">
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                        <Title level={4} style={{ margin: 0 }}>Ticket List</Title>
+                        <Title level={4} style={{ margin: 0 }}>Ticket klkllList</Title>
                         <Button onClick={() => toggle_form(!is_form_visible)} className="create-ticket-btn" type="primary">
                             {is_form_visible ? 'Cancel' : 'Create Ticket'}
                         </Button>
@@ -212,41 +205,41 @@ useEffect(() => {
                     {/* Cards Row */}
                     <Row gutter={16} style={{ marginBottom: '16px' }}>
                         <Col span={6}>
-                            <Card 
-                                hoverable 
-                                bordered={false} 
-                                onClick={() => handle_card_click('Total')} 
-                                style={{ cursor: 'pointer', backgroundColor: '#e9f5f7' }} // Add your desired background color
+                            <Card
+                                hoverable
+                                bordered={false}
+                                onClick={() => handle_card_click('Total')}
+                                style={{ cursor: 'pointer', backgroundColor: '#e9f5f7' }}
                             >
-                               Total Tickets  : {total_tickets}
+                                Total Tickets  : {total_tickets}
                             </Card>
                         </Col>
                         <Col span={6}>
-                            <Card 
-                                hoverable 
-                                bordered={false} 
-                                onClick={() => handle_card_click('Open')} 
-                                style={{ cursor: 'pointer', backgroundColor: '#e9f5f7' }} // Add your desired background color
+                            <Card
+                                hoverable
+                                bordered={false}
+                                onClick={() => handle_card_click('Open')}
+                                style={{ cursor: 'pointer', backgroundColor: '#e9f5f7' }}
                             >
-                               Open Tickets : {open_tickets}
+                                Open Tickets : {open_tickets}
                             </Card>
                         </Col>
                         <Col span={6}>
-                            <Card 
-                                hoverable 
-                                bordered={false} 
-                                onClick={() => handle_card_click('InProgress')} 
-                                style={{ cursor: 'pointer', backgroundColor: '#e9f5f7' }} // Add your desired background color
+                            <Card
+                                hoverable
+                                bordered={false}
+                                onClick={() => handle_card_click('InProgress')}
+                                style={{ cursor: 'pointer', backgroundColor: '#e9f5f7' }}
                             >
-                               InProgress Tickets : {in_progress}
+                                InProgress Tickets : {in_progress}
                             </Card>
                         </Col>
                         <Col span={6}>
-                            <Card 
-                                hoverable 
-                                bordered={false} 
-                                onClick={() => handle_card_click('Closed')} 
-                                style={{ cursor: 'pointer', backgroundColor:'#e9f5f7' }} // Add your desired background color
+                            <Card
+                                hoverable
+                                bordered={false}
+                                onClick={() => handle_card_click('Closed')}
+                                style={{ cursor: 'pointer', backgroundColor: '#e9f5f7' }}
                             >
                                 Closed Tickets : {Closed_tickets}
                             </Card>
@@ -261,9 +254,9 @@ useEffect(() => {
                         <Table
                             dataSource={filtered_tickets}
                             columns={columns}
-                            rowKey="TicketID"
+                            rowKey="ticketId"
                             pagination={false}
-                            headerCellStyle={{ backgroundColor: '#007bff', color: '#ffffff' }} // Set the background color and text color here
+                            headerCellStyle={{ backgroundColor: '#007bff', color: '#ffffff' }}
                         />
                     )}
 
@@ -272,7 +265,7 @@ useEffect(() => {
                         visible={is_modal_visible}
                         ticket={selected_ticket}
                         onClose={handle_modal_close}
-                        users={users} 
+                        users={users}
                     />
 
                     {/* Create Ticket Modal */}
@@ -290,4 +283,4 @@ useEffect(() => {
     );
 };
 
-export default Tickets;
+export default TicketsService;

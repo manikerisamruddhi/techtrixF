@@ -17,6 +17,7 @@ import { CssBaseline } from '@mui/material';
 import theme from './theme'; 
 import Layout from './components/Layout'; 
 import ProtectedRoute from './components/Auth/ProtectedRoute'; // Import the ProtectedRoute component
+import TicketsService from './ServiceTech/Tickets/ServiceTickets';
 
 const App = () => {
     return (
@@ -32,22 +33,27 @@ const App = () => {
                         
                         {/* Protected Routes */}
                         <Route path="/ProfilePage" element={
-                            <ProtectedRoute allowedRoles={['Admin', 'Sales', 'ServiceTech']}>
+                            <ProtectedRoute allowedRoles={['Admin', 'Sales', 'Service_Technical']}>
                                 <ProfilePage />
                             </ProtectedRoute>
                         } />
                         <Route path="/" element={
-                            <ProtectedRoute allowedRoles={['Admin', 'Sales', 'ServiceTech']}>
+                            <ProtectedRoute allowedRoles={['Admin', 'Sales', 'Service_Technical']}>
                                 <Dashboard />
                             </ProtectedRoute>
                         } />
                         <Route path="/Tickets" element={
-                            <ProtectedRoute allowedRoles={['Admin', 'Sales', 'ServiceTech']}>
+                            <ProtectedRoute allowedRoles={['Admin', 'Sales', 'Service_Technical']}>
                                 <Tickets />
                             </ProtectedRoute>
                         } />
+                        <Route path="/TicketsService" element={
+                            <ProtectedRoute allowedRoles={['Service_Technical']}>
+                                <TicketsService />
+                            </ProtectedRoute>
+                        } />
                         <Route path="/Quotations" element={
-                            <ProtectedRoute allowedRoles={['Admin', 'Sales', 'ServiceTech']}>
+                            <ProtectedRoute allowedRoles={['Admin', 'Sales', 'Service_Technical']}>
                                 <Quotations />
                             </ProtectedRoute>
                         } />

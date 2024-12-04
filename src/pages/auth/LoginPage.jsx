@@ -22,8 +22,8 @@ const LoginPage = () => {
                     navigate('/');  // Redirect to Admin
                 } else if (userRole === 'Sales') {
                     navigate('/');  // Redirect to Sales
-                } else if (userRole === 'Logistics') {
-                    message.error('You are not authorized to log in.', 3);  // Redirect to Sales page
+                } else if (userRole === 'Service_Technical') {
+                    navigate('/');  // Redirect to ServiceTech
                 } else {
                     message.error('You are not authorized to log in.', 3);  // Default redirect to home page
                 }

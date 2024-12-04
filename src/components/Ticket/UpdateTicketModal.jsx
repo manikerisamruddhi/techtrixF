@@ -15,13 +15,18 @@ const UpdateTicketModal = ({ ticketData, isVisible, onCancel, onClose, customer 
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false); // Loading state
   const [loggedInUserId, setLoggedInUserId] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false); // State to check if user is admin
+
+
+  const loggedInUser = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
-    const loggedInUser = JSON.parse(localStorage.getItem("user"));
-    if (loggedInUser) {
+    if (loggedInUser ) {
       setLoggedInUserId(loggedInUser.userId);
+      setIsAdmin(loggedInUser.role === "admin"); // Check if the user is admin
     }
   }, []);
+
 
   useEffect(() => {
     const fetchTechnicians = async () => {
@@ -154,7 +159,7 @@ const UpdateTicketModal = ({ ticketData, isVisible, onCancel, onClose, customer 
                   return label.includes(input.toLowerCase());
                 }}
                 notFoundContent={loading ? <Spin size="small" /> : "No technicians available"}
-                disabled={loading} // Disable the dropdown while loading
+                disabled={loading || !isAdmin} // Disable if loading or not admin
               >
                 {(Array.isArray(serviceTechnicians.current) ? serviceTechnicians.current : []).map(
                   (tech) => (
