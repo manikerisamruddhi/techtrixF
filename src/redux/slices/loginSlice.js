@@ -4,7 +4,7 @@ import store from '../store'; // Assuming your store is in '../store' to dispatc
 
 // Constants
 const INACTIVITY_LOGOUT_LIMIT = 10 * 60 * 1000; // 10 minutes in milliseconds
-const MAX_SESSION_TIME = 30 * 60 * 1000; // 30 minutes in milliseconds
+const MAX_SESSION_TIME = 29 * 60 * 1000; // 30 minutes in milliseconds
 
 // Async Thunks
 export const loginUser = createAsyncThunk(
@@ -44,6 +44,7 @@ export const checkForAutoLogout = () => {
     const sessionExpiry = localStorage.getItem('sessionExpiry');
 
     const currentTime = Date.now();
+    // If session is expired or inactivity timeout has passed, log the user out
     if (
         sessionExpiry && currentTime > parseInt(sessionExpiry, 10) || // Session expired
         (lastActive && currentTime - parseInt(lastActive, 10) > INACTIVITY_LOGOUT_LIMIT) // Inactivity timeout
@@ -51,6 +52,9 @@ export const checkForAutoLogout = () => {
         store.dispatch(logoutUser());
     }
 };
+
+// Automatically log the user out after session expiry
+setInterval(checkForAutoLogout, 1000); // Check every second (you can adjust this frequency)
 
 // User Slice
 const userSlice = createSlice({
