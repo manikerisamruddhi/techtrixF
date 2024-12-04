@@ -56,7 +56,7 @@ const TicketDetailsModal = ({ visible, ticket, onClose, onCreateQuotation, users
                             .unwrap() // Unwrap the promise to get the resolved response
                             .then((response) => {
                                  setQuotation(response); // Set the customer data from the response
-                                 console.log(response); // Log the resolved response
+                                //  console.log(response); // Log the resolved response
                             })
                     })
                     .catch((error) => {
