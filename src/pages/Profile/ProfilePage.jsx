@@ -42,7 +42,7 @@ const ProfilePage = () => {
                         margin: 'auto',
                        background: 'linear-gradient(to right, #c2e9fb, #a1c4fd)',
                         borderRadius: '8px',
-                        padding: '20px',
+                        padding: '10px 20px',
                         boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
                     }}>
                         <div
@@ -58,7 +58,7 @@ const ProfilePage = () => {
                                 <p><strong>Email:</strong> {user.email}</p>
                                 <p><strong>Role:</strong> {user.role}</p>
                                 <p><strong>Contact:</strong> {user.phoneNumber}</p>
-                                <p><strong>Address:</strong> {user.address}</p>
+                                {/* <p><strong>Address:</strong> {user.address}</p> */}
                                 <p><strong>Pin Code:</strong> {user.zipCode || 'N/A'}</p>
                             </section>
                             <section
