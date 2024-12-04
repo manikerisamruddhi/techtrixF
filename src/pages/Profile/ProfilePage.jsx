@@ -19,28 +19,28 @@ const ProfilePage = () => {
     const userName = user ? `${user.firstName} ${user.lastName}` : 'User not available';
 
     return (
-        <div style={{ 
-            maxWidth: '900px', 
-            margin: '50px auto', 
-            borderRadius: '20px', 
-            padding: '20px' 
+        <div style={{
+            maxWidth: '900px',
+            margin: '50px auto',
+            borderRadius: '20px',
+            padding: '20px'
         }}>
             <Card
                 title="My Profile"
                 bordered
-                style={{ 
-                    maxWidth: '900px', 
-                    margin: '50px auto', 
-                    background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)',  
-                    borderRadius: '8px', 
+                style={{
+                    maxWidth: '900px',
+                    margin: '50px auto',
+                    background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)',
+                    borderRadius: '8px',
                     padding: '20px',
                 }}
             >
                 {user && (
-                    <div style={{ 
+                    <div style={{
                         maxWidth: '700px',
                         margin: 'auto',
-                       background: 'linear-gradient(to right, #c2e9fb, #a1c4fd)',
+                        background: 'linear-gradient(to right, #c2e9fb, #a1c4fd)',
                         borderRadius: '8px',
                         padding: '10px 20px',
                         boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
@@ -62,26 +62,27 @@ const ProfilePage = () => {
                                 <p><strong>Pin Code:</strong> {user.zipCode || 'N/A'}</p>
                             </section>
                             <section
-                             style={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                alignItems: 'center',
-                            }}
+                                style={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
+                                }}
                             >
                                 {/* Example image or icon */}
                                 <Avatar
                                     size={200}
-                                    
+
                                     // src="https://via.placeholder.com/100" // Replace with a valid image URL or use user's profile image URL
                                     icon={<UserOutlined />}
                                 />
                             </section>
                         </div>
-                        <div style={{ marginTop: '20px',
-                                                            display: 'flex',
-                                                            justifyContent: 'center',
-                                                            alignItems: 'center',
-                         }}>
+                        <div style={{
+                            marginTop: '20px',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}>
                             <Button
                                 type="primary"
                                 onClick={() => setIsEditProfileModalVisible(true)}
@@ -96,24 +97,24 @@ const ProfilePage = () => {
                             >
                                 Change Password
                             </Button>
-                         <Button
-   
-    style={{
-        color: 'black', // Default color
-        borderColor: 'black',
-    }}
-    onClick={handleLogout}
-    onMouseEnter={(e) => {
-        e.target.style.color = 'red'; // Change text color to red on hover
-        e.target.style.borderColor = 'red'; // Change border to red
-    }}
-    onMouseLeave={(e) => {
-        e.target.style.color = 'black'; // Revert to default color
-        e.target.style.borderColor = 'black'; // Revert to default border
-    }}
->
-    Logout
-</Button>
+                            <Button
+
+                                style={{
+                                    color: 'black', // Default color
+                                    borderColor: 'black',
+                                }}
+                                onClick={handleLogout}
+                                onMouseEnter={(e) => {
+                                    e.target.style.color = 'red'; // Change text color to red on hover
+                                    e.target.style.borderColor = 'red'; // Change border to red
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.target.style.color = 'black'; // Revert to default color
+                                    e.target.style.borderColor = 'black'; // Revert to default border
+                                }}
+                            >
+                                Logout
+                            </Button>
                         </div>
                     </div>
                 )}
