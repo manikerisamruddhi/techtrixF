@@ -91,6 +91,7 @@ const Dashboard = () => {
 
     const user = JSON.parse(localStorage.getItem('user')); // Get user from local storage
     const userRole = user.role;
+    const userType = user.userType;
 
     // console.log(products);
 
@@ -204,42 +205,42 @@ const Dashboard = () => {
                 {showMainCards && (
                     <>
                         {/* Tickets Main Card */}
-                        
-                            <Grid item xs={12} sm={6} md={4}>
-                                <Card
-                                    sx={{
-                                        ...cardStyle,
-                                        background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)',
-                                        position: 'relative',
-                                    }}
-                                    onClick={() => handleMainCardClick(setShowTicketDetails)}
-                                >
-                                    <Typography variant="h5" sx={{ color: '#000' }}> Tickets</Typography>
 
-                                    <Grid container spacing={2} sx={{ marginTop: '20px' }}>
-                                        <Grid item xs={6} sm={6} md={6} marginBottom={1}>
-                                            <Typography variant="h6" sx={{ color: '' }}>Open: {open}</Typography>
-                                            <Typography variant="h6" sx={{ color: '' }}>InProgress: {inProgress}</Typography>
-                                            <Typography variant="h6" sx={{ color: '' }}>Total: {total}</Typography>
-                                        </Grid>
+                        <Grid item xs={12} sm={6} md={4}>
+                            <Card
+                                sx={{
+                                    ...cardStyle,
+                                    background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)',
+                                    position: 'relative',
+                                }}
+                                onClick={() => handleMainCardClick(setShowTicketDetails)}
+                            >
+                                <Typography variant="h5" sx={{ color: '#000' }}> Tickets</Typography>
+
+                                <Grid container spacing={2} sx={{ marginTop: '20px' }}>
+                                    <Grid item xs={6} sm={6} md={6} marginBottom={1}>
+                                        <Typography variant="h6" sx={{ color: '' }}>Open: {open}</Typography>
+                                        <Typography variant="h6" sx={{ color: '' }}>InProgress: {inProgress}</Typography>
+                                        <Typography variant="h6" sx={{ color: '' }}>Total: {total}</Typography>
                                     </Grid>
+                                </Grid>
 
-                                    <Button
-                                        type="primary"
-                                        className="Button"
-                                        style={{
-                                            ...ButtonStyle,
-                                        }}
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            setShowCreateTicketModal(true);
-                                        }}
-                                    >
-                                        Create Ticket
-                                    </Button>
-                                </Card>
-                            </Grid>
-                       
+                                <Button
+                                    type="primary"
+                                    className="Button"
+                                    style={{
+                                        ...ButtonStyle,
+                                    }}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setShowCreateTicketModal(true);
+                                    }}
+                                >
+                                    Create Ticket
+                                </Button>
+                            </Card>
+                        </Grid>
+
 
                         {/* Quotations Main Card */}
                         <Grid item xs={12} sm={6} md={4}>
@@ -305,109 +306,109 @@ const Dashboard = () => {
                         </Grid>
 
 
-                        {(userRole === 'Admin') && (
-    <Grid item xs={12} sm={6} md={4}>
-        <Card
-            sx={{
-                ...cardStyle,
-                background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)',
-                position: 'relative',
-            }}
-            onClick={() => navigate("/Products")}
-        >
-            <Typography variant="h5" sx={{ color: '#000' }}> Products</Typography>
-            <Grid container spacing={2} sx={{ marginTop: '20px' }}>
-                <Grid item xs={6} sm={6} md={6} marginBottom={1}>
-                    <Typography variant="h6" sx={{ color: '' }}>Total Products: {totalProduct}</Typography>
-                </Grid>
-            </Grid>
-            <Button
-                type="primary"
-                className="Button"
-                style={{ ...ButtonStyle }}
-                onClick={(e) => {
-                    e.stopPropagation();
-                    setShowCreateProductModal(true);
-                }}
-            >
-                Create Product
-            </Button>
-        </Card>
-    </Grid>
-)}
-
-                      { (userRole === 'Admin' &&
-                        <Grid item xs={12} sm={6} md={4}>
-                            <Card
-                                sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)', position: 'relative' }}
-                                onClick={() => navigate("/Customers")}
-                             >
-                                <Typography variant="h5" sx={{ color: '#000' }}> Customers</Typography>
-                                <Grid container spacing={2} sx={{ marginTop: '20px' }}>
-                                    <Grid item xs={6} sm={6} md={6} marginBottom={1}>
-                                        <Typography variant="h6" sx={{ color: '' }}>Total:{totalCustomers}</Typography>
-                                    </Grid>
-                                </Grid>
-
-                                <Button
-                                    type="primary"
-                                    className='Button'
-                                    style={{
-                                        ...ButtonStyle
+                        {(userRole === 'Admin' || userType === 'Admin_User') && (
+                            <Grid item xs={12} sm={6} md={4}>
+                                <Card
+                                    sx={{
+                                        ...cardStyle,
+                                        background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)',
+                                        position: 'relative',
                                     }}
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        setShowCustomerFormModal(true);
-                                    }}
+                                    onClick={() => navigate("/Products")}
                                 >
-                                    Create Customer
-                                </Button>
-                            </Card>
-                        </Grid>
-)}
+                                    <Typography variant="h5" sx={{ color: '#000' }}> Products</Typography>
+                                    <Grid container spacing={2} sx={{ marginTop: '20px' }}>
+                                        <Grid item xs={6} sm={6} md={6} marginBottom={1}>
+                                            <Typography variant="h6" sx={{ color: '' }}>Total Products: {totalProduct}</Typography>
+                                        </Grid>
+                                    </Grid>
+                                    <Button
+                                        type="primary"
+                                        className="Button"
+                                        style={{ ...ButtonStyle }}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            setShowCreateProductModal(true);
+                                        }}
+                                    >
+                                        Create Product
+                                    </Button>
+                                </Card>
+                            </Grid>
+                        )}
+
+                        {((userRole === 'Admin' || userType ==='Admin_User') &&
+                            <Grid item xs={12} sm={6} md={4}>
+                                <Card
+                                    sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)', position: 'relative' }}
+                                    onClick={() => navigate("/Customers")}
+                                >
+                                    <Typography variant="h5" sx={{ color: '#000' }}> Customers</Typography>
+                                    <Grid container spacing={2} sx={{ marginTop: '20px' }}>
+                                        <Grid item xs={6} sm={6} md={6} marginBottom={1}>
+                                            <Typography variant="h6" sx={{ color: '' }}>Total:{totalCustomers}</Typography>
+                                        </Grid>
+                                    </Grid>
+
+                                    <Button
+                                        type="primary"
+                                        className='Button'
+                                        style={{
+                                            ...ButtonStyle
+                                        }}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            setShowCustomerFormModal(true);
+                                        }}
+                                    >
+                                        Create Customer
+                                    </Button>
+                                </Card>
+                            </Grid>
+                        )}
 
 
-{userRole === 'Admin' && (
-    <Grid item xs={12} sm={6} md={4}>
-        <Card
-            sx={{
-                ...cardStyle,
-                background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)',
-                position: 'relative',
-            }}
-            onClick={() => navigate("/UserManagement")}
-        >
-            <Typography variant="h5" sx={{ color: '#000' }}> Users</Typography>
-            <Grid container spacing={1} sx={{ marginTop: '2px', marginRight: '-10px' }}>
-                <Grid item xs={6} sm={6} md={6} marginBottom={1}>
-                    <Typography variant="h6" sx={{ color: '' }}>Total Users: {totalUser}</Typography>
-                    <Typography variant="h6" sx={{ color: '' }}>Logistics Users: {logistics}</Typography>
-                    <Typography variant="h6" sx={{ color: '' }}>Service Techs: {serviceTechnical}</Typography>
-                    <Typography variant="h6" sx={{ color: '' }}>Sales Users: {sales}</Typography>
-                </Grid>
-            </Grid>
+                        {(userRole === 'Admin' || userType === 'Admin_User') && (
+                            <Grid item xs={12} sm={6} md={4}>
+                                <Card
+                                    sx={{
+                                        ...cardStyle,
+                                        background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)',
+                                        position: 'relative',
+                                    }}
+                                    onClick={() => navigate("/UserManagement")}
+                                >
+                                    <Typography variant="h5" sx={{ color: '#000' }}> Users</Typography>
+                                    <Grid container spacing={1} sx={{ marginTop: '2px', marginRight: '-10px' }}>
+                                        <Grid item xs={6} sm={6} md={6} marginBottom={1}>
+                                            <Typography variant="h6" sx={{ color: '' }}>Total Users: {totalUser}</Typography>
+                                            <Typography variant="h6" sx={{ color: '' }}>Logistics Users: {logistics}</Typography>
+                                            <Typography variant="h6" sx={{ color: '' }}>Service Techs: {serviceTechnical}</Typography>
+                                            <Typography variant="h6" sx={{ color: '' }}>Sales Users: {sales}</Typography>
+                                        </Grid>
+                                    </Grid>
 
-            <Button
-                type="primary"
-                className="Button"
-                style={{
-                    ...ButtonStyle,
-                }}
-                onClick={(e) => {
-                    e.stopPropagation();
-                    setShowCreateUserModal(true);
-                }}
-            >
-                Create User
-            </Button>
-        </Card>
-    </Grid>
-)}
+                                    <Button
+                                        type="primary"
+                                        className="Button"
+                                        style={{
+                                            ...ButtonStyle,
+                                        }}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            setShowCreateUserModal(true);
+                                        }}
+                                    >
+                                        Create User
+                                    </Button>
+                                </Card>
+                            </Grid>
+                        )}
 
 
 
                     </>
-            )}
+                )}
 
 
                 {/* Show Ticket Subcards */}

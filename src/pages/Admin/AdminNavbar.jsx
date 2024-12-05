@@ -1,20 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu } from 'antd';
-import { AppstoreOutlined, UserOutlined, MailOutlined, DollarOutlined } from '@ant-design/icons';
+import { AppstoreOutlined,UserOutlined,  ProfileOutlined, MailOutlined, SettingOutlined, SnippetsOutlined, DollarOutlined, TeamOutlined, DropboxOutlined} from '@ant-design/icons';
 
-const SalesNavbar = () => {
+const AdminNavbar = () => {
     const location = useLocation();
     const [selectedKey, setSelectedKey] = useState(location.pathname);
 
     const getMenuKey = () => {
         const { pathname } = location;
 
-        // Normalize the pathname to lowercase for consistent comparison
-        const normalizedPath = pathname.toLowerCase();
-
         // Map multiple paths or queries to the same key
-        if (normalizedPath === '/tickets' || normalizedPath === '/ticketsservice') {
+        if (pathname === '/tickets') {
             return '/Tickets';
         }
         return pathname; // Default to the pathname
@@ -29,19 +26,19 @@ const SalesNavbar = () => {
     };
 
     return (
-        <div
-            style={{
-                background: 'linear-gradient(to left, #a1c4fd, #c2e9fb)',
+        <div 
+            style={{ 
+                background: 'linear-gradient(to left, #a1c4fd, #c2e9fb)', 
                 padding: '10px',
                 marginTop: '10px',
-                minHeight: '100vh', // Ensures full vertical height
+                minHeight: '100vh' // Ensures full vertical height
             }}
         >
-            <Menu
-                mode="vertical"
-                className="navbar"
-                selectedKeys={[selectedKey]}
-                onClick={handleClick}
+            <Menu 
+                mode="vertical" 
+                className="navbar" 
+                selectedKeys={[selectedKey]} 
+                onClick={handleClick} 
                 theme="light"
                 style={{ border: 'none' }} // Remove default border for a cleaner look
             >
@@ -57,7 +54,21 @@ const SalesNavbar = () => {
                     <Link to="/Quotations">Quotations</Link>
                 </Menu.Item>
 
-                <Menu.Item key="/ProfilePage" icon={<UserOutlined />}>
+                <Menu.Item key="/Invoices" icon={<SnippetsOutlined />}>
+                    <Link to="/Invoices">Invoices</Link>
+                </Menu.Item>
+
+                <Menu.Item key="/Customers" icon={<SettingOutlined />}>
+                    <Link to="/Customers">Customers</Link>
+                </Menu.Item>
+
+                <Menu.Item key="/AdminUserManagement" icon={<TeamOutlined />}>
+                    <Link to="/AdminUserManagement">Manage User</Link>
+                </Menu.Item>
+                <Menu.Item key="/Products" icon={<DropboxOutlined />}>
+                    <Link to="/Products">Products</Link>
+                </Menu.Item>
+                <Menu.Item key="/ProfilePage" icon={<UserOutlined/>}>
                     <Link to="/ProfilePage">My profile</Link>
                 </Menu.Item>
             </Menu>
@@ -65,4 +76,4 @@ const SalesNavbar = () => {
     );
 };
 
-export default SalesNavbar;
+export default AdminNavbar;

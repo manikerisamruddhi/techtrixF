@@ -9,6 +9,9 @@ const { Content } = Layout;
 const { Title } = Typography;
 
 const Customers = () => {
+
+    const user = JSON.parse(localStorage.getItem('user'));
+
     const dispatch = useDispatch();
     const { customers, loading, error } = useSelector((state) => state.customers);
     const [isModalVisible, setIsModalVisible] = React.useState(false);
@@ -74,23 +77,26 @@ const Customers = () => {
         { title: 'Company name', dataIndex: 'companyName', key: 'companyName' },
         { title: 'First Name', dataIndex: 'firstName', key: 'firstName' },
         { title: 'Last Name', dataIndex: 'lastName', key: 'lastName' },
-        { title: 'email', dataIndex: 'email', key: 'email' },
+        { title: 'Email', dataIndex: 'email', key: 'email' },
         { title: 'Phone', dataIndex: 'phoneNumber', key: 'phoneNumber' },
-        {
-            title: 'Actions',
-            key: 'actions',
-            render: (text, record) => (
-                <>
-                    <Button type="link" onClick={() => handleEdit(record)}>
-                        Edit
-                    </Button>
-                    <Button type="link" danger onClick={() => handleDelete(record.customerId)}>
-                        Delete
-                    </Button>
-                </>
-            ),
-        },
+        ...(user.role === 'Admin'
+            ? [{
+                title: 'Actions',
+                key: 'actions',
+                render: (record) => (
+                    <>
+                        <Button type="link" onClick={() => handleEdit(record)}>
+                            Edit
+                        </Button>
+                        <Button type="link" danger onClick={() => handleDelete(record.customerId)}>
+                            Delete
+                        </Button>
+                    </>
+                ),
+            }]
+            : [])
     ];
+    
 
     return (
         <Layout style={{ minHeight: '100vh', background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)' }}>

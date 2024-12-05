@@ -57,6 +57,7 @@ const ProfilePage = () => {
                                 <p><strong>Name:</strong> {userName}</p>
                                 <p><strong>Email:</strong> {user.email}</p>
                                 <p><strong>Role:</strong> {user.role}</p>
+                                <p><strong>User type:</strong> {user.userType}</p>
                                 <p><strong>Contact:</strong> {user.phoneNumber}</p>
                                 {/* <p><strong>Address:</strong> {user.address}</p> */}
                                 <p><strong>Pin Code:</strong> {user.zipCode || 'N/A'}</p>

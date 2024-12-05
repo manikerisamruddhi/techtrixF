@@ -20,6 +20,8 @@ const Products = () => {
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [searchValue, setSearchValue] = useState('');
 
+    const user = JSON.parse(localStorage.getItem('user'));
+
     // Fetch products on mount
     useEffect(() => {
         dispatch(fetchNonCustProducts());
@@ -129,7 +131,9 @@ const Products = () => {
                 <span>
                     <Button type="primary" onClick={() => handleViewDetails(record)}>View</Button>
                     <Button type="link" onClick={() => handleOpenEditModal(record)}>Edit</Button>
-                    <Button danger onClick={() => handleDelete(record.productId)}>Delete</Button>
+                    {user && user.role === 'Admin' && (
+                        <Button danger onClick={() => handleDelete(record.productId)}>Delete</Button>
+                    )}
                 </span>
             ),
         },

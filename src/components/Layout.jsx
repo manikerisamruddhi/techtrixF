@@ -6,6 +6,7 @@ import CustomHeader from './Header/Header'; // Updated header import
 import Navbar from './Navbar/Navbar'; // Default Navbar component
 import SalesNavbar from '../Sales/Component/Navbar';
 import ServiceTechNavbar from '../ServiceTech/ServiceTechNavbar';
+import AdminNavbar from '../pages/Admin/AdminNavbar';
 
 const { Content, Sider } = Layout;
 
@@ -16,39 +17,8 @@ const LayoutComponent = ({ children }) => {
     const hideSidebarRoutes = ['/login', '/forgot-password', '/register'];
     const isSidebarHidden = hideSidebarRoutes.includes(location.pathname);
 
-    // Set up state to store the user's role and loading state
-    const [userRole, setUserRole] = useState(null);
-    const [loading, setLoading] = useState(true); // Loading state
-
-    useEffect(() => {
-        // Function to retrieve user data from localStorage and set the role
-        const fetchUserRole = () => {
-            const user = JSON.parse(localStorage.getItem('user'));
-            if (user && user.role) {
-                setUserRole(user.role);
-            } else {
-                setUserRole(null); // Reset role if user is not found
-            }
-            setLoading(false); // Set loading to false after retrieving the user role
-        };
-
-        // Check if the current path is not one of the hidden routes
-        if (!isSidebarHidden) {
-            fetchUserRole();
-            // console.log('jkjk');
-        } else {
-            setLoading(false); // If the path is hidden, set loading to false immediately
-        }
-    }, [hideSidebarRoutes]); // Dependency on location.pathname
-
-    // If loading, show a spinner
-    if (loading) {
-        return (
-            <Layout style={{ minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <Spin size="large" />
-            </Layout>
-        );
-    }
+    const user = JSON.parse(localStorage.getItem('user'));
+    console.log(user.role);
 
     return (
         <Layout style={{ minHeight: '100vh' }}>
@@ -62,15 +32,19 @@ const LayoutComponent = ({ children }) => {
                     >
                         {/* Conditionally render Navbar based on user role */}
                         {
-                            userRole === 'Sales' ? (
-                                <SalesNavbar />
-                            ) : userRole === 'Service_Technical' ? (
-                                <ServiceTechNavbar />
-                            ) : userRole === 'Admin' ? (
-                                <Navbar />
-                            ) : (
-                               null
-                            )
+                            user ? (
+                               user.userType && user.userType !== 'Admin_User' ? (
+                                    user.role === 'Sales' ? (
+                                        <SalesNavbar />
+                                    ) : user.role === 'Service_Technical' ? (
+                                        <ServiceTechNavbar />
+                                    ) : null
+                                ) : user.role === 'Admin' ? (
+                                    <Navbar />
+                                ) : (
+                                    <AdminNavbar />
+                                )
+                            ) : null
                         }
                     </Sider>
                 )}

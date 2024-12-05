@@ -18,6 +18,7 @@ import theme from './theme';
 import Layout from './components/Layout'; 
 import ProtectedRoute from './components/Auth/ProtectedRoute'; // Import the ProtectedRoute component
 import TicketsService from './ServiceTech/Tickets/ServiceTickets';
+import AdminUserManagement from './pages/Admin/AdminUserManagement';
 
 const App = () => {
     return (
@@ -58,32 +59,37 @@ const App = () => {
                             </ProtectedRoute>
                         } />
                         <Route path="/UserManagement" element={
-                            <ProtectedRoute allowedRoles={['Admin']}>
+                            <ProtectedRoute allowedRoles={['Admin', 'Sales', 'Service_Technical']} allowedUserType= {'Admin_User'}>
                                 <UserManagement />
                             </ProtectedRoute>
                         } />
+                        <Route path="/AdminUserManagement" element={
+                            <ProtectedRoute allowedRoles={['Admin', 'Sales', 'Service_Technical']} allowedUserType= {'Admin_User'}>
+                                <AdminUserManagement />
+                            </ProtectedRoute>
+                        } />
                         <Route path="/Customers" element={
-                            <ProtectedRoute allowedRoles={['Admin']}>
+                            <ProtectedRoute allowedRoles={['Admin', 'Sales', 'Service_Technical']} allowedUserType= {'Admin_User'}>
                                 <Customers />
                             </ProtectedRoute>
                         } />
                         <Route path="/Invoices" element={
-                            <ProtectedRoute allowedRoles={['Admin', 'Sales', 'Service_Technical']}>
+                            <ProtectedRoute allowedRoles={['Admin', 'Sales', 'Service_Technical']} allowedUserType= {'Admin_User'}>
                                 <Invoices />
                             </ProtectedRoute>
                         } />
                         <Route path="/Products" element={
-                            <ProtectedRoute allowedRoles={['Admin']}>
+                            <ProtectedRoute allowedRoles={['Admin', 'Sales', 'Service_Technical']} allowedUserType= {'Admin_User'}>
                                 <ProductList />
                             </ProtectedRoute>
                         } />
 
                         {/* Sales routes */}
-                        <Route path="/Sales" element={
+                        {/* <Route path="/Sales" element={
                             <ProtectedRoute allowedRoles={['Sales']}>
                                 <ProductList />
                             </ProtectedRoute>
-                        } />
+                        } /> */}
                     </Routes>
                 </Layout>
             </Router>

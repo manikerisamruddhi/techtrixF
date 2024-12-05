@@ -10,6 +10,10 @@ const CreateUserForm = ({ user, onClose }) => {
     const [form] = Form.useForm();
     const isEditMode = Boolean(user); // Determine if it's edit mode
 
+    const loggedInUser = JSON.parse(localStorage.getItem('user'));
+    const userType = loggedInUser.userType;
+    const userRole = loggedInUser.role;
+
     useEffect(() => {
         if (user) {
             form.setFieldsValue({
@@ -106,12 +110,26 @@ const CreateUserForm = ({ user, onClose }) => {
                         name="role"
                         rules={[{ required: true, message: 'Please select a role!' }]}
                     >
-                        <Select placeholder="Select a role">
+                        <Select
+                            placeholder={
+                                userType === 'Admin_User' && userRole === 'Sales'
+                                    ? 'Sales'
+                                    : 'Select a role'
+                            } // Show "Sales" as placeholder if disabled
+                            value={
+                                userType === 'Admin_User' && userRole === 'Sales'
+                                    ? 'Sales'
+                                    : undefined
+                            } // Set value when condition matches
+                            disabled={userType === 'Admin_User' && userRole === 'Sales'} // Disable the field conditionally
+                        >
                             <Option value="Logistics">Logistics</Option>
                             <Option value="Sales">Sales</Option>
                             <Option value="Service_Technical">Service technical</Option>
                         </Select>
                     </Form.Item>
+
+
                 </Col>
                 <Col span={12}>
                     <Form.Item
@@ -121,10 +139,14 @@ const CreateUserForm = ({ user, onClose }) => {
                         rules={[{ required: true, message: 'Please select the user type!' }]}
                     >
                         <Switch
+                            checked={userType !== 'Admin_User'} // Set to true if it's not Admin_User, else false
                             checkedChildren="Admin"
                             unCheckedChildren="Normal User"
+                            disabled={userType === 'Admin_User'} // Disable the switch if the userType is Admin_User
                         />
                     </Form.Item>
+
+
                 </Col>
             </Row>
             <Row gutter={16}>
