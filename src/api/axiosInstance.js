@@ -35,7 +35,7 @@ axiosInstance.interceptors.response.use(
         if (error.response) {
             // Handle different HTTP status codes
             const { status } = error.response;
-            console.error(`[Response Error] ${status}:`, error.response.data);
+            // console.error(`[Response Error] ${status}:`, error.response.data);
 
             if (status === 401) {
                 // Unauthorized: token might be invalid or expired
