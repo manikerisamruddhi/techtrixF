@@ -19,7 +19,6 @@ const Quotations = () => {
     const [isDetailsModalVisible, setIsDetailsModalVisible] = useState(false);
     const [selectedQuotation, setSelectedQuotation] = useState(null);
     const [searchText, setSearchText] = useState('');
-    const [searchedColumn, setSearchedColumn] = useState('');
 
     useEffect(() => {
         dispatch(fetchQuotations());
@@ -33,124 +32,62 @@ const Quotations = () => {
 
     const handleViewClick = async (record) => {
         try {
-            // Wait for the action to complete and unwrap the result
             const { payload } = await dispatch(getQuotationById(record.quotationId));
-
-            // console.log(payload); // Log the payload (the data you need)
-            setSelectedQuotation(payload); // Set selected quotation data
-            setIsDetailsModalVisible(true); // Show the details modal
+            setSelectedQuotation(payload);
+            setIsDetailsModalVisible(true);
         } catch (error) {
-            console.error('Error fetching quotation:', error); // Handle any errors
+            console.error('Error fetching quotation:', error);
         }
     };
 
-
-    useEffect(() => {
-        if (selectedQuotation) {
-            // When the quotation state changes, update the selectedQuotation state
-            setSelectedQuotation(selectedQuotation);
-        }
-    }, [selectedQuotation]);
-
     const handleCreateModalClose = () => {
         setIsCreateModalVisible(false);
-        dispatch(fetchQuotations()); // Fetch quotations again to refresh the list
+        dispatch(fetchQuotations());
     };
 
     const handleDetailsModalClose = () => {
         setIsDetailsModalVisible(false);
-        setSelectedQuotation(null); // Clear the selected quotation
-        dispatch(fetchQuotations()); // Fetch quotations again to refresh the list
+        setSelectedQuotation(null);
+        dispatch(fetchQuotations());
     };
 
     const handleCreateQuotationSuccess = () => {
-        dispatch(fetchQuotations()); // Fetch quotations again to refresh the list
+        dispatch(fetchQuotations());
     };
 
+    // Search function
+    const handleSearch = (value) => {
+        setSearchText(value);
+    };
 
-    // Search filter functions for columns
-    const getColumnSearchProps = (dataIndex) => ({
-        filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
-            <div style={{ padding: 8 }}>
-                <Input
-                    placeholder={`Search ${dataIndex}`}
-                    value={selectedKeys[0]}
-                    onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-                    onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
-                    style={{ marginBottom: 8, display: 'block' }}
-                />
-                <Space>
-                    <Button
-                        type="primary"
-                        onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
-                        icon={<SearchOutlined />}
-                        size="small"
-                        style={{ width: 90 }}
-                    >
-                        Search
-                    </Button>
-                    <Button onClick={() => handleReset(clearFilters)} size="small" style={{ width: 90 }}>
-                        Reset
-                    </Button>
-                </Space>
-            </div>
-        ),
-        filterIcon: (filtered) => (
-            <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />
-        ),
-        onFilter: (value, record) => {
-            return record[dataIndex]
-                ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
-                : '';
-        },
-        onFilterDropdownVisibleChange: (visible) => {
-            if (visible) {
-                // setTimeout to wait for Input to be focused
-            }
-        },
-        render: (text) =>
-            searchedColumn === dataIndex ? (
-                <span style={{ backgroundColor: '#ffc069', padding: 0 }}>{text}</span>
-            ) : (
-                text
-            ),
+    // Filter quotations based on search text
+    const filteredQuotations = quotations.filter((quotation) => {
+        return (
+            quotation.comments.toLowerCase().includes(searchText.toLowerCase()) ||
+            quotation.finalAmount.toString().includes(searchText) ||
+            quotation.status.toLowerCase().includes(searchText.toLowerCase()) ||
+            moment(quotation.createdDate).format('YYYY-MM-DD').includes(searchText)
+        );
     });
-
-    const handleSearch = (selectedKeys, confirm, dataIndex) => {
-        confirm();
-        setSearchText(selectedKeys[0]);
-        setSearchedColumn(dataIndex);
-    };
-
-    const handleReset = (clearFilters) => {
-        clearFilters();
-        setSearchText('');
-    };
 
     const columns = [
         {
             title: 'Quotation ID',
             dataIndex: 'quot_ID',
             key: 'quot_ID',
-            // render: (text) => <Link to={`/quotation/${text}`}>Quotation #{text}</Link>,
-            // ...getColumnSearchProps('id'), // Search filter for Quotation ID
         },
-
         {
             title: 'Comments',
             dataIndex: 'comments',
             key: 'comments',
-            ...getColumnSearchProps('Comments'), // Search filter for Final Amount
         },
-
         {
             title: 'Final Amount',
             dataIndex: 'finalAmount',
             key: 'finalAmount',
-            // ...getColumnSearchProps('FinalAmount'), // Search filter for Final Amount
         },
         {
-            title: 'status',
+            title: 'Status',
             dataIndex: 'status',
             key: 'status',
             filters: [
@@ -161,12 +98,11 @@ const Quotations = () => {
             onFilter: (value, record) => record.status.includes(value),
         },
         {
-            title: 'createdDate',
+            title: 'Created Date',
             dataIndex: 'createdDate',
             key: 'createdDate',
             render: (text) => moment(text).format('YYYY-MM-DD'),
         },
-
         {
             title: 'Actions',
             key: 'actions',
@@ -186,16 +122,22 @@ const Quotations = () => {
                         <Title level={4} style={{ margin: 0 }}>Quotation List</Title>
                         <Button type="primary" style={{ padding: '0 20px' }} onClick={() => setIsCreateModalVisible(true)}>
                             Create Quotation
-                        </Button>
-                    </div>
-
+                        </Button >
+                        </div>
+                    <Input
+                        placeholder="Search Quotations"
+                        value={searchText}
+                        onChange={(e) => handleSearch(e.target.value)}
+                        style={{ marginBottom: '16px', width: '300px' }}
+                        prefix={<SearchOutlined />}
+                    />
                     {loading === 'loading' ? (
                         <Spin tip="Loading..." />
-                    ) : !quotations || quotations.length === 0 ? (
+                    ) : !filteredQuotations || filteredQuotations.length === 0 ? (
                         <Empty description="No Quotations Available" />
                     ) : (
                         <Table
-                            dataSource= {Array.isArray(quotations) ? quotations : []}
+                            dataSource={filteredQuotations}
                             columns={columns}
                             rowKey="quotationId"
                             pagination={false}
@@ -213,7 +155,7 @@ const Quotations = () => {
                     <CreateQuotationFormModal
                         visible={isCreateModalVisible}
                         onClose={handleCreateModalClose}
-                        onSuccess={handleCreateQuotationSuccess} // Pass success handler
+                        onSuccess={handleCreateQuotationSuccess}
                     />
                 </div>
             </Content>
