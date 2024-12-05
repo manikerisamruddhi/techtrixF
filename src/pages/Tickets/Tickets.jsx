@@ -32,11 +32,15 @@ const Tickets = () => {
 //   console.log(status);
 
 const user = JSON.parse(localStorage.getItem('user')); // Get user from local storage
+// console.log(user);
+
 // Redirect if user role is ServiceTechnical
 useEffect(() => {
-    if (user && user.role === 'Service_Technical'|| user.role === 'Sales') {
+    if (user.userType ==! 'Admin_User'){
+         if (user && user.role === 'Service_Technical'|| user.role === 'Sales') {
         navigate('/ticketsService'); // Navigate to /ticketsService
     }
+    }  
 }, [user, navigate]);
 
 
