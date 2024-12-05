@@ -18,7 +18,7 @@ const LayoutComponent = ({ children }) => {
     const isSidebarHidden = hideSidebarRoutes.includes(location.pathname);
 
     const user = JSON.parse(localStorage.getItem('user'));
-    console.log(user.role);
+    // console.log(user.role);
 
     return (
         <Layout style={{ minHeight: '100vh' }}>
