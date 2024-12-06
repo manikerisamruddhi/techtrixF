@@ -94,7 +94,7 @@ const AdminUserManagement = () => {
                 }}
             >
                 <Title level={4} style={{ margin: 0 }}>
-                    User kklklklklManagement
+                    User Management
                 </Title>
                 <Button type="primary" onClick={showModal}>Create User</Button>
             </div>

@@ -19,35 +19,37 @@ const CreateUserForm = ({ user, onClose }) => {
             form.setFieldsValue({
                 ...user,
                 userType: user.userType === 'Admin_User', // Convert to boolean for the Switch
+              
             });
         }
     }, [user, form]);
 
     const handleSubmit = async (values) => {
-        try {
-            const userData = {
-                ...values,
-                userType: values.userType ? 'Admin_User' : 'Normal_User', // Map boolean to enum
-            };
+    try {
+        const userData = {
+            ...values,
+            userType: values.userType ? 'Admin_User' : 'Normal_User', // Map boolean to enum
+            role: values.role || userRole, // Ensure the role is included
+        };
 
-            if (isEditMode) {
-                await dispatch(updateUser({ ...userData, userId: user.userId }));
-                message.success('User updated successfully!');
+        if (isEditMode) {
+            await dispatch(updateUser ({ ...userData, userId: user.userId }));
+            message.success('User  updated successfully!');
+        } else {
+            const result = await dispatch(createUser (userData));
+            if (createUser .fulfilled.match(result)) {
+                message.success('User  added successfully!');
             } else {
-                const result = await dispatch(createUser(userData));
-                if (createUser.fulfilled.match(result)) {
-                    message.success('User added successfully!');
-                } else {
-                    throw new Error(result.error.message + ', try different email or try again later');
-                }
+                throw new Error(result.error.message + ', try different email or try again later');
             }
-
-            form.resetFields();
-            onClose(); // Close the modal after success
-        } catch (error) {
-            message.error(error.message || 'Failed to save user. Please try again later.');
         }
-    };
+
+        form.resetFields();
+        onClose(); // Close the modal after success
+    } catch (error) {
+        message.error(error.message || 'Failed to save user. Please try again later.');
+    }
+};
 
     return (
         <Form
@@ -108,20 +110,20 @@ const CreateUserForm = ({ user, onClose }) => {
                     <Form.Item
                         label="Role"
                         name="role"
-                        rules={[{ required: true, message: 'Please select a role!' }]}
+                        // rules={[{ required: true, message: 'Please select a role!' }]}
                     >
                         <Select
                             placeholder={
                                 userType === 'Admin_User' && userRole === 'Sales'
                                     ? 'Sales'
                                     : 'Select a role'
-                            } // Show "Sales" as placeholder if disabled
-                            value={
+                            }
+                            defaultValue={
                                 userType === 'Admin_User' && userRole === 'Sales'
                                     ? 'Sales'
                                     : undefined
-                            } // Set value when condition matches
-                            disabled={userType === 'Admin_User' && userRole === 'Sales'} // Disable the field conditionally
+                            } // Use defaultValue instead of value
+                            disabled={userType === 'Admin_User' && userRole === 'Sales'}
                         >
                             <Option value="Logistics">Logistics</Option>
                             <Option value="Sales">Sales</Option>

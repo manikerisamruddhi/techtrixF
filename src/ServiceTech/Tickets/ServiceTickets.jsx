@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Table, Button, Empty, message, Layout, Typography, Spin, Card, Row, Col } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import { fetchTickets } from '../../redux/slices/ticketSlice';
+import { fetchTicketByAssighnedToOrCreatedBy } from '../../redux/slices/ticketSlice';
 import { fetchUsers } from '../../redux/slices/userSlice';
 import { fetchCustomers } from '../../redux/slices/customerSlice';
 import TicketDetailsModal from '../../components/Ticket/TicketDetailsModal';
@@ -26,19 +26,21 @@ const TicketsService = () => {
     const [selected_ticket, set_selected_ticket] = useState(null);
     const [filtered_tickets, set_filtered_tickets] = useState([]); // State for filtered tickets
     const [Totalfiltered_tickets, set_Totalfiltered_tickets] = useState([]); // State for filtered tickets
-
     const [searchParams] = useSearchParams();
     const status = searchParams.get('status');
 
     const user = JSON.parse(localStorage.getItem('user')); // Get user from local storage
+    const userId = user.userId;
 
     useEffect(() => {
         const fetch_data = async () => {
-            await dispatch(fetchTickets());
+            await dispatch(fetchTicketByAssighnedToOrCreatedBy(userId));
             await dispatch(fetchUsers());
         };
         fetch_data();
     }, [dispatch, useLocation()]);
+
+    const userFilteredTickets = tickets;
 
     useEffect(() => {
         const fetch_customers = async () => {
@@ -49,9 +51,9 @@ const TicketsService = () => {
 
     useEffect(() => {
         // Filter tickets based on user ID
-        const userFilteredTickets = tickets.filter(ticket =>
-            ticket.createdById === user.userId || ticket.assignedTo === user.userId
-        );
+        // const userFilteredTickets = tickets.filter(ticket =>
+        //     ticket.createdById === user.userId || ticket.assignedTo === user.userId
+        // );
         set_Totalfiltered_tickets(userFilteredTickets);
 
         // Further filter by status if applicable
@@ -96,9 +98,9 @@ const TicketsService = () => {
     // Filter tickets based on card click
     const handle_card_click = (status) => {
         // Filter tickets based on user roles (createdById or assignedTo)
-        const userFilteredTickets = tickets.filter(ticket =>
-            ticket.createdById === user.userId || ticket.assignedTo === user.userId
-        );
+        // const userFilteredTickets = tickets.filter(ticket =>
+        //     ticket.createdById === user.userId || ticket.assignedTo === user.userId
+        // );
     
         // If status is not 'Total', further filter by status
         const filtered = status !== 'Total' 
@@ -203,7 +205,7 @@ const TicketsService = () => {
             <Content style={{ padding: '20px' }}>
                 <div className="content-container">
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                        <Title level={4} style={{ margin: 0 }}>Ticket List</Title>
+                        <Title level={4} style={{ margin: 0 }}>Tickkkkkkkkkkkkkket List</Title>
                         <Button onClick={() => toggle_form(!is_form_visible)} className="create-ticket-btn" type="primary">
                             {is_form_visible ? 'Cancel' : 'Create Ticket'}
                         </Button>

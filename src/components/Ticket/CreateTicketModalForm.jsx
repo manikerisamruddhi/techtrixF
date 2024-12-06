@@ -87,14 +87,14 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
         if (isSubmitting) return;
 
         // console.log(values);
-       
+
         // Check for valid customer ID
         if (!values.customerId) {
             values.customerId = newCustomer.customerId;
-       
+
         }
 
-        if(!values.customerId && !newCustomer){
+        if (!values.customerId && !newCustomer) {
             message.warning('Please add a valid customer.');
             return; // Exit the function if there's no customer ID
         }
@@ -114,7 +114,7 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
             isChargeable: values.isChargeable !== undefined ? values.isChargeable : true,
             isQuotationCreated: false,
             ticketType: 'Issue',
-            productIds: values.productId ? [values.productId] : [],
+            productIds: values.productId ? [values.productId] : [selectedProduct.productId],
             createdDate: currentDate,
         };
 
@@ -125,7 +125,7 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
 
             if (createTicket.fulfilled.match(resultAction)) {
                 onClose(); // Close the modal or form
-                
+
                 message.success('Ticket created successfully!');
                 form.resetFields(); // Reset form fields
                 setSelectedProduct(null); // Reset selected product
@@ -136,7 +136,7 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
                 setIsChargeable(false); // Reset chargeable state
                 setisPremiumCustomer(false); // Reset premium customer state
 
-                
+
             } else {
                 message.error('Failed to create ticket.');
             }
@@ -157,16 +157,16 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
 
     const handleCustomerAdded = (newCustomer) => {
         setSelectedCustomer(newCustomer);
-        form.setFieldsValue({ 
+        form.setFieldsValue({
             customerId: newCustomer.customerId, // Set the customerId in the form
             customerName: `${newCustomer.firstName} ${newCustomer.lastName}` // Optional: Set customer name if needed
         });
         setisPremiumCustomer(newCustomer.isPremium);
         setCustomerModalVisible(false);
         setNewCustomer(newCustomer); // Update the new customer state
-         // Log the form values after setting them
-    // const formValues = form.getFieldsValue();
-    // console.log('Form Values:', formValues ,newCustomer.customerId ); // This will log all the current form values
+        // Log the form values after setting them
+        // const formValues = form.getFieldsValue();
+        // console.log('Form Values:', formValues ,newCustomer.customerId ); // This will log all the current form values
 
     };
 
@@ -256,7 +256,14 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
                     {customerType === 'new' && newCustomer && (
                         <div style={{ marginTop: '2px', marginBottom: '15px' }} >
                             <span style={{ color: 'green' }}>Newly Added Customer : </span>
-                            <span>{`${newCustomer.firstName} ${newCustomer.lastName} `}</span>
+                            <span style={{
+                                border: '2px solid deepskyblue',
+                                padding: '3px',
+                                marginRight: '15px',
+                            }}>{`${newCustomer.firstName} ${newCustomer.lastName} `}</span>
+                            <span style={{
+                                color: '#07024480',
+                            }}>( please add a new product for this customer. )</span>
                         </div>
                     )}
 

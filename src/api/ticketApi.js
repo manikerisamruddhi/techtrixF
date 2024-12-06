@@ -7,6 +7,9 @@ const ticketApi = {
     getTicketById: (id) => {
         return axiosInstance.get(`/tickets/get/${id}`);
     },
+    getTicketByAssighnedToOrCreatedBy: (id) => {
+        return axiosInstance.get(`/tickets/all/assigned-to-or-created-by-user/${id}`);
+    },
     createTicket: (ticketData) => {
         return axiosInstance.post('/tickets/add', ticketData);
     },

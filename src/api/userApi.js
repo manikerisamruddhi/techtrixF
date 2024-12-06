@@ -1,4 +1,5 @@
 import axiosInstance from './axiosInstance';
+import axiosInstance2 from './axiosInstancewithoutTocken';
 
 const userApi = {
     getAllusers: () => {
@@ -10,7 +11,7 @@ const userApi = {
     },
     
     createuser: (userData) => {
-        return axiosInstance.post('/users/add', userData);
+        return axiosInstance2.post('/users/add', userData);
     },
     
     updateuser: (id, userData) => {

@@ -36,10 +36,10 @@ const user = JSON.parse(localStorage.getItem('user')); // Get user from local st
 
 // Redirect if user role is ServiceTechnical
 useEffect(() => {
-    if (user.userType ==! 'Admin_User'){
-         if (user && user.role === 'Service_Technical'|| user.role === 'Sales') {
+    if (user.userType === 'Normal_User'){
+        //  if (user && user.role === 'Service_Technical'|| user.role === 'Sales') {
         navigate('/ticketsService'); // Navigate to /ticketsService
-    }
+    // }
     }  
 }, [user, navigate]);
 
@@ -200,6 +200,7 @@ useEffect(() => {
     const handle_modal_close = () => {
         set_is_modal_visible(false);
         set_selected_ticket(null); // Clear selected ticket
+        dispatch(fetchTickets());
     };
 
     return (

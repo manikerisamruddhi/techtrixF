@@ -9,6 +9,15 @@ export const fetchTickets = createAsyncThunk('tickets/fetchTickets', async () =>
     return response.data;
 });
 
+// Async Thunks
+export const fetchTicketByAssighnedToOrCreatedBy = createAsyncThunk('tickets/fetchTicketByAssighnedToOrCreatedBy', async (userId) => {
+    const response = await ticketApi.getTicketByAssighnedToOrCreatedBy(userId); // Adjusted endpoint
+    // console.log(response);
+    return response.data;
+});
+
+
+
 export const fetchTicketDetails = createAsyncThunk('tickets/fetchTicketDetails', async (ticketId) => {
     try {
         const response = await ticketApi.getTicketById(ticketId);
@@ -35,22 +44,6 @@ export const createTicket = createAsyncThunk('tickets/addTicket', async (newTick
 
     return response.data;
 });
-    // console.log(response);
-    
-//     return {
-//         id: response.data.id,
-//         customerId: response.data.customerId,
-//         title: response.data.title,
-//         createdById: newTicket.createdById,
-//         status: newTicket.status,
-//         Priority: newTicket.Priority,
-//         assignedToID: newTicket.assignedToID,
-//         description: newTicket.description,
-//         description: response.data.description,
-//         CreatedDate: new Date().toISOString(),
-//         isChargeable: response.data.isChargeable,
-//     };
-// });
 
 // Add the updateTicket async thunk
 export const updateTicket = createAsyncThunk('tickets/updateTicket', async ({ ticketId, data }) => {
@@ -84,12 +77,7 @@ const ticketSlice = createSlice({
             })
             .addCase(createTicket.fulfilled, (state, action) => {
                 state.tickets.push(action.payload);
-                
-                // Show success notification for ticket creation
-                // notification.success({
-                //     message: 'Ticket Created',
-                //     description: 'The ticket was created successfully!',
-                // });
+
             })
             .addCase(fetchTicketDetails.pending, (state) => {
                 state.loading = true;
@@ -109,13 +97,20 @@ const ticketSlice = createSlice({
                 if (index !== -1) {
                     // Update the ticket in the state
                     state.tickets[index] = updatedTicket;
-                    
-                    // Show success notification for ticket update
-                    // notification.success({
-                    //     message: 'Ticket Updated',
-                    //     description: 'The ticket was updated successfully!',
-                    // });
                 }
+            })
+            // Builder for fetchTicketByAssighnedToOrCreatedBy
+            .addCase(fetchTicketByAssighnedToOrCreatedBy.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchTicketByAssighnedToOrCreatedBy.fulfilled, (state, action) => {
+                state.loading = false;
+                state.tickets = action.payload; // Update tickets with the filtered data
+            })
+            .addCase(fetchTicketByAssighnedToOrCreatedBy.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
             });
     },
 });
