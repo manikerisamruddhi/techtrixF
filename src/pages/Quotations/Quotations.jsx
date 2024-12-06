@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchQuotations, getQuotationById } from '../../redux/slices/quotationSlice';
-import { Layout, Table, Button, Empty, message, Spin, Typography, Input, Space } from 'antd';
+import { fetchTickets } from '../../redux/slices/ticketSlice'; // Action to fetch tickets
+import { Layout, Table, Button, Empty, message, Spin, Typography, Input } from 'antd';
 import CreateQuotationFormModal from '../../components/Quotation/CreateQuotation';
 import QuotationDetailsModal from '../../components/Quotation/QuotationDetails';
 import { SearchOutlined } from '@ant-design/icons';
@@ -14,6 +15,7 @@ const { Title } = Typography;
 const Quotations = () => {
     const dispatch = useDispatch();
     const { quotations = [], loading, error } = useSelector((state) => state.quotations);
+    const { tickets = [] } = useSelector((state) => state.tickets); // Get tickets from Redux state
 
     const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
     const [isDetailsModalVisible, setIsDetailsModalVisible] = useState(false);
@@ -22,6 +24,7 @@ const Quotations = () => {
 
     useEffect(() => {
         dispatch(fetchQuotations());
+        dispatch(fetchTickets()); // Fetch tickets
     }, [dispatch, useLocation()]);
 
     useEffect(() => {
@@ -60,13 +63,22 @@ const Quotations = () => {
         setSearchText(value);
     };
 
+    // console.log(tickets);
+    // Map tickets to quotations
+    const quotationsWithTickets = quotations.map((quotation) => {
+        const matchedTicket = tickets.find((ticket) => ticket.ticketId === quotation.ticketId);
+        return { ...quotation, ticket: matchedTicket }; // Add ticket details to quotation
+    });
+
     // Filter quotations based on search text
-    const filteredQuotations = quotations.filter((quotation) => {
+    const filteredQuotations = quotationsWithTickets.filter((quotation) => {
+        const ticketCustomerId = quotation.ticket?.customerId || '';
         return (
             quotation.comments.toLowerCase().includes(searchText.toLowerCase()) ||
             quotation.finalAmount.toString().includes(searchText) ||
             quotation.status.toLowerCase().includes(searchText.toLowerCase()) ||
-            moment(quotation.createdDate).format('YYYY-MM-DD').includes(searchText)
+            moment(quotation.quotationDate).format('DD-MM-YYYY').includes(searchText) ||
+            quotation.quot_ID.toLowerCase().includes(searchText.toLowerCase())
         );
     });
 
@@ -75,6 +87,11 @@ const Quotations = () => {
             title: 'Quotation ID',
             dataIndex: 'quot_ID',
             key: 'quot_ID',
+        },
+        {
+            title: 'Customer ID',
+            key: 'customerId',
+            render: (_, record) => record.ticket?.customerId || 'N/A', // Display customerId from ticket
         },
         {
             title: 'Comments',
@@ -99,9 +116,9 @@ const Quotations = () => {
         },
         {
             title: 'Created Date',
-            dataIndex: 'createdDate',
-            key: 'createdDate',
-            render: (text) => moment(text).format('YYYY-MM-DD'),
+            dataIndex: 'quotationDate',
+            key: 'quotationDate',
+            render: (text) => moment(text).format('DD-MM-YYYY'),
         },
         {
             title: 'Actions',
@@ -122,8 +139,8 @@ const Quotations = () => {
                         <Title level={4} style={{ margin: 0 }}>Quotation List</Title>
                         <Button type="primary" style={{ padding: '0 20px' }} onClick={() => setIsCreateModalVisible(true)}>
                             Create Quotation
-                        </Button >
-                        </div>
+                        </Button>
+                    </div>
                     <Input
                         placeholder="Search Quotations"
                         value={searchText}
