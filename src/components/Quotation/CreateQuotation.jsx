@@ -98,7 +98,7 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
 
     useEffect(() => {
         if (visible) {
-            dispatch(fetchQuotations());
+            // dispatch(fetchQuotations());
             dispatch(fetchCustomers()); // Fetch customers when the modal is visible
             dispatch(fetchNonCustProducts()); // Fetch products when the modal is visible
         }
