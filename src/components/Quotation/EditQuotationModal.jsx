@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Form, Input, Button, Select, Table, notification, Row, Col, Radio } from 'antd';
+import { Modal, Form, Input, Button, Table, notification, Row, Col, Select } from 'antd';
 import { useDispatch } from 'react-redux';
 import { updateQuotation } from '../../redux/slices/quotationSlice';
 import { updateQuotationProduct, deleteQuotationProduct } from '../../redux/slices/productSlice';
-import ProductFormModal from '../Product/AddProduct'
+import ProductFormModal from '../Product/AddProduct';
 import { addQuotaionProduct } from '../../redux/slices/quotationSlice';
-
 
 const { Option } = Select;
 
@@ -13,8 +12,6 @@ const EditQuotationModal = ({ visible, quotation, onClose, products, customer })
     const dispatch = useDispatch();
     const [form] = Form.useForm();
     const [productList, setProductList] = useState([]);
-    const [editingProductId, setEditingProductId] = useState(null); // Track the product being edited
-    const [productType, setProductType] = useState('Hardware'); // State for product type
     const [tempProduct, setTempProduct] = useState({}); // State for the product being edited
     const [addProductVisible, setAddProductVisible] = useState(false); // State for ProductFormModal visibility
 
@@ -53,21 +50,15 @@ const EditQuotationModal = ({ visible, quotation, onClose, products, customer })
         }
     };
 
-    const handleEditProduct = (product) => {
-        setEditingProductId(product.productId);
-        setTempProduct({ ...product }); // Set the temporary product state
-        setProductType(product.productType || 'Hardware'); // Set product type based on editing product
-    };
-
-    const handleSaveProduct = async () => {
+    const handleSaveProduct = async (product) => {
         try {
             // Validate the product data
-            if (tempProduct.quantity < 1) {
+            if (product.quantity < 1) {
                 notification.error({ message: 'Quantity must be at least 1!' });
                 return;
             }
 
-            if (tempProduct.price < 1) {
+            if (product.price < 1) {
                 notification.error({ message: 'Price must be at least 1!' });
                 return;
             }
@@ -75,17 +66,13 @@ const EditQuotationModal = ({ visible, quotation, onClose, products, customer })
             // Update the product in the list
             setProductList(prevProducts =>
                 prevProducts.map(prod =>
-                    prod.productId === tempProduct.productId ? { ...tempProduct } : prod
+                    prod.productId === product.productId ? { ...product } : prod
                 )
             );
 
             // Dispatch the update action
-            await dispatch(updateQuotationProduct({ quotationId: quotation.quotationId, productId: tempProduct.productId, updatedProduct: tempProduct }));
+            await dispatch(updateQuotationProduct({ quotationId: quotation.quotationId, productId: product.productId, updatedProduct: product }));
             notification.success({ message: 'Product updated successfully!' });
-
-            // Reset editing state
-            setEditingProductId(null);
-            setTempProduct({});
         } catch (error) {
             console.error('Error updating product:', error);
             notification.error({ message: 'Failed to update product.' });
@@ -127,12 +114,10 @@ const EditQuotationModal = ({ visible, quotation, onClose, products, customer })
             dataIndex: 'brand',
             key: 'brand',
             render: (text, record) => (
-                editingProductId === record.productId ? (
-                    <Input
-                        value={tempProduct.brand}
-                        onChange={(e) => setTempProduct({ ...tempProduct, brand: e.target.value })}
-                    />
-                ) : text
+                <Input
+                    value={record.brand}
+                    onChange={(e) => setProductList(prevProducts => prevProducts.map(prod => prod.productId === record.productId ? { ...prod, brand: e.target.value } : prod))}
+                />
             ),
         },
         {
@@ -140,99 +125,50 @@ const EditQuotationModal = ({ visible, quotation, onClose, products, customer })
             dataIndex: 'modelNo',
             key: 'modelNo',
             render: (text, record) => (
-                editingProductId === record.productId ? (
-                    <Input
-                        value={tempProduct.modelNo}
-                        onChange={(e) => setTempProduct({ ...tempProduct, modelNo: e.target.value })}
-                    />
-                ) : text
+                <Input
+                    value={record.modelNo}
+                    onChange={(e) => setProductList(prevProducts => prevProducts.map(prod => prod.productId === record.productId ? { ...prod, modelNo: e.target.value } : prod))}
+                />
             ),
         },
         {
             title: 'Quantity',
             dataIndex: 'quantity',
             key: 'quantity',
-            width: 80, // Adjust the width 
+            width: 80, // Adjust the width
             render: (text, record) => (
-                editingProductId === record.productId ? (
-                    record.productType === 'Service' ? (
-                        <Input
-                            type="number"
-                            value={tempProduct.quantity}
-                            disabled
-                        />
-                    ) : (
-                        <Input
-                            type="number"
-                            value={tempProduct.quantity}
-                            onChange={(e) => setTempProduct({ ...tempProduct, quantity: parseInt(e.target.value) })}
-                        />
-                    )
-                ) : (
-                    text
-                )
+                <Input
+                    type="number"
+                    value={record.quantity}
+                    onChange={(e) => setProductList(prevProducts => prevProducts.map(prod => prod.productId === record.productId ? { ...prod, quantity: parseInt(e.target.value) } : prod))}
+                />
             ),
         },
-        
         {
             title: 'Price',
             dataIndex: 'price',
             key: 'price',
             width: 80, // Adjust the widht
             render: (text, record) => (
-                editingProductId === record.productId ? (
-                    <Input
-                        type="number"
-                        value={tempProduct.price}
-                        onChange={(e) => setTempProduct({ ...tempProduct, price: parseFloat(e.target.value) })}
-                    />
-                ) : text
+                <Input
+                    type="number"
+                    value={record.price}
+                    onChange={(e) => setProductList(prevProducts => prevProducts.map(prod => prod.productId === record.productId ? { ...prod, price: parseFloat(e.target.value) } : prod))}
+                />
             ),
         },
-        // {
-        //     title: 'GST (%)',
-        //     dataIndex: 'gst',
-        //     key: 'gst',
-        //     width: 100,
-        //     render: (text, record) => (
-        //         editingProductId === record.productId ? (
-        //             <Select
-        //                 value={tempProduct.gst}
-        //                 onChange={(value) => setTempProduct({ ...tempProduct, gst: value })}
-        //                 style={{ width: '80px' }} 
-        //             >
-        //                 <Option value="0">None</Option>
-        //                 <Option value="18">18%</Option>
-        //                 <Option value="28">28%</Option>
-        //             </Select>
-        //         ) : text
-        //     ),
-        // },
         {
             title: 'Actions',
             key: 'actions',
             width: 200,
             render: (_, product) => (
                 <>
-                    {editingProductId === product.productId ? (
-                        <>
-                            <Button type="link" onClick={handleSaveProduct}>
-                                Save
-                            </Button>
-                            <Button type="link" danger onClick={() => setEditingProductId(null)}>
-                                Cancel
-                            </Button>
-                        </>
-                    ) : (
-                        <>
-                            <Button type="link" onClick={() => handleEditProduct(product)}>
-                                Edit
-                            </Button>
-                            <Button type="link" danger onClick={() => handleDeleteProduct(product.productId)}>
-                                Delete
-                            </Button>
-                        </>
-                    )}
+                    <Button type="link" onClick={() => handleSaveProduct(product)}>
+                        Save
+                    </Button>
+                    <Button type="link" danger onClick={() => handleDeleteProduct(product.productId)}>
+                        Delete
+                    </Button>
                 </>
             ),
         },
@@ -304,19 +240,16 @@ const EditQuotationModal = ({ visible, quotation, onClose, products, customer })
                 />
                 <Button
                     type="primary"
-                    style={{  backgroundColor: '#08ba00', borderColor: 'blue', marginTop: '20px' }}
+                    style={{ backgroundColor: '#08ba00', borderColor: 'blue', marginTop: '20px' }}
                     onClick={handleAddProduct} // Ensure you have this function defined
                 >
                     Add New Product
                 </Button>
                 <Form.Item>
-                    <Button type="primary" htmlType="submit"
-                       style={{ float: 'right'}}
-                    >
+                    <Button type="primary" htmlType="submit" style={{ float: 'right' }}>
                         Update Quotation
                     </Button>
                 </Form.Item>
-
             </Form>
             <ProductFormModal
                 visible={addProductVisible}
@@ -330,7 +263,6 @@ const EditQuotationModal = ({ visible, quotation, onClose, products, customer })
                 quotation={quotation}
             />
         </Modal>
-
     );
 };
 
