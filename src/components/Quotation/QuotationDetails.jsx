@@ -31,7 +31,7 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
 
     useEffect(() => {
         dispatch(fetchProducts());
-    }, []);
+    }, [visible]);
 
 
     const quotationProducts = quotation ? quotation.quotationProducts : [];

@@ -72,6 +72,7 @@ export const updateQuotationProduct = createAsyncThunk('products/updateQuotation
   try {
     const response = await productApi.updateQuotationProduct(quotationId, productId, updatedProduct);
     toast.success('Product updated successfully!');
+    
     return response.data;
   } catch (error) {
     toast.error('Failed to update product');
@@ -100,7 +101,7 @@ export const deleteQuotationProduct = createAsyncThunk('products/deleteQuotation
     toast.success('Product deleted successfully!');
 
     // Dispatch the fetchProducts action to refresh the product list
-    dispatch(fetchProducts());
+    // dispatch(fetchProducts());
 
     return quotationId; // Return the productId for the fulfilled case
   } catch (error) {
@@ -209,10 +210,7 @@ const productSlice = createSlice({
         state.error = null;
       })
       .addCase(updateProduct.fulfilled, (state, action) => {
-        // const index = state.items.findIndex((item) => item.id === action.payload.id);
-        // if (index !== -1) {
-        //   state.items[index] = action.payload;
-        // }
+       
         state.items = Array.isArray(action.payload) ? action.payload : state.items;
         state.loading = false;
       })
@@ -257,11 +255,7 @@ const productSlice = createSlice({
         state.error = null;
       })
       .addCase(updateQuotationProduct.fulfilled, (state, action) => {
-        // Find the product and update it in the state
-        // const index = state.items.findIndex((item) => item.id === action.payload.id);
-        // if (index !== -1) {
-        //   state.items[index] = action.payload;
-        // }
+        
         state.items = Array.isArray(action.payload) ? action.payload : state.items;
         state.loading = false;
       })
