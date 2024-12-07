@@ -18,6 +18,7 @@ const EditQuotationModal = ({ visible, quotation, onClose, products, customer })
     const [tempProduct, setTempProduct] = useState({}); // State for the product being edited
     const [addProductVisible, setAddProductVisible] = useState(false); // State for ProductFormModal visibility
 
+    const [quotationProducts, setQuotationProducts] = useState();
 
     useEffect(() => {
         if (quotation) {
@@ -31,6 +32,7 @@ const EditQuotationModal = ({ visible, quotation, onClose, products, customer })
                 comments: quotation.comments
             });
             setProductList(products);
+            setQuotationProducts(quotation.quotationProducts);
         }
     }, [quotation, form]);
 
@@ -43,11 +45,6 @@ const EditQuotationModal = ({ visible, quotation, onClose, products, customer })
 
             await dispatch(updateQuotation({ quotationId: quotation.quotationId, data: updatedQuotationData }));
             notification.success({ message: 'Quotation updated successfully!' });
-
-            // Dispatch the updateProducts action to update the products
-            // for (const product of productList) {
-            //     await dispatch(updateQuotationProduct({ quotationId: quotation.quotationId, productId: product.productId, updatedProduct: product }));
-            // }
 
             onClose(); // Close the modal
         } catch (error) {
@@ -96,7 +93,7 @@ const EditQuotationModal = ({ visible, quotation, onClose, products, customer })
     };
 
     const handleDeleteProduct = (productId) => {
-        const foundProduct = productList.find(item => item.productId === productId);
+        const foundProduct = quotationProducts.find(item => item.productId === productId);
         const quotationProductId = foundProduct.quotationProductId;
 
         Modal.confirm({
@@ -155,20 +152,33 @@ const EditQuotationModal = ({ visible, quotation, onClose, products, customer })
             title: 'Quantity',
             dataIndex: 'quantity',
             key: 'quantity',
+            width: 80, // Adjust the width 
             render: (text, record) => (
                 editingProductId === record.productId ? (
-                    <Input
-                        type="number"
-                        value={tempProduct.quantity}
-                        onChange={(e) => setTempProduct({ ...tempProduct, quantity: parseInt(e.target.value) })}
-                    />
-                ) : text
+                    record.productType === 'Service' ? (
+                        <Input
+                            type="number"
+                            value={tempProduct.quantity}
+                            disabled
+                        />
+                    ) : (
+                        <Input
+                            type="number"
+                            value={tempProduct.quantity}
+                            onChange={(e) => setTempProduct({ ...tempProduct, quantity: parseInt(e.target.value) })}
+                        />
+                    )
+                ) : (
+                    text
+                )
             ),
         },
+        
         {
             title: 'Price',
             dataIndex: 'price',
             key: 'price',
+            width: 80, // Adjust the widht
             render: (text, record) => (
                 editingProductId === record.productId ? (
                     <Input
@@ -183,11 +193,13 @@ const EditQuotationModal = ({ visible, quotation, onClose, products, customer })
         //     title: 'GST (%)',
         //     dataIndex: 'gst',
         //     key: 'gst',
+        //     width: 100,
         //     render: (text, record) => (
         //         editingProductId === record.productId ? (
         //             <Select
         //                 value={tempProduct.gst}
         //                 onChange={(value) => setTempProduct({ ...tempProduct, gst: value })}
+        //                 style={{ width: '80px' }} 
         //             >
         //                 <Option value="0">None</Option>
         //                 <Option value="18">18%</Option>
@@ -199,6 +211,7 @@ const EditQuotationModal = ({ visible, quotation, onClose, products, customer })
         {
             title: 'Actions',
             key: 'actions',
+            width: 200,
             render: (_, product) => (
                 <>
                     {editingProductId === product.productId ? (
@@ -236,7 +249,7 @@ const EditQuotationModal = ({ visible, quotation, onClose, products, customer })
             onCancel={onClose}
             footer={null}
             centered
-            width={700}
+            width={900}
         >
             <Form form={form} onFinish={handleFinish} layout="vertical">
                 <Row gutter={16}>
