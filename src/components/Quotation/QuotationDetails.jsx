@@ -27,6 +27,9 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
 
     useEffect(() => {
         setQuotationData(quotation);
+    }, [dispatch, visible]);
+
+    useEffect(() => {
         dispatch(fetchProducts());
     }, []);
 

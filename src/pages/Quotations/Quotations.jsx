@@ -65,10 +65,11 @@ const Quotations = () => {
 
     // console.log(tickets);
     // Map tickets to quotations
-    const quotationsWithTickets = quotations.map((quotation) => {
+    const quotationsWithTickets = Array.isArray(quotations) ? quotations.map((quotation) => {
         const matchedTicket = tickets.find((ticket) => ticket.ticketId === quotation.ticketId);
         return { ...quotation, ticket: matchedTicket }; // Add ticket details to quotation
-    });
+    }) : [];
+
 
     // Filter quotations based on search text
     const filteredQuotations = quotationsWithTickets.filter((quotation) => {

@@ -15,9 +15,7 @@ export const loginUser = createAsyncThunk(
             const loginUserResponse = response.data;
 
             if (loginUserResponse.httpStatus === 'OK') {
-                if(loginUserResponse.userContent.email === 'serviceadmin@gmail.com' || loginUserResponse.userContent.email === 'salesadmin@gmail.com'){
-                    loginUserResponse.userContent.userType = 'Admin_User';
-                }
+                
                 const currentTime = Date.now();
                 localStorage.setItem('user', JSON.stringify(loginUserResponse.userContent));
                 localStorage.setItem('lastActive', currentTime); // Set initial activity time

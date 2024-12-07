@@ -1,18 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Form, Input, Button, Table, notification, Row, Col, Select } from 'antd';
+import { Modal, Form, Input, Button, Table, notification, Row, Col } from 'antd';
 import { useDispatch } from 'react-redux';
 import { updateQuotation } from '../../redux/slices/quotationSlice';
 import { updateQuotationProduct, deleteQuotationProduct } from '../../redux/slices/productSlice';
 import ProductFormModal from '../Product/AddProduct';
-import { addQuotaionProduct } from '../../redux/slices/quotationSlice';
-
-const { Option } = Select;
 
 const EditQuotationModal = ({ visible, quotation, onClose, products, customer }) => {
     const dispatch = useDispatch();
     const [form] = Form.useForm();
     const [productList, setProductList] = useState([]);
-    const [tempProduct, setTempProduct] = useState({}); // State for the product being edited
     const [addProductVisible, setAddProductVisible] = useState(false); // State for ProductFormModal visibility
 
     const [quotationProducts, setQuotationProducts] = useState();
@@ -35,6 +31,28 @@ const EditQuotationModal = ({ visible, quotation, onClose, products, customer })
 
     const handleFinish = async (values) => {
         try {
+            // First, update all products before updating the quotation
+            for (const product of productList) {
+                // Validate the product data
+                if (product.quantity < 1) {
+                    notification.error({ message: 'Quantity must be at least 1!' });
+                    return;
+                }
+
+                if (product.price < 1) {
+                    notification.error({ message: 'Price must be at least 1!' });
+                    return;
+                }
+
+                // Dispatch the update action for each product
+                await dispatch(updateQuotationProduct({
+                    quotationId: quotation.quotationId,
+                    productId: product.productId,
+                    updatedProduct: product
+                }));
+            }
+
+            // After updating products, update the quotation itself
             const updatedQuotationData = {
                 ...quotation,
                 ...values,
@@ -47,35 +65,6 @@ const EditQuotationModal = ({ visible, quotation, onClose, products, customer })
         } catch (error) {
             console.error('Error updating quotation:', error);
             notification.error({ message: 'Failed to update quotation.' });
-        }
-    };
-
-    const handleSaveProduct = async (product) => {
-        try {
-            // Validate the product data
-            if (product.quantity < 1) {
-                notification.error({ message: 'Quantity must be at least 1!' });
-                return;
-            }
-
-            if (product.price < 1) {
-                notification.error({ message: 'Price must be at least 1!' });
-                return;
-            }
-
-            // Update the product in the list
-            setProductList(prevProducts =>
-                prevProducts.map(prod =>
-                    prod.productId === product.productId ? { ...product } : prod
-                )
-            );
-
-            // Dispatch the update action
-            await dispatch(updateQuotationProduct({ quotationId: quotation.quotationId, productId: product.productId, updatedProduct: product }));
-            notification.success({ message: 'Product updated successfully!' });
-        } catch (error) {
-            console.error('Error updating product:', error);
-            notification.error({ message: 'Failed to update product.' });
         }
     };
 
@@ -148,7 +137,7 @@ const EditQuotationModal = ({ visible, quotation, onClose, products, customer })
             title: 'Price',
             dataIndex: 'price',
             key: 'price',
-            width: 80, // Adjust the widht
+            width: 80, // Adjust the width
             render: (text, record) => (
                 <Input
                     type="number"
@@ -162,14 +151,9 @@ const EditQuotationModal = ({ visible, quotation, onClose, products, customer })
             key: 'actions',
             width: 200,
             render: (_, product) => (
-                <>
-                    <Button type="link" onClick={() => handleSaveProduct(product)}>
-                        Save
-                    </Button>
-                    <Button type="link" danger onClick={() => handleDeleteProduct(product.productId)}>
-                        Delete
-                    </Button>
-                </>
+                <Button type="link" danger onClick={() => handleDeleteProduct(product.productId)}>
+                    Delete
+                </Button>
             ),
         },
     ];
