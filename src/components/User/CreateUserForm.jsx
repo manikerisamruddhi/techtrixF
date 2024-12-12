@@ -144,13 +144,12 @@ const CreateUserForm = ({ user, onClose }) => {
                             checked={userType !== 'Admin_User'} // Set to true if it's not Admin_User, else false
                             checkedChildren="Admin"
                             unCheckedChildren="Normal User"
-                            disabled={userType === 'Admin_User'} // Disable the switch if the userType is Admin_User
+                            disabled={userRole !== 'Admin'} // Disable the switch if the userType is Admin_User
                         />
                     </Form.Item>
-
-
                 </Col>
             </Row>
+            
             <Row gutter={16}>
                 {!isEditMode && (
                     <Col span={24}>
