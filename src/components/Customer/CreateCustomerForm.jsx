@@ -11,7 +11,7 @@ const CreateCustomerForm = ({ customer, setCustomer }) => {
     };
 
     const onFinish = (values) => {
-        console.log('Form values:', values);
+        // console.log('Form values:', values);
         // You can handle the submit logic here
     };
 

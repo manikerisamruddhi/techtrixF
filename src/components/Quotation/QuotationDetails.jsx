@@ -152,7 +152,7 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
 
     const handleProceed = () => {
         if (!quotation) {
-            console.error("Quotation ID is missing.");
+            // console.error("Quotation ID is missing.");
             return;
         }
 
@@ -186,7 +186,7 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
                     });
             },
             onCancel() {
-                console.log('User canceled proceeding with the quotation.');
+                // console.log('User canceled proceeding with the quotation.');
             }
         });
     };

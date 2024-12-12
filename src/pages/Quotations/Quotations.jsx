@@ -39,7 +39,7 @@ const Quotations = () => {
             setSelectedQuotation(payload);
             setIsDetailsModalVisible(true);
         } catch (error) {
-            console.error('Error fetching quotation:', error);
+            // console.error('Error fetching quotation:', error);
         }
     };
 
@@ -93,6 +93,11 @@ const Quotations = () => {
             title: 'Customer ID',
             key: 'customerId',
             render: (_, record) => record.ticket?.customerId || 'N/A', // Display customerId from ticket
+        },
+        {
+            title: 'Customer Name',
+            dataIndex: 'c_firstName',
+            key: 'c_firstName'
         },
         {
             title: 'Comments',

@@ -36,8 +36,8 @@ const CreateUserForm = ({ user, onClose }) => {
             await dispatch(updateUser ({ ...userData, userId: user.userId }));
             message.success('User  updated successfully!');
         } else {
-            const result = await dispatch(createUser (userData));
-            if (createUser .fulfilled.match(result)) {
+            const result = await dispatch(createUser(userData));
+            if (createUser.fulfilled.match(result)) {
                 message.success('User  added successfully!');
             } else {
                 throw new Error(result.error.message + ', try different email or try again later');

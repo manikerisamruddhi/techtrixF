@@ -47,7 +47,7 @@ const CreateQuotationModal = ({ ticketId, visible, onCancel }) => {
                 handleCancel();
               })
               .catch((error) => {
-                console.error('Error adding products:', error);
+                // console.error('Error adding products:', error);
                 notification.error({
                   message: 'Error Adding Products',
                   description: 'An error occurred while adding the products.',
@@ -55,7 +55,7 @@ const CreateQuotationModal = ({ ticketId, visible, onCancel }) => {
               });
           })
           .catch((error) => {
-            console.error('Error creating quotation:', error);
+            // console.error('Error creating quotation:', error);
             notification.error({
               message: 'Error Creating Quotation',
               description: 'An error occurred while creating the quotation.',
@@ -63,7 +63,7 @@ const CreateQuotationModal = ({ ticketId, visible, onCancel }) => {
           });
       })
       .catch((info) => {
-        console.log('Validation Failed:', info);
+        // console.log('Validation Failed:', info);
       });
   };
 
@@ -105,7 +105,7 @@ const CreateQuotationModal = ({ ticketId, visible, onCancel }) => {
         productForm.resetFields(); // Reset product form after saving
       })
       .catch((info) => {
-        console.log('Validation Failed:', info);
+        // console.log('Validation Failed:', info);
       });
   };
 

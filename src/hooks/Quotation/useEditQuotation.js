@@ -41,7 +41,7 @@ const useEditQuotation = ({ quotation, products, onClose }) => {
 
             onClose(); // Close the modal
         } catch (error) {
-            console.error('Error updating quotation:', error);
+            // console.error('Error updating quotation:', error);
             notification.error({ message: 'Failed to update quotation.' });
         }
     };
@@ -95,7 +95,7 @@ const useEditQuotation = ({ quotation, products, onClose }) => {
                 notification.success({ message: 'Product updated successfully!' });
             }
         } catch (error) {
-            console.error('Validation failed:', error);
+            // console.error('Validation failed:', error);
         }
     };
 

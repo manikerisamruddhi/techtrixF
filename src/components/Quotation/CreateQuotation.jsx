@@ -433,7 +433,7 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
             onClose(); // Close modal after submission
 
         } catch (err) {
-            console.error(err);
+            // console.error(err);
             notification.error({ message: 'Error adding quotation' });
         }
     };

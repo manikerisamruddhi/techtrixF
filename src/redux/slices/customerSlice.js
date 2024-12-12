@@ -18,7 +18,7 @@ export const fetchCustomerByID = createAsyncThunk('customers/fetchCustomerByID',
         const response = await customerApi.getCustomerById(id);
         return response.data;
     } catch (error) {
-        console.error("Error fetching customer by ID:", error);
+        // console.error("Error fetching customer by ID:", error);
         return rejectWithValue(null);
     }
 });
@@ -42,7 +42,7 @@ export const updateCustomer = createAsyncThunk('customers/updateCustomer', async
         const response = await customerApi.updateCustomer(customerId, updatedCustomer);
         return response.data;
     } catch (error) {
-        console.error("Error updating customer:", error);
+        // console.error("Error updating customer:", error);
         return rejectWithValue(error.response ? error.response.data : 'An unexpected error occurred');
     }
 });
@@ -53,7 +53,7 @@ export const deleteCustomer = createAsyncThunk('customers/deleteCustomer', async
         await customerApi.deleteCustomer(customerId); // Use the base URL
         return customerId;
     } catch (error) {
-        console.error("Error deleting customer:", error);
+        // console.error("Error deleting customer:", error);
         return rejectWithValue(null);
     }
 });

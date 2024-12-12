@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create Axios instance
 const axiosInstance = axios.create({
-    baseURL: 'http://localhost:8080/api', // Your backend base URL
+    baseURL: 'https://crm.techtrix.in/backend/api', // Your backend base URL: 'http://localhost:8080/api'
     headers: {
         'Content-Type': 'application/json',
     },
