@@ -25,7 +25,7 @@ const Customers = () => {
     // Handle backend error
     useEffect(() => {
         if (error) {
-            message.error(`Failed to load customers: ${error}. Please check backend connectivity.`);
+            message.error(``);
         }
     }, [error]);
 
