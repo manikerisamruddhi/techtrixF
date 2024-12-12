@@ -70,9 +70,9 @@ useEffect(() => {
     }, [tickets, status]);
 
     // Handle backend error
-    if (tickets_error || users_error || departments_error) {
-        message.error(`Failed to load data:Please check backend connectivity.`);
-    }
+    // if (tickets_error || users_error || departments_error) {
+    //     message.error(`Failed to load data:Please check backend connectivity.`);
+    // }
 
     // Filter users based on selected department
     useEffect(() => {
