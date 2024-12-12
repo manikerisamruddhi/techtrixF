@@ -6,7 +6,7 @@ const axiosInstance = axios.create({
     headers: {
         'Content-Type': 'application/json',
     },
-    timeout: 10000, // Optional: Add timeout to handle slow requests
+    timeout: 20000, // Optional: Add timeout to handle slow requests
 });
 
 // Add request interceptor to include the token in the Authorization header
