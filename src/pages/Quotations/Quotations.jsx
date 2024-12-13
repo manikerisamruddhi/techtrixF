@@ -90,14 +90,10 @@ const Quotations = () => {
             key: 'quot_ID',
         },
         {
-            title: 'Customer ID',
-            key: 'customerId',
-            render: (_, record) => record.ticket?.customerId || 'N/A', // Display customerId from ticket
-        },
-        {
             title: 'Customer Name',
             dataIndex: 'c_firstName',
-            key: 'c_firstName'
+            key: 'c_firstName',
+            render: (text, record) => `${record.c_firstName} ${record.c_lastName}`
         },
         {
             title: 'Comments',

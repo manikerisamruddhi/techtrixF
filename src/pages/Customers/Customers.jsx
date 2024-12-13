@@ -25,7 +25,7 @@ const Customers = () => {
     // Handle backend error
     useEffect(() => {
         if (error) {
-            message.error(`not found`);
+            message.error(`please wait`);
         }
     }, [error]);
 
