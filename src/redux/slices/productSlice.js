@@ -1,5 +1,6 @@
 // redux/slices/productSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSelector } from 'reselect';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import productApi from '../../api/productApi';
@@ -270,17 +271,14 @@ export const selectProducts = (state) => state.products.items; // For all produc
 export const selectProductsByCustomer = (state) => state.products.products; // For products by customer
 export const selectProductsLoading = (state) => state.products.loading;
 
-export const selectProductsByIds = (state, arrayOfProductIds) => {
-  // console.log('Array of Product IDs:', arrayOfProductIds); // Log the incoming product IDs
-  // console.log('State Products:', state.products.items); // Log the products in the state
-
-  // Filter the products by matching productId
-  const data = state.products.items.filter(product =>
-    arrayOfProductIds.includes(product.productId)
-  );
-
-  // console.log('Filtered Products:', data); // Log the filtered products
-  return data;
-};
+// Memoized selector for fetching products by their IDs
+export const selectProductsByIds = createSelector(
+  (state) => state.products.items, // Input selector: get all products from state
+  (_, arrayOfProductIds) => arrayOfProductIds, // Input selector: get the array of product IDs (note the underscore)
+  (products, arrayOfProductIds) => {
+    // Output selector: filter products based on the provided IDs
+    return products.filter(product => arrayOfProductIds.includes(product.productId));
+  }
+);
 
 export default productSlice.reducer;  

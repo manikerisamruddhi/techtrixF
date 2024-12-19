@@ -33,8 +33,8 @@ export const fetchCustomers = createAsyncThunk('users/fetchCustomers', async () 
 });
 
 
-export const fetchProducts = createAsyncThunk('users/fetchProducts', async () => {
-    const response = await productApi.getAllProducts();
+export const fetchNonCustProducts = createAsyncThunk('users/fetchNonCustProducts', async () => {
+    const response = await productApi.getNonCustomerProducts();
     return response.data;
 });
 
@@ -141,14 +141,14 @@ const dashboardSlice = createSlice({
                 state.error = action.error.message;
             })
 
-            .addCase(fetchProducts.pending, (state) => {
+            .addCase(fetchNonCustProducts.pending, (state) => {
                 state.status = 'loading';
             })
-            .addCase(fetchProducts.fulfilled, (state, action) => {
+            .addCase(fetchNonCustProducts.fulfilled, (state, action) => {
                 state.status = 'succeeded';
                 state.products = action.payload;
             })
-            .addCase(fetchProducts.rejected, (state, action) => {
+            .addCase(fetchNonCustProducts.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.error.message;
             })

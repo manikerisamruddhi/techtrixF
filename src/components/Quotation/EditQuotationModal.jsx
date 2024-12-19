@@ -165,7 +165,7 @@ const EditQuotationModal = ({ visible, quotation, onClose, products, customer })
     return (
         <Modal
             title="Update Quotation"
-            visible={visible}
+            open={visible}
             onCancel={onClose}
             footer={null}
             centered

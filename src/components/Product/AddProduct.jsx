@@ -88,7 +88,7 @@ const ProductFormModal = ({ visible, onCancel, product, customerId, onAddProduct
     return (
         <Modal
             title={product ? "Edit Product" : "Create Product"}
-            visible={visible}
+            open={visible}
             onCancel={onCancel}
             footer={null}
             width={800}

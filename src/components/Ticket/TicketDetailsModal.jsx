@@ -118,7 +118,7 @@ const TicketDetailsModal = ({ visible, ticket, onClose, onCreateQuotation, users
             {/* Main Ticket Details Modal */}
             <Modal
                 title="Ticket Details"
-                visible={visible}
+                open={visible}
                 onCancel={onClose}
                 footer={null}
                 centered

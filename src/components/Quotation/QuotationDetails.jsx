@@ -65,11 +65,11 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
                                     message.error("Failed to fetch customer details.");
                                 }
                             })
-                            .finally(() => setIsCustomerLoading(false)); 
+                            .finally(() => setIsCustomerLoading(false));
                     } else {
                         message.error("Customer ID not found in ticket details.");
                         setIsCustomerLoading(false)
-                        
+
                     }
                 })
                 .catch(() => {
@@ -88,12 +88,12 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
         setIsEditModalVisible(true);
     };
 
-    const products = quotationProducts ? quotationProducts : []; // Assuming quotation has a products array
+    const products = quotationProducts ? quotationProducts : [];
+    const arrayOfProductIds = products.map(product => product.productId);
 
-        const arrayOfProductIds = products.map(product => product.productId);
-        // console.log("Array of Product IDs:", arrayOfProductIds);
-        const filteredProducts = useSelector(state => selectProductsByIds(state, arrayOfProductIds));
-        
+    // Use the memoized selector
+    const filteredProducts = useSelector(state => selectProductsByIds(state, arrayOfProductIds));
+
     const handlePrintQuotation = () => {
         const pdfElement = createPdfContent(filteredProducts); // Pass filtered products to createPdfContent
 
@@ -194,14 +194,14 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
     // console.log(`${quotationProducts}`, JSON.stringify(quotationProducts, null, 2));
     const createPdfContent = (filteredProducts) => {
 
-  
+
         // console.log(filteredProducts);
 
         quoteProducts.current = filteredProducts;
 
         const pdfContent = document.createElement('div');
         const productsRows = filteredProducts.map((filteredProduct, index) => {
-           // Calculate the amount
+            // Calculate the amount
             let quantity = filteredProduct.quantity ? filteredProduct.quantity : 1;
             const amount = (quantity && filteredProduct.price)
                 ? (quantity * filteredProduct.price).toFixed(2)
@@ -414,7 +414,7 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
         <>
             <Modal
                 title="Quotation Details"
-                visible={visible}
+                open={visible}
                 onCancel={onClose}
                 centered
                 width={800}
@@ -432,11 +432,11 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
                     <Space key="actions" style={{ float: 'right' }}>
                         {quotation?.status === 'Pending' && (
                             <Button
-                            key="edit"
-                            onClick={handleEditQuotation}
-                            style={{ float: 'right', border: "solid lightblue", borderRadius: '9px' }}
-                            disabled={isCustomerLoading} // Disable the button while loading
-                        >
+                                key="edit"
+                                onClick={handleEditQuotation}
+                                style={{ float: 'right', border: "solid lightblue", borderRadius: '9px' }}
+                                disabled={isCustomerLoading} // Disable the button while loading
+                            >
                                 Edit Quotation
                             </Button>
                         )}

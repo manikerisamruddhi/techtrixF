@@ -185,7 +185,7 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
 
     return (
         <Modal
-            visible={visible}
+            open={visible}
             title="Create Ticket"
             onCancel={onClose}
             footer={null}

@@ -15,7 +15,7 @@ const ProductDetailModal = ({ visible, product, onClose }) => {
     return (
         <Modal
             title="Product Details"
-            visible={visible}
+            open={visible}
             onCancel={onClose}
             footer={null}
         >

@@ -26,7 +26,7 @@ import { Button, Modal } from 'antd';
 import '../../styles/Pages/Admin/Dashboard.css';
 import { fetchUsers } from '../../redux/slices/adminDash';
 import { fetchCustomers } from '../../redux/slices/adminDash';
-import { fetchProducts } from '../../redux/slices/adminDash';
+import { fetchNonCustProducts } from '../../redux/slices/adminDash';
 
 // Shared card styles
 const cardStyle = {
@@ -86,7 +86,7 @@ const Dashboard = () => {
         dispatch(fetchUsers());
         dispatch(fetchCustomers());
         // dispatch(fetchInvoices());
-        dispatch(fetchProducts());
+        dispatch(fetchNonCustProducts());
     }, [dispatch]);
 
     const user = JSON.parse(localStorage.getItem('user')); // Get user from local storage

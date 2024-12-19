@@ -54,7 +54,7 @@ const CustomerFormModal = ({ visible, onCancel, initialValues, mode, customerId,
     return (
         <Modal
             title={mode === 'edit' ? 'Edit Customer' : 'Add Customer'}
-            visible={visible}
+            open={visible}
             onCancel={onCancel}
             footer={null}
             width={800} // Set the modal width

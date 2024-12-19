@@ -60,7 +60,7 @@ const ProfilePage = () => {
                                 <p><strong>User type:</strong> {user.userType}</p>
                                 <p><strong>Contact:</strong> {user.phoneNumber}</p>
                                 {/* <p><strong>Address:</strong> {user.address}</p> */}
-                                <p><strong>Pin Code:</strong> {user.zipCode || 'N/A'}</p>
+                                {/* <p><strong>Pin Code:</strong> {user.zipCode || 'N/A'}</p> */}
                             </section>
                             <section
                                 style={{
