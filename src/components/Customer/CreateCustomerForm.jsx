@@ -31,7 +31,7 @@ const CreateCustomerForm = ({ customer, setCustomer }) => {
             >
                 <Row gutter={24}>
                     <Col span={12}>
-                        <Form.Item label="Company name" name="companyName">
+                        <Form.Item label="Company name" name="companyName" rules={[{ required: true, message: 'Please input the comapany name!' }]}>
                             <Input value={newCustomer.companyName} onChange={handleInputChange} name="companyName" />
                         </Form.Item>
                     </Col>
@@ -45,18 +45,7 @@ const CreateCustomerForm = ({ customer, setCustomer }) => {
                             <Input value={newCustomer.firstName} onChange={handleInputChange} name="firstName" />
                         </Form.Item>
                     </Col>
-                    <Col span={12}>
-                        <Form.Item
-                            label="Pin Code"
-                            name="zipCode"
-                            rules={[
-                                { required: true, message: 'Please input your pin code!' },
-                                { pattern: /^[1-9][0-9]{5}$/, message: 'Pin code must be 6 digits and cannot start with 0.' },
-                            ]}
-                        >
-                            <Input value={newCustomer.zipCode} onChange={handleInputChange} name="zipCode" />
-                        </Form.Item>
-                    </Col>
+                   
                     <Col span={12}>
                         <Form.Item label="Last Name" name="lastName" rules={[{ required: true, message: 'Last Name is required!' }]}>
                             <Input value={newCustomer.lastName} onChange={handleInputChange} name="lastName" />
