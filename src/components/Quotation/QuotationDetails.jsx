@@ -281,12 +281,12 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
         <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;">${formattedDate}</td>
     </tr>
     <tr>
-        <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;"><strong>Customer ID</strong></td>
-        <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;"> ${customer ? (customer.cust_ID ? customer.cust_ID : 'N/A') : 'N/A'}</td>
+        <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;"><strong>Quotation ID</strong></td>
+        <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;">${quotation ? (quotation.quot_ID ? quotation.quot_ID : 'N/A') : 'N/Aa'}</td>
     </tr>
     <tr>
-        <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;"><strong>Q ID</strong></td>
-        <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;">${quotation ? (quotation.quot_ID ? quotation.quot_ID : 'N/A') : 'N/Aa'}</td>
+        <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;"><strong>Customer ID</strong></td>
+        <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;"> ${customer ? (customer.cust_ID ? customer.cust_ID : 'N/A') : 'N/A'}</td>
     </tr>
     <tr>
         <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;"><strong>Validity</strong></td>
@@ -368,8 +368,8 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
     
                        <div  >
                         <p style=" margin-bottom:-2%; border: 1px solid #000; padding: 2px; background-color: #17A0CC; color:white; font-size: 10px;"><strong>Terms and conditions:</strong><p>
-                        <span><strong>Customer will be billed:</strong> after indicating acceptance of this quote.</span></br>
-                        <span><strong>Taxes:</strong> Inclusive in quotation</span></br>
+                        <span><strong>Customer will be billed:</strong> After indicating acceptance of this quotation.</span></br>
+                        <span><strong>Taxes:</strong> Inclusive in quotation.</span></br>
                         <span><strong>Delivery:</strong> ${quotation ? (quotation.delivery ? quotation.delivery : 'N/A') : 'N/A'}</span></br>
                         <span><strong>Payment:</strong> ${quotation ? (quotation.payment ? quotation.payment : 'N/A') : 'N/A'}</span></br>
                         <span><strong>Warranty / Support:</strong>  ${quotation ? (quotation.warrantyOrSupport ? quotation.warrantyOrSupport : 'N/A') : 'N/A'}</span></br>
