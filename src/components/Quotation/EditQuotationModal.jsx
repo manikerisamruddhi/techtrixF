@@ -103,9 +103,11 @@ const EditQuotationModal = ({ visible, quotation, onClose, products, customer })
             dataIndex: 'brand',
             key: 'brand',
             render: (text, record) => (
-                <Input
+                <Input.TextArea
                     value={record.brand}
                     onChange={(e) => setProductList(prevProducts => prevProducts.map(prod => prod.productId === record.productId ? { ...prod, brand: e.target.value } : prod))}
+                    style={{ minHeight: '50px', maxHeight: '100px' }} // Set min and max height
+                    autoSize={{ minRows: 2, maxRows: 4 }} // Automatically adjust height based on content
                 />
             ),
         },
@@ -114,9 +116,24 @@ const EditQuotationModal = ({ visible, quotation, onClose, products, customer })
             dataIndex: 'modelNo',
             key: 'modelNo',
             render: (text, record) => (
-                <Input
+                <Input.TextArea
                     value={record.modelNo}
                     onChange={(e) => setProductList(prevProducts => prevProducts.map(prod => prod.productId === record.productId ? { ...prod, modelNo: e.target.value } : prod))}
+                    style={{ minHeight: '50px', maxHeight: '100px' }} // Set min and max height
+                    autoSize={{ minRows: 2, maxRows: 4 }} // Automatically adjust height based on content
+                />
+            ),
+        },
+        {
+            title: 'Description',
+            dataIndex: 'description',
+            key: 'description',
+            render: (text, record) => (
+                <Input.TextArea
+                    value={record.description}
+                    onChange={(e) => setProductList(prevProducts => prevProducts.map(prod => prod.productId === record.productId ? { ...prod, description: e.target.value } : prod))}
+                    style={{ minHeight: '50px', maxHeight: '100px' }} // Set min and max height
+                    autoSize={{ minRows: 2, maxRows: 4 }} // Automatically adjust height based on content
                 />
             ),
         },
@@ -124,10 +141,10 @@ const EditQuotationModal = ({ visible, quotation, onClose, products, customer })
             title: 'Quantity',
             dataIndex: 'quantity',
             key: 'quantity',
-            width: 80, // Adjust the width
+            width: 80,
             render: (text, record) => (
                 <Input
-                    type="number"
+                    type="text" // Change type to "text" to remove up/down arrows
                     value={record.quantity}
                     onChange={(e) => setProductList(prevProducts => prevProducts.map(prod => prod.productId === record.productId ? { ...prod, quantity: parseInt(e.target.value) } : prod))}
                 />
@@ -137,10 +154,10 @@ const EditQuotationModal = ({ visible, quotation, onClose, products, customer })
             title: 'Price',
             dataIndex: 'price',
             key: 'price',
-            width: 80, // Adjust the width
+            width: 120,
             render: (text, record) => (
                 <Input
-                    type="number"
+                    type="text" // Change type to "text" to remove up/down arrows
                     value={record.price}
                     onChange={(e) => setProductList(prevProducts => prevProducts.map(prod => prod.productId === record.productId ? { ...prod, price: parseFloat(e.target.value) } : prod))}
                 />
@@ -157,7 +174,6 @@ const EditQuotationModal = ({ visible, quotation, onClose, products, customer })
             ),
         },
     ];
-
     const handleAddProduct = () => {
         setAddProductVisible(true);
     };
