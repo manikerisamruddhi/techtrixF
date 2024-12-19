@@ -1,22 +1,33 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchCustomers, addCustomer, updateCustomer, deleteCustomer } from '../../redux/slices/customerSlice';
-import { Button, Table, Layout, Typography, Empty, Spin, message, Modal} from 'antd';
+import { Button, Table, Layout, Typography, Empty, Spin, message, Modal, Input } from 'antd';
 import { toast } from 'react-toastify';
-import CustomerFormModal from '../../components/Customer/CustomerFormModal'; // Import the new form component
+import { useNavigate } from 'react-router-dom';  // Import useNavigate for redirection
+import CustomerFormModal from '../../components/Customer/CustomerFormModal';
+import { SearchOutlined } from '@ant-design/icons';
 
 const { Content } = Layout;
 const { Title } = Typography;
+const { Search } = Input;
 
 const Customers = () => {
-
     const user = JSON.parse(localStorage.getItem('user'));
+    const navigate = useNavigate();  // Initialize the navigate hook
 
     const dispatch = useDispatch();
     const { customers, loading, error } = useSelector((state) => state.customers);
     const [isModalVisible, setIsModalVisible] = React.useState(false);
     const [editCustomer, setEditCustomer] = React.useState(null);
-    const [mode, setMode] = React.useState('add'); // New state to track add/edit mode
+    const [mode, setMode] = React.useState('add');
+    const [searchTerm, setSearchTerm] = useState('');
+
+    // Redirect if user is not present
+    useEffect(() => {
+        if (!user) {
+            navigate('/login');  // Redirect to login page
+        }
+    }, [user, navigate]);
 
     useEffect(() => {
         dispatch(fetchCustomers());
@@ -25,31 +36,22 @@ const Customers = () => {
     // Handle backend error
     useEffect(() => {
         if (error) {
-            message.error(`please wait`);
+            message.error('please wait');
         }
     }, [error]);
 
-    // const handleAddOrEditCustomer = (values) => {
-    //     if (mode === 'edit') {
-    //         dispatch(updateCustomer({ customerId: values.customerId, updatedCustomer: values }))
-    //             .then(() => {
-    //                 toast.success('Customer updated successfully!');
-    //                 setEditCustomer(null);
-    //                 dispatch(fetchCustomers());  // Fetch the updated customer list
-    //             });
-    //     } else {
-    //         dispatch(addCustomer(values))
-    //             .then(() => {
-    //                 toast.success('Customer added successfully!');
-    //                 dispatch(fetchCustomers());  // Fetch the updated customer list
-    //             });
-    //     }
-    //     setIsModalVisible(false);
-    // };
+    const filteredCustomers = customers.filter((customer) => {
+        return (
+            customer.companyName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            customer.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            customer.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            customer.email.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+    });
 
     const handleEdit = (customer) => {
         setEditCustomer(customer);
-        setMode('edit'); // Set the mode to edit
+        setMode('edit');
         setIsModalVisible(true);
     };
 
@@ -63,7 +65,7 @@ const Customers = () => {
             onOk: () => {
                 dispatch(deleteCustomer(customerId)).then(() => {
                     toast.success('Customer deleted successfully!');
-                    dispatch(fetchCustomers()); // Refresh customer list
+                    dispatch(fetchCustomers());
                 });
             },
             onCancel: () => {
@@ -79,7 +81,7 @@ const Customers = () => {
         { title: 'Last Name', dataIndex: 'lastName', key: 'lastName' },
         { title: 'Email', dataIndex: 'email', key: 'email' },
         { title: 'Phone', dataIndex: 'phoneNumber', key: 'phoneNumber' },
-        ...(user.role === 'Admin'
+        ...(user?.role === 'Admin'
             ? [{
                 title: 'Actions',
                 key: 'actions',
@@ -94,9 +96,8 @@ const Customers = () => {
                     </>
                 ),
             }]
-            : [])
+            : []),
     ];
-    
 
     return (
         <Layout style={{ minHeight: '100vh', background: 'linear-gradient(to right, #a1c4fd, #c2e9fb)' }}>
@@ -104,25 +105,39 @@ const Customers = () => {
                 <div className="customers-container">
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
                         <Title level={4} style={{ margin: 0 }}>Customer List</Title>
+                        
+                        
+
                         <Button
                             type="primary"
                             onClick={() => {
                                 setIsModalVisible(true);
                                 setEditCustomer(null);
-                                setMode('add'); // Set the mode to add
+                                setMode('add');
                             }}
                         >
                             Add Customer
                         </Button>
                     </div>
 
+                   <div style={{marginBottom: '10px'}}>
+                     {/* Live Search Bar */}
+                     <Input
+                      prefix={<SearchOutlined />}
+                            placeholder="Search by company name, first name, last name, or email"
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            value={searchTerm}
+                            style={{ width: 400 }}
+                        />
+                   </div>
+
                     {loading ? (
                         <Spin tip="Loading..." />
-                    ) : customers.length === 0 ? (
+                    ) : filteredCustomers.length === 0 ? (
                         <Empty description="No Customers Available" />
                     ) : (
                         <Table
-                            dataSource={customers}
+                            dataSource={filteredCustomers}
                             columns={columns}
                             rowKey="customerId"
                             pagination={false}
@@ -131,13 +146,12 @@ const Customers = () => {
 
                     {/* Customer Form Modal */}
                     <CustomerFormModal
-                        key={mode} // Add a key prop to the modal
+                        key={mode}
                         visible={isModalVisible}
                         onCancel={() => setIsModalVisible(false)}
-                        // onFinish={handleAddOrEditCustomer}
                         initialValues={editCustomer}
-                        mode={mode} // Pass the mode (edit/add)
-                        customerId={editCustomer?.customerId} // Pass customer ID when editing
+                        mode={mode}
+                        customerId={editCustomer?.customerId}
                     />
                 </div>
             </Content>
