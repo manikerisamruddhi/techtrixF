@@ -42,7 +42,7 @@ const TicketDetailsModal = ({ visible, ticket, onClose, onCreateQuotation, users
         }
     }, [ticket, dispatch]);
 
-  
+
 
     useEffect(() => {
         if (ticket) {
@@ -55,7 +55,7 @@ const TicketDetailsModal = ({ visible, ticket, onClose, onCreateQuotation, users
                         dispatch(getQuotationById(quotationId))
                             .unwrap() // Unwrap the promise to get the resolved response
                             .then((response) => {
-                                 setQuotation(response); // Set the customer data from the response
+                                setQuotation(response); // Set the customer data from the response
                                 //  console.log(response); // Log the resolved response
                             })
                     })
@@ -84,9 +84,20 @@ const TicketDetailsModal = ({ visible, ticket, onClose, onCreateQuotation, users
         setQuotationModalVisible(true); // Open the create quotation modal
     };
 
-    const onUpdateTicket = (updatedTicket) => {
-        dispatch(updateTicket(updatedTicket)); // Dispatch the update action
-        message.success('Ticket updated successfully!');
+    const onUpdateTicket = async (updatedTicket) => {
+        try {
+            // Dispatch the update action and wait for it to complete (if it's asynchronous)
+            const response = dispatch(updateTicket(updatedTicket));
+            // If update is successful, show success message
+            message.success('Ticket updated successfully!');
+            // Close the modal after the dispatch completes
+            if(response) {
+                onClose();
+            }
+        } catch (error) {
+            // Handle any errors here if needed
+            message.error('Failed to update ticket. Please try again.');
+        }
     };
 
     // Function to close the create quotation modal
@@ -216,10 +227,10 @@ const TicketDetailsModal = ({ visible, ticket, onClose, onCreateQuotation, users
                 ticketData={ticket} // Pass the current ticket data for updating
                 customer
                 isVisible={isUpdateModalVisible}
-                onUpdate={(updatedTicket) => {
-                    onUpdateTicket(updatedTicket);
-                    handleUpdateModalClose();
-                    onClose(); // Close the TicketDetailsModal 
+                onUpdate={async (updatedTicket) => {
+                    onUpdateTicket(updatedTicket); // Wait for the update operation to complete
+                    handleUpdateModalClose();           // Close the update modal
+                                             // Close the TicketDetailsModal
                 }}
                 onCancel={handleUpdateModalClose}
                 onClose={onClose}
