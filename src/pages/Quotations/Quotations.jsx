@@ -73,9 +73,10 @@ const Quotations = () => {
 
     // Filter quotations based on search text
     const filteredQuotations = quotationsWithTickets.filter((quotation) => {
-        const ticketCustomerId = quotation.ticket?.customerId || '';
+        const c_companyName = quotation.c_companyName || 'N/A'
         return (
             quotation.comments.toLowerCase().includes(searchText.toLowerCase()) ||
+            c_companyName.toLowerCase().includes(searchText.toLowerCase()) ||
             quotation.finalAmount.toString().includes(searchText) ||
             quotation.status.toLowerCase().includes(searchText.toLowerCase()) ||
             moment(quotation.quotationDate).format('DD-MM-YYYY').includes(searchText) ||
@@ -90,10 +91,9 @@ const Quotations = () => {
             key: 'quot_ID',
         },
         {
-            title: 'Customer Name',
-            dataIndex: 'c_firstName',
-            key: 'c_firstName',
-            render: (text, record) => `${record.c_firstName} ${record.c_lastName}`
+            title: 'Company name',
+            dataIndex: 'c_companyName',
+            key: 'c_companyName',
         },
         {
             title: 'Comments',
