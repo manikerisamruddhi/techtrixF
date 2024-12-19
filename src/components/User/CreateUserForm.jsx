@@ -151,7 +151,7 @@ const CreateUserForm = ({ user, onClose }) => {
             </Row>
             
             <Row gutter={16}>
-                {!isEditMode && (
+                {/* {!isEditMode && ( */}
                     <Col span={24}>
                         <Form.Item
                             label="Password"
@@ -161,7 +161,7 @@ const CreateUserForm = ({ user, onClose }) => {
                             <Input.Password />
                         </Form.Item>
                     </Col>
-                )}
+                {/* )} */}
             </Row>
             <Form.Item>
                 <Button type="primary" htmlType="submit">
