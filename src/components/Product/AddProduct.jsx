@@ -6,7 +6,7 @@ import { addQuotaionProduct } from '../../redux/slices/quotationSlice';
 
 const { Option } = Select;
 
-const ProductFormModal = ({ visible, onCancel, product, customerId, onAddProduct, quotation }) => {
+const ProductFormModal = ({ visible, onCancel, product, customerId, onCreate, quotation }) => {
     const [form] = Form.useForm();
     const dispatch = useDispatch();
     const [productType, setProductType] = useState('Hardware'); // Default selection is Hardware
@@ -45,7 +45,7 @@ const ProductFormModal = ({ visible, onCancel, product, customerId, onAddProduct
             dispatch(updateProduct({ productId: product.productId, updatedProduct: productData }))
                 .then((resultAction) => {
                     if (updateProduct.fulfilled.match(resultAction)) {
-                        onAddProduct(productData);
+                        onCreate();
                         onCancel();  // Close modal
                         // refresh();
                         // Reset the form fields
@@ -62,7 +62,7 @@ const ProductFormModal = ({ visible, onCancel, product, customerId, onAddProduct
                 .then((resultAction) => {
                     if (addProduct.fulfilled.match(resultAction)) {
                         const addedProduct = resultAction.payload;
-                        onAddProduct(addedProduct);
+                        onCreate();
                         if (quotation) {
                             const quotationProductsData = {
                                 quotationId: quotation.quotationId,
@@ -77,7 +77,7 @@ const ProductFormModal = ({ visible, onCancel, product, customerId, onAddProduct
                         // Reset the form fields
                         form.resetFields();
                         // Show success message
-                        message.success("Product added successfully!");
+                        // message.success("Product added successfully!"); 
                     } else {
                         message.error('Failed to add product.');
                     }
