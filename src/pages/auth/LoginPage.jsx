@@ -7,17 +7,16 @@ import { loginUser } from '../../redux/slices/loginSlice';  // Import loginUser 
 const LoginPage = () => {
     const [credentials, setCredentials] = useState({ email: '', password: '' });
     const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(false); // Add a loading state
     const dispatch = useDispatch();  // Initialize dispatch
     const navigate = useNavigate();
 
     const handleLogin = async (values) => {
+        setLoading(true); // Activate loader
         try {
             const resultAction = await dispatch(loginUser(values));
-            // console.log(resultAction);
             if (loginUser.fulfilled.match(resultAction)) {
                 const userRole = resultAction.payload.role;
-                // console.log(userRole);
-                // Navigate based on the role
                 if (userRole === 'Admin') {
                     navigate('/');  // Redirect to Admin
                 } else if (userRole === 'Sales') {
@@ -31,10 +30,11 @@ const LoginPage = () => {
                 setError(resultAction.payload);
             }
         } catch (err) {
-            setError('Error: '+err);
+            setError('Error: ' + err);
+        } finally {
+            setLoading(false); // Deactivate loader
         }
     };
-    
 
     return (
         <div className="auth-container" style={{ maxWidth: '400px', margin: '100px auto', padding: '20px' }}>
@@ -65,14 +65,17 @@ const LoginPage = () => {
                     />
                 </Form.Item>
                 <Form.Item>
-                    <Button type="primary" htmlType="submit" className="auth-button" block>
+                    <Button
+                        type="primary"
+                        htmlType="submit"
+                        className="auth-button"
+                        block
+                        loading={loading} // Bind the loading state to the button
+                    >
                         Login
                     </Button>
                 </Form.Item>
             </Form>
-            {/* <div className="auth-links" style={{ textAlign: 'center' }}>
-                <a href="/register">Register</a> | <a href="/forgot-password">Forgot Password?</a>
-            </div> */}
         </div>
     );
 };
