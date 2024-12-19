@@ -87,7 +87,7 @@ export const deleteProduct = createAsyncThunk('products/deleteProduct', async (p
     toast.success('Product deleted successfully!');
 
     // Dispatch the fetchProducts action to refresh the product list
-    dispatch(fetchProducts());
+    dispatch(fetchNonCustProducts());
 
     return productId; // Return the productId for the fulfilled case
   } catch (error) {

@@ -45,13 +45,11 @@ const Products = () => {
         });
     };
 
-    const handleCreateProduct = (values) => {
-        dispatch(addProduct(values));
-        dispatch(fetchProducts());
+    const handleCreateProduct = () => {
         setCreateModalVisible(false);
         notification.success({
             message: 'Success',
-            description: 'Product created successfully!',
+            description: 'Product added successfully!',
         });
     };
 
