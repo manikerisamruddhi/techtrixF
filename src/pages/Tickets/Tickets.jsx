@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Table, Button, Empty, message, Layout, Typography, Spin, Card, Row, Col } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { fetchTickets } from '../../redux/slices/ticketSlice';
-import { fetchUsers} from '../../redux/slices/userSlice';
+import { fetchTickets, fetchTicketByAssighnedToOrCreatedBy } from '../../redux/slices/ticketSlice';
+import { fetchUsers } from '../../redux/slices/userSlice';
 import { fetchCustomers } from '../../redux/slices/customerSlice';
 import TicketDetailsModal from '../../components/Ticket/TicketDetailsModal';
 import CreateTicketModal from '../../components/Ticket/CreateTicketModalForm'; // Import the CreateTicketModal
@@ -15,7 +15,8 @@ const { Title } = Typography;
 
 const Tickets = () => {
     const dispatch = useDispatch();
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
+    const location = useLocation();
     const { customers } = useSelector((state) => state.customers);
     const { tickets, loading: tickets_loading, error: tickets_error } = useSelector((state) => state.tickets);
     const { users, loading: users_loading, error: users_error, departments, loading: departments_loading, error: departments_error } = useSelector((state) => state.users);
@@ -28,30 +29,37 @@ const Tickets = () => {
     const [filtered_tickets, set_filtered_tickets] = useState([]); // State for filtered tickets
 
     const [searchParams] = useSearchParams();
-  const status = searchParams.get('status');
-//   console.log(status);
+    const status = searchParams.get('status');
+    //   console.log(status);
 
-const user = JSON.parse(localStorage.getItem('user')); // Get user from local storage
-// console.log(user);
+    const user = JSON.parse(localStorage.getItem('user')); // Get user from local storage
+    const userId = user?.userId;
+    // console.log(user);
 
-// Redirect if user role is ServiceTechnical
-useEffect(() => {
-    if (user.userType === 'Normal_User'){
-        //  if (user && user.role === 'Service_Technical'|| user.role === 'Sales') {
-        navigate('/ticketsService'); // Navigate to /ticketsService
+    // Redirect if user role is ServiceTechnical
+    // useEffect(() => {
+    // if (user.userType === 'Normal_User') {
+    //     //  if (user && user.role === 'Service_Technical'|| user.role === 'Sales') {
+    //     navigate('/ticketsService'); // Navigate to /ticketsService
     // }
-    }  
-}, [user, navigate]);
+    //     }  
+    // }, [user, navigate]);
+
+    const fetch_data = async () => {
+        if (user?.userType === 'Normal_User') {
+            // console.log(user.userType);
+            await dispatch(fetchTicketByAssighnedToOrCreatedBy(userId));
+        } else {
+            await dispatch(fetchTickets());
+        }
+        await dispatch(fetchUsers());
+    };
 
 
     useEffect(() => {
-        const fetch_data = async () => {
-            await dispatch(fetchTickets());
-            // await dispatch(fetchDepartments());
-            await dispatch(fetchUsers());
-        };
         fetch_data();
-    }, [dispatch, useLocation()]);
+    }, []); // Use location.pathname instead of location
+    
 
     useEffect(() => {
         const fetch_customers = async () => {
@@ -172,7 +180,7 @@ useEffect(() => {
                 const user = users.find(user => user.userId === assignedTo);
                 return user ? `${user.firstName} ${user.lastName}` : '-';
             },
-          },
+        },
         {
             title: 'Date Created',
             dataIndex: 'createdDate',
@@ -200,7 +208,11 @@ useEffect(() => {
     const handle_modal_close = () => {
         set_is_modal_visible(false);
         set_selected_ticket(null); // Clear selected ticket
-        dispatch(fetchTickets());
+    
+        // Wait for 0.5 seconds (500ms) before calling fetch_data
+        setTimeout(() => {
+            fetch_data();
+        }, 100); // Delay of 500ms (0.5 seconds)
     };
 
     return (
@@ -217,41 +229,41 @@ useEffect(() => {
                     {/* Cards Row */}
                     <Row gutter={16} style={{ marginBottom: '16px' }}>
                         <Col span={6}>
-                            <Card 
-                                hoverable 
-                                bordered={false} 
-                                onClick={() => handle_card_click('Total')} 
+                            <Card
+                                hoverable
+                                bordered={false}
+                                onClick={() => handle_card_click('Total')}
                                 style={{ cursor: 'pointer', backgroundColor: '#e9f5f7' }} // Add your desired background color
                             >
-                               Total Tickets  : {total_tickets}
+                                Total Tickets  : {total_tickets}
                             </Card>
                         </Col>
                         <Col span={6}>
-                            <Card 
-                                hoverable 
-                                bordered={false} 
-                                onClick={() => handle_card_click('Open')} 
+                            <Card
+                                hoverable
+                                bordered={false}
+                                onClick={() => handle_card_click('Open')}
                                 style={{ cursor: 'pointer', backgroundColor: '#e9f5f7' }} // Add your desired background color
                             >
-                               Open Tickets : {open_tickets}
+                                Open Tickets : {open_tickets}
                             </Card>
                         </Col>
                         <Col span={6}>
-                            <Card 
-                                hoverable 
-                                bordered={false} 
-                                onClick={() => handle_card_click('InProgress')} 
+                            <Card
+                                hoverable
+                                bordered={false}
+                                onClick={() => handle_card_click('InProgress')}
                                 style={{ cursor: 'pointer', backgroundColor: '#e9f5f7' }} // Add your desired background color
                             >
-                               InProgress Tickets : {in_progress}
+                                InProgress Tickets : {in_progress}
                             </Card>
                         </Col>
                         <Col span={6}>
-                            <Card 
-                                hoverable 
-                                bordered={false} 
-                                onClick={() => handle_card_click('Closed')} 
-                                style={{ cursor: 'pointer', backgroundColor:'#e9f5f7' }} // Add your desired background color
+                            <Card
+                                hoverable
+                                bordered={false}
+                                onClick={() => handle_card_click('Closed')}
+                                style={{ cursor: 'pointer', backgroundColor: '#e9f5f7' }} // Add your desired background color
                             >
                                 Closed Tickets : {Closed_tickets}
                             </Card>
@@ -277,13 +289,16 @@ useEffect(() => {
                         visible={is_modal_visible}
                         ticket={selected_ticket}
                         onClose={handle_modal_close}
-                        users={users} 
+                        users={users}
                     />
 
                     {/* Create Ticket Modal */}
                     <CreateTicketModal
                         visible={is_form_visible}
-                        onClose={() => toggle_form(false)}
+                        onClose={() => {
+                            toggle_form(false);
+                            handle_modal_close();
+                        }}
                         departments={departments}
                         filteredUsers={filtered_users}
                         usersLoading={users_loading}
