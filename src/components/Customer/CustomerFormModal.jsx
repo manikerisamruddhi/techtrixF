@@ -69,8 +69,7 @@ const CustomerFormModal = ({ visible, onCancel, initialValues, mode, customerId,
                     <Row gutter={24}> {/* Set gutter for spacing between columns */}
                         <Col span={12}> {/* First column */}
                             <Form.Item label="Company name" name="companyName"
-                            //  rules={[{ required: true }]}
-                             >
+                           rules={[{ required: true, message: 'Please enter company name!' }]}>
                                 <Input />
                             </Form.Item>
                         </Col>
@@ -81,23 +80,23 @@ const CustomerFormModal = ({ visible, onCancel, initialValues, mode, customerId,
                         </Col>
                         
                         <Col span={12}> {/* First column */}
-                            <Form.Item label="First Name" name="firstName" rules={[{ required: true }]}>
+                            <Form.Item label="First Name" name="firstName" rules={[{ required: true, message: 'Please enter first name!' }]}>
                                 <Input />
                             </Form.Item>
                         </Col>
                         <Col span={12}> {/* Second column */}
-                            <Form.Item label="Last Name" name="lastName" rules={[{ required: true }]}>
+                            <Form.Item label="Last Name" name="lastName" rules={[{ required: true, message: 'Please enter last name!' }]}>
                                 <Input />
                             </Form.Item>
                         </Col>
                        
                         <Col span={12}>
                             <Form.Item label="Address" name="address"
-                            rules={[{ required: true }]}>
+                            rules={[{ required: true, message: 'Please enter address!' }]}>
                                 <Input />
                             </Form.Item>
                         </Col>
-                        <Col span={12}>
+                        {/* <Col span={12}>
                             <Form.Item label="Pin Code" name="zipCode"
                             rules={[
                                 { required: true, message: 'Please input your zip code!' },
@@ -106,21 +105,21 @@ const CustomerFormModal = ({ visible, onCancel, initialValues, mode, customerId,
                             >
                                 <Input />
                             </Form.Item>
-                        </Col>
+                        </Col> */}
                        
                        
                        
                         <Col span={12}>
                             <Form.Item label="Phone" name="phoneNumber" 
                             rules={[
-                                { required: true, message: 'Please input your phone number!' },
+                                { required: true, message: 'Please input phone number!' },
                                 { pattern: /^[0-9]{10}$/, message: 'Phone number must be 10 digits' },
                               ]}>
                                 <Input />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item label="Email" name="email" rules={[{ required: true, type: 'email' }]}>
+                            <Form.Item label="Email" name="email" rules={[{ required: true, type: 'email', message: 'Please enter email address!' }]}>
                                 <Input />
                             </Form.Item>
                         </Col>
