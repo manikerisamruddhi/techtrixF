@@ -89,7 +89,7 @@ const UpdateTicketModal = ({ ticketData, isVisible, onCancel, onClose, customer 
   return (
     <Modal
       title="Update Ticket"
-      visible={isVisible}
+      open={isVisible}
       onCancel={() => {
         form.resetFields();
         onCancel();

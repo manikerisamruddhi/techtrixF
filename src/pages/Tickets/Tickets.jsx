@@ -179,7 +179,7 @@ useEffect(() => {
             key: 'createdDate',
             sorter: (a, b) => moment(b.createdDate).unix() - moment(a.createdDate).unix(),
             defaultSortOrder: 'descend',
-            render: (date) => moment(date).format('YYYY-MM-DD'),
+            render: (date) => moment(date).format('DD-MM-YYYY'),
         },
         {
             title: 'Actions',

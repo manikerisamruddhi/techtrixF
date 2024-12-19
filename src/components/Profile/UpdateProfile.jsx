@@ -47,7 +47,7 @@ const UpdateProfile = ({ visible, onClose, user, onUpdate }) => {
     return (
         <Modal
             title="Update Profile"
-            visible={visible}
+            open={visible}
             onCancel={onClose}
             footer={null}
             width={600}

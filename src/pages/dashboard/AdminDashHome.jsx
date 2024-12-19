@@ -79,6 +79,7 @@ const Dashboard = () => {
     const { totalCustomers } = useCustomerCounts(customers);
     const { totalProduct } = useProductCounts(products);
     const selectedUser = null;
+    const [showError, setShowError] = useState(false)
 
     useEffect(() => {
         dispatch(fetchTickets());
@@ -88,6 +89,18 @@ const Dashboard = () => {
         // dispatch(fetchInvoices());
         dispatch(fetchNonCustProducts());
     }, [dispatch]);
+
+    useEffect(() => {
+        if (error) {
+            setShowError(true); // Show error message when there's an error
+            const timer = setTimeout(() => {
+                setShowError(false); // Hide error message after 2 seconds
+            }, 2000);
+
+            return () => clearTimeout(timer); // Cleanup the timer on unmount or when error changes
+        }
+    }, [error]);
+
 
     const user = JSON.parse(localStorage.getItem('user')); // Get user from local storage
     const userRole = user.role;
@@ -177,7 +190,7 @@ const Dashboard = () => {
             {showCreateUserModal && (
                 <Modal
                     title={selectedUser !== null && selectedUser !== undefined ? "Edit User" : "Create User"}
-                    visible={showCreateUserModal}
+                    open={showCreateUserModal}
                     onCancel={() => setShowCreateUserModal(false)}
                     footer={null}
                 >
@@ -198,7 +211,7 @@ const Dashboard = () => {
             </Typography>
 
             {loading && <CircularProgress />}
-            {error && <Alert severity="error">Error loading data: {error}</Alert>}
+            {showError && <Alert severity="error">Error loading data: {error}</Alert>}
 
             <Grid container spacing={2} >
                 {/* Render Main Cards only when subcards are not visible */}

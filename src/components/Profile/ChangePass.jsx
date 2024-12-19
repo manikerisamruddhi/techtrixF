@@ -32,7 +32,7 @@ const ChangePassword = ({ visible, onClose, user }) => {
     return (
         <Modal
             title="Change Password"
-            visible={visible}
+            open={visible}
             onCancel={onClose}
             footer={null}
         >

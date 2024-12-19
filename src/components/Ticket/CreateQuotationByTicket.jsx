@@ -153,7 +153,7 @@ const CreateQuotationModal = ({ ticketId, visible, onCancel }) => {
   return (
     <Modal
       title="Create Quotation"
-      visible={visible}
+      open={visible}
       onOk={handleOk}
       onCancel={handleCancel}
       centered
