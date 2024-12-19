@@ -148,7 +148,7 @@ const UpdateTicketModal = ({ ticketData, isVisible, onCancel, onClose, customer 
             <Form.Item
               name="assignedTo"
               label="Assign Service Technician"
-              rules={[{ required: true, message: "Please assign a service technician" }]}
+              // rules={[{ required: true, message: "Please assign a service technician" }]}
             >
               <Select
                 placeholder={loading ? "Loading technicians..." : "Select Service Technician"}
