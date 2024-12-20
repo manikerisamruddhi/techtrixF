@@ -42,10 +42,10 @@ const Customers = () => {
 
     const filteredCustomers = customers.filter((customer) => {
         return (
-            customer.companyName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            customer.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            customer.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            customer.email.toLowerCase().includes(searchTerm.toLowerCase())
+            (customer.companyName && customer.companyName.toLowerCase().includes(searchTerm.toLowerCase())) ||
+            (customer.firstName && customer.firstName.toLowerCase().includes(searchTerm.toLowerCase())) ||
+            (customer.lastName && customer.lastName.toLowerCase().includes(searchTerm.toLowerCase())) ||
+            (customer.email && customer.email.toLowerCase().includes(searchTerm.toLowerCase()))
         );
     });
 
