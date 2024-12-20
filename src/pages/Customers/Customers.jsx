@@ -105,9 +105,6 @@ const Customers = () => {
                 <div className="customers-container">
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
                         <Title level={4} style={{ margin: 0 }}>Customer List</Title>
-                        
-                        
-
                         <Button
                             type="primary"
                             onClick={() => {
@@ -119,20 +116,22 @@ const Customers = () => {
                             Add Customer
                         </Button>
                     </div>
-
-                   <div style={{marginBottom: '10px'}}>
-                     {/* Live Search Bar */}
-                     <Input
-                      prefix={<SearchOutlined />}
+                    <div style={{ marginBottom: '10px' }}>
+                        {/* Live Search Bar */}
+                        <Input
+                            prefix={<SearchOutlined />}
                             placeholder="Search by company name, first name, last name, or email"
                             onChange={(e) => setSearchTerm(e.target.value)}
                             value={searchTerm}
                             style={{ width: 400 }}
                         />
-                   </div>
+                    </div>
 
+                    {/* Customers Table */}
                     {loading ? (
-                        <Spin tip="Loading..." />
+                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                            <Spin tip="Loading..." />
+                        </div>
                     ) : filteredCustomers.length === 0 ? (
                         <Empty description="No Customers Available" />
                     ) : (
