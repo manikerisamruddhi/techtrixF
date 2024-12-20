@@ -3,8 +3,8 @@ import { message } from 'antd'; // Import Ant Design message component
 
 // Create Axios instance
 const axiosInstance = axios.create({
-    // baseURL: 'https://crm.techtrix.in/backend/api', // Your backend base URL
-    baseURL: 'http://localhost:8080/api', // Your backend base URL
+    baseURL: 'https://crm.techtrix.in/backend/api', // Your backend base URL
+    // baseURL: 'http://localhost:8080/api', // Your backend base URL
     headers: {
         'Content-Type': 'application/json',
     },
@@ -37,7 +37,7 @@ axiosInstance.interceptors.response.use(
             console.error('[Timeout Error] Request took too long to complete.');
 
             // Show timeout message using Ant Design's message component
-            message.error('Server Error! Please try again.', 10); // Display for 10 seconds
+            message.error('Server Error! Please try again.', 5); // Display for 10 seconds
 
             // Optionally, use setTimeout to auto-dismiss message after 10 minutes
             setTimeout(() => {
