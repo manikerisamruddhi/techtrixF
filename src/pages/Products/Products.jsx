@@ -114,7 +114,7 @@ const Products = () => {
         {
             title: 'Description',
             dataIndex: 'description',
-            key: 'category',
+            key: 'description', // Corrected key
             width: 400,
         },
         {
@@ -126,7 +126,7 @@ const Products = () => {
             title: 'Actions',
             key: 'actions',
             render: (text, record) => (
-                <span>
+                <span key={record.productId}> {/* Added key prop */}
                     <Button type="primary" onClick={() => handleViewDetails(record)}>View</Button>
                     <Button type="link" onClick={() => handleOpenEditModal(record)}>Edit</Button>
                     {user && user.role === 'Admin' && (
@@ -159,20 +159,25 @@ const Products = () => {
 
                     {/* Products Table */}
                     {loading ? (
-                        <Spin tip="Loading..." />
-                    ) : filteredProducts.length === 0 ? (
-                        <Empty description="No Products Available" />
-                    ) : (
-                        <Table
-                            dataSource={filteredProducts}
-                            columns={columns}
-                            rowKey="id"
-                            pagination={{
-                                pageSize: 10, // Number of items per page
-                                showSizeChanger: false, // Disable size changer
-                            }}
-                        />
-                    )}
+  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+    <Spin tip="Loading...">
+      <div style={{ minHeight: '50px' }} />
+    </Spin>
+  </div>
+) : filteredProducts.length === 0 ? (
+  <Empty description="No Products Available" />
+) : (
+  <Table
+    dataSource={filteredProducts}
+    columns={columns}
+    rowKey="id"
+    pagination={{
+      pageSize: 10, // Number of items per page
+      showSizeChanger: false, // Disable size changer
+    }}
+  />
+)}
+
 
                     {/* Product Details Modal */}
                     {selectedProduct && (
