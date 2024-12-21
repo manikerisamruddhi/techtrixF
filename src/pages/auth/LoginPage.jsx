@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Form, Input, Button, Alert, message } from 'antd';
 import { useDispatch } from 'react-redux';  // Import useDispatch
@@ -10,6 +10,16 @@ const LoginPage = () => {
     const [loading, setLoading] = useState(false); // Add a loading state
     const dispatch = useDispatch();  // Initialize dispatch
     const navigate = useNavigate();
+
+        
+useEffect(() => {
+    if (error) {
+        const timer = setTimeout(() => {
+            setError(null);
+        }, 3000);
+        return () => clearTimeout(timer);
+    }
+}, [error]);
 
     const handleLogin = async (values) => {
         setLoading(true); // Activate loader
@@ -39,7 +49,17 @@ const LoginPage = () => {
     return (
         <div className="auth-container" style={{ maxWidth: '400px', margin: '100px auto', padding: '20px' }}>
             <h2 style={{ textAlign: 'center' }}>Login</h2>
-            {error && <Alert message={error} type="error" showIcon closable />}
+            <div>
+                {error && (
+                    <Alert
+                        message={error}
+                        type="error"
+                        showIcon
+                        closable
+                        afterClose={() => setTimeout(() => setError(null), 3000)}
+                    />
+                )}
+            </div>
             <Form
                 layout="vertical"
                 onFinish={handleLogin}
@@ -47,7 +67,7 @@ const LoginPage = () => {
             >
                 <Form.Item
                     name="email"
-                    label="email"
+                    label="Email"
                     rules={[{ required: true, message: 'Please input your email!' }]}
                 >
                     <Input
