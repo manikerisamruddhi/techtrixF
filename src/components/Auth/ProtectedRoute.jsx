@@ -1,12 +1,22 @@
 // src/components/Auth/ProtectedRoute.js
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { message } from 'antd';
 
 const ProtectedRoute = ({ children, allowedRoles, allowedUserType }) => {
-    const user = JSON.parse(localStorage.getItem('user')); // Get user from local storage
-//    console.log(user.role);
-    // Check if the user is authenticated
+    const [user, setUser] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const storedUser = JSON.parse(localStorage.getItem('user')); // Get user from local storage
+        setUser(storedUser);
+        setIsLoading(false);
+    }, []);
+
+    if (isLoading) {
+        return null; // or a loading spinner
+    }
+
     if (!user) {
         message.warning("You need to be logged in to view this page. Please log in first.");
         return <Navigate to="/login" replace />;
