@@ -3,7 +3,7 @@ import { message } from 'antd'; // Import Ant Design message component
 
 // Create Axios instance
 const axiosInstance = axios.create({
-    baseURL: 'https://crm.techtrix.in/backend/api', // Your backend base URL
+    baseURL: 'https://crm.techtrix.in/api', // Your backend base URL
     // baseURL: 'http://localhost:8080/api', // Your backend base URL
     headers: {
         'Content-Type': 'application/json',

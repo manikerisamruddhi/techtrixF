@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import authApi from '../../api/authApi';
 import store from '../store'; // Assuming your store is in '../store' to dispatch logout
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 // Constants
 const INACTIVITY_LOGOUT_LIMIT = 10 * 60 * 1000; // 10 minutes in milliseconds
@@ -22,8 +23,6 @@ export const loginUser = createAsyncThunk(
                 localStorage.setItem('sessionExpiry', currentTime + MAX_SESSION_TIME); // Set session expiry time
                 localStorage.setItem('authToken', loginUserResponse.token); // Save the token
 
-                
-
                 return loginUserResponse.userContent;
             } else {
                 return rejectWithValue(loginUserResponse.message);
@@ -34,13 +33,20 @@ export const loginUser = createAsyncThunk(
     }
 );
 
-export const logoutUser = createAsyncThunk('users/logoutUser', async () => {
+export const logoutUser = createAsyncThunk('users/logoutUser', async (_, { dispatch }) => {
     localStorage.removeItem('user');
     localStorage.removeItem('lastActive');
     localStorage.removeItem('sessionExpiry');
     localStorage.removeItem('authToken');
+    dispatch(navigateToLogin()); // Dispatch navigation to login
     return {};
 });
+
+// Action to navigate to login
+const navigateToLogin = () => {
+    const navigate = useNavigate();
+    navigate('/login');
+};
 
 // Check for auto-logout on inactivity or session expiry
 export const checkForAutoLogout = () => {
