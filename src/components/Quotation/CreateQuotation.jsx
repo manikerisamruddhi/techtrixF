@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Modal, Form, Row, Col, Input, Button, Table, notification, Radio, Select, message } from 'antd';
+import { Modal, Form, Row, Col, Input, Button, Table, notification, Radio, Select, AutoComplete } from 'antd';
 import { CloseCircleOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -25,14 +25,52 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
     const { quotations, loading: quotationsLoading, error } = useSelector(state => state.quotations);
     const { customers } = useSelector(state => state.customers); // Assuming customer data is fetched through Redux
     const [customer, setCustomer] = useState(null);
-    const { items: products } = useSelector(state => state.products); // Assuming you have products in your Redux store
+    // const { items: products } = useSelector(state => state.products); // Assuming you have products in your Redux store
     const [loggedInUserId, setLoggedInUserId] = useState(null);
+    const [brandsList, setBrandsList] = useState([]);
+    const [filteredBrands, setFilteredBrands] = useState([]);
+    const [modalList, setModalList] = useState([]);
+    const [filteredModals, setFilteredModals] = useState([]);
 
     const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
     // useEffect(() => {
     //     console.log(`defticket : ${defticketId} and ${defaultCustomer}`);
     // }, [defticketId]);
+
+    const { nonCustomerProducts: products } = useSelector((state) => state.products);
+
+    useEffect(() => {
+        if (Array.isArray(products)) {
+            // Fetch unique brands
+            const brands = Array.from(new Set(products.map(product => product.brand)));
+            // console.log(brands);
+            setBrandsList(brands);
+            setFilteredBrands(brands); // Initially show all brands
+            // console.log(products);
+            // Fetch unique modal numbers (assuming modalNo is available in the product)
+            const models = Array.from(new Set(products.map(product => product.modelNo)));
+            // console.log(models);
+            setModalList(models);
+            setFilteredModals(models); // Initially show all models
+        }
+    }, [products]);
+
+    const handleSearch = (value) => {
+        // Filter brands with a check to ensure it's a valid string before calling toLowerCase
+        const filtered = brandsList.filter(brand =>
+            typeof brand === 'string' && brand.toLowerCase().includes(value.toLowerCase())
+        );
+        setFilteredBrands(filtered);
+    };
+
+    const handleSearchModal = (value) => {
+        // Filter modal numbers with a check to ensure it's a valid string before calling toLowerCase
+        const filtered = modalList.filter(modalNo =>
+            typeof modalNo === 'string' && modalNo.toLowerCase().includes(value.toLowerCase())
+        );
+        setFilteredModals(filtered);
+    };
 
 
     useEffect(() => {
@@ -667,12 +705,30 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                             <Row gutter={16}>
                                 <Col span={12}>
                                     <Form.Item label="Brand" rules={[{ required: true }]}>
-                                        <Input value={newProduct.brand} onChange={e => setNewProduct({ ...newProduct, brand: e.target.value })} />
+                                        <AutoComplete
+                                            options={filteredBrands.map(brand => ({ value: brand }))}
+                                            onSearch={handleSearch}  // Handle search to filter brands
+                                            placeholder="Type or select brand"
+                                        >
+                                            <Input
+                                                value={newProduct.brand}
+                                                onChange={e => setNewProduct({ ...newProduct, brand: e.target.value })}
+                                            />
+                                        </AutoComplete>
                                     </Form.Item>
                                 </Col>
                                 <Col span={12}>
                                     <Form.Item label="Model No" rules={[{ required: true }]}>
-                                        <Input value={newProduct.modelNo} onChange={e => setNewProduct({ ...newProduct, modelNo: e.target.value })} />
+                                        <AutoComplete
+                                            options={filteredModals.map(modalNo => ({ value: modalNo }))}
+                                            onSearch={handleSearchModal}  // Handle search to filter model numbers
+                                            placeholder="Type or select model"
+                                        >
+                                            <Input
+                                                value={newProduct.modelNo}
+                                                onChange={e => setNewProduct({ ...newProduct, modelNo: e.target.value })}
+                                            />
+                                        </AutoComplete>
                                     </Form.Item>
                                 </Col>
 

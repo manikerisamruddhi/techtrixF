@@ -23,7 +23,7 @@ const UpdateTicketModal = ({ ticketData, isVisible, onCancel, onClose, customer 
   useEffect(() => {
     if (loggedInUser ) {
       setLoggedInUserId(loggedInUser.userId);
-      setIsAdmin(loggedInUser.role === "Admin"); // Check if the user is admin
+      setIsAdmin(loggedInUser.role === "Admin" || loggedInUser.role === "Service_Technical" ); // Check if the user is admin
     }
   }, []);
 

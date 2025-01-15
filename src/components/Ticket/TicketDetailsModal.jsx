@@ -155,7 +155,18 @@ const TicketDetailsModal = ({ visible, ticket, onClose, onCreateQuotation, users
                             <Descriptions.Item label="status" span={1}>
                                 <Badge status={ticket.status === 'Resolved' ? 'success' : 'processing'} text={ticket.status} />
                             </Descriptions.Item>
-                            <Descriptions.Item label="Created Date" span={1}>{new Date(ticket.createdDate).toLocaleString()}</Descriptions.Item>
+                            <Descriptions.Item label="Created Date" span={1}>
+  {new Intl.DateTimeFormat('en-IN', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true,
+    timeZone: 'Asia/Kolkata',
+  }).format(new Date(new Date(ticket.createdDate).getTime() + 5.5 * 60 * 60 * 1000))}
+</Descriptions.Item>
+
                             <Descriptions.Item label="Resolved" span={1}>{ticket.isResolved ? 'Yes' : 'No'}</Descriptions.Item>
                             <Descriptions.Item label="Is Chargeable" span={1}>{ticket.isChargeable ? 'Yes' : 'No'}</Descriptions.Item>
                             {/* <Descriptions.Item label="Isqqq" span={1}>{ticket.isQuotationCreated ? 'Yes' : 'No'}</Descriptions.Item> */}

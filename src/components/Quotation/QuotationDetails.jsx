@@ -80,7 +80,7 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
 
         Modal.confirm({
             title: 'Are you sure you want to proceed?',
-            content: 'This will approve the quotation and update its status.',
+            content: 'This will reject the quotation and update its status.',
             okText: 'Yes',
             cancelText: 'No',
             onOk: () => {
