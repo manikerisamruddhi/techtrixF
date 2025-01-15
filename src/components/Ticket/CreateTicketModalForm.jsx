@@ -143,8 +143,8 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
     };
 
 
-    // const filteredProducts = selectedCustomer ? products.filter((product) => product.customerId === selectedCustomer.customerId) : [];
-    const filteredProducts = nonCustomerProducts || [];
+    const filteredProducts = selectedCustomer ? products.filter((product) => product.customerId === selectedCustomer.customerId) : [];
+    
 
     const openCustomerForm = () => {
         setCustomerModalVisible(true);
@@ -277,7 +277,7 @@ const CreateTicketModalForm = ({ visible, onClose }) => {
                             >
                                 {filteredProducts && filteredProducts.length > 0 ? (
                                     filteredProducts.map(product => (
-                                        <Option key={product.productId} value={product.productId} label={`${product.brand} ${product.modelNo}`}>
+                                        <Option key={product.productId} value={product.productId} label={`${product.brand} ${product.modelNo} ${product.serialNo}`}>
                                             <div>
                                                 <span style={{ marginRight: '10px' }}>Brand: {product.brand}</span>
                                                 <span>Model No: {product.modelNo}</span>
