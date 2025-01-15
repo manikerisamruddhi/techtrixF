@@ -21,6 +21,7 @@ const Customers = () => {
     const [editCustomer, setEditCustomer] = React.useState(null);
     const [mode, setMode] = React.useState('add');
     const [searchTerm, setSearchTerm] = useState('');
+    const [retry, setRetry] = useState(false); // Add retry state
 
     // Redirect if user is not present
     useEffect(() => {
@@ -31,12 +32,13 @@ const Customers = () => {
 
     useEffect(() => {
         dispatch(fetchCustomers());
-    }, [dispatch]);
+    }, [dispatch, retry]); // Add retry to dependency array
 
     // Handle backend error
     useEffect(() => {
         if (error) {
-            message.error('please wait');
+            // message.error('Failed to load customers. Retrying...');
+            setRetry((prevRetry) => !prevRetry); // Toggle retry state to re-call fetchCustomers
         }
     }, [error]);
 
@@ -128,9 +130,10 @@ const Customers = () => {
                     </div>
 
                     {/* Customers Table */}
-                    {loading ? (
-                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                    {loading === 'loading' && !error ? (
+                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '300px' }}>
                             <Spin tip="Loading..." />
+                            Loading...
                         </div>
                     ) : filteredCustomers.length === 0 ? (
                         <Empty description="No Customers Available" />

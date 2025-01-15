@@ -1,7 +1,6 @@
 // redux/slices/productSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
-import axios from 'axios';
 import { toast } from 'react-toastify';
 import productApi from '../../api/productApi';
 
@@ -46,15 +45,15 @@ export const fetchProductById = createAsyncThunk('products/fetchProductById', as
   }
 });
 
-export const addProduct = createAsyncThunk('products/addProduct', async (newProduct, { rejectWithValue }) => {
+export const addProduct = createAsyncThunk('products/addProduct', async (newProduct, { dispatch, rejectWithValue }) => {
   try {
     const response = await productApi.createProduct(newProduct);
     toast.success('Product added successfully!');
-    // console.log(response.data);
+    dispatch(fetchNonCustProducts()); // Refresh non-customer products
     return response.data;
   } catch (error) {
     toast.error('Failed to add product');
-    return rejectWithValue(error.response.data);
+    return rejectWithValue(error.response);
   }
 });
 
@@ -69,11 +68,11 @@ export const updateProduct = createAsyncThunk('products/updateProduct', async ({
   }
 });
 
-export const updateQuotationProduct = createAsyncThunk('products/updateQuotationProduct', async ({ quotationId, productId, updatedProduct }, { rejectWithValue }) => {
+export const updateQuotationProduct = createAsyncThunk('products/updateQuotationProduct', async ({ quotationId, productId, updatedProduct }, { dispatch, rejectWithValue }) => {
   try {
     const response = await productApi.updateQuotationProduct(quotationId, productId, updatedProduct);
     toast.success('Product updated successfully!');
-    
+    dispatch(fetchProducts()); // Dispatch fetchProducts to refresh the product list
     return response.data;
   } catch (error) {
     toast.error('Failed to update product');
@@ -115,10 +114,13 @@ export const deleteQuotationProduct = createAsyncThunk('products/deleteQuotation
 // Async thunk for fetching products by customer ID
 export const fetchProductsByCustomer = createAsyncThunk(
   'products/fetchByCustomer',
-  async (customerId) => {
-    //console.log(`${customerId}`);
-    const response = await productApi.getProductByCustomer(customerId); // Adjust API endpoint as needed
-    return response.data;
+  async (customerId, { getState, dispatch }) => {
+    const state = getState();
+    if (!state.products.products || state.products.products.length === 0) {
+      const response = await productApi.getProductByCustomer(customerId); // Adjust API endpoint as needed
+      return response.data;
+    }
+    return state.products.products;
   }
 );
 
@@ -128,6 +130,7 @@ const productSlice = createSlice({
   initialState: {
     items: [],
     products: [],
+    nonCustomerProducts: [], // Add state for non-customer products
     product: null, // Add this for fetched product by ID
     loading: false,
     error: null,
@@ -155,7 +158,7 @@ const productSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchNonCustProducts.fulfilled, (state, action) => {
-        state.items = action.payload;
+        state.nonCustomerProducts = action.payload; // Update non-customer products state
         state.loading = false;
       })
       .addCase(fetchNonCustProducts.rejected, (state, action) => {
@@ -184,6 +187,7 @@ const productSlice = createSlice({
       })
       .addCase(addProduct.fulfilled, (state, action) => {
         state.items.push(action.payload);
+        state.product = action.payload; // Update the state of the product
         state.loading = false;
       })
       .addCase(addProduct.rejected, (state, action) => {
@@ -211,8 +215,9 @@ const productSlice = createSlice({
         state.error = null;
       })
       .addCase(updateProduct.fulfilled, (state, action) => {
-       
-        state.items = Array.isArray(action.payload) ? action.payload : state.items;
+        state.items = state.items.map(item => item.productId === action.payload.productId ? action.payload : item);
+        state.products = state.products.map(product => product.productId === action.payload.productId ? action.payload : product);
+        state.product = action.payload; // Update the state of the product
         state.loading = false;
       })
       .addCase(updateProduct.rejected, (state, action) => {
@@ -237,7 +242,6 @@ const productSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-
       .addCase(deleteQuotationProduct.fulfilled, (state, action) => {
         // Remove the deleted product from the items array
         state.items = state.items.filter(
@@ -256,9 +260,9 @@ const productSlice = createSlice({
         state.error = null;
       })
       .addCase(updateQuotationProduct.fulfilled, (state, action) => {
-        
-        state.items = Array.isArray(action.payload) ? action.payload : state.items;
         state.loading = false;
+        // Dispatch fetchProducts to refresh the product list
+        // fetchProducts();
       })
       .addCase(updateQuotationProduct.rejected, (state, action) => {
         state.loading = false;
@@ -281,4 +285,4 @@ export const selectProductsByIds = createSelector(
   }
 );
 
-export default productSlice.reducer;  
+export default productSlice.reducer;

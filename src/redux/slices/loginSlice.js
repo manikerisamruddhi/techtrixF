@@ -3,8 +3,8 @@ import authApi from '../../api/authApi';
 import store from '../store'; // Assuming your store is in '../store' to dispatch logout
 
 // Constants
-const INACTIVITY_LOGOUT_LIMIT = 10 * 60 * 1000; // 10 minutes in milliseconds
-const MAX_SESSION_TIME = 29 * 60 * 1000; // 30 minutes in milliseconds
+const INACTIVITY_LOGOUT_LIMIT = 60 * 60 * 1000; // 1 hour in milliseconds
+const MAX_SESSION_TIME = 8 * 60 * 60 * 1000; // 8 hours in milliseconds
 
 // Async Thunks
 export const loginUser = createAsyncThunk(
@@ -20,9 +20,7 @@ export const loginUser = createAsyncThunk(
                 localStorage.setItem('user', JSON.stringify(loginUserResponse.userContent));
                 localStorage.setItem('lastActive', currentTime); // Set initial activity time
                 localStorage.setItem('sessionExpiry', currentTime + MAX_SESSION_TIME); // Set session expiry time
-                localStorage.setItem('authToken', loginUserResponse.token); // Save the token
-
-                
+                // localStorage.setItem('authToken', loginUserResponse.token); // Save the token
 
                 return loginUserResponse.userContent;
             } else {
@@ -38,7 +36,7 @@ export const logoutUser = createAsyncThunk('users/logoutUser', async () => {
     localStorage.removeItem('user');
     localStorage.removeItem('lastActive');
     localStorage.removeItem('sessionExpiry');
-    localStorage.removeItem('authToken');
+    // localStorage.removeItem('authToken');
     return {};
 });
 
@@ -112,7 +110,7 @@ window.addEventListener('keydown', () => localStorage.setItem('lastActive', Date
 // Check for auto-logout on load
 checkForAutoLogout();
 
-// Set a timeout to force logout after 10 minutes of tab closing
+// Set a timeout to force logout after inactivity limit
 setTimeout(() => {
     checkForAutoLogout();
 }, INACTIVITY_LOGOUT_LIMIT);

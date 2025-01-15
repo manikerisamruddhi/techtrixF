@@ -6,7 +6,7 @@ import customerApi from '../../api/customerApi';
 export const fetchCustomers = createAsyncThunk('customers/fetchCustomers', async (_, { rejectWithValue }) => {
     try {
         const response = await customerApi.getAllCustomers(); // Use the base URL
-        return response.data; // Assuming the mock API returns an array of customers
+        return response.data; 
     } catch (error) {
         console.error("Error fetching customers:", error);
         return rejectWithValue([]); // Return an empty array on failure

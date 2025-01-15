@@ -30,7 +30,7 @@ const Tickets = () => {
 
     const [searchParams] = useSearchParams();
     const status = searchParams.get('status');
-    //   console.log(status);
+    //   console.log(tickets);
 
     const user = JSON.parse(localStorage.getItem('user')); // Get user from local storage
     const userId = user?.userId;
@@ -47,10 +47,12 @@ const Tickets = () => {
 
     const fetch_data = async () => {
         if (user?.userType === 'Normal_User') {
-            // console.log(user.userType);
             await dispatch(fetchTicketByAssighnedToOrCreatedBy(userId));
         } else {
-            await dispatch(fetchTickets());
+            if (!tickets || tickets.length === 0) {
+                // console.log("ajslkfdjkajskdfjj")
+                await dispatch(fetchTickets());
+            }
         }
         await dispatch(fetchUsers());
     };
@@ -73,7 +75,9 @@ const Tickets = () => {
             const filtered = tickets.filter(ticket => ticket.status === status);
             set_filtered_tickets(filtered);
         } else {
-            set_filtered_tickets(tickets); // Initially, show all tickets
+            // const non_closed_tickets = tickets.filter(ticket => ticket.status !== 'Closed');
+            const non_closed_tickets = tickets;
+            set_filtered_tickets(non_closed_tickets); // Initially, show all non-closed tickets
         }
     }, [tickets, status]);
 
@@ -100,6 +104,8 @@ const Tickets = () => {
             value: item
         }));
     };
+
+    
 
     // Calculate card data
     const total_tickets = tickets.length;
@@ -130,10 +136,10 @@ const Tickets = () => {
             key: 'customerId',
             render: (customerId, record) => {
                 const customer = customers.find(customer => customer.customerId === customerId);
-                return customer ? `${customer.firstName} ${customer.lastName}` : 'Unknown Customer';
+                return customer ? `${customer.companyName}` : 'Unknown Customer';
             },
             filters: customers.map(customer => ({
-                text: `${customer.firstName} ${customer.lastName}`, // Display customer name as filter option
+                text: `${customer.companyName}`, // Display customer name as filter option
                 value: customer.customerId, // Use customerId as filter value
             })),
             onFilter: (value, record) => {
@@ -270,15 +276,15 @@ const Tickets = () => {
                         </Col>
                     </Row>
 
-                    {tickets_loading ? (
-                        <Spin tip="Loading..." />
+                    {tickets_loading || users_loading || departments_loading ? (
+                        <Spin tip="Loading tickets..." />
                     ) : filtered_tickets.length === 0 ? (
                         <Empty description="No Tickets Available" />
                     ) : (
                         <Table
                             dataSource={filtered_tickets}
                             columns={columns}
-                            rowKey="TicketID"
+                            rowKey="ticketId" // Ensure each row has a unique key
                             pagination={false}
                             headerCellStyle={{ backgroundColor: '#007bff', color: '#ffffff' }} // Set the background color and text color here
                         />

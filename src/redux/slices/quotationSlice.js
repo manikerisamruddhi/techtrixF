@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import quotationApi from '../../api/quotationApi';
 
 // Async Thunks
-export const fetchQuotations = createAsyncThunk('quotations/fetchQuotations', async () => {
+export const fetchQuotations = createAsyncThunk('quotations/fetchQuotations', async () => {    
     const response = await quotationApi.getAllQuotations();
     return response.data; // Return the fetched data
 });
@@ -74,7 +74,6 @@ export const getQuotationByTicketId = createAsyncThunk('quotations/getQuoatation
 // New AsyncThunk for updating quotation status
 export const updateQuotation = createAsyncThunk('quotations/updateQuotation', async ({ quotationId, data }) => {
     try {
-        // console.log(quotationId);
         const response = await quotationApi.updateQuotation(quotationId, data); // Adjust to your API method
         return response.data; // Return the updated quotation
     } catch (error) {
@@ -89,6 +88,7 @@ const quotationSlice = createSlice({
         quotations: [],
         loading: false,
         error: null,
+        quotationByIdLoading: false, // Add a separate loading state for getQuotationById
     },
     reducers: {
         resetError: (state) => {
@@ -125,10 +125,10 @@ const quotationSlice = createSlice({
 
             // Get Quotation by ID
             .addCase(getQuotationById.pending, (state) => {
-                state.loading = true;
+                state.quotationByIdLoading = true; // Use separate loading state
             })
             .addCase(getQuotationById.fulfilled, (state, action) => {
-                state.loading = false;
+                state.quotationByIdLoading = false; // Use separate loading state
                 // const quotation = action.payload;
                 // const index = state.quotations.findIndex(q => q.id === quotation.id);
                 // if (index !== -1) {
@@ -138,7 +138,7 @@ const quotationSlice = createSlice({
                 // }
             })
             .addCase(getQuotationById.rejected, (state, action) => {
-                state.loading = false;
+                state.quotationByIdLoading = false; // Use separate loading state
                 state.error = action.error.message;
             })
 
@@ -173,11 +173,15 @@ const quotationSlice = createSlice({
             })
             .addCase(updateQuotation.fulfilled, (state, action) => {
                 state.loading = false;
-                // const updatedQuotation = action.payload;
-                // const index = state.quotations.findIndex((q) => q.id === updatedQuotation.id);
-                // if (index !== -1) {
-                //     state.quotations[index] = updatedQuotation; // Update the quotation in the state
-                // }
+                const updatedQuotation = action.payload;
+                if (Array.isArray(state.quotations)) {
+                    const index = state.quotations.findIndex((q) => q.quotationId === updatedQuotation.quotationId);
+                    if (index !== -1) {
+                        state.quotations[index] = updatedQuotation; // Update the quotation in the state
+                    } else {
+                        state.quotations.push(updatedQuotation); // Add the updated quotation if not found
+                    }
+                }
             })
             .addCase(updateQuotation.rejected, (state, action) => {
                 state.loading = false;

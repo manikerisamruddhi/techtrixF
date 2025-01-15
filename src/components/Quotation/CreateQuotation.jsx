@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Modal, Form, Row, Col, Input, Button, Table, notification, Radio, Select } from 'antd';
+import { Modal, Form, Row, Col, Input, Button, Table, notification, Radio, Select, message } from 'antd';
 import { CloseCircleOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -22,7 +22,7 @@ const { Option } = Select; // Destructure Option from Select
 const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) => {
     const navigate = useNavigate()
     const dispatch = useDispatch();
-    const { quotations, loading, error } = useSelector(state => state.quotations);
+    const { quotations, loading: quotationsLoading, error } = useSelector(state => state.quotations);
     const { customers } = useSelector(state => state.customers); // Assuming customer data is fetched through Redux
     const [customer, setCustomer] = useState(null);
     const { items: products } = useSelector(state => state.products); // Assuming you have products in your Redux store
@@ -90,19 +90,29 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
     const [finalAmount, setFinalAmount] = useState(0); // Track final amount
     const [comment, setComment] = useState(''); // Track comment
 
+    const [taxes, setTaxes] = useState('');
+    const [delivery, setDelivery] = useState('');
+    const [payment, setPayment] = useState('');
+    const [warrantyOrSupport, setWarrantyOrSupport] = useState('');
+    const [transport, setTransport] = useState('');
+    const [validity, setValidity] = useState(0);
+
     // const [NticketId, setNticketId] = useState(null);
     const NticketId = useRef(null);
     const Quote = useRef(null);
     const [QuoteState, SetQuoteState] = useState(null);
+    const [loading, setLoading] = useState(false); // Add loading state
 
 
     useEffect(() => {
         if (visible) {
             // dispatch(fetchQuotations());
-            dispatch(fetchCustomers()); // Fetch customers when the modal is visible
+            if (!customers || customers.length === 0) {
+                dispatch(fetchCustomers()); // Fetch customers if not present in the state
+            }
             dispatch(fetchNonCustProducts()); // Fetch products when the modal is visible
         }
-    }, [dispatch, visible]);
+    }, [dispatch, visible, customers]);
 
     useEffect(() => {
         if (error) {
@@ -196,6 +206,7 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                         const quotationData = {
                             ticketId: NticketId !== null ? NticketId.current : 'NA', // Use the existing ticket ID or the new ticket ID
                             createdBy: loggedInUserId, // ID of the user creating the quotation
+                            validity: 0,
                         };
                         // console.log(`Quotation data to add: ${quotationData}`, JSON.stringify(fetchedQuote, null, 2));
                         // Dispatch the thunk action to add a new quotation
@@ -227,12 +238,12 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
 
 
 
-    const handleProductSelect = (value) => {
+    const handleProductSelect = async (value) => {
         const selectedProduct = products.find(product => product.productId === value);
         if (selectedProduct) {
             const productWithKey = { ...selectedProduct, key: Date.now() }; // Add a unique key for rendering
             setAddedProducts(prev => [...prev, productWithKey]); // Add the selected product to addedProducts
-            console.log(addedProducts);
+            // console.log(addedProducts);
             notification.success({ message: 'Product added successfully!' });
         }
     };
@@ -309,10 +320,27 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
     };
 
     const handleFinish = async () => {
+        setLoading(true); // Set loading to true when the function starts
         try {
             // Validate customer selection
             if (customerType === 'existing' && !existingCustomer) {
                 notification.error({ message: 'Please select an existing customer.' });
+                setLoading(false); // Set loading to false if validation fails
+                return;
+            }
+
+            // Check for null or zero prices in added products
+            const hasInvalidPrice = addedProducts.some(product => product.price === null || product.price <= 0);
+            if (hasInvalidPrice) {
+                notification.error({ message: 'Please fill in the price for all selected products before submitting the quotation.' });
+                setLoading(false); // Set loading to false if validation fails
+                return;
+            }
+
+            // Validate required fields
+            if (!payment || !transport || !validity || !delivery || !warrantyOrSupport) {
+                notification.error({ message: 'Please fill in all required fields (Payment, Transport, Validity, delivery, warranty).' });
+                setLoading(false); // Set loading to false if validation fails
                 return;
             }
 
@@ -330,17 +358,23 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                     createdDate: currentDate.format('YYYY-MM-DD HH:mm:ss'),
                 };
 
-                // console.log('Adding new customer:', newCustomerData);
-                const customerResponse = await dispatch(addCustomer(newCustomerData)).unwrap();
-                // console.log('Customer added:', customerResponse);
-                customerId = customerResponse.customerId;
+                try {
+                    // console.log('Adding new customer:', newCustomerData);
+                    const customerResponse = await dispatch(addCustomer(newCustomerData)).unwrap();
+                    // console.log('Customer added:', customerResponse);
+                    customerId = customerResponse.customerId;
 
-                const values = {
-                    customerId: customerId,
-                };
+                    const values = {
+                        customerId: customerId,
+                    };
 
-                // console.log(`Updating ticket with ${NticketId.current} and ${values.data}`);
-                await dispatch(updateTicket({ ticketId: defticketId || NticketId.current, data: values }));
+                    // console.log(`Updating ticket with ${NticketId.current} and ${values.data}`);
+                    await dispatch(updateTicket({ ticketId: defticketId || NticketId.current, data: values }));
+                } catch (err) {
+                    notification.error({ message: err, description: `for adding new customer` });
+                    setLoading(false); // Set loading to false if adding customer fails
+                    return;
+                }
             } else {
                 customerId = defaultCustomer;
                 // console.log(`existjjjjjjjjjjjjjjjjjjjjjjjjjing ${defaultCustomer} and ${defaultCustomer}`)
@@ -356,48 +390,47 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
             // Create new products
             const addedProductIds = []; // Array to hold product IDs to be added to quotationProducts
             const productPromises = addedProducts.map(async (product) => {
-                if (product.productType === 'Serviceklklk') { //it was Service ut for going in else every time ..
-                    // console.log(product);
-                    // If product is a service, just push its ID to the array
-                    addedProductIds.push(product.productId);
-                    return product;
-                } else {
-                    const newProductData = {
-                        brand: product.brand,
-                        modelNo: product.modelNo,
-                        price: product.price,
-                        quantity: product.quantity,
-                        description: product.description,
-                        isSerialNoAllowed: product.isSerialNoAllowed,
-                        partCode: product.partCode,
-                        hsnCode: product.hsnCode,
-                        unitOfMeasurement: product.unitOfMeasurement,
-                        gst: product.gst,
-                        warrenty: product.warrenty,
-                        productType: product.productType === 'ServiceF' ? 'Service' : product.productType,
-                        customerId: customerId || defaultCustomer || existingCustomer.customerId,
-                    };
+                const newProductData = {
+                    brand: product.brand,
+                    modelNo: product.modelNo,
+                    price: product.price,
+                    quantity: product.quantity,
+                    description: product.description,
+                    isSerialNoAllowed: product.isSerialNoAllowed,
+                    partCode: product.partCode,
+                    hsnCode: product.hsnCode,
+                    unitOfMeasurement: product.unitOfMeasurement,
+                    gst: product.gst,
+                    warrantyMonths: product.warranty,
+                    productType: product.productType === 'ServiceF' ? 'Service' : product.productType,
+                    customerId: customer.customerId // Pass customerId in the product data
+                };
 
-                    const addedProduct = await dispatch(addProduct(newProductData)).unwrap();
-                    addedProductIds.push(addedProduct.productId); // Push the newly added product's ID
-                    return addedProduct;
-                }
+                const addedProduct = await dispatch(addProduct(newProductData)).unwrap();
+                addedProductIds.push(addedProduct.productId); // Push the newly added product's ID
+                return addedProduct;
             });
 
             const addedProductsResponse = await Promise.all(productPromises);
-            console.log(addedProductsResponse);
-            console.log(addedProductIds);
+            // console.log(addedProductsResponse);
+            // console.log(addedProductIds);
+            // console.log(NticketId.current.value);
 
             // Create a new quotation
             const quotationData = {
-                ticketId: NticketId !== null ? NticketId.current.value : defticketId,
+                ticketId: NticketId !== null ? NticketId.current : defticketId,
                 customerId: customerId,
                 status: 'Pending',
                 createdBy: loggedInUserId,
                 createdDate: currentDate.format('YYYY-MM-DD HH:mm:ss'),
                 comments: comment,
+                taxes,
+                delivery,
+                payment,
+                warrantyOrSupport,
+                transport,
+                validity,
             };
-
 
             const quotationResponse = await dispatch(updateQuotation({ quotationId: Quote.current.quotationId, data: quotationData })).unwrap();
             // console.log('Quotation updated:', quotationResponse);
@@ -420,7 +453,6 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
             const quotationProductsResponses = await Promise.all(quotationProductPromises);
             // console.log('Quotation products added:', quotationProductsResponses);
 
-
             navigate('/Quotations')
             notification.success({ message: 'Quotation added successfully!' });
             form.resetFields();
@@ -431,10 +463,14 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
             setComment(''); // Reset comment
 
             onClose(); // Close modal after submission
+            dispatch(fetchQuotations());
 
         } catch (err) {
             // console.error(err);
-            notification.error({ message: 'Error adding quotation' });
+            notification.error({ message: 'Error adding quotation', description: err.data });
+            // message.error(err.data);
+        } finally {
+            setLoading(false); // Set loading to false when the function ends
         }
     };
 
@@ -459,8 +495,6 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
             centered
         >
             <div className="quotation-modal" style={{ maxHeight: '600px', overflowY: 'auto' }}>
-
-                {/* Customer Selection */}
                 <div style={{ marginBottom: '20px' }}>
                     <h3>Select Customer</h3>
                     <Radio.Group value={customerType}
@@ -476,7 +510,7 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                         label="Select Existing Customer"
                         rules={[{ required: true, message: 'Please select an existing customer' }]}>
                         <Select
-                            value={defaultCustomer ? defaultCustomer : undefined}
+                            value={existingCustomer ? existingCustomer.customerId : undefined}
                             showSearch
                             placeholder="Select a customer"
                             optionFilterProp="label"
@@ -485,10 +519,10 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                         >
                             {customers && customers.length > 0 ? (
                                 customers.map(customer => (
-                                    <Option key={customer.customerId} value={customer.customerId} label={`${customer.firstName} ${customer.lastName} ${customer.email} ${customer.phoneNumber}`}>
+                                    <Option key={customer.customerId} value={customer.customerId} label={`${customer.firstName} ${customer.lastName} ${customer.email} ${customer.phoneNumber} ${customer.companyName}`}>
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                            <span>{`${customer.firstName} ${customer.lastName}`}</span>
-                                            <span style={{ marginLeft: '10px', color: 'gray' }}>{customer.email}</span>
+                                            <span>{`${customer.companyName} `}</span>
+                                            {/* <span style={{ marginLeft: '10px', color: 'gray' }}>{customer.email}</span> */}
                                         </div>
                                     </Option>
                                 ))
@@ -502,6 +536,43 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                 {customerType === 'new' && (
                     <CreateCustomerForm customer={newCustomer} setCustomer={setNewCustomer} />
                 )}
+
+                <Row gutter={16}>
+                    <Col span={12}>
+                        <Form.Item label="Select Existing Product">
+                            <Select
+                                showSearch
+                                optionFilterProp="label"
+                                placeholder="Select a product"
+                                onChange={handleProductSelect}
+                                style={{ width: '100%' }}
+                                dropdownStyle={{ maxHeight: 500, overflowY: 'auto' }} // Control dropdown height
+                            >
+                                {products && products.length > 0 ? (
+                                    products.map(product => (
+                                        <Select.Option
+                                            style={{ width: '100%', color: 'black', border: '1px', padding: '10px', }}
+                                            key={product.productId}
+                                            value={product.productId}
+                                            label={`${product.brand} || ${product.modelNo} || ₹${product.description}`}>
+                                            {product.brand} || {product.modelNo} || ₹{product.description}
+                                        </Select.Option>
+                                    ))
+                                ) : (
+                                    <Select.Option value="">No products found</Select.Option>
+                                )}
+                            </Select>
+                        </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                        <div style={{ display: 'flex', justifyContent: 'right' }}>
+                            {/* Add New Product Button */}
+                            <Button type="" style={{ marginBottom: '20px', color: 'green' }} onClick={handleAddProductClick}>
+                                Add New Product
+                            </Button>
+                        </div>
+                    </Col>
+                </Row>
 
                 {/* Products Table */}
 
@@ -544,42 +615,6 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                         <p>No products added yet. Please add a product to continue.</p>
                     </div>
                 )}
-
-                <Form.Item label="Select Existing Product">
-                    <Select
-                        showSearch
-                        optionFilterProp="label"
-                        placeholder="Select a product"
-                        onChange={handleProductSelect}
-                        style={{ width: '100%' }}
-                        dropdownStyle={{ maxHeight: 500, overflowY: 'auto' }} // Control dropdown height
-
-                    >
-                        {products && products.length > 0 ? (
-                            products.map(product => (
-                                <Select.Option
-                                    style={{ width: '100%', color: 'black', border: '1px', padding: '10px', }}
-                                    key={product.productId}
-                                    value={product.productId}
-                                    label={`${product.brand} || ${product.modelNo} || ₹${product.description}`}>
-                                    {product.brand} || {product.modelNo} || ₹{product.description}
-                                </Select.Option>
-                            ))
-                        ) : (
-                            <Select.Option value="">No products found</Select.Option>
-                        )}
-                    </Select>
-                </Form.Item>
-                <div style={{ display: 'flex', justifyContent: 'right' }}>
-
-
-
-                    {/* Add New Product Button */}
-                    <Button type="" style={{ marginBottom: '20px', color: 'green' }} onClick={handleAddProductClick}>
-                        Add New Product
-                    </Button>
-                </div>
-
 
                 {showNewProductForm && (
                     <div
@@ -785,14 +820,14 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                                 </Col>
 
                                 <Col span={12}>
-                                    <Form.Item label="Warrenty months:" rules={[{ required: true }]}
+                                    <Form.Item label="Warranty months:" rules={[{ required: true }]}
                                     // labelCol={{ span: 16 }}
                                     // wrapperCol={{ span: 8 }}
                                     >
                                         <Input
                                             type="number"
-                                            value={newProduct.warrenty}
-                                            onChange={e => setNewProduct({ ...newProduct, warrenty: parseFloat(e.target.value) })}
+                                            value={newProduct.warranty}
+                                            onChange={e => setNewProduct({ ...newProduct, warranty: parseFloat(e.target.value) })}
                                         />
                                     </Form.Item>
                                 </Col>
@@ -809,20 +844,54 @@ const QuotationFormModal = ({ visible, onClose, defticketId, defaultCustomer }) 
                     </div>
                 )}
 
-                <Form.Item label="Comment">
-                    <Input.TextArea
-                        rows={2}
-                        value={comment}
-                        onChange={e => setComment(e.target.value)}
-                    />
-                </Form.Item>
-
+                <Form>
+                    <Row gutter={16}>
+                        <Col span={12}>
+                            <Form.Item label="Comment" rules={[{ required: true, message: 'Add a comment' }]}>
+                                <Input.TextArea
+                                    rows={2}
+                                    value={comment}
+                                    onChange={e => setComment(e.target.value)}
+                                />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item label="Delivery" rules={[{ required: true, message: 'Please input delivery details!' }]}>
+                                <Input value={delivery} onChange={e => setDelivery(e.target.value)} />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Row gutter={16}>
+                        <Col span={12}>
+                            <Form.Item label="Payment" rules={[{ required: true, message: 'Please input payment details!' }]}>
+                                <Input value={payment} onChange={e => setPayment(e.target.value)} />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item label="Warranty or Support" rules={[{ required: true, message: 'Please input warranty or support details!' }]}>
+                                <Input value={warrantyOrSupport} onChange={e => setWarrantyOrSupport(e.target.value)} />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Row gutter={16}>
+                        <Col span={12}>
+                            <Form.Item label="Transport" rules={[{ required: true, message: 'Please input transport details!' }]}>
+                                <Input value={transport} onChange={e => setTransport(e.target.value)} />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item label="Validity (days)" rules={[{ required: true, message: 'Please input validity!' }]}>
+                                <Input type="number" value={validity} onChange={e => setValidity(parseInt(e.target.value))} />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                </Form>
 
                 <div style={{ marginTop: '20px', textAlign: 'right' }}>
                     <Button onClick={onClose} style={{ marginRight: '10px' }}>
                         Cancel
                     </Button>
-                    <Button type="primary" onClick={handleFinish} disabled={addedProducts.length === 0}>
+                    <Button type="primary" onClick={handleFinish} disabled={addedProducts.length === 0 || loading} loading={loading}>
                         Submit Quotation
                     </Button>
                 </div>

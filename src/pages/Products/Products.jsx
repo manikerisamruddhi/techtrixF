@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Table, Button, Spin, Empty, Layout, Typography, Input, Modal, notification } from 'antd';
-import { deleteProduct, addProduct, updateProduct, fetchProducts, fetchNonCustProducts } from '../../redux/slices/productSlice';
+import { deleteProduct, updateProduct, fetchNonCustProducts } from '../../redux/slices/productSlice';
 import ProductDetailModal from '../../components/Product/ProductDetails';
 import ProductFormModal from '../../components/Product/AddProduct';
 
@@ -11,7 +11,7 @@ const { Search } = Input;
 
 const Products = () => {
     const dispatch = useDispatch();
-    const { items: products, loading } = useSelector((state) => state.products);
+    const { nonCustomerProducts: products, loading } = useSelector((state) => state.products);
 
     const [isDetailModalVisible, setDetailModalVisible] = useState(false);
     const [isCreateModalVisible, setCreateModalVisible] = useState(false);
@@ -24,11 +24,13 @@ const Products = () => {
 
     // Fetch products on mount
     useEffect(() => {
-        dispatch(fetchNonCustProducts());
+        if(!products || products.length === 0) {
+            dispatch(fetchNonCustProducts());
+        }
     }, [dispatch]);
 
     useEffect(() => {
-        setFilteredProducts(products); // Initially, show all products
+        setFilteredProducts(products);
     }, [products]);
 
     const refresh = () => {
@@ -46,6 +48,7 @@ const Products = () => {
     };
 
     const handleCreateProduct = () => {
+        dispatch(fetchNonCustProducts());
         setCreateModalVisible(false);
         notification.success({
             message: 'Success',
@@ -192,7 +195,8 @@ const Products = () => {
                     <ProductFormModal
                         visible={isCreateModalVisible}
                         onCancel={() => setCreateModalVisible(false)}
-                        onCreate={handleCreateProduct}
+                        onAddProduct={handleCreateProduct}
+                       
                     />
 
                     {/* Edit Product Modal */}

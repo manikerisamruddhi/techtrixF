@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchQuotations, getQuotationById } from '../../redux/slices/quotationSlice';
-import { fetchTickets } from '../../redux/slices/ticketSlice'; // Action to fetch tickets
 import { Layout, Table, Button, Empty, message, Spin, Typography, Input } from 'antd';
 import CreateQuotationFormModal from '../../components/Quotation/CreateQuotation';
 import QuotationDetailsModal from '../../components/Quotation/QuotationDetails';
@@ -14,18 +13,27 @@ const { Title } = Typography;
 
 const Quotations = () => {
     const dispatch = useDispatch();
-    const { quotations = [], loading, error } = useSelector((state) => state.quotations);
+    const { quotations = [], loading, error, quotationByIdLoading } = useSelector((state) => state.quotations);
     const { tickets = [] } = useSelector((state) => state.tickets); // Get tickets from Redux state
 
     const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
     const [isDetailsModalVisible, setIsDetailsModalVisible] = useState(false);
     const [selectedQuotation, setSelectedQuotation] = useState(null);
     const [searchText, setSearchText] = useState('');
+    const [viewLoadingId, setViewLoadingId] = useState(null);
+
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const statusFilter = queryParams.get('status');
 
     useEffect(() => {
-        dispatch(fetchQuotations());
-        dispatch(fetchTickets()); // Fetch tickets
-    }, [dispatch, useLocation()]);
+      
+        if (!quotations || quotations.length === 0) {
+            dispatch(fetchQuotations());
+            // console.log('Fetching quotations...');
+        }
+        // dispatch(fetchTickets()); // Fetch tickets
+    }, [dispatch, location, quotations]);
 
     useEffect(() => {
         if (error) {
@@ -34,28 +42,49 @@ const Quotations = () => {
     }, [error]);
 
     const handleViewClick = async (record) => {
+        setViewLoadingId(record.quotationId);
         try {
             const { payload } = await dispatch(getQuotationById(record.quotationId));
             setSelectedQuotation(payload);
             setIsDetailsModalVisible(true);
         } catch (error) {
             // console.error('Error fetching quotation:', error);
+        } finally {
+            setViewLoadingId(null);
         }
     };
 
     const handleCreateModalClose = () => {
         setIsCreateModalVisible(false);
-        dispatch(fetchQuotations());
+        // Remove the dispatch(fetchQuotations()) call to avoid reloading all quotations
     };
 
     const handleDetailsModalClose = () => {
         setIsDetailsModalVisible(false);
         setSelectedQuotation(null);
-        dispatch(fetchQuotations());
+        // Remove the dispatch(fetchQuotations()) call to avoid reloading all quotations
     };
 
     const handleCreateQuotationSuccess = () => {
         dispatch(fetchQuotations());
+        setIsCreateModalVisible(false); // Close the modal after successful creation
+    };
+
+    // Add a function to check for null prices in selected products
+    const checkForNullPrices = (products) => {
+        return products.some(product => product.price === null);
+    };
+
+    // Modify the function to handle quotation submission
+    const handleCreateQuotation = (quotationData) => {
+        if (checkForNullPrices(quotationData.products)) {
+            message.error('Please fill in the price for all selected products before submitting the quotation.');
+            return;
+        }
+        // Proceed with quotation submission
+        dispatch(createQuotation(quotationData)).then(() => {
+            handleCreateQuotationSuccess();
+        });
     };
 
     // Search function
@@ -71,10 +100,10 @@ const Quotations = () => {
     }) : [];
 
 
-    // Filter quotations based on search text
+    // Filter quotations based on search text and status
     const filteredQuotations = quotationsWithTickets.filter((quotation) => {
-        const c_companyName = quotation.c_companyName || 'N/A'
-        return (
+        const c_companyName = quotation.c_companyName || 'N/A';
+        const matchesSearchText = (
             quotation.comments.toLowerCase().includes(searchText.toLowerCase()) ||
             c_companyName.toLowerCase().includes(searchText.toLowerCase()) ||
             quotation.finalAmount.toString().includes(searchText) ||
@@ -82,6 +111,8 @@ const Quotations = () => {
             moment(quotation.quotationDate).format('DD-MM-YYYY').includes(searchText) ||
             quotation.quot_ID.toLowerCase().includes(searchText.toLowerCase())
         );
+        const matchesStatus = statusFilter ? quotation.status === statusFilter : true;
+        return matchesSearchText && matchesStatus;
     });
 
     const columns = [
@@ -126,7 +157,11 @@ const Quotations = () => {
             title: 'Actions',
             key: 'actions',
             render: (_, record) => (
-                <Button type="primary" onClick={() => handleViewClick(record)}>
+                <Button
+                    type="primary"
+                    onClick={() => handleViewClick(record)}
+                    loading={viewLoadingId === record.quotationId}
+                >
                     View Details
                 </Button>
             ),
@@ -150,9 +185,11 @@ const Quotations = () => {
                         style={{ marginBottom: '16px', width: '300px' }}
                         prefix={<SearchOutlined />}
                     />
-                    {loading === 'loading' ? (
-                        <Spin tip="Loading..." />
-                    ) : !filteredQuotations || filteredQuotations.length === 0 ? (
+                    {loading ? (
+                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '300px' }}>
+                            <Spin tip="Loading..." />
+                        </div>
+                    ) : filteredQuotations.length === 0 ? (
                         <Empty description="No Quotations Available" />
                     ) : (
                         <Table
@@ -168,13 +205,14 @@ const Quotations = () => {
                         visible={isDetailsModalVisible}
                         onClose={handleDetailsModalClose}
                         quotation={selectedQuotation}
+                        loading={quotationByIdLoading} // Use separate loading state
                     />
 
                     {/* Create Quotation Form Modal */}
                     <CreateQuotationFormModal
                         visible={isCreateModalVisible}
                         onClose={handleCreateModalClose}
-                        onSuccess={handleCreateQuotationSuccess}
+                        onSuccess={handleCreateQuotation}
                     />
                 </div>
             </Content>

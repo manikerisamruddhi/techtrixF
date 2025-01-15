@@ -29,8 +29,14 @@ const UserManagement = () => {
     }, [user, navigate]);
 
     useEffect(() => {
-        dispatch(fetchUsers());
-    }, [dispatch]);
+          
+            if (!users || users.length === 0) {
+                dispatch(fetchUsers());
+                console.log('Fetching users...');
+            }
+            // dispatch(fetchTickets()); // Fetch tickets
+        }, [dispatch, location, users]);
+
 
     // Filter users to exclude those with the role of "Admin"
     const filteredUsers = users.filter(user => user.role !== 'Admin');

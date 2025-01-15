@@ -5,8 +5,6 @@ import EditQuotationModal from './EditQuotationModal';
 import {
     updateQuotation,
 } from "../../redux/slices/quotationSlice";
-import { fetchCustomerByID } from '../../redux/slices/customerSlice';
-import { fetchTicketDetails } from '../../redux/slices/ticketSlice';
 import { fetchUserById } from '../../redux/slices/userSlice';
 import { fetchProducts, selectProductsByIds } from '../../redux/slices/productSlice';
 import { useDispatch, useSelector } from "react-redux";
@@ -19,9 +17,7 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
     const quoteProducts = useRef();
     const preparedBy = useRef();
     const [isEditModalVisible, setIsEditModalVisible] = useState(false); // State for Edit modal visibility
-    const [isCustomerLoading, setIsCustomerLoading] = useState(true); // Loading state for customer data
-    const [customer, setCustomer] = useState(null); // State for customer data
-    // const allProducts = useSelector(selectProducts); // All products from Redux
+   // const allProducts = useSelector(selectProducts); // All products from Redux
 
     const [QuotationData, setQuotationData] = useState(null);
 
@@ -49,42 +45,7 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
 
     }, [dispatch, visible]);
 
-    useEffect(() => {
-        if (visible && quotation?.ticketId) {
-            setIsCustomerLoading(true); // Start loading
-            dispatch(fetchTicketDetails(quotation.ticketId))
-                .then((ticketResponse) => {
-                    const fetchedTicketData = ticketResponse.payload;
-                    // console.log(fetchedTicketData);
-                    if (fetchedTicketData?.customerId) {
-                        dispatch(fetchCustomerByID(fetchedTicketData.customerId))
-                            .then((customerResponse) => {
-                                if (customerResponse) {
-                                    setCustomer(customerResponse.payload); // Set customer data
-                                } else {
-                                    message.error("Failed to fetch customer details.");
-                                }
-                            })
-                            .finally(() => setIsCustomerLoading(false));
-                    } else {
-                        message.error("Customer ID not found in ticket details.");
-                        setIsCustomerLoading(false)
-
-                    }
-                })
-                .catch(() => {
-                    message.error("Failed to fetch ticket details.");
-                    setIsCustomerLoading(false); // End loading
-                });
-
-        }
-    }, [dispatch, visible, quotation?.ticketId]);
-
     const handleEditQuotation = () => {
-        if (isCustomerLoading) {
-            message.warning("Please wait, customer data is being loaded.");
-            return;
-        }
         setIsEditModalVisible(true);
     };
 
@@ -282,15 +243,15 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
     </tr>
     <tr>
         <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;"><strong>Quotation ID</strong></td>
-        <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;">${quotation ? (quotation.quot_ID ? quotation.quot_ID : 'N/A') : 'N/Aa'}</td>
+        <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;">${quotation ? (quotation.quot_ID ? quotation.quot_ID : 'N/A') : 'N/A'}</td>
     </tr>
     <tr>
         <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;"><strong>Customer ID</strong></td>
-        <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;"> ${customer ? (customer.cust_ID ? customer.cust_ID : 'N/A') : 'N/A'}</td>
+        <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;"> ${quotation ? (quotation.c_Cust_ID ? quotation.c_Cust_ID : 'N/A') : 'N/A'}</td>
     </tr>
     <tr>
         <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;"><strong>Validity</strong></td>
-        <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;">10 days</td>
+        <td style="border: 1px solid black; padding: 1px 4px; white-space: nowrap;">${quotation ? (quotation.validity ? quotation.validity : 'N/A') : 'N/A'} days</td>
     </tr>
 </table>
 
@@ -301,8 +262,8 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
 <div  style="font-family: 'Arial', sans-serif; font-size: 10px; ">
                     <div style="     background-color: #838282; color:white;
     font-weight: bolder;">  <strong  style=" margin-left:0.5%;">Customer:</strong></br>  </div>
-                              ${customer ? (customer.companyName ? customer.companyName : 'N/A') : 'N/A'},</br>
-                              ${customer ? (customer.address ? customer.address : 'N/A') : 'N/A'} </br>
+                              ${quotation ? (quotation.c_companyName ? quotation.c_companyName : 'N/A') : 'N/A'},</br>
+                              ${quotation ? (quotation.c_address ? quotation.c_address : 'N/A') : 'N/A'} </br>
                            
 </div>
                         <table style="width: 100%; border-collapse: collapse; margin-bottom: 15px;     margin-top: 2%;">
@@ -366,10 +327,13 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
     justify-content: space-between;" >
 
     
-                       <div  >
+                       <div style="max-width: 480px" >
                         <p style=" margin-bottom:-2%; border: 1px solid #000; padding: 2px; background-color: #17A0CC; color:white; font-size: 10px;"><strong>Terms and conditions:</strong><p>
-                        <span><strong>Customer will be billed:</strong> After indicating acceptance of this quotation.</span></br>
-                        <span><strong>Taxes:</strong> Inclusive in quotation.</span></br>
+                        
+                        <span><strong>Comments:</strong> ${quotation ? (quotation.comments ? quotation.comments : 'N/A') : 'N/A'}</span></br>
+                        <span><strong>Customer will be billed:</strong> After indicating acceptance of this Quotation.</span></br>
+                        
+                        <span><strong>Taxes:</strong> Inclusive in Quotation.</span></br>
                         <span><strong>Delivery:</strong> ${quotation ? (quotation.delivery ? quotation.delivery : 'N/A') : 'N/A'}</span></br>
                         <span><strong>Payment:</strong> ${quotation ? (quotation.payment ? quotation.payment : 'N/A') : 'N/A'}</span></br>
                         <span><strong>Warranty / Support:</strong>  ${quotation ? (quotation.warrantyOrSupport ? quotation.warrantyOrSupport : 'N/A') : 'N/A'}</span></br>
@@ -435,8 +399,7 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
                                 key="edit"
                                 onClick={handleEditQuotation}
                                 style={{ float: 'right', border: "solid lightblue", borderRadius: '9px' }}
-                                disabled={isCustomerLoading} // Disable the button while loading
-                            >
+                          >
                                 Edit Quotation
                             </Button>
                         )}
@@ -495,7 +458,6 @@ const QuotationDetailsModal = ({ visible, quotation, onClose }) => {
                 visible={isEditModalVisible}
                 products={quoteProducts.current}
                 quotation={quotation}
-                customer={customer}
                 // onSave={handleSaveEdit}
                 onClose={() => {
                     setIsEditModalVisible(false);

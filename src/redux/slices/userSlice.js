@@ -127,6 +127,7 @@ const userSlice = createSlice({
             .addCase(createUser.fulfilled, (state, action) => {
                 state.loading = false;
                 state.users.push(action.payload); // Add the new user to the state
+                state.user = action.payload; // Update the user in the state
             })
             .addCase(createUser.rejected, (state, action) => {
                 state.loading = false;
@@ -138,10 +139,12 @@ const userSlice = createSlice({
                 if (index !== -1) {
                     state.users[index] = updatedUser; // Update the user in the state
                 }
+                state.user = updatedUser; // Update the user in the state
             })
             .addCase(deleteUser.fulfilled, (state, action) => {
                 const userId = action.payload;
                 state.users = state.users.filter(user => user.userId !== userId);
+                state.user = null; // Clear the user in the state
             })
             .addCase(fetchUserById.pending, (state) => {
                 state.status = 'loading';

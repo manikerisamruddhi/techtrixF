@@ -5,7 +5,7 @@ import { updateQuotation } from '../../redux/slices/quotationSlice';
 import { updateQuotationProduct, deleteQuotationProduct } from '../../redux/slices/productSlice';
 import ProductFormModal from '../Product/AddProduct';
 
-const EditQuotationModal = ({ visible, quotation, onClose, products, customer }) => {
+const EditQuotationModal = ({ visible, quotation, onClose, products }) => {
     const dispatch = useDispatch();
     const [form] = Form.useForm();
     const [productList, setProductList] = useState([]);
@@ -16,7 +16,7 @@ const EditQuotationModal = ({ visible, quotation, onClose, products, customer })
     useEffect(() => {
         if (quotation) {
             form.setFieldsValue({
-                customerId: quotation.customerId,
+                customerId: quotation.c_customerId,
                 status: quotation.status,
                 delivery: quotation.delivery,
                 payment: quotation.payment,
@@ -31,6 +31,9 @@ const EditQuotationModal = ({ visible, quotation, onClose, products, customer })
 
     const handleFinish = async (values) => {
         try {
+            // Ensure validity is an integer
+            values.validity = parseInt(values.validity, 10);
+
             // First, update all products before updating the quotation
             for (const product of productList) {
                 // Validate the product data
@@ -69,7 +72,10 @@ const EditQuotationModal = ({ visible, quotation, onClose, products, customer })
     };
 
     const handleDeleteProduct = (productId) => {
+        // console.log('Deleting product:', productId);
         const foundProduct = quotationProducts.find(item => item.productId === productId);
+        // console.log('Found Product:', foundProduct);
+        // console.log('quotationProducts:', quotationProducts);
         const quotationProductId = foundProduct.quotationProductId;
 
         Modal.confirm({
@@ -95,6 +101,15 @@ const EditQuotationModal = ({ visible, quotation, onClose, products, customer })
             const totalAmount = (product.price * quantity) + gstAmount;
             return total + totalAmount;
         }, 0).toFixed(2);
+    };
+
+    const handleInputChange = (productId, field, value) => {
+        setProductList(prevProducts => prevProducts.map(prod => {
+            if (prod.productId === productId) {
+                return { ...prod, [field]: value ? parseFloat(value) : 0 };
+            }
+            return prod;
+        }));
     };
 
     const productColumns = [
@@ -146,7 +161,7 @@ const EditQuotationModal = ({ visible, quotation, onClose, products, customer })
                 <Input
                     type="text" // Change type to "text" to remove up/down arrows
                     value={record.quantity}
-                    onChange={(e) => setProductList(prevProducts => prevProducts.map(prod => prod.productId === record.productId ? { ...prod, quantity: parseInt(e.target.value) } : prod))}
+                    onChange={(e) => handleInputChange(record.productId, 'quantity', e.target.value)}
                 />
             ),
         },
@@ -159,7 +174,7 @@ const EditQuotationModal = ({ visible, quotation, onClose, products, customer })
                 <Input
                     type="text" // Change type to "text" to remove up/down arrows
                     value={record.price}
-                    onChange={(e) => setProductList(prevProducts => prevProducts.map(prod => prod.productId === record.productId ? { ...prod, price: parseFloat(e.target.value) } : prod))}
+                    onChange={(e) => handleInputChange(record.productId, 'price', e.target.value)}
                 />
             ),
         },
@@ -213,9 +228,14 @@ const EditQuotationModal = ({ visible, quotation, onClose, products, customer })
                     </Col>
                 </Row>
                 <Row>
-                    <Col span={24}>
+                    <Col span={11} style={{ paddingRight: '10px' }}>
                         <Form.Item label="Comment" name="comments">
                             <Input.TextArea placeholder="Enter comment" rows={2} />
+                        </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                        <Form.Item label="Validity (in days)" name="validity">
+                            <Input type="number" placeholder="Enter Validity in days"  />
                         </Form.Item>
                     </Col>
                 </Row>
@@ -255,10 +275,15 @@ const EditQuotationModal = ({ visible, quotation, onClose, products, customer })
                 visible={addProductVisible}
                 onCancel={() => setAddProductVisible(false)}
                 product={null} // No pre-filled product for new product
-                customerId={customer ? customer.customerId : null}
+                customerId={quotation ? quotation.c_customerId : null}
                 onAddProduct={(product) => {
                     setProductList((prevProducts) => [...prevProducts, product]);
                     setAddProductVisible(false);
+                    
+                }}
+                onUpdatedQuotaion={(response) => {
+                    setQuotationProducts(response.quotationProducts);
+                    console.log('Quotation Products:', response.quotationProducts);
                 }}
                 quotation={quotation}
             />

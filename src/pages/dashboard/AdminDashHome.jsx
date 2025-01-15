@@ -74,7 +74,7 @@ const Dashboard = () => {
     const dispatch = useDispatch();
     const { tickets, quotations, users, customers, products, invoices, loading, error } = useSelector(state => state.dashboard);
     const { total, inProgress, closed, open } = useTicketCounts(tickets);
-    const { pending, approved } = useQuotationCounts(quotations);
+    const { totalQuote, pending, approved, rejected } = useQuotationCounts(quotations);
     const { totalUser, logistics, serviceTechnical, sales } = useUserCounts(users);
     const { totalCustomers } = useCustomerCounts(customers);
     const { totalProduct } = useProductCounts(products);
@@ -140,6 +140,14 @@ const Dashboard = () => {
             navigate(`/tickets`);
         else {
             navigate(`/tickets?status=${status}`);
+        }
+    };
+
+    const handleQuotationSubCardClick = (status) => {
+        if (!status)
+            navigate(`/quotations`);
+        else {
+            navigate(`/quotations?status=${status}`);
         }
     };
 
@@ -455,9 +463,9 @@ const Dashboard = () => {
                             <Grid item xs={6} sm={3} md={4}>
                                 <Card
                                     sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2fbe7)' }}
-                                    onClick={() => handleSubCardClick('closed')}
+                                    onClick={() => handleSubCardClick('Closed')}
                                 >
-                                    <Typography variant="h5" sx={{ color: '#333' }}>closed: {closed}</Typography>
+                                    <Typography variant="h5" sx={{ color: '#333' }}>Closed: {closed}</Typography>
                                     <Grid container spacing={2} sx={{ marginTop: '20px' }}>
                                         <Grid item xs={6} sm={6} md={6} marginBottom={1}>
                                             {/* <Typography variant="h6" sx={{ color: '' }}>test:{open}</Typography>
@@ -545,29 +553,41 @@ const Dashboard = () => {
                         </div>
                         <Grid container spacing={2} style={{ marginLeft: '10px' }}>
                             <Grid item xs={6} sm={3} md={4}>
-                                <Link to="/quotations" style={{ textDecoration: 'none' }}>
-                                    <Card sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2fbe7)' }}>
-                                        <Typography variant="h5" sx={{ color: 'blue' }}>Total: { }</Typography>
-                                        <Typography variant="h5" sx={{ color: 'blue' }}></Typography>
-                                    </Card>
-                                </Link>
+                                <Card
+                                    sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2fbe7)' }}
+                                    onClick={() => handleQuotationSubCardClick()}
+                                >
+                                    <Typography variant="h5" sx={{ color: 'blue' }}>Total: { }</Typography>
+                                    <Typography variant="h5" sx={{ color: 'blue' }}>{totalQuote}</Typography>
+                                </Card>
                             </Grid>
                             <Grid item xs={6} sm={3} md={4}>
-                                <Link to="/quotations" style={{ textDecoration: 'none' }}>
-                                    <Card sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2fbe7)' }}>
-                                        <Typography variant="h5" sx={{ color: 'green' }}>Approved: {quotations.delivered}</Typography>
-                                        <Typography variant="h5" sx={{ color: 'blue' }}>{approved}</Typography>
-                                    </Card>
-                                </Link>
+                                <Card
+                                    sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2fbe7)' }}
+                                    onClick={() => handleQuotationSubCardClick('Approved')}
+                                >
+                                    <Typography variant="h5" sx={{ color: 'green' }}>Approved: {quotations.delivered}</Typography>
+                                    <Typography variant="h5" sx={{ color: 'blue' }}>{approved}</Typography>
+                                </Card>
                             </Grid>
                             <Grid item xs={6} sm={3} md={4}>
-                                <Link to="/quotations" style={{ textDecoration: 'none' }}>
-                                    <Card sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2fbe7)' }}>
-                                        <Typography variant="h5" sx={{ color: 'orangered' }}>Pending: {quotations.pending}</Typography>
-                                        <Typography variant="h5" sx={{ color: 'orangered' }}>{pending}</Typography>
+                                <Card
+                                    sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2fbe7)' }}
+                                    onClick={() => handleQuotationSubCardClick('Pending')}
+                                >
+                                    <Typography variant="h5" sx={{ color: 'orangered' }}>Pending: {quotations.pending}</Typography>
+                                    <Typography variant="h5" sx={{ color: 'orangered' }}>{pending}</Typography>
 
-                                    </Card>
-                                </Link>
+                                </Card>
+                            </Grid>
+                            <Grid item xs={6} sm={3} md={4}>
+                                <Card
+                                    sx={{ ...cardStyle, background: 'linear-gradient(to right, #a1c4fd, #c2fbe7)' }}
+                                    onClick={() => handleQuotationSubCardClick('Rejected')}
+                                >
+                                    <Typography variant="h5" sx={{ color: 'red' }}>Rejected: {quotations.rejected}</Typography>
+                                    <Typography variant="h5" sx={{ color: 'red' }}>{rejected}</Typography>
+                                </Card>
                             </Grid>
                         </Grid>
                     </>
@@ -646,8 +666,7 @@ const Dashboard = () => {
                             {/* Add more subcards for different product categories or statuses as needed */}
                         </Grid>
                     </>
-                )}
-            </Grid>
+                )}            </Grid>
 
 
         </div>

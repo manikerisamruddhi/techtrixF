@@ -5,8 +5,8 @@ import ticketApi from '../../api/ticketApi';
 // Async Thunks
 export const fetchTickets = createAsyncThunk('tickets/fetchTickets', async () => {
     const response = await ticketApi.getAllTickets(); // Adjusted endpoint
-    // console.log(response);
-    return response.data;
+    // console.log('Fetch Tickets Response:', response); // Print fetch tickets response
+    return response.data; // Adjusted to return the tickets array
 });
 
 // Async Thunks
@@ -70,6 +70,7 @@ const ticketSlice = createSlice({
             .addCase(fetchTickets.fulfilled, (state, action) => {
                 state.loading = false;
                 state.tickets = action.payload;
+                // console.log('Stored Tickets:', state.tickets); // Print stored tickets
             })
             .addCase(fetchTickets.rejected, (state, action) => {
                 state.loading = false;
@@ -93,11 +94,17 @@ const ticketSlice = createSlice({
             })
             .addCase(updateTicket.fulfilled, (state, action) => {
                 const updatedTicket = action.payload;
-                const index = state.tickets.findIndex(ticket => ticket.ticketId === updatedTicket.id);
+                const index = state.tickets.findIndex(ticket => ticket.ticketId === updatedTicket.ticketId);
                 if (index !== -1) {
                     // Update the ticket in the state
                     state.tickets[index] = updatedTicket;
                 }
+                // Update the ticket state if the updated ticket is the currently viewed ticket
+                if (state.ticket && state.ticket.ticketId === updatedTicket.ticketId) {
+                    state.ticket = updatedTicket;
+                }
+                console.log('Updated Ticket:', updatedTicket);
+                console.log('Updated Tickets:', state.tickets); // Log state.tickets
             })
             // Builder for fetchTicketByAssighnedToOrCreatedBy
             .addCase(fetchTicketByAssighnedToOrCreatedBy.pending, (state) => {
