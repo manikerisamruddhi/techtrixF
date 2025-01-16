@@ -148,7 +148,7 @@ const quotationSlice = createSlice({
             })
             .addCase(getQuotationByUserIdAndInitiatedStatus.fulfilled, (state, action) => {
                 state.loading = false;
-                state.quotations = Array.isArray(action.payload) ? action.payload : []; // Ensure it's an array
+                // state.quotations = Array.isArray(action.payload) ? action.payload : []; // Ensure it's an array
             })
             .addCase(getQuotationByUserIdAndInitiatedStatus.rejected, (state, action) => {
                 state.loading = false;
